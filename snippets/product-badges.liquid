@@ -12,7 +12,15 @@
 	{% assign tags = product.tags %}
 {% endif %}
 
-{% if tags.size > 0 or product.available == false %}
+{%- assign selected_variant = product.selected_or_first_available_variant -%}
+{%- assign is_low_or_unavailable = false -%}
+{%- if selected_variant.inventory_management and selected_variant.inventory_quantity <= 3 -%}
+	{%- assign is_low_or_unavailable = true -%}
+{%- elsif selected_variant.available == false -%}
+	{%- assign is_low_or_unavailable = true -%}
+{%- endif -%}
+
+{% if tags.size > 0 or is_low_or_unavailable %}
 	{%- capture styles -%}
 		--offset-top-desktop: {{ block.settings.offset_top_desktop }}px; {{-  -}}
 		--offset-bottom-desktop: {{ block.settings.offset_bottom_desktop }}px; {{-  -}}
@@ -25,14 +33,16 @@
 		style="{{- styles -}}"
 		aria-label="{{- 'products.product.product_labels' | t | escape -}}"
 	>
-		{%- unless product.available or is_preset -%}
-			<li	class="badge badge--sold-out">
-				<span class="visually-hidden">
-					{{- 'products.product.product_label' | t -}}:
-				</span>
+		{%- unless is_preset -%}
+			{%- if is_low_or_unavailable -%}
+				<li	class="badge badge--sold-out">
+					<span class="visually-hidden">
+						{{- 'products.product.product_label' | t -}}:
+					</span>
 
-				{{- "products.product.sold_out" | t -}}
-			</li>
+					{{- "products.product.sold_out" | t -}}
+				</li>
+			{%- endif -%}
 		{%- endunless -%}
 
 		{%- assign tag_index = 1 -%}
