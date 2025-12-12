@@ -1,0 +1,102 @@
+.image-compare {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 16px;
+  text-align: center;
+}
+.image-compare .image-compare__header {
+  max-width: 800px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+.image-compare .image-compare__heading {
+  position: relative;
+  margin-bottom: 16px;
+}
+.image-compare .image-compare__text a {
+  color: currentColor;
+}
+.image-compare .image-compare__text a:focus-visible {
+  outline-color: currentColor;
+}
+.image-compare img-comparison-slider {
+  visibility: hidden;
+  display: block;
+  width: 100%;
+  --divider-color: var(--drag-cursor-background, #fff);
+  cursor: pointer;
+}
+.image-compare img-comparison-slider:not(.rendered) .image-compare__image.image-compare__image--second {
+  display: none;
+}
+.image-compare img-comparison-slider:not(.rendered) .image-compare__handle {
+  display: none;
+}
+.image-compare img-comparison-slider:focus {
+  outline: none;
+}
+.image-compare img-comparison-slider:focus .image-compare__handle {
+  outline: none;
+}
+.image-compare img-comparison-slider:focus-visible .image-compare__handle {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 2px;
+}
+.image-compare img-comparison-slider [slot=second] {
+  display: none;
+}
+.image-compare img-comparison-slider.rendered {
+  visibility: inherit;
+}
+.image-compare img-comparison-slider.rendered [slot=second] {
+  display: unset;
+}
+.image-compare .image-compare__image {
+  min-height: 200px;
+  height: var(--mobile-image-height);
+  width: 100%;
+  object-fit: cover;
+  border-radius: calc(var(--global-border-radius) * 2);
+}
+.image-compare .image-compare__image.image-compare__image--placeholder {
+  background-color: var(--color-white);
+}
+.image-compare .image-compare__image.image-compare__image--placeholder-compare {
+  background-color: var(--color-black);
+  fill: var(--color-white);
+}
+.image-compare .image-compare__image.image-compare__image--first {
+  object-position: var(--first-img-pos);
+}
+.image-compare .image-compare__image.image-compare__image--second {
+  object-position: var(--second-img-pos);
+}
+.image-compare .image-compare__handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background-color: var(--drag-cursor-background, #fff);
+  border: 1px solid var(--drag-cursor-border-color, #E9E9E9);
+  border-radius: 50%;
+}
+.image-compare .image-compare__handle svg {
+  width: 24px;
+  height: 24px;
+}
+.image-compare .image-compare__handle svg path {
+  fill: var(--drag-cursor-color, #000);
+}
+@media (min-width: 768px) {
+  .image-compare .image-compare__header {
+    margin-bottom: 48px;
+  }
+  .image-compare .image-compare__handle {
+    width: 72px;
+    height: 72px;
+  }
+  .image-compare .image-compare__image {
+    height: var(--desktop-image-height);
+  }
+}

@@ -1,0 +1,144 @@
+
+{% assign title 					= 'general.popup.geo_location.title' | t %}
+{% assign text 						= 'general.popup.geo_location.text' | t : country: localization.country.name %}
+{% assign button_close_label 		= settings.age_check_button_close_label %}
+{% comment %} {% assign image_desktop 			= shop.brand.logo %}
+{% assign image_mobile 				= shop.brand.logo | default: image_desktop %} {% endcomment %}
+{% assign hide_image_on_mobile 		= settings.age_check_hide_mobile_img %}
+{% assign popup_icon_button_class 	= '' %}
+{% assign popup_content_modifier 	= '' %}
+
+{%- render 'adastra' with '/src/styles/geo-location-popup.css' -%}
+{%- render 'adastra' with '/src/scripts/section-geo-location-popup.js' -%}
+
+{% unless hide_image_on_mobile or image_mobile == blank %}
+	{% assign popup_icon_button_class = 'popup-close-icon-button--round' %}
+{% endunless %}
+
+{% if hide_image_on_mobile or image_mobile == blank %}
+	{% assign popup_content_modifier = 'geo-location-popup__content--top-offset'%}
+{% endif %}
+
+<div id="geo-location-popup"
+    class="popup geo-location-popup"
+    role="dialog"
+	{% if title != blank %}
+		aria-labelledby="geo-location-popup-title"
+	{% endif %}
+>
+	<div class="popup__container geo-location-popup__container {% if image_desktop == blank %}geo-location-popup__container--no-image{% endif %}">
+		{% if image_desktop != blank %}
+			{%- capture img_focal -%}
+				--img-desktop-pos: {{ image_desktop.presentation.focal_point }}; --img-mob-pos: {{ image_mobile.presentation.focal_point }};
+			{%- endcapture -%}
+
+			<div class="geo-location-popup__col {% if hide_image_on_mobile %}geo-location-popup__col--hide-img-mob{% endif %}">
+				<picture class="geo-location-popup__image-wrapper lazy">
+					<source
+						data-srcset="{{ image_mobile | img_url: '320x' }} 1x, {{ image_mobile | img_url: '640x' }} 2x"
+						srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+						media="(max-width: 360px)"
+					/>
+
+					<source
+						data-srcset="{{ image_mobile | img_url: '343x' }} 1x, {{ image_mobile | img_url: '686x' }} 2x"
+						srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+						media="(max-width: 380px)"
+					/>
+
+					<source
+						data-srcset="{{ image_mobile | img_url: '440x' }} 1x, {{ image_mobile | img_url: '480x' }} 2x"
+						srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+						media="(max-width: 480px)"
+					/>
+
+					<source
+						data-srcset="{{ image_mobile | img_url: '472x' }} 1x, {{ image_mobile | img_url: '944x' }} 2x"
+						srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+						media="(max-width: 767px)"
+					/>
+
+					<img
+						class="geo-location-popup__image"
+						srcset="{{- image_desktop | img_url: "10x" -}}"
+						data-srcset="{{ image_desktop | img_url: "520x" }} 1x, {{ image_desktop | img_url: "1040x" }} 2x"
+						src="{{- image_desktop | img_url: "10x" -}}"
+						data-src="{{- image_desktop | img_url: main_image_size -}}"
+						alt="{{- image_desktop.alt -}}"
+						width="520"
+						height="520"
+						style="{{ img_focal }}"
+					/>
+				</picture>
+			</div>
+		{% endif %}
+
+
+		<div class="geo-location-popup__col">
+			<div class="geo-location-popup__content {{ popup_content_modifier }}">
+				{% if title != blank %}
+					<h2 id="geo-location-popup-title" class="geo-location-popup__title h3">{{ title }}</h2>
+				{% endif %}
+
+				{% if text != blank %}
+					<p class="geo-location-popup__text">{{ text }}</p>
+				{% endif %}
+
+                <div class="geo-location-popup__buttons">
+
+                    {% if localization.country.name != 'Saudi Arabia' and localization.country.name != 'المملكة العربية السعودية' %}
+						{%- liquid 
+							assign url = 'https://sa.ontime.com/?country=saudi'
+
+							if request.locale.iso_code == "ar"
+								assign url = url | replace: "sa.ontime.com", "sa.ontime.com/ar" 
+							endif
+						-%}
+                        <a class="button button--secondary button--full-width" type="button" href="{{ url }}">
+                            {{ 'general.popup.geo_location.countries.saudi_arabia' | t }}
+                        </a>
+                    {% endif %}
+                    
+                    {% if localization.country.name != 'United Arab Emirates' and  localization.country.name != 'الإمارات العربية المتحدة' %}
+						{%- liquid 
+							assign url = 'https://ae.ontime.com?country=ae'
+
+							if request.locale.iso_code == "ar"
+								assign url = url | replace: "ae.ontime.com", "ae.ontime.com/ar" 
+							endif
+						-%}
+                        <a class="button button--secondary button--full-width" type="button" href="{{ url }}">
+                            {{ 'general.popup.geo_location.countries.uae' | t }}
+                        </a>
+                    {% endif %}
+
+                    {% if localization.country.name != 'Kuwait' and localization.country.name != 'الكويت' %}
+						{%- liquid 
+							assign url = 'https://ontime.com?country=kuwait'
+
+							if request.locale.iso_code == "ar"
+								assign url = url | replace: "ontime.com", "ontime.com/ar" 
+							endif
+						-%}
+                        <a class="button button--secondary button--full-width" type="button" href="{{ url }}">
+                            {{ 'general.popup.geo_location.countries.kuwait' | t }}
+                        </a>
+                    {% endif %}
+
+                    <button class="button button--primary button--full-width js-geo-location-popup-confirm" type="button" style="border: 1px solid;" data-localization="{{ localization.country.iso_code }}">
+                        {{ 'general.popup.geo_location.countries.stay' | t }}
+                    </button>
+                </div>
+			</div>
+		</div>
+
+		<button type="button"
+				class="geo-location-popup__close-icon-button geo-location-popup__close-icon-button--desktop focus-visible-outline popup-close-icon-button"
+				aria-label="{{- 'general.accessibility.close_modal' | t | escape -}}"
+				data-target="geo-location-popup"
+				data-js-toggle="geoLocationPopupToggle"
+		>
+			{% render 'icons', icon: 'menu-close' %}
+		</button>
+	</div>
+</div>

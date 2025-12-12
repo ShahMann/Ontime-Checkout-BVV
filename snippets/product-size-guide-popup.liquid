@@ -1,0 +1,111 @@
+{% if content != blank and toggle_id != blank %}
+	<div id="{{- toggle_id -}}"
+		 class="popup product-size-guide-popup"
+		 role="dialog"
+		{% if title != blank %}
+			aria-labelledby="size-guide-popup-title-{{- toggle_id -}}"
+		{% endif %}
+	>
+		<div class="product-size-guide-popup__container popup__container">
+			{% if title != blank %}
+				<h2 id="size-guide-popup-title-{{- toggle_id -}}"
+					class="product-size-guide-popup__title h3"
+				>
+					{{- title -}}
+				</h2>
+			{% endif %}
+
+			<div data-tabs-container>
+				{% assign size_guide_model_img = product.metafields.custom.size_guide_model_image %}
+				{% assign size_guide_model_info = product.metafields.custom.size_guide_model_info %}
+				{% assign general_tab_name = tab_general_name | default: 'Dimensions' %}
+				{% assign model_tab_name = tab_model_name | default: 'Parameters of the model in the photo' %}
+
+				{% if size_guide_model_img != blank or size_guide_model_info != blank %}
+					<div class="popup__tabs">
+						<button class="popup__tabs-button focus-visible-outline js-tab-button active"
+								data-tab="size-guide-general-{{ toggle_id }}"
+								aria-expanded="true"
+								aria-controls="size-guide-general-{{ toggle_id }}"
+						>
+							{{- general_tab_name -}}
+						</button>
+
+						<button class="popup__tabs-button focus-visible-outline js-tab-button"
+								data-tab="size-guide-model-{{ toggle_id }}"
+								aria-expanded="false"
+								aria-controls="size-guide-model-{{ toggle_id }}"
+						>
+							{{- model_tab_name -}}
+						</button>
+					</div>
+
+					<div id="size-guide-general-{{ toggle_id }}"
+						 class="popup__tab-content rte rte-size-guide active"
+						 data-tab-content="size-guide-general-{{ toggle_id }}"
+					>
+						{{- content -}}
+					</div>
+
+					<div id="size-guide-model-{{ toggle_id }}"
+						 class="popup__tab-content rte rte-size-guide"
+						 data-tab-content="size-guide-model-{{ toggle_id }}"
+					>
+						<div class="size-model">
+							{% if size_guide_model_img != blank %}
+								<div class="size-model__image-wrapper {% if size_guide_model_info == blank %}size-model__image-wrapper--full{% endif %}">
+									<picture class="lazy">
+										{% if size_guide_model_info != blank %}
+											{% assign desktop = 410 %}
+											{% assign desktop_x2 = 820 %}
+										{% else %}
+											{% assign desktop = 980 %}
+											{% assign desktop_x2 = 1960 %}
+										{% endif %}
+
+										<source data-srcset="{{ size_guide_model_img | image_url: width: 340 }} 1x,
+															 {{ size_guide_model_img | image_url: width: 680 }} 2x"
+												srcset="{{ size_guide_model_img | image_url: width: 10 }} 1x"
+												media="(max-width: 420px)"
+										>
+
+										<source data-srcset="{{ size_guide_model_img | image_url: width: 690 }} 1x,
+															 {{ size_guide_model_img | image_url: width: 1380 }} 2x"
+												srcset="{{ size_guide_model_img | image_url: width: 10 }} 1x"
+												media="(max-width: 767px)"
+										>
+
+										<img class="size-model__image"
+											 src="{{ size_guide_model_img | image_url: width: 10 }}"
+											 data-src="{{ size_guide_model_img | image_url: width: desktop }}"
+											 data-srcset="{{ size_guide_model_img | image_url: width: desktop }} 1x,
+												 {{ size_guide_model_img | image_url: width: desktop_x2 }} 2x"
+											 alt="{{ size_guide_model_img.alt | escape }}"
+										>
+									</picture>
+								</div>
+							{% endif %}
+
+							{% if size_guide_model_info != blank %}
+								<div class="size-model__info">{{ size_guide_model_info | newline_to_br }}</div>
+							{% endif %}
+						</div>
+					</div>
+				{% else %}
+					<div class="rte rte-size-guide">
+						{{- content -}}
+					</div>
+				{% endif %}
+			</div>
+
+			<button type="button"
+					class="product-size-guide-popup__close-icon-button popup-close-icon-button focus-visible-outline"
+					aria-label="{{- close_modal | escape -}}"
+					data-target="{{- toggle_id -}}"
+					data-js-toggle="{{- toggle_id -}}"
+			>
+				{% render 'icons', icon: 'menu-close' %}
+			</button>
+		</div>
+	</div>
+{% endif %}

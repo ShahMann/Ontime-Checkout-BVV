@@ -1,0 +1,39 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product description
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign preset_title 	= 'Product description' %}
+{% assign description 	= product.description %}
+
+{% if is_preset %}
+	{% assign description = preset_title %}
+{% endif %}
+
+{%- capture styles -%}
+	--offset-top-desktop: {{ block.settings.offset_top_desktop }}px; {{-  -}}
+	--offset-bottom-desktop: {{ block.settings.offset_bottom_desktop }}px; {{-  -}}
+	--offset-top-mobile: {{ block.settings.offset_top_mobile }}px; {{-  -}}
+	--offset-bottom-mobile: {{ block.settings.offset_bottom_mobile }}px;
+{%- endcapture -%}
+
+{% if description != blank %}
+	<style>
+		.product-description-wrapper {
+			padding-top: var(--offset-top-mobile);
+			padding-bottom: var(--offset-bottom-mobile);
+		}
+
+		@media screen and (min-width: 992px) {
+			.product-description-wrapper {
+				padding-top: var(--offset-top-desktop);
+				padding-bottom: var(--offset-bottom-desktop);
+			}
+		}
+	</style>
+
+	<div class="product-description-wrapper rte" style="{{ styles }}">
+		{{ description }}
+	</div>
+{% endif %}
+

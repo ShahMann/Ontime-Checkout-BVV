@@ -1,0 +1,53 @@
+<script>
+	initAnimateObserver();
+
+	window.themeCore = window.themeCore || {};
+	window.themeCore.initAnimateObserver = initAnimateObserver;
+
+	function initAnimateObserver() {
+		const intersectionObserver = new IntersectionObserver(
+			(entries, observer) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						const element = entry.target;
+						element.classList.add("animated");
+
+						observer.unobserve(entry.target);
+
+						if (element.classList.contains("js-typing-text")) {
+							typingTextAnimation(element);
+						}
+					}
+				});
+			},
+			{rootMargin: "-60px"}
+		);
+
+		const elements = [...document.querySelectorAll(".js-animate")];
+
+		elements.forEach((element) => intersectionObserver.observe(element));
+	}
+
+	function typingTextAnimation(element) {
+		let i = 0;
+		let sectionTitle = element;
+
+		if (!sectionTitle) {
+			return;
+		}
+
+		let text = sectionTitle.getAttribute("data-typing-text");
+		let textElement = sectionTitle.querySelector("[data-visible-text]") || sectionTitle;
+		let speed = 60;
+
+		typeWriter();
+
+		function typeWriter() {
+			if (i < text.length) {
+				textElement.innerHTML += text.charAt(i);
+				i++;
+				setTimeout(typeWriter, speed);
+			}
+		}
+	}
+</script>

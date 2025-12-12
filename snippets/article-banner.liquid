@@ -1,0 +1,216 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Article banner
+	------------------------
+	Used on Article template
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- render 'adastra' with '/src/styles/article-banner.scss' -%}
+
+{%- assign author_image = article.metafields.custom.author_image -%}
+{%- assign is_show_author 				= false -%}
+{%- assign is_show_comments_count  		= false -%}
+
+{%- if show_author and article.author != blank -%}
+	{%- assign is_show_author = true -%}
+{%- endif -%}
+
+{%- if article.comments_enabled? and show_comments_count -%}
+	{%- assign is_show_comments_count = true -%}
+{%- endif -%}
+
+<section class="article-banner">
+	<div class="article-banner__heading-block js-animate {% if request.visual_preview_mode %}animated{% endif %}">
+		<h1 class="article-banner__heading h2">
+			{{ article.title }}
+		</h1>
+
+		{%- if is_show_author or show_date or is_show_comments_count -%}
+			<div class="article-banner__subheading">
+				{%- if is_show_author -%}
+					<div class="article-banner__author">
+						{%- if author_image != blank -%}
+							<img class="article-banner__author-image"
+								 srcset="{{- author_image | image_url: width: 32, height: 32 }}  1x, {{ author_image | image_url: width: 64, height: 64 }} 2x"
+								 src="{{- author_image | image_url: width: 32, height: 32 -}}"
+								 alt="{{- author_image.alt | escape -}}"/>
+						{%- endif -%}
+
+						<span class="visually-hidden">
+							{{- 'blogs.article.author_prefix' | t -}}
+						</span>
+
+						{{- article.author -}}
+					</div>
+				{%- endif -%}
+
+				{%- if show_date and is_show_comments_count -%}
+					<div class="article-banner__info">
+				{%- endif -%}
+						{%- if show_date -%}
+							<div class="article-banner__published-date">
+								<span class="visually-hidden">{{- "blogs.article.published_at" | t -}}</span>
+
+								{{- article.published_at | date: format: 'abbreviated_date' -}}
+							</div>
+						{%- endif -%}
+
+						{%- if is_show_comments_count -%}
+							<div class="article-banner__comments-count">
+							<span class="visually-hidden">
+								{{- 'blogs.article.comments_count' | t -}}
+							</span>
+								{{- article.comments_count }} {% if article.comments_count != 1 %}{{ 'blogs.article.many_comments' | t -}}{% else %}{{ 'blogs.article.one_comment' | t -}}{% endif %}
+							</div>
+						{%- endif -%}
+				{%- if show_date and is_show_comments_count -%}
+					</div>
+				{%- endif -%}
+			</div>
+		{%- endif -%}
+
+		{%- if show_tags and article.tags.size > 0 -%}
+			<div class="article-banner__tags">
+				{%- for tag in article.tags -%}
+					<a class="article-banner__tag"
+					   href="{{- blog.url -}}/tagged/{{- tag | handleize -}}"
+					>
+						<span class="visually-hidden">
+								{{- 'blogs.article.tag' | t -}}
+						</span>
+
+						{{ tag }}
+					</a>
+				{%- endfor -%}
+			</div>
+		{%- endif -%}
+	</div>
+
+	{% if article.image != blank %}
+
+		{%- if show_sidebar -%}
+			{%- assign x1_1920 = 960 -%}
+			{%- assign x1_1199 = 797 -%}
+		{%- else -%}
+			{%- assign x1_1920 = 1400 -%}
+			{%- assign x1_1199 = 1167 -%}
+		{%- endif -%}
+
+		{%- assign x1_991 = 959 -%}
+		{%- assign x1_767 = 735 -%}
+		{%- assign x1_575 = 543 -%}
+		{%- assign x1_420 = 388 -%}
+		{%- assign x1_375 = 343 -%}
+
+		{%- assign x2_1920 = x1_1920 | times: 2 -%}
+		{%- assign x2_1199 = x1_1199 | times: 2 -%}
+		{%- assign x2_991  = x1_991 | times: 2 -%}
+		{%- assign x2_767  = x1_767 | times: 2 -%}
+		{%- assign x2_575  = x1_575 | times: 2 -%}
+		{%- assign x2_420  = x1_420 | times: 2 -%}
+		{%- assign x2_375  = x1_375 | times: 2 -%}
+
+		<div class="article-banner__image-container">
+			{%- capture lazy_image -%}
+				<picture class="lazy">
+					<source
+						srcset="{{ article.image | image_url: width: 10 }} 1x, {{ article.image | image_url: width: 20 }} 2x"
+						data-srcset="{{ article.image | image_url: width: x1_375 }} 1x, {{ article.image | image_url: width: x2_375 }} 2x"
+						media="(max-width: 375px)"
+					/>
+
+					<source
+						srcset="{{ article.image | image_url: width: 10 }} 1x, {{ article.image | image_url: width: 20 }} 2x"
+						data-srcset="{{ article.image | image_url: width: x1_420 }} 1x, {{ article.image | image_url: width: x2_420 }} 2x"
+						media="(max-width: 420px)"
+					/>
+
+					<source
+						srcset="{{ article.image | image_url: width: 10 }} 1x, {{ article.image | image_url: width: 20 }} 2x"
+						data-srcset="{{ article.image | image_url: width: x1_575 }} 1x, {{ article.image | image_url: width: x2_575 }} 2x"
+						media="(max-width: 575px)"
+					/>
+
+					<source
+						srcset="{{ article.image | image_url: width: 10 }} 1x, {{ article.image | image_url: width: 20 }} 2x"
+						data-srcset="{{ article.image | image_url: width: x1_767 }} 1x, {{ article.image | image_url: width: x2_767 }} 2x"
+						media="(max-width: 767px)"
+					/>
+
+					<source
+						srcset="{{ article.image | image_url: width: 10 }} 1x, {{ article.image | image_url: width: 20 }} 2x"
+						data-srcset="{{ article.image | image_url: width: x1_991 }} 1x, {{ article.image | image_url: width: x2_991 }} 2x"
+						media="(max-width: 991px)"
+					/>
+
+					<source
+						srcset="{{ article.image | image_url: width: 10 }} 1x, {{ article.image | image_url: width: 20 }} 2x"
+						data-srcset="{{ article.image | image_url: width: x1_1199 }} 1x, {{ article.image | image_url: width: x2_1199 }} 2x"
+						media="(max-width: 1199px)"
+					/>
+
+					<img
+						srcset="{{ article.image | image_url: width: 10 }} 1x, {{ article.image | image_url: width: 20 }} 2x"
+						src="{{ article.image | image_url: width: 10 }}"
+						data-srcset="{{ article.image | image_url: width: x1_1920 }} 1x, {{ article.image | image_url: width: x2_1920 }} 2x"
+						data-src="{{ article.image | image_url: width: x1_1920 }}"
+						alt="{{ article.image.alt }}"
+						class="article-banner__image js-animate {% if request.visual_preview_mode %}animated{% endif %}"
+					/>
+				</picture>
+			{%- endcapture -%}
+
+			{%- capture default_image -%}
+				<picture>
+					<source
+						srcset="{{ article.image | image_url: width: x1_375 }} 1x, {{ article.image | image_url: width: x2_375 }} 2x"
+						media="(max-width: 375px)"
+					/>
+
+					<source
+						srcset="{{ article.image | image_url: width: x1_420 }} 1x, {{ article.image | image_url: width: x2_420 }} 2x"
+						media="(max-width: 420px)"
+					/>
+
+					<source
+						srcset="{{ article.image | image_url: width: x1_575 }} 1x, {{ article.image | image_url: width: x2_575 }} 2x"
+						media="(max-width: 575px)"
+					/>
+
+					<source
+						srcset="{{ article.image | image_url: width: x1_767 }} 1x, {{ article.image | image_url: width: x2_767 }} 2x"
+						media="(max-width: 767px)"
+					/>
+
+					<source
+						srcset="{{ article.image | image_url: width: x1_991 }} 1x, {{ article.image | image_url: width: x2_991 }} 2x"
+						media="(max-width: 991px)"
+					/>
+
+					<source
+						srcset="{{ article.image | image_url: width: x1_1199 }} 1x, {{ article.image | image_url: width: x2_1199 }} 2x"
+						media="(max-width: 1199px)"
+					/>
+
+					<img
+						srcset="{{ article.image | image_url: width: x1_1920 }} 1x, {{ article.image | image_url: width: x2_1920 }} 2x"
+						src="{{ article.image | image_url: width: x1_1920 }}"
+						alt="{{ article.image.alt }}"
+						class="article-banner__image"
+					/>
+				</picture>
+			{%- endcapture -%}
+
+			{%- if is_lazy -%}
+				{{ lazy_image }}
+
+				<noscript>
+					{{ default_image }}
+				</noscript>
+			{%- else -%}
+				{{ default_image }}
+			{%- endif -%}
+		</div>
+	{% endif %}
+</section>

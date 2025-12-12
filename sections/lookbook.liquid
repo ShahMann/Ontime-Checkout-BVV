@@ -1,0 +1,642 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Lookbook
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/carousel.scss' -%}
+{%- render 'adastra' with '/src/styles/lookbook.scss' -%}
+{%- render 'adastra' with '/src/styles/modal-product-card.scss' -%}
+{%- render 'adastra' with '/src/styles/lookbook-modal.scss' -%}
+
+{%- assign title				= section.settings.title -%}
+{%- assign image_position		= section.settings.image_position -%}
+{%- assign image_background		= section.settings.image_background -%}
+{%- assign is_point_animated	= section.settings.is_point_animated -%}
+{%- assign container			= section.settings.container_width -%}
+{%- assign blocks				= section.blocks -%}
+
+{%- assign is_lazy = false -%}
+
+{%- if section.index > 1 -%}
+	{%- assign is_lazy = true -%}
+{%- endif -%}
+
+{%- capture image_container_style -%}
+	--lookbook-img-bg: {{ image_background | color_modify: 'alpha', 0.1 }};
+{%- endcapture -%}
+
+{%- if blocks.size > 0 -%}
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_desktop -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+		}
+	{%- endstyle -%}
+
+	{%- if container == 'inherit' -%}
+		{%- assign container_width = settings.container_width -%}
+	{%- else -%}
+		{%- assign container_width = container -%}
+	{%- endif -%}
+
+	{% assign pagination_dynamic_main = false %}
+
+	{% if section.blocks.size > 5 %}
+		{% assign pagination_dynamic_main = true %}
+	{% endif %}
+
+	<section class="lookbook need-animate js-lookbook js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}" style="--container-width: {{- container_width -}};">
+		{%- if title != blank -%}
+			<h2 class="h2 lookbook__title">
+				{{- title -}}
+			</h2>
+		{%- endif -%}
+
+		<div class="swiper lookbook__container js-lookbook-slider" data-dynamic-pagination="{{ pagination_dynamic_main }}">
+			<div class="swiper-wrapper lookbook__look-slider">
+				{%- for block in blocks -%}
+					<div class="swiper-slide lookbook__wrapper js-lookbook-slide">
+						{%- assign products_set_image = block.settings.products_set_image -%}
+						{%- assign hotspot_color = block.settings.hotspot_color -%}
+						{%- assign products_set_heading = block.settings.products_set_heading -%}
+						{%- assign button_label = block.settings.button_label -%}
+
+						{%- assign has_assigned_products = false -%}
+						{%- assign all_products_has_available_variant = true -%}
+						{%- assign all_products_has_only_one_variant = true -%}
+
+						{%- assign products_count = 0 -%}
+						{%- assign last_product_index = 1 -%}
+
+						{%- for i in (1..5) -%}
+							{%- assign product_string = "product_" | append: i -%}
+							{%- assign product = block.settings[product_string] -%}
+
+							{%- if product != blank -%}
+								{%- assign products_count = products_count | plus: 1 -%}
+								{%- assign has_assigned_products = true -%}
+
+								{%- unless product.has_only_default_variant -%}
+									{%- assign all_products_has_only_one_variant = false -%}
+								{%- endunless -%}
+
+								{%- unless product.selected_or_first_available_variant.available -%}
+									{%- assign all_products_has_available_variant = false -%}
+								{%- endunless -%}
+
+								{%- assign last_product_index = i -%}
+							{%- endif -%}
+						{%- endfor -%}
+
+						{%- if has_assigned_products == false -%}
+							{%- assign all_products_has_available_variant = false -%}
+							{%- assign all_products_has_only_one_variant = false -%}
+						{%- endif -%}
+
+						{%- if button_label == blank -%}
+							{%- assign button_label = 'sections.shop_the_look.open_modal_label' | t -%}
+						{%- endif -%}
+
+						{%- if products_set_heading == blank -%}
+							{%- assign products_set_heading = 'sections.shop_the_look.products_set_heading' | t -%}
+						{%- endif -%}
+
+						{%- capture products -%}
+							<div class="swiper lookbook__products-container js-lookbook-products">
+								<div class="swiper-wrapper lookbook__products{%- if products_count == 1 %} lookbook__products--single{%- endif -%}">
+									{%- for i in (1..5) -%}
+										{%- assign product_string = "product_" | append: i -%}
+										{%- assign product = block.settings[product_string] -%}
+
+										{%- if product != blank or has_assigned_products == false -%}
+											<div
+												class="swiper-slide lookbook__product js-lookbook-products-slide"
+												data-product-index="{{- forloop.index0 -}}"
+											>
+												{%- render "product-card", is_lazy: is_lazy, product: product, size: 398, tablet_size: 398, mobile_size: 305 -%}
+											</div>
+
+											{%- if is_lazy == false -%}
+												{%- assign is_lazy = true -%}
+											{%- endif -%}
+										{%- endif -%}
+									{%- endfor -%}
+								</div>
+
+								{%- if products_count > 1 or has_assigned_products == false -%}
+									<div class="lookbook__products-pagination-wrapper">
+										<div
+											class="lookbook__products-pagination js-lookbook-products-pagination"></div>
+									</div>
+								{%- endif -%}
+							</div>
+						{%- endcapture -%}
+
+						{%- if image_position == 'right' -%}
+							{{- products -}}
+						{%- endif -%}
+
+						<div class="lookbook__image-container" style="--hotspot-color: {{ hotspot_color }};">
+							<div
+								class="lookbook__image-wrapper"
+								style="{{- image_container_style -}}"
+							>
+								{%- render "lookbook-image", image: products_set_image, is_lazy: is_lazy -%}
+
+								{% assign delay_step = 0.5 %}
+
+								{%- for i in (1..5) -%}
+									{%- assign point_position_top_string = "point_position_top_" | append: i -%}
+									{%- assign point_position_left_string = "point_position_left_" | append: i -%}
+									{%- assign product_string = "product_" | append: i -%}
+									{%- assign delay_step = delay_step | plus: 0.25 -%}
+
+									{%- assign point_position_top = block.settings[point_position_top_string] -%}
+									{%- assign point_position_left = block.settings[point_position_left_string] -%}
+									{%- assign product = block.settings[product_string] -%}
+
+									{%- if product != blank or has_assigned_products == false -%}
+										{%- capture point_classes -%}
+											lookbook__point need-animate{% if is_point_animated == true %} lookbook__point--animated{% endif %} js-lookbook-point{% if forloop.index0 == 0 %} is-active{%- endif -%}
+										{%- endcapture -%}
+
+										<button
+											class="{{- point_classes -}}"
+											style="--delay-point-step: {{ delay_step }}s;--point-position-top: {{ point_position_top -}}%; --point-position-left: {{ point_position_left -}}%; --background-color: {{ hotspot_color | color_modify: 'alpha', 0.4 }}"
+											data-point-index="{{- forloop.index0 -}}"
+											aria-label="{{- 'sections.shop_the_look.point_button' | t: title: product.title | escape -}}"
+										>
+											{%- render 'icons', icon: 'point-button' -%}
+
+											{%- render 'icons', icon: 'point-button-active' -%}
+										</button>
+									{%- endif -%}
+								{%- endfor -%}
+							</div>
+
+							{%- if blocks.size > 1 -%}
+								<div class="lookbook__slider-pagination js-lookbook-slider-pagination"></div>
+							{%- endif -%}
+
+							<div
+								class="lookbook__buy-box js-lookbook-buy-box"
+								data-all-products-has-available-variant="{{- all_products_has_available_variant -}}"
+								data-all-products-has-only-one-variant="{{- all_products_has_only_one_variant -}}"
+							>
+								<span class="lookbook__buy-box-title js-lookbook-buy-box-title">
+									{{- products_set_heading -}}
+								</span>
+
+								<button
+									class="lookbook__buy-box-button button button--secondary{% if has_assigned_products != false %} js-lookbook-buy-box-button{%- endif -%}"
+									type="button"
+								>
+									{{- button_label -}}
+
+									<span class="visually-hidden">
+										{{- 'sections.shop_the_look.open_modal_aria_label' | t: name: products_set_heading | escape -}}
+									</span>
+								</button>
+
+								<script class="js-lookbook-products-list" type="application/json" data-product-count="{{ products_count }}">
+									[
+									{%- for i in (1..5) -%}
+								{%- assign product_string = "product_" | append: i -%}
+								{%- assign product = block.settings[product_string] -%}
+
+								{%- if product == blank -%}
+								{%- continue -%}
+									{%- endif -%}
+
+								{%- if product != blank -%}
+								{{- product | json -}} {%- if forloop.index != last_product_index -%}, {% endif -%}
+									{%- endif -%}
+									{%- endfor -%}
+									]
+								</script>
+							</div>
+						</div>
+
+						{%- if image_position == 'left' -%}
+							{{- products -}}
+						{%- endif -%}
+					</div>
+
+					{%- if is_lazy == false -%}
+						{%- assign is_lazy = true -%}
+					{%- endif -%}
+				{%- endfor -%}
+			</div>
+
+			{%- capture button_styles -%}
+				--color-slider-arrow-background: {{- section.settings.color_slider_arrow_background -}};{{-  -}}
+				--color-slider-arrow-icon: {{- section.settings.color_slider_arrow_icon -}};{{-  -}}
+
+				--color-slider-arrow-background-hover: {{- section.settings.color_slider_arrow_background_hover -}};{{-  -}}
+				--color-slider-arrow-icon-hover: {{- section.settings.color_slider_arrow_icon_hover -}};{{-  -}}
+			{%- endcapture -%}
+
+			<div class="lookbook__slider-buttons-container{% if image_position == 'right' %} lookbook__slider-buttons-container--reversed{% endif -%}">
+				<div class="lookbook__slider-buttons-wrapper" style="{{- button_styles -}}">
+					<button
+						class="swiper-button lookbook__slider-button lookbook__slider-button--prev js-lookbook-slider-button-prev"
+						type="button"
+						aria-label="{{ "general.accessibility.slider.prev_slide_message" | t | escape -}}"
+					>
+						{%- render 'icons', icon: 'arrow-left', width: 24, height: 24 -%}
+					</button>
+
+					<button
+						class="swiper-button lookbook__slider-button lookbook__slider-button--next js-lookbook-slider-button-next"
+						type="button"
+						aria-label="{{- "general.accessibility.slider.next_slide_message" | t | escape -}}"
+					>
+						{%- render 'icons', icon: 'arrow-right', width: 24, height: 24 -%}
+					</button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{%- render 'adastra' with '/src/scripts/component-swiper-modules.js' -%}
+	{%- render 'adastra' with '/src/scripts/lookbook.js' -%}
+	{%- render 'adastra' with '/src/scripts/section-products-bundle.js' -%}
+	{%- render 'adastra' with '/src/scripts/component-product-card-with-form.js' -%}
+{%- endif -%}
+
+{% schema %}
+{
+	"name": "Lookbook",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "title",
+			"label": "Heading"
+		},
+		{
+			"type": "select",
+			"id": "image_position",
+			"label": "Image position",
+			"options": [
+				{
+					"value": "left",
+					"label": "Left"
+				},
+				{
+					"value": "right",
+					"label": "Right"
+				}
+			],
+			"default": "left"
+		},
+		{
+			"type": "checkbox",
+			"id": "is_point_animated",
+			"label": "Enable point button animation",
+			"default": true
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "image_background",
+			"label": "Image background",
+			"info": "The background color of the image with 10% (0.1) opacity. Use a `.png` image.",
+			"default": "#535353"
+		},
+		{
+			"type": "color_background",
+			"id": "color_slider_arrow_background",
+			"label": "Slideshow arrow background",
+			"default": "#ffffff"
+		},
+		{
+			"type": "color",
+			"id": "color_slider_arrow_icon",
+			"label": "Slideshow arrow icon",
+			"default": "#000000"
+		},
+		{
+			"type": "color_background",
+			"id": "color_slider_arrow_background_hover",
+			"label": "Slideshow arrow background (hover)",
+			"default": "#000000"
+		},
+		{
+			"type": "color",
+			"id": "color_slider_arrow_icon_hover",
+			"label": "Slideshow arrow icon (hover)",
+			"default": "#ffffff"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"blocks": [
+	{
+	"name": "Products look",
+	"type": "products_look",
+	"settings": [
+	{
+	"type": "image_picker",
+	"id": "products_set_image",
+	"label": "Products set image",
+	"info": "1872 x 1872px recommended"
+	},
+	{
+	"type": "color",
+	"id": "hotspot_color",
+	"label": "Hotspot color",
+	"default": "#fff"
+	},
+	{
+	"type": "text",
+	"id": "products_set_heading",
+	"label": "Products set heading"
+	},
+	{
+	"type": "text",
+	"id": "button_label",
+	"label": "Button label"
+	},
+	{
+	"type": "header",
+	"content": "Product 1"
+	},
+	{
+	"type": "product",
+	"id": "product_1",
+	"label": "Product"
+	},
+	{
+	"type": "range",
+	"id": "point_position_top_1",
+	"label": "Point position top",
+	"min": 0,
+	"max": 100,
+	"step": 1,
+	"default": 0,
+	"unit": "%"
+	},
+	{
+	"type": "range",
+	"id": "point_position_left_1",
+	"label": "Point position left",
+	"min": 0,
+	"max": 100,
+	"step": 1,
+	"default": 0,
+	"unit": "%"
+	},
+	{
+	"type": "header",
+	"content": "Product 2"
+	},
+	{
+	"type": "product",
+	"id": "product_2",
+	"label": "Product"
+	},
+	{
+	"type": "range",
+	"id": "point_position_top_2",
+	"label": "Point position top",
+	"min": 0,
+	"max": 100,
+	"step": 1,
+	"default": 0,
+	"unit": "%"
+	},
+	{
+	"type": "range",
+	"id": "point_position_left_2",
+	"label": "Point position left",
+	"min": 0,
+	"max": 100,
+	"step": 1,
+	"default": 0,
+	"unit": "%"
+	},
+	{
+	"type": "header",
+	"content": "Product 3"
+	},
+	{
+	"type": "product",
+	"id": "product_3",
+	"label": "Product"
+	},
+	{
+	"type": "range",
+	"id": "point_position_top_3",
+	"label": "Point position top",
+	"min": 0,
+	"max": 100,
+	"step": 1,
+	"default": 0,
+	"unit": "%"
+	},
+	{
+	"type": "range",
+	"id": "point_position_left_3",
+	"label": "Point position left",
+	"min": 0,
+	"max": 100,
+	"step": 1,
+	"default": 0,
+	"unit": "%"
+	},
+	{
+	"type": "header",
+	"content": "Product 4"
+	},
+	{
+	"type": "product",
+	"id": "product_4",
+	"label": "Product"
+	},
+	{
+	"type": "range",
+	"id": "point_position_top_4",
+	"label": "Point position top",
+	"min": 0,
+	"max": 100,
+	"step": 1,
+	"default": 0,
+	"unit": "%"
+	},
+	{
+	"type": "range",
+	"id": "point_position_left_4",
+	"label": "Point position left",
+	"min": 0,
+	"max": 100,
+	"step": 1,
+	"default": 0,
+	"unit": "%"
+	},
+	{
+	"type": "header",
+	"content": "Product 5"
+	},
+	{
+	"type": "product",
+	"id": "product_5",
+	"label": "Product"
+	},
+	{
+	"type": "range",
+	"id": "point_position_top_5",
+	"label": "Point position top",
+	"min": 0,
+	"max": 100,
+	"step": 1,
+	"default": 0,
+	"unit": "%"
+	},
+	{
+	"type": "range",
+	"id": "point_position_left_5",
+	"label": "Point position left",
+	"min": 0,
+	"max": 100,
+	"step": 1,
+	"default": 0,
+	"unit": "%"
+	}
+	]
+	}
+	],
+	"presets": [
+	{
+	"name": "Lookbook",
+	"blocks": [
+	{
+	"type": "products_look",
+	"settings": {
+	"point_position_top_1": 35,
+	"point_position_left_1": 30,
+	"point_position_top_2": 60,
+	"point_position_left_2": 35,
+	"point_position_top_3": 50,
+	"point_position_left_3": 70,
+	"point_position_top_4": 35,
+	"point_position_left_4": 60,
+	"point_position_top_5": 70,
+	"point_position_left_5": 50
+	}
+	},
+	{
+	"type": "products_look",
+	"settings": {
+	"point_position_top_1": 35,
+	"point_position_left_1": 30,
+	"point_position_top_2": 60,
+	"point_position_left_2": 35,
+	"point_position_top_3": 50,
+	"point_position_left_3": 70,
+	"point_position_top_4": 35,
+	"point_position_left_4": 60,
+	"point_position_top_5": 70,
+	"point_position_left_5": 50
+	}
+	},
+	{
+	"type": "products_look",
+	"settings": {
+	"point_position_top_1": 35,
+	"point_position_left_1": 30,
+	"point_position_top_2": 60,
+	"point_position_left_2": 35,
+	"point_position_top_3": 50,
+	"point_position_left_3": 70,
+	"point_position_top_4": 35,
+	"point_position_left_4": 60,
+	"point_position_top_5": 70,
+	"point_position_left_5": 50
+	}
+	}
+	]
+	}
+	]
+}
+{% endschema %}

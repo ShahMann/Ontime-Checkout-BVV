@@ -1,0 +1,63 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "general-banner",
+      "blocks": {
+        "full_width_EDrwxN": {
+          "type": "full_width",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "full_width_EDrwxN"
+      ],
+      "settings": {}
+    },
+    "collection-list-2": {
+      "type": "collection-list-2",
+      "blocks": {
+        "collection_XDQPHn": {
+          "type": "collection",
+          "settings": {}
+        },
+        "collection_KjiRB3": {
+          "type": "collection",
+          "settings": {}
+        },
+        "collection_8ypWGB": {
+          "type": "collection",
+          "settings": {}
+        },
+        "collection_UTDrkf": {
+          "type": "collection",
+          "settings": {}
+        },
+        "collection_x39TCn": {
+          "type": "collection",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "collection_XDQPHn",
+        "collection_KjiRB3",
+        "collection_8ypWGB",
+        "collection_UTDrkf",
+        "collection_x39TCn"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "banner",
+    "collection-list-2"
+  ]
+}

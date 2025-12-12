@@ -1,0 +1,171 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Ticker
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/ticker.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign hide_bullets             = section.settings.hide_bullets -%}
+{%- assign text                  	= section.settings.text -%}
+{%- assign desktop_movement_speed	= section.settings.desktop_movement_speed -%}
+{%- assign mobile_movement_speed 	= section.settings.mobile_movement_speed -%}
+{%- assign text_color            	= section.settings.text_color -%}
+{%- assign section_background    	= section.settings.section_background -%}
+{%- assign inner_indent				= section.settings.inner_indent -%}
+
+{%- capture ticker_styles -%}
+	--text-color: {{ text_color }};
+	--section-background: {{ section_background }};
+	--inner-indent: {{ inner_indent }}px;
+	--desktop-movement-speed: {{ desktop_movement_speed }}s;
+	--desktop-negative-movement-speed: -{{ desktop_movement_speed }}s;
+	--mobile-movement-speed: {{ mobile_movement_speed }}s;
+	--mobile-negative-movement-speed: -{{ mobile_movement_speed }}s;
+{%- endcapture -%}
+
+{% if text != blank %}
+	<section
+		class="ticker js-ticker-container js-animate is-loading"
+		style="{{- ticker_styles -}}"
+	>
+		<div
+			class="ticker__items {% if hide_bullets %}ticker__items--hide-bullets{% endif %} js-ticker-content-container">
+			{{- text -}}
+		</div>
+	</section>
+
+	{%- render 'adastra' with '/src/scripts/section-ticker.js' -%}
+{% endif %}
+
+{% schema %}
+	{
+		"name": "Text line",
+		"disabled_on": {
+			"groups": ["header", "footer"]
+		},
+		"settings": [
+			{
+				"type": "checkbox",
+				"id": "hide_bullets",
+				"label": "Hide bullets",
+				"default": false
+			},
+			{
+				"type": "richtext",
+				"id": "text",
+				"label": "Text",
+				"default": "<p>Text in the ticker</p><p>Text in the ticker</p><p>Text in the ticker</p>",
+				"info": "Use Enter to split text into sentences."
+			},
+			{
+				"type": "range",
+				"id": "desktop_movement_speed",
+				"label": "Movement speed (desktop)",
+				"min": 4,
+				"max": 100,
+				"unit": "s",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "mobile_movement_speed",
+				"label": "Movement speed (mobile)",
+				"min": 4,
+				"max": 100,
+				"unit": "s",
+				"default": 45
+			},
+			{
+				"type": "header",
+				"content": "Colors"
+			},
+			{
+				"type": "color_background",
+				"id": "section_background",
+				"label": "Background",
+				"default": "#1B1B1B"
+			},
+			{
+				"type": "color",
+				"id": "text_color",
+				"label": "Text",
+				"default": "#ffffff"
+			},
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "range",
+				"id": "inner_indent",
+				"min": 0,
+				"max": 35,
+				"step": 1,
+				"unit": "px",
+				"label": "Inner indent",
+				"default": 24,
+				"info": "With this setting you can change a height of the ticker."
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 25
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 25
+			}
+		],
+		"presets": [
+			{
+				"name": "Text line"
+			}
+		]
+	}
+{% endschema %}

@@ -1,0 +1,156 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Modal product card
+	- product: Product object (required, object)
+	- section_id: (optional, sring)
+
+	{%- render 'modal-product-card', product: product, section_id: 'lookbook-modal' -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign aspect_ratio				= settings.product_card_img_aspect_ratio -%}
+{%- assign currency_code_enabled	= settings.is_currency_code_enabled -%}
+{%- assign show_unit_price			= settings.is_show_unit_price -%}
+
+{%- assign min	= 1 -%}
+{%- assign max	= 6 -%}
+{%- assign diff	= max | minus: min -%}
+
+{%- capture images -%}
+	<a
+		href="{{- product.url -}}"
+		class="modal-product-card__image-wrapper-link"
+		aria-label="{{- product.title | default: "Product preset title" | escape -}}"
+	>
+		{%- for variant in product.variants -%}
+			{%- assign image        = variant.featured_image | default: product.featured_image | default: settings.product_default_image -%}
+			{%- assign hover_image	= variant.metafields.product_card.hover_image | default: product.metafields.product_card.hover_image -%}
+
+			{%- capture wrapper_classes -%}
+				modal-product-card__image-wrapper modal-product-card__image-wrapper--{{ aspect_ratio }}{% unless product.has_only_default_variant %} js-product-card-images-wrapper{% endunless %}{% if variant == product.selected_or_first_available_variant %} is-active{%- endif -%}
+			{%- endcapture -%}
+
+			<div
+				class="{{- wrapper_classes | strip_newlines -}}"
+				data-variant="{{- variant.id -}}"
+			>
+				{%- if product == blank -%}
+					{%- assign random_number       = "now" | date: "%N" | modulo: diff | plus: min -%}
+					{%- assign placeholer_svg_name = 'product-' | append: random_number -%}
+
+					<div class="modal-product-card__image-picture">
+						{{- placeholer_svg_name | placeholder_svg_tag: 'modal-product-card__image' -}}
+					</div>
+				{%- else -%}
+					{%- if image -%}
+						<picture class="modal-product-card__image-picture">
+							<source
+								srcset="{{ image | img_url: "81x81" }} 1x, {{ image | img_url: "160x160" }} 2x"
+								media="(max-width: 767px)"
+								width="81"
+								height="81"
+							>
+
+							<img
+								class="modal-product-card__image"
+								srcset="{{ image | img_url: "101x101" }} 1x, {{ image | img_url: "200x200" }} 2x"
+								src="{{ image | img_url: "101x101" }}"
+								alt="{{- image.alt | default: product.title | escape -}}"
+								width="101"
+								height="101"
+							>
+						</picture>
+					{%- else -%}
+						<div class="modal-product-card__image modal-product-card__image--placeholder"></div>
+					{%- endif -%}
+
+				{%- endif -%}
+			</div>
+		{%- endfor -%}
+
+		{%- if product == blank -%}
+			{%- assign random_number       = "now" | date: "%N" | modulo: diff | plus: min -%}
+			{%- assign placeholer_svg_name = 'product-' | append: random_number -%}
+			{%- capture wrapper_classes -%}
+				modal-product-card__image-wrapper is-active
+			{%- endcapture -%}
+
+			<div class="{{- wrapper_classes | strip_newlines -}}">
+				<div class="modal-product-card__image-picture">
+					{{- placeholer_svg_name | placeholder_svg_tag: 'modal-product-card__image' -}}
+				</div>
+			</div>
+		{%- endif -%}
+	</a>
+{%- endcapture -%}
+
+<div class="modal-product-card js-product-card" {% if section_id != blank %}data-section="{{ section_id }}"{%- endif -%}>
+	<div class="modal-product-card__main">
+		{{- images -}}
+	</div>
+
+	<div class="modal-product-card__footer">
+		<div class="modal-product-card__meta-info">
+			<a class="focus-visible-outline modal-product-card__title" href="{{ product.url }}">
+				{%- if product != blank -%}
+					{{- product.title -}}
+				{%- else -%}
+					{{- 'products.product_card.product_title' | t -}}
+				{%- endif -%}
+			</a>
+
+			{% if product != blank %}
+				{%- form 'product', product, class: 'modal-product-card__form no-js-hidden js-product-card-form', novalidate: 'novalidate' -%}
+				{%- unless product.has_only_default_variant -%}
+				{%- for option in product.options_with_values -%}
+					{%- assign option_position  		= option.position -%}
+					{%- assign option_name_downcased	= option.name | downcase -%}
+					{%- assign option_name_handle		= option.name | handle -%}
+
+					<div class="modal-product-card__select-wrapper">
+						<label class="modal-product-card__select-label" for="modal-product-card__select--{{- option.name -}}">
+							{{- option.name -}}:
+						</label>
+
+						<select class="modal-product-card__select" id="modal-product-card__select--{{- option.name -}}" data-option="option{{- option_position -}}" required>
+							<option value="{{- value | escape -}}" disabled selected hidden>
+								{{- 'products.product.option_select_small' | t: name: option.name -}}
+							</option>
+
+							{%- for value in option.values -%}
+								<option value="{{- value | escape -}}">
+									{{- value -}}
+								</option>
+							{%- endfor %}
+						</select>
+					</div>
+				{%- endfor -%}
+				{%- endunless -%}
+
+					<small class="modal-product-card__error-message js-product-card-error">
+						{%- if product.selected_or_first_available_variant.available == false -%}
+							{{- "products.product.sold_out" | t -}}
+						{%- endif -%}
+					</small>
+
+					<input
+						type="hidden"
+						name="id"
+						class="is-hidden js-product-card-variant-input"
+						value="{% if product.has_only_default_variant %}{{- product.selected_or_first_available_variant.id -}}{%- endif -%}"
+					>
+
+					<input type="hidden" name="quantity" class="js-product-card-min-value" value="{{- product.selected_or_first_available_variant.quantity_rule.min -}}">
+
+					<script class="js-product-card-product" type="application/json">
+						{{- product | json -}}
+					</script>
+				{%- endform -%}
+			{%- endif -%}
+		</div>
+
+		<div class="modal-product-card__price js-price-container">
+			{%- render 'price', product: product, show_unit_price: show_unit_price, currency_code_enabled: currency_code_enabled, show_discount_percentage: false -%}
+		</div>
+	</div>
+</div>

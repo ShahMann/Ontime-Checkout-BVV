@@ -1,0 +1,183 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product Drawers Content
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- if block != nil -%}
+	{%- comment -%}
+		Highlight variables
+	{%- endcomment -%}
+	{%- assign highlight_show = block.settings.show_highlight -%}
+	{%- assign show_highlight = false -%}
+
+{% if highlight_show %}
+
+	{% if product.metafields.custom.material != blank
+		or product.metafields.custom.color != blank
+		or product.metafields.custom.dial_size != blank
+		or product.metafields.custom.dial_color != blank
+		or product.metafields.custom.warranty != blank
+%}
+	{% assign show_highlight = true %}
+	{% endif %}
+{% endif %}
+
+	{%- comment -%}
+		Description variables
+	{%- endcomment -%}
+	{%- assign description_show = block.settings.show_description -%}
+	{%- assign description_toggle_text = block.settings.description_toggle_text -%}
+	{%- assign description_drawer_title = block.settings.description_drawer_title -%}
+	{%- assign show_description = false -%}
+
+	{%- if description_show and description_toggle_text != blank and product.description != blank and description_drawer_title != blank -%}
+		{%- assign show_description = true -%}
+	{%- endif -%}
+
+	{%- comment -%}
+		Drawer 1 variables
+	{%- endcomment -%}
+	{%- assign drawer_page_1 			= block.settings.drawer_page_1 -%}
+	{%- assign drawer_toggle_text_1 	= block.settings.drawer_toggle_text_1 -%}
+	{%- assign drawer_title_1 			= block.settings.drawer_title_1 | default: drawer_page_1.title -%}
+	{%- assign show_drawer_1 			= false -%}
+
+	{%- if drawer_page_1 != blank and drawer_page_1.content != blank and drawer_toggle_text_1 != blank -%}
+		{%- assign show_drawer_1 = true -%}
+	{%- endif -%}
+
+	{% comment %}
+		Drawer 2 variables
+	{% endcomment %}
+	{% assign drawer_page_2 		= block.settings.drawer_page_2 %}
+	{% assign drawer_toggle_text_2 	= block.settings.drawer_toggle_text_2 %}
+	{% assign drawer_title_2 		= block.settings.drawer_title_2 | default: drawer_page_2.title %}
+	{% assign show_drawer_2 		= false %}
+
+	{% if drawer_page_2 != blank and drawer_page_2.content != blank and drawer_toggle_text_2 != blank %}
+		{% assign show_drawer_2 = true %}
+	{% endif %}
+
+	{%- capture highlight_content -%}
+		{%- assign toggle_id = 'highlightDrawer-' | append: section.id -%}
+		{%- assign highlight_title = 'products.product.highlights' | t -%}
+		{%- capture highlight_content_html -%}
+			<div class="product-highlights">
+				{% if product.metafields.custom.material != blank %}
+					<div class="product-detail">
+						<div class="detail-name">
+							{{ 'products.product.details.strap_material' | t }}
+						</div>
+						<div class="detail-value">
+							{{ product.metafields.custom.material }}
+						</div>
+					</div>
+				{% endif %}
+				{% if product.metafields.custom.color != blank %}
+					<div class="product-detail">
+						<div class="detail-name">
+							{{ 'products.product.details.strap_color' | t }}
+						</div>
+						<div class="detail-value">
+							{{ product.metafields.custom.color }}
+						</div>
+					</div>
+				{% endif %}
+				{% if product.metafields.custom.dial_size != blank %}
+					<div class="product-detail">
+						<div class="detail-name">
+							{{ 'products.product.details.dial_size' | t }}
+						</div>
+						<div class="detail-value">
+							{{ product.metafields.custom.dial_size }}
+						</div>
+					</div>
+				{% endif %}
+				{% if product.metafields.custom.dial_color != blank %}
+					<div class="product-detail">
+						<div class="detail-name">
+							{{ 'products.product.details.dial_color' | t }}
+						</div>
+						<div class="detail-value">
+							{{ product.metafields.custom.dial_color }}
+						</div>
+					</div>
+				{% endif %}
+				{% if product.metafields.custom.warranty != blank %}
+					<div class="product-detail">
+						<div class="detail-name">
+							{{ 'products.product.details.warranty' | t }}
+						</div>
+						<div class="detail-value">
+							{{ product.metafields.custom.warranty }}
+						</div>
+					</div>
+				{% endif %}
+			</div>
+		{%- endcapture -%}
+
+		{%- render 'product-form-drawer',
+			product: product,
+			title: highlight_title,
+			content: highlight_content_html,
+			toggle_id: toggle_id,
+			class_container: 'product-highlight-drawer',
+			class_body: 'rte-product-drawer rte-product-drawer--highlight'
+		-%}
+	{%- endcapture -%}
+
+	{%- capture description -%}
+		{% assign toggle_id = 'descriptionDrawer-' | append: section_id %}
+		{% assign product_description = product.description | replace: '<img', '<img loading="lazy"'%}
+
+		{%- render 'product-form-drawer',
+			product: product,
+			title: description_drawer_title,
+			content: product_description,
+			toggle_id: toggle_id,
+			class_container: 'product-description-drawer',
+			class_body: 'rte-product-drawer rte-product-drawer--description'
+		-%}
+	{%- endcapture -%}
+
+	{%- capture drawer_popup_1 -%}
+		{% assign toggle_id = 'productDrawer1-' | append: section_id %}
+
+		{%- render 'product-form-drawer',
+			title: drawer_title_1,
+			content: drawer_page_1.content,
+			toggle_id: toggle_id,
+			class_body: 'rte-product-drawer'
+		-%}
+	{%- endcapture -%}
+
+	{%- capture drawer_popup_2 -%}
+		{% assign toggle_id = 'productDrawer2-' | append: section_id %}
+
+		{%- render 'product-form-drawer',
+			title: drawer_title_2,
+			content: drawer_page_2.content,
+			toggle_id: toggle_id,
+			class_body: 'rte-product-drawer'
+		-%}
+	{%- endcapture -%}
+
+	{%- if show_highlight or show_description or show_drawer_1 or show_drawer_2 -%}
+		{%- if show_highlight -%}
+			{{- highlight_content -}}
+		{%- endif -%}
+
+		{%- if show_description -%}
+			{{- description -}}
+		{%- endif -%}
+
+		{%- if show_drawer_1 -%}
+			{{- drawer_popup_1 -}}
+		{%- endif -%}
+
+		{%- if show_drawer_2 -%}
+			{{- drawer_popup_2 -}}
+		{%- endif -%}
+	{%- endif -%}
+{%- endif -%}

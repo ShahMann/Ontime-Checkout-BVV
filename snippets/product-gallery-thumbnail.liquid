@@ -1,0 +1,109 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Product gallery image
+	This snippet will output main image on product page
+
+	- image: image object (optional, object),
+	- is_lazy: is lazy load enable (optional, default: true, boolean)
+
+	{%- render "product-gallery-image", image: image, is_lazy: is_lazy -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- if image -%}
+	{% comment %}
+		Image width map
+	{% endcomment %}
+	{% assign base1440 		  = 80 %}
+	{% assign base1440_2x 	  = 160 %}
+	{% assign base_default	  = 108 %}
+	{% assign base_default_2x = 216 %}
+
+	{% if image.aspect_ratio > 1 %}
+		{% assign w1440 	   = base1440 		 | times: image.aspect_ratio | round %}
+		{% assign w1440_2x	   = base1440_2x 	 | times: image.aspect_ratio | round %}
+		{% assign w_default    = base_default 	 | times: image.aspect_ratio | round %}
+		{% assign w_default_2x = base_default_2x | times: image.aspect_ratio | round %}
+	{% else %}
+		{% assign w1440 	   = base1440 		 %}
+		{% assign w1440_2x	   = base1440_2x 	 %}
+		{% assign w_default    = base_default 	 %}
+		{% assign w_default_2x = base_default_2x %}
+	{% endif %}
+
+	{% assign max_width = 9999 %}
+	{% if w1440 > 		 max_width %}{% assign w1440 = 		  max_width %}{% endif %}
+	{% if w1440_2x > 	 max_width %}{% assign w1440_2x = 	  max_width %}{% endif %}
+	{% if w_default >  	 max_width %}{% assign w_default = 	  max_width %}{% endif %}
+	{% if w_default_2x > max_width %}{% assign w_default_2x = max_width %}{% endif %}
+
+	{% assign w1440 = 		 w1440 		  | append: 'x' %}
+	{% assign w1440_2x = 	 w1440_2x 	  | append: 'x' %}
+	{% assign w_default = 	 w_default 	  | append: 'x' %}
+	{% assign w_default_2x = w_default_2x | append: 'x' %}
+	{% comment %}
+		End Image width map
+	{% endcomment %}
+
+	{%- if is_lazy -%}
+		<picture class="lazy">
+			<source
+				data-srcset="{{- image | img_url: w1440 }} 1x, {{ image | img_url: w1440_2x }} 2x"
+				srcset="{{- image | img_url: '10x' -}}"
+				media="(max-width: 1440px)"
+				width="{{ base1440 }}"
+				height="{{ base1440 }}"
+			>
+
+			<img
+				class="product-media__image"
+				data-srcset="{{- image | img_url: w_default }} 1x, {{ image | img_url: w_default_2x }} 2x"
+				data-src="{{- image | img_url: w_default }}"
+				srcset="{{- image | img_url: '10x' -}}"
+				src="{{- image | img_url: '10x' -}}"
+				alt="{{- image.alt -}}"
+				width="{{ base_default }}"
+				height="{{ base_default }}"
+			>
+		</picture>
+
+		<noscript>
+			<picture>
+				<source
+					data-srcset="{{- image | img_url: w1440 }} 1x, {{ image | img_url: w1440_2x }} 2x"
+					srcset="{{- image | img_url: w1440 -}}"
+					media="(max-width: 1440px)"
+					width="{{ base1440 }}"
+					height="{{ base1440 }}"
+				>
+
+				<img
+					class="product-media__image"
+					srcset="{{- image | img_url: w_default -}} 1x, {{- image | img_url: w_default_2x -}} 2x"
+					src="{{- image | img_url: w_default -}}"
+					alt="{{- image.alt -}}"
+					width="{{ base_default }}"
+					height="{{ base_default }}"
+				>
+			</picture>
+		</noscript>
+	{%- else -%}
+		<picture>
+			<source
+				srcset="{{- image | img_url: w1440 }} 1x, {{ image | img_url: w1440_2x }} 2x"
+				media="(max-width: 1440px)"
+				width="{{ base1440 }}"
+				height="{{ base1440 }}"
+			>
+
+			<img
+				class="product-media__image"
+				srcset="{{- image | img_url: w_default -}} 1x, {{- image | img_url: w_default_2x -}} 2x"
+				src="{{- image | img_url: w_default -}}"
+				alt="{{- image.alt -}}"
+				width="{{ base_default }}"
+				height="{{ base_default }}"
+			>
+		</picture>
+	{%- endif -%}
+{% endif %}

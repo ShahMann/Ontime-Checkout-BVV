@@ -1,0 +1,443 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Collection card
+	- collection: Collection object (required)
+	- image: image object
+	- cards_per_row: number, default is 4 cards per row
+	- aspect_ratio: image aspect ratio class
+	- is_lazy: boolean, enable lazy-load,
+	- rounded_cards: boolean
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- render 'adastra' with '/src/styles/collection-card.scss' -%}
+
+{% if cards_per_row == nil %}
+	{% assign cards_per_row = 4 %}
+{% endif %}
+
+{%- assign min = 1 -%}
+{%- assign max = 6 -%}
+{%- assign diff = max | minus: min -%}
+
+<div class="collection-card {% if rounded_cards %}collection-card--rounded{% endif %}">
+	<a class="collection-card__image-wrapper {{ aspect_ratio }}"
+		{% if collection != blank %}
+			href="{{- collection.url -}}"
+			aria-label="{{- 'collections.general.collection_card_link_aria_label' | t: title: collection.title | escape -}}"
+		{% endif %}
+	{% if collection == blank %}role="link" aria-disabled="true"{% endif %}>
+		{% if collection != blank %}
+			{% if image != blank %}
+				{%- capture img_focal -%}
+					--img-desktop-pos: {{ image.presentation.focal_point }};
+				{%- endcapture -%}
+			{% endif %}
+
+			<picture class="{% if is_lazy %}lazy{% endif %} no-js-hidden">
+				{% if section.settings.aspect_ratio == "square" %}
+					{% comment %} 4 per row {% endcomment %}
+					{% assign x1_1920 = '480x480' %}
+					{% assign x2_1920 = '960x960' %}
+
+					{% assign x1_1500 = '375x375' %}
+					{% assign x2_1500 = '750x750' %}
+
+					{% assign x1_991 = '248x248' %}
+					{% assign x2_991 = '496x496' %}
+
+					{% comment %} 3 per row {% endcomment %}
+					{% assign x1_3_per_row_1920 = '640x640' %}
+					{% assign x2_3_per_row_1920 = '1280x1808' %}
+
+					{% assign x1_3_per_row_1500 = '500x500' %}
+					{% assign x2_3_per_row_1500 = '1000x1000' %}
+
+					{% assign x1_3_per_row_991 = '330x330' %}
+					{% assign x2_3_per_row_991 = '660x660' %}
+
+					{% comment %} 2 per row {% endcomment %}
+					{% assign x1_2_per_row_1920 = '960x960' %}
+					{% assign x2_2_per_row_1920 = '1920x1920' %}
+
+					{% assign x1_2_per_row_1500 = '750x750' %}
+					{% assign x2_2_per_row_1500 = '1500x1500' %}
+
+					{% assign x1_2_per_row_991 = '496x496' %}
+					{% assign x2_2_per_row_991 = '992x992' %}
+
+					{% if cards_per_row == "3" %}
+						{% assign x1_1920 = x1_3_per_row_1920 %}
+						{% assign x2_1920 = x2_3_per_row_1920 %}
+
+						{% assign x1_1500 = x1_3_per_row_1500 %}
+						{% assign x2_1500 = x2_3_per_row_1500 %}
+
+						{% assign x1_991 = x1_3_per_row_991 %}
+						{% assign x2_991 = x2_3_per_row_991 %}
+					{% elsif cards_per_row == "2" %}
+						{% assign x1_1920 = x1_2_per_row_1920 %}
+						{% assign x2_1920 = x2_2_per_row_1920 %}
+
+						{% assign x1_1500 = x1_2_per_row_1500 %}
+						{% assign x2_1500 = x2_2_per_row_1500 %}
+
+						{% assign x1_991 = x1_2_per_row_991 %}
+						{% assign x2_991 = x2_2_per_row_991 %}
+					{% endif %}
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: '311x311', crop: 'center' }} 1x,
+										{{ image | img_url: '622x622', crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: '311x311', crop: 'center' }} 1x,
+										{{ image | img_url: '622x622', crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 380px)">
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: '344x344', crop: 'center' }} 1x,
+										{{ image | img_url: '688x688', crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: '344x344', crop: 'center' }} 1x,
+										{{ image | img_url: '688x688', crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 420px)">
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: '629x629', crop: 'center' }} 1x,
+										{{ image | img_url: '1258x1258', crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: '629x629', crop: 'center' }} 1x,
+										{{ image | img_url: '1258x1258', crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 767px)">
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: x1_991, crop: 'center' }} 1x,
+										{{ image | img_url: x2_991, crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: x1_991, crop: 'center' }} 1x,
+										{{ image | img_url: x2_991, crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 991px)">
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: x1_1500, crop: 'center' }} 1x,
+										{{ image | img_url: x2_1500, crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: x1_1500, crop: 'center' }} 1x,
+										{{ image | img_url: x2_1500, crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 1500px)">
+
+					<img class="collection-card__image"
+						{% if is_lazy %}
+							src="{{ image | img_url: '10x' }}"
+							srcset="{{ image | img_url: '10x' }}"
+							data-src="{{ image | img_url: x1_1920, crop: 'center' }}"
+							data-srcset="{{ image | img_url: x1_1920, crop: 'center' }} 1x,
+									{{ image | img_url: x2_1920, crop: 'center' }} 2x"
+						{% else %}
+							src="{{ image | img_url: x1_1920, crop: 'center' }}"
+							srcset="{{ image | img_url: x1_1920, crop: 'center' }} 1x,
+									{{ image | img_url: x2_1920, crop: 'center' }} 2x"
+						{% endif %}
+						 alt="{{ image.alt | escape }}"
+						{% if img_focal != blank %}
+							style="{{ img_focal }}"
+						{% endif %}
+					>
+				{% elsif section.settings.aspect_ratio == "landscape" %}
+					{% comment %} 4 per row {% endcomment %}
+					{% assign x1_1920 = '480x389' %}
+					{% assign x2_1920 = '960x778' %}
+
+					{% assign x1_1500 = '375x304' %}
+					{% assign x2_1500 = '750x608' %}
+
+					{% assign x1_991 = '248x201' %}
+					{% assign x2_991 = '496x402' %}
+
+					{% comment %} 3 per row {% endcomment %}
+					{% assign x1_3_per_row_1920 = '640x518' %}
+					{% assign x2_3_per_row_1920 = '1280x1032' %}
+
+					{% assign x1_3_per_row_1500 = '500x405' %}
+					{% assign x2_3_per_row_1500 = '1000x810' %}
+
+					{% assign x1_3_per_row_991 = '330x267' %}
+					{% assign x2_3_per_row_991 = '660x534' %}
+
+					{% comment %} 2 per row {% endcomment %}
+					{% assign x1_2_per_row_1920 = '960x777' %}
+					{% assign x2_2_per_row_1920 = '1920x1554' %}
+
+					{% assign x1_2_per_row_1500 = '750x607' %}
+					{% assign x2_2_per_row_1500 = '1500x1214' %}
+
+					{% assign x1_2_per_row_991 = '496x401' %}
+					{% assign x2_2_per_row_991 = '992x802' %}
+
+					{% if cards_per_row == "3" %}
+						{% assign x1_1920 = x1_3_per_row_1920 %}
+						{% assign x2_1920 = x2_3_per_row_1920 %}
+
+						{% assign x1_1500 = x1_3_per_row_1500 %}
+						{% assign x2_1500 = x2_3_per_row_1500 %}
+
+						{% assign x1_991 = x1_3_per_row_991 %}
+						{% assign x2_991 = x2_3_per_row_991 %}
+					{% elsif cards_per_row == "2" %}
+						{% assign x1_1920 = x1_2_per_row_1920 %}
+						{% assign x2_1920 = x2_2_per_row_1920 %}
+
+						{% assign x1_1500 = x1_2_per_row_1500 %}
+						{% assign x2_1500 = x2_2_per_row_1500 %}
+
+						{% assign x1_991 = x1_2_per_row_991 %}
+						{% assign x2_991 = x2_2_per_row_991 %}
+					{% endif %}
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: '311x252', crop: 'center' }} 1x,
+										{{ image | img_url: '622x504', crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: '311x252', crop: 'center' }} 1x,
+										{{ image | img_url: '622x504', crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 380px)">
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: '344x279', crop: 'center' }} 1x,
+										{{ image | img_url: '688x558', crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: '344x279', crop: 'center' }} 1x,
+										{{ image | img_url: '688x558', crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 420px)">
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: '629x509', crop: 'center' }} 1x,
+										{{ image | img_url: '1258x1018', crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: '629x509', crop: 'center' }} 1x,
+										{{ image | img_url: '1258x1018', crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 767px)">
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: x1_991, crop: 'center' }} 1x,
+										{{ image | img_url: x2_991, crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: x1_991, crop: 'center' }} 1x,
+										{{ image | img_url: x2_991, crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 991px)">
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: x1_1500, crop: 'center' }} 1x,
+										{{ image | img_url: x2_1500, crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: x1_1500, crop: 'center' }} 1x,
+										{{ image | img_url: x2_1500, crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 1500px)">
+
+					<img class="collection-card__image"
+						{% if is_lazy %}
+							src="{{ image | img_url: '10x' }}"
+							srcset="{{ image | img_url: '10x' }}"
+							data-src="{{ image | img_url: x1_1920, crop: 'center' }}"
+							data-srcset="{{ image | img_url: x1_1920, crop: 'center' }} 1x,
+									{{ image | img_url: x2_1920, crop: 'center' }} 2x"
+						{% else %}
+							src="{{ image | img_url: x1_1920, crop: 'center' }}"
+							srcset="{{ image | img_url: x1_1920, crop: 'center' }} 1x,
+									{{ image | img_url: x2_1920, crop: 'center' }} 2x"
+						{% endif %}
+						 alt="{{ image.alt | escape }}"
+						{% if img_focal != blank %}
+							style="{{ img_focal }}"
+						{% endif %}
+					>
+				{% else %}
+					{% comment %} 4 per row {% endcomment %}
+					{% assign x1_1920 = '480x709' %}
+					{% assign x2_1920 = '960x1418' %}
+
+					{% assign x1_1500 = '375x554' %}
+					{% assign x2_1500 = '750x1108' %}
+
+					{% assign x1_991 = '248x366' %}
+					{% assign x2_991 = '496x732' %}
+
+					{% comment %} 3 per row {% endcomment %}
+					{% assign x1_3_per_row_1920 = '640x945' %}
+					{% assign x2_3_per_row_1920 = '1280x1890' %}
+
+					{% assign x1_3_per_row_1500 = '500x738' %}
+					{% assign x2_3_per_row_1500 = '1000x1476' %}
+
+					{% assign x1_3_per_row_991 = '330x488' %}
+					{% assign x2_3_per_row_991 = '660x976' %}
+
+					{% comment %} 2 per row {% endcomment %}
+					{% assign x1_2_per_row_1920 = '960x1417' %}
+					{% assign x2_2_per_row_1920 = '1920x2832' %}
+
+					{% assign x1_2_per_row_1500 = '750x1107' %}
+					{% assign x2_2_per_row_1500 = '1500x2214' %}
+
+					{% assign x1_2_per_row_991 = '496x731' %}
+					{% assign x2_2_per_row_991 = '992x1462' %}
+
+					{% if cards_per_row == "3" %}
+						{% assign x1_1920 = x1_3_per_row_1920 %}
+						{% assign x2_1920 = x2_3_per_row_1920 %}
+
+						{% assign x1_1500 = x1_3_per_row_1500 %}
+						{% assign x2_1500 = x2_3_per_row_1500 %}
+
+						{% assign x1_991 = x1_3_per_row_991 %}
+						{% assign x2_991 = x2_3_per_row_991 %}
+					{% elsif cards_per_row == "2" %}
+						{% assign x1_1920 = x1_2_per_row_1920 %}
+						{% assign x2_1920 = x2_2_per_row_1920 %}
+
+						{% assign x1_1500 = x1_2_per_row_1500 %}
+						{% assign x2_1500 = x2_2_per_row_1500 %}
+
+						{% assign x1_991 = x1_2_per_row_991 %}
+						{% assign x2_991 = x2_2_per_row_991 %}
+					{% endif %}
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: '311x460', crop: 'center' }} 1x,
+										{{ image | img_url: '622x920', crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: '311x460', crop: 'center' }} 1x,
+										{{ image | img_url: '622x920', crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 380px)">
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: '344x508', crop: 'center' }} 1x,
+										{{ image | img_url: '688x1016', crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: '344x508', crop: 'center' }} 1x,
+										{{ image | img_url: '688x1016', crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 420px)">
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: '629x928', crop: 'center' }} 1x,
+										{{ image | img_url: '1258x1856', crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: '629x928', crop: 'center' }} 1x,
+										{{ image | img_url: '1258x1856', crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 767px)">
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: x1_991, crop: 'center' }} 1x,
+										{{ image | img_url: x2_991, crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: x1_991, crop: 'center' }} 1x,
+										{{ image | img_url: x2_991, crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 991px)">
+
+					<source
+						{% if is_lazy %}
+							data-srcset="{{ image | img_url: x1_1500, crop: 'center' }} 1x,
+										{{ image | img_url: x2_1500, crop: 'center' }} 2x"
+							srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+						{% else %}
+							srcset="{{ image | img_url: x1_1500, crop: 'center' }} 1x,
+										{{ image | img_url: x2_1500, crop: 'center' }} 2x"
+						{% endif %}
+						media="(max-width: 1500px)">
+
+					<img class="collection-card__image"
+						{% if is_lazy %}
+							src="{{ image | img_url: '10x' }}"
+							srcset="{{ image | img_url: '10x' }}"
+							data-src="{{ image | img_url: x1_1920, crop: 'center' }}"
+							data-srcset="{{ image | img_url: x1_1920, crop: 'center' }} 1x,
+									{{ image | img_url: x2_1920, crop: 'center' }} 2x"
+						{% else %}
+							src="{{ image | img_url: x1_1920, crop: 'center' }}"
+							srcset="{{ image | img_url: x1_1920, crop: 'center' }} 1x,
+									{{ image | img_url: x2_1920, crop: 'center' }} 2x"
+						{% endif %}
+						 alt="{{ image.alt | escape }}"
+						{% if img_focal != blank %}
+							style="{{ img_focal }}"
+						{% endif %}
+					>
+				{% endif %}
+			</picture>
+		{% else %}
+			{%- assign random_number = "now" | date: "%N" | modulo: diff | plus: min -%}
+			{%- assign placeholder_svg_name = 'collection-' | append: random_number -%}
+
+			<span
+				aria-hidden="true">{{- placeholder_svg_name | placeholder_svg_tag: 'collection-card__image collection-card__image--placeholder' -}}</span>
+		{% endif %}
+
+		<div
+			class="collection-card__header">
+			<div class="collection-card__title h4" aria-hidden="true">
+				{%- if collection == blank -%}
+					{{ 'sections.collection_list.card_title' | t }}
+				{%- else -%}
+					{{- collection.title -}}
+				{%- endif -%}
+			</div>
+		</div>
+	</a>
+</div>

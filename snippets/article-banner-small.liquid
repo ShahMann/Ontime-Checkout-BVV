@@ -1,0 +1,100 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Article latest posts
+	-----------------------------
+	Used on Article template
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- render 'adastra' with '/src/styles/article-small-banner.scss' -%}
+
+{%- capture img_focal -%}
+	--img-desktop-pos: {{ banner_image.presentation.focal_point }};
+{%- endcapture -%}
+
+{%- capture default_image -%}
+	<picture>
+		<source
+			srcset="{{- banner_image | image_url: width: 343 }} 1x, {{ banner_image | image_url: width: 686 }} 2x"
+			media="(max-width: 375px)"
+		/>
+
+		<source
+			srcset="{{- banner_image | image_url: width: 380 }} 1x, {{ banner_image | image_url: width: 760 }} 2x"
+			media="(max-width: 991px)"
+		/>
+
+		<source
+			srcset="{{- banner_image | image_url: width: 330 }} 1x, {{ banner_image | image_url: width: 660 }} 2x"
+			media="(max-width: 1199px)"
+		/>
+
+		<img
+			srcset="{{- banner_image | image_url: width: 380 }} 1x, {{ banner_image | image_url: width: 760 }} 2x"
+			src="{{- banner_image | image_url: width: 380 -}}"
+			alt="{{- banner_image.alt -}}"
+			class="article-small-banner__image"
+			style="{{ img_focal }}"
+		/>
+	</picture>
+{%- endcapture -%}
+
+{%- capture lazy_image -%}
+	<picture class="lazy">
+		<source
+			data-srcset="{{- banner_image | image_url: width: 343 }} 1x, {{ banner_image | image_url: width: 686 }} 2x"
+			srcset="{{- banner_image | image_url: width: 10 }} 1x, {{ banner_image | image_url: width: 10 }} 2x"
+			media="(max-width: 375px)"
+		/>
+
+		<source
+			data-srcset="{{- banner_image | image_url: width: 380 }} 1x, {{ banner_image | image_url: width: 760 }} 2x"
+			srcset="{{- banner_image | image_url: width: 10 }} 1x, {{ banner_image | image_url: width: 10 }} 2x"
+			media="(max-width: 991px)"
+		/>
+
+		<source
+			data-srcset="{{- banner_image | image_url: width: 330 }} 1x, {{ banner_image | image_url: width: 660 }} 2x"
+			srcset="{{- banner_image | image_url: width: 10 }} 1x, {{ banner_image | image_url: width: 10 }} 2x"
+			media="(max-width: 1199px)"
+		/>
+
+		<img
+			data-srcset="{{- banner_image | image_url: width: 380 }} 1x, {{ banner_image | image_url: width: 760 }} 2x"
+			data-src="{{- banner_image | image_url: width: 380 -}}"
+			srcset="{{- banner_image | image_url: width: 10 }} 1x, {{ banner_image | image_url: width: 10 }} 2x"
+			src="{{- banner_image | image_url: width: 10 -}}"
+			alt="{{- banner_image.alt -}}"
+			class="article-small-banner__image"
+			style="{{ img_focal }}"
+		/>
+	</picture>
+{%- endcapture -%}
+
+<section class="article-small-banner" style="{{- img_focal -}}">
+	<div class="article-small-banner__content">
+		{%- if banner_link -%}
+			<a class="article-small-banner__link focus-visible-outline"
+			   href="{{- banner_link -}}"
+			   aria-label="{{- 'blogs.article.banner_link_aria' | t: title: banner_heading | escape -}}"
+			>
+			</a>
+		{%- endif -%}
+
+		{%- if is_lazy -%}
+			{{ lazy_image }}
+
+			<noscript>
+				{{ default_image }}
+			</noscript>
+		{%- else -%}
+			{{ default_image }}
+		{%- endif -%}
+
+		{%- if banner_heading != blank -%}
+			<h2 class="article-small-banner__title h3">
+				{{- banner_heading -}}
+			</h2>
+		{%- endif -%}
+	</div>
+</section>

@@ -1,0 +1,5 @@
+{%- layout none -%}
+{%- assign show_unit_price 			= settings.is_show_unit_price -%}
+{%- assign currency_code_enabled 	= settings.currency_code_enabled -%}
+
+{%- render 'price', product: product, show_unit_price: show_unit_price, currency_code_enabled: currency_code_enabled, use_variant: true -%}

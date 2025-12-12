@@ -1,0 +1,93 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Cart shipping calculator
+	Render shipping calculator for cart
+
+	Usage:
+	{%- render 'cart-shipping-calculator' -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- if settings.show_shipping_rates_calculator -%}
+	<div class="cart-shipping-calc cart-block js-accordion-container">
+		<div class="cart-block__accordion js-accordion-item">
+			<button
+				class="cart-block__header focus-visible-outline js-accordion-control"
+				aria-controls="cart-shipping-calc-content"
+				aria-expanded="false"
+			>
+				<span class="cart-block__icon cart-block__icon-plus">
+					{% render 'icons', icon: 'plus' %}
+				</span>
+
+				<span class="cart-block__icon cart-block__icon-minus">
+					{% render 'icons', icon: 'minus' %}
+				</span>
+
+				<span class="cart-block__text">
+					{{- 'cart.shipping_rates.accordion_title' | t -}}
+				</span>
+			</button>
+
+			<div
+				id="cart-shipping-calc-content"
+				class="cart-shipping-calc__content cart-block__content js-accordion-content"
+				style="height: 0;"
+			>
+				<div class="cart-block__wrapper js-accordion-inner">
+					<div class="cart-shipping-calc__field">
+						<label class="cart-shipping-calc__label visually-hidden" for="cart-address-country">
+							{{- 'cart.shipping_rates.country_label' | t -}}
+						</label>
+
+						<select
+							id="cart-address-country"
+							class="cart-shipping-calc__select js-ship-rate-field"
+							data-default="{% if shop.customer_accounts_enabled and customer %}{{ customer.default_address.country }}{% elsif settings.shipping_calculator_default_country != '' %}{{ settings.shipping_calculator_default_country }}{% endif %}"
+						>{{ all_country_option_tags }}</select>
+
+						<div id="error-cart-address-country" class="error is-hidden"></div>
+					</div>
+
+					<div class="cart-shipping-calc__field" id="cart-address-province-container" style="display:none;">
+						<label class="cart-shipping-calc__label visually-hidden" for="cart-address-province">
+							{{- 'cart.shipping_rates.province_label' | t -}}
+						</label>
+
+						<select
+							id="cart-address-province"
+							class="cart-shipping-calc__select js-ship-rate-field"
+							data-default="{% if shop.customer_accounts_enabled and customer and customer.default_address.province != '' %}{{ customer.default_address.province }}{% endif %}"
+						></select>
+					</div>
+
+					<div class="cart-shipping-calc__field">
+						<div>
+							<label class="visually-hidden" for="cart-address-zip">
+								{{- 'cart.shipping_rates.zip_label' | t -}}
+							</label>
+
+							<input
+								type="text"
+								id="cart-address-zip"
+								class="input cart-shipping-calc__input js-ship-rate-field"
+								placeholder="{{- 'cart.shipping_rates.zip_label' | t | escape -}}"
+								{% if shop.customer_accounts_enabled and customer %}value="{{ customer.default_address.zip }}"{% endif %}
+							/>
+						</div>
+
+						<div id="error-cart-address-zip" class="error is-hidden"></div>
+					</div>
+
+					<div class="cart-shipping-calc__field">
+						<button type="button" class="button button--secondary-border button--small cart-block__button js-get-ship-rates">
+							{{- 'cart.shipping_rates.calculate_button' | t -}}
+						</button>
+					</div>
+
+					<div id="cart-rates-wrapper" class="cart-shipping-calc__status"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+{%- endif -%}

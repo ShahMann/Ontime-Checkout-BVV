@@ -1,0 +1,300 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Cart template
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/cart.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- capture default_heading -%}
+	{{- "cart.general.title" | t -}}
+{%- endcapture -%}
+
+{%- capture default_order_summary_heading -%}
+	{{- "cart.general.order_summary_heading" | t -}}
+{%- endcapture -%}
+
+{%- assign heading 					       = section.settings.heading | default: default_heading -%}
+{%- assign order_summary_heading 		   = section.settings.order_summary_heading | default: default_order_summary_heading -%}
+{%- assign show_gift_wrap_button 	       = section.settings.show_gift_wrap_button -%}
+{%- assign show_shipping_bar  			   = section.settings.show_shipping_bar -%}
+{%- assign shipping_amount  			   = section.settings.amount -%}
+{%- assign shipping_message 			   = section.settings.message -%}
+{%- assign shipping_congratulatory_message = section.settings.congratulatory_message -%}
+{%- assign shipping_congratulatory_image   = section.settings.icon -%}
+{%- assign shipping_bar_color 			   = section.settings.bar_color -%}
+{%- assign shipping_fill_color 			   = section.settings.fill_color -%}
+
+{%- if show_shipping_bar -%}
+	{%- assign is_shipping_bar = true -%}
+{%- else -%}
+	{%- assign is_shipping_bar = false -%}
+{%- endif -%}
+
+{%- capture footer -%}
+	{%- render 'cart-footer',
+		section: section,
+		order_summary_heading: order_summary_heading,
+		show_gift_button: show_gift_wrap_button,
+		amount: shipping_amount,
+		message: shipping_message,
+		congratulatory_message: shipping_congratulatory_message,
+		congratulatory_image: shipping_congratulatory_image,
+		bar_color: shipping_bar_color,
+		fill_color: shipping_fill_color,
+		is_shipping_bar: is_shipping_bar
+	-%}
+{%- endcapture -%}
+
+{%- capture blocks -%}
+	{%- for block in section.blocks -%}
+		{% if block.type == "@app" %}
+			{%- render block -%}
+		{% endif %}
+	{%- endfor -%}
+{%- endcapture -%}
+
+{%- capture custom_liquid_block  -%}
+	{%- for block in section.blocks -%}
+		{%- case block.type -%}
+			{%- when 'custom_liquid' -%}
+				{{ block.settings.custom_liquid }}
+		{%- endcase -%}
+	{%- endfor -%}
+{%- endcapture -%}
+
+<section
+	class="cart-template{% if cart.empty? %} is-empty{% endif %}"
+	data-section-id="{{- section.id -}}"
+	data-section-type="cart-template"
+>
+	<div class="cart-template__container js-cart-container">
+		<div class="cart-template__content js-cart-content">
+			{%- if cart.empty? -%}
+				{%- render 'cart-empty' -%}
+			{%- else -%}
+				<h1 class="h1 cart-template__title">
+					{{- heading -}}
+				</h1>
+
+				<div class="cart-template__row">
+					<div class="cart-template__col cart-template__col--main">
+						<div class="cart-template__content">
+							<div class="cart-template__items">
+								<div class="cart-items">
+									<form action="{{- routes.cart_url -}}" id="cart-{{- section.id -}}" class="cart-items__form" method="post">
+										<div class="cart-items__head">
+											<div class="cart-items__col cart-items__col--main">
+												{{- 'cart.label.product' | t -}}
+											</div>
+
+											<div class="cart-items__col cart-items__col--centralize">
+												{{- 'cart.label.price' | t -}}
+											</div>
+
+											<div class="cart-items__col cart-items__col--centralize cart-items__col--quantity">
+												{{- 'cart.label.quantity' | t -}}
+											</div>
+
+											<div class="cart-items__col cart-items__col--centralize cart-items__col--summary">
+												{{- 'cart.label.total' | t -}}
+											</div>
+
+											<div class="cart-items__col cart-items__col--actions"></div>
+										</div>
+
+										<div class="cart-items__body">
+											{%- render 'cart-items' -%}
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+						<div class="cart-template__summary">
+							{%- render 'cart-discount' -%}
+							{%- render 'cart-notes', id: section.id -%}
+							{%- render 'cart-shipping-calculator' -%}
+						</div>
+					</div>
+
+					{%- if footer != '' -%}
+						<div class="cart-template__col cart-template__col--sidebar">
+							<div class="cart-template__footer">
+								{{- footer -}}
+							</div>
+						</div>
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+		</div>
+
+		{%- if blocks != '' or custom_liquid_block != blank -%}
+			<div class="cart-template__blocks">
+				{% if blocks != '' %}
+					{{- blocks -}}
+				{% endif %}
+
+				{% if custom_liquid_block != blank %}
+					{{ custom_liquid_block }}
+				{% endif %}
+			</div>
+		{%- endif -%}
+	</div>
+
+	{%- render "preloader" -%}
+</section>
+
+{%- render 'adastra' with '/src/scripts/cart-template.js' -%}
+
+{% schema %}
+{
+	"name": "Cart",
+	"settings": [
+		{
+			"type": "header",
+			"content": "Cart settings"
+		},
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Shopping cart"
+		},
+		{
+			"type": "text",
+			"id": "order_summary_heading",
+			"label": "Order summary heading",
+			"default": "Order Summary"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_gift_wrap_button",
+			"label": "Show gift wrap button",
+			"default": false
+		},
+		{
+			"type": "header",
+			"content": "Shipping bar"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_shipping_bar",
+			"label": "Enable",
+			"default": false
+		},
+		{
+			"type": "number",
+			"id": "amount",
+			"label": "Free shipping amount",
+			"default": 100
+		},
+		{
+			"type": "textarea",
+			"id": "message",
+			"label": "Shipping message",
+			"default": "You are only {amount} away from free shipping",
+			"info": "The pattern {amount} will be replaced with the remaining amount"
+		},
+		{
+			"type": "textarea",
+			"id": "congratulatory_message",
+			"label": "Shipping congratulatory message",
+			"default": "You have free shipping"
+		},
+		{
+			"type": "image_picker",
+			"id": "icon",
+			"label": "Congratulatory icon",
+			"info": "40 x 40px recommended"
+		},
+		{
+			"type": "color",
+			"id": "bar_color",
+			"label": "Progress bar background color",
+			"default": "#E9E9E9"
+		},
+		{
+			"type": "color",
+			"id": "fill_color",
+			"label": "Progress bar fill color",
+			"default": "#4D71F9"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"blocks": [
+		{
+			"type": "@app"
+		},
+		{
+			"name": "Custom liquid",
+			"type": "custom_liquid",
+			"settings": [
+			{
+				"type": "liquid",
+				"id": "custom_liquid",
+				"label": "Custom liquid",
+				"info": "Simple custom liquid"
+			}
+			]
+		}
+	]
+}
+{% endschema %}

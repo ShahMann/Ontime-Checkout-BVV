@@ -1,0 +1,241 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Product filters and sort
+	- product_list: Collection or Search object (required)
+	- show_swatches: boolean. Set true to show swatches instead of checkbox
+	- extra_class: additional class, optional tring.
+
+	Usage:
+
+	{%- render 'product-filters-and-sort', product_list: collection -%}
+	or
+	{%- render 'product-filters-and-sort', product_list: search -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- render 'adastra' with '/src/styles/product-filters.scss' -%}
+
+{%- if template.name == 'collection' -%}
+	{%- assign count = product_list.products_count -%}
+{%- elsif template.name == 'search' -%}
+	{%- assign count = product_list.results_count -%}
+{%- endif -%}
+
+{% assign one = 'collections.general.items_with_count.one' | t: count: count %}
+{% assign other = 'collections.general.items_with_count.other' | t: count: count %}
+
+{% assign one_a11y = 'general.filters.number_of_product_found' | t: number: count %}
+{% assign other_a11y ='general.filters.number_of_products_found' | t: number: count %}
+
+{%- assign active_filters_size = 0 -%}
+
+{%- for filter in product_list.filters -%}
+	{%- case filter.type -%}
+		{%- when 'list' or 'boolean' -%}
+			{%- assign active_filters_size = active_filters_size | plus: filter.active_values.size -%}
+		{%- when 'price_range' -%}
+			{%- if filter.min_value.value > 0 or filter.max_value.value < filter.range_max -%}
+				{%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+					{%- assign active_filters_size = active_filters_size | plus: 1 -%}
+				{%- endif -%}
+			{%- endif -%}
+	{%- endcase -%}
+{%- endfor -%}
+
+{%- capture active_filters -%}
+	<div class="product-filters__form-selected js-active-filters">
+			<p class="product-filters__form-label product-filters__form-label--active-filters">
+				{{- 'general.filters.active_title' | t -}}
+			</p>
+
+			<p class="product-filters__form-results-count">
+				<span class="visually-hidden">{{- count | pluralize: one_a11y, other_a11y -}}</span>
+				<span aria-hidden="true">{{- count | pluralize: one, other -}}</span>
+			</p>
+
+			<ul class="product-filters__form-selected-list" aria-label="{{- 'general.filters.applied_filters' | t | escape -}}">
+				{%- for filter in product_list.filters -%}
+					{%- case filter.type -%}
+						{%- when 'list' or 'boolean' -%}
+							{%- if filter.active_values.size > 0 -%}
+								{%- for filter_value in filter.values -%}
+									{%- if filter_value.active -%}
+										{% assign filter_value_label = filter_value.label %}
+										{% assign tech_tag = filter_value_label | slice: 0, 7 %}
+
+										{% if tech_tag contains 'label__' %}
+											{% assign filter_value_label = filter_value_label
+												| remove_first: 'label__'
+												| remove_first: ':primary'
+												| remove_first: ':secondary'
+											%}
+										{% endif %}
+
+										<li class="product-filters__form-selected-item">
+											<a
+												class="focus-visible-outline product-filters__form-selected-button js-remove-filter"
+												href="{{- filter_value.url_to_remove -}}"
+												aria-label="{{- 'general.filters.remove_filter_button_aria' | t: type: filter.label, value: filter_value.label | escape -}}"
+											>
+												{% if filter.type == 'boolean' %}
+													{{ filter.label }}: {{- filter_value_label -}}
+												{% else %}
+													{{- filter_value_label -}}
+												{% endif %}
+
+												{%- render 'icons', icon: 'close' -%}
+											</a>
+										</li>
+									{%- endif -%}
+								{%- endfor -%}
+							{%- endif -%}
+						{%- when 'price_range' -%}
+							{%- if filter.min_value.value > 0 or filter.max_value.value < filter.range_max -%}
+								{%- capture price_range_filter_value -%}
+									{%- if filter.min_value.value -%}
+										{{- filter.min_value.value | money -}}
+									{%- else -%}
+										{{- 0 | money -}}
+									{%- endif -%}
+									-
+									{%- if filter.max_value.value -%}
+										{{- filter.max_value.value | money -}}
+									{%- else -%}
+										{{- filter.range_max | money -}}
+									{%- endif -%}
+								{%- endcapture -%}
+
+								<li class="product-filters__form-selected-item">
+									<a
+										class="focus-visible-outline product-filters__form-selected-button js-remove-filter"
+										href="{{- filter.url_to_remove -}}"
+										aria-label="{{- 'general.filters.remove_filter_button_aria' | t: type: filter.label, value: price_range_filter_value | escape -}}"
+									>
+										{{- price_range_filter_value | strip_newlines -}}
+										{%- render 'icons', icon: 'close' -%}
+									</a>
+								</li>
+							{%- endif -%}
+					{%- endcase -%}
+				{%- endfor -%}
+			</ul>
+
+			{%- if active_filters_size > 1 -%}
+				<button
+					class="focus-visible-outline button-link product-filters__reset-filters js-reset-filters"
+					type="button"
+					aria-label="{{- 'general.filters.clear_all' | t | escape -}}"
+				>
+					{{- 'general.filters.clear_all' | t -}}
+				</button>
+			{%- endif -%}
+		</div>
+{%- endcapture -%}
+
+{%- if product_list != blank -%}
+	<div class="product-filters {{ extra_class }} js-filters-drawer">
+		{% unless without_filter_button %}
+			{% render 'product-filter-button',
+				active_filters_size: active_filters_size
+			%}
+		{% endunless %}
+
+		<div
+			class="drawer"
+			id="filterMenuDrawer"
+			role="dialog"
+			aria-labelledby="filterMenuDrawerTitle"
+		>
+			<form class="product-filters__form js-form">
+				<div class="drawer__header">
+					<h2 class="drawer__title" id="filterMenuDrawerTitle">
+						{{- 'general.filters.title' | t -}}
+					</h2>
+
+					<button
+						class="drawer__close"
+						data-target="filterMenuDrawer"
+						data-js-toggle="filterMenuToggler"
+						type="button"
+						aria-label="{{- 'general.filters.close_filter_menu_aria' | t | escape -}}"
+					>
+						{%- render 'icons', icon: 'menu-close' -%}
+					</button>
+				</div>
+
+				<div class="drawer__body product-filters__form-body js-filters-body">
+					{%- capture product_filters_form_selected_wrapper_classes -%}
+						product-filters__form-selected-wrapper js-selected-filters-wrapper
+						{% if active_filters_size == 0 %} is-hidden {% endif %}
+					{%- endcapture -%}
+
+					<div class="{{- product_filters_form_selected_wrapper_classes | strip_newlines -}}">
+						{%- if active_filters != blank -%}
+							{{- active_filters -}}
+						{%- endif -%}
+					</div>
+
+					<div class="product-filters__form-sort">
+						<h2 class="product-filters__form-label">
+							{{- 'collections.sorting.title' | t -}}
+						</h2>
+
+						{%- render 'sort', product_list: product_list -%}
+					</div>
+
+					<div
+							class="accordion product-filters__form-accordion js-accordion-container js-filters-container js-filters-container-drawer"
+						>
+							{%- assign filterListIndex = 1 -%}
+
+							{%- for filter in product_list.filters -%}
+								{%- if filter.type == 'list' and filter.values.size == 0 or filter.type == 'boolean' and filter.values.size == 0 -%}
+									{%- continue -%}
+								{%- endif -%}
+
+								<div id="filter-{{ filter.param_name | escape }}-{{ section.id }}" class="accordion__item product-filters__form-item js-accordion-item js-accordion-filter-item js-accordion-filter-item-drawer">
+									<h3 class="accordion__title">
+										<button
+											class="focus-visible-outline accordion__control product-filters__form-item-toggle-button js-accordion-control"
+											type="button"
+											id="Filter-accordion-{{- filterListIndex -}}"
+											aria-controls="filter-list-{{- filterListIndex -}}"
+											aria-expanded="false"
+										>
+											{{- filter.label -}}
+											{%- render 'icons', icon: 'arrow-down' -%}
+										</button>
+									</h3>
+
+									<div
+										class="accordion__content accordion__content--animate product-filters__form-filter-list-container js-accordion-content"
+										id="filter-list-{{- filterListIndex -}}"
+										aria-labelledby="Filter-accordion-{{- filterListIndex -}}"
+										role="region"
+										style="height: 0;"
+									>
+										<div class="js-accordion-inner">
+											{%- case filter.type -%}
+												{%- when 'list' or 'boolean' -%}
+													{% if filter.operator == "AND" %}
+														<span class="product-filters__form-helptext">
+															{{- 'general.filters.filter_and_operator_subtitle' | t -}}
+														</span>
+													{% endif %}
+
+													{%- render 'filter-list', filter: filter, show_swatches: show_swatches -%}
+												{%- when 'price_range' -%}
+													{%- render 'filter-price', filter: filter -%}
+											{%- endcase -%}
+										</div>
+									</div>
+
+									{%- assign filterListIndex = filterListIndex | plus: 1 -%}
+								</div>
+							{%- endfor -%}
+						</div>
+				</div>
+			</form>
+		</div>
+	</div>
+{%- endif -%}

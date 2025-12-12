@@ -1,0 +1,92 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Page content
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- render 'adastra' with '/src/styles/page-default.scss' -%}
+
+<section class="page-default">
+	{% unless section.settings.hide_title %}
+		<div class="page-default__title">
+			<h1>{{- page.title -}}</h1>
+		</div>
+	{% endunless %}
+
+	{% if page.content != blank %}
+		<div class="rte">
+			{{ page.content }}
+		</div>
+	{% endif %}
+</section>
+
+{% schema %}
+	{
+		"name": "Page content",
+		"settings": [
+			{
+				"type": "checkbox",
+				"id": "hide_title",
+				"label": "Hide page heading"
+			},
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 25
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 25
+			}
+		]
+	}
+{% endschema %}

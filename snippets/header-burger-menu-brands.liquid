@@ -1,0 +1,68 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header mega menu brands
+	Render header mega menu brands
+	- menu: menu object;
+	- blocks: blocks object using for output brands logos;
+	- megamenu_object: mega menu object.
+
+	Usage:
+	{%- render 'header-burger-menu-brands' -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign brand_logo_border_hover_color 	= megamenu_object.settings.brand_logo_border_hover_color -%}
+{%- assign brand_filter_symbol_color 		= megamenu_object.settings.brand_filter_symbol_color -%}
+{%- assign brand_category_symbol_color 		= megamenu_object.settings.brand_category_symbol_color -%}
+
+{%- capture styles -%}
+	--header-brand-logo-border-hover-color: {{ brand_logo_border_hover_color -}};
+	--header-brand-filter-symbol-color: {{ brand_filter_symbol_color -}};
+	--header-brand-category-symbol-color: {{ brand_category_symbol_color -}};
+{%- endcapture -%}
+
+{%- capture brands_logos -%}
+	{%- render 'header-brands-logos',
+		blocks: blocks,
+		megamenu_object: megamenu_object,
+		logo_size: 113,
+		link_type: 'secondary',
+		modifier: 'burger-menu'
+	-%}
+{%- endcapture -%}
+
+{%- assign header_brands_logos_modifier = "burger-menu" -%}
+
+{%- if brands_logos == blank -%}
+	{%- assign header_brands_column_class = "header-burger-menu-brands__column--brands-wide" -%}
+	{%- assign header_brands_logos_modifier = "burger-menu-short" -%}
+{%- endif -%}
+
+
+{%- capture brands -%}
+	{%- render 'header-brands',
+		menu: menu,
+		megamenu_object: megamenu_object,
+		modifier: header_brands_logos_modifier,
+		show_filters: true
+	-%}
+{%- endcapture -%}
+
+<div class="header-burger-menu-brands">
+	<div
+		class="header-burger-menu-brands__wrapper"
+		style="{{- styles -}}"
+	>
+		<div class="header-burger-menu-brands__column header-burger-menu-brands__column--brands {{ header_brands_column_class -}}">
+			{{- brands -}}
+		</div>
+
+		{%- if brands_logos != blank -%}
+			<div class="header-burger-menu-brands__delimiter"></div>
+
+			<div class="header-burger-menu-brands__column header-burger-menu-brands__column--logos">
+				{{- brands_logos -}}
+			</div>
+		{%- endif -%}
+	</div>
+</div>

@@ -1,0 +1,94 @@
+wishlist-page .wishlist-page-wrapper {
+    margin: 5rem auto;
+    max-width: var(--container-width);
+    padding: 0 16px;
+    text-align: center;
+}
+
+wishlist-page .heading {
+    margin: 20px;
+}
+
+wishlist-page .empty-wishlist-subcontent {
+    margin: 20px;
+}
+
+wishlist-page .redirection-button {
+    margin-bottom: 52px;
+}
+
+wishlist-page .empty-wishlist-content,
+wishlist-page .login-content-wrapper {
+    text-align: center;
+}
+
+wishlist-page ul#product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+wishlist-page wishlist-remove{
+    width: 25px;
+    height: 25px;
+    transition: transform 0.2s ease;
+    color: #000;
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+wishlist-page.loading {
+    filter: blur(6px);
+    user-select: none;
+    pointer-events: none;
+}
+
+wishlist-page #paginationControls {
+    margin: 5rem auto;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+wishlist-page #paginationControls button {
+    all: unset;
+    cursor: pointer;
+}
+wishlist-page #paginationControls .pagination__item {
+    color: rgb(var(--color-foreground));
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 4.4rem;
+    width: 4.4rem;
+    padding: 0;
+    text-decoration: none;
+    background: transparent;
+    box-shadow: none;
+    outline: none;
+}
+wishlist-page #paginationControls button:disabled {
+    display: none;
+}
+wishlist-page #paginationControls .active:after,wishlist-page #paginationControls .active:hover:after {
+    content: "";
+    display: block;
+    width: 2rem;
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: currentColor;
+}
+wishlist-page #paginationControls .active:after {
+    height: .1rem;
+}
+
+
+@media screen and (max-width: 990px) {
+    wishlist-page ul#product-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}

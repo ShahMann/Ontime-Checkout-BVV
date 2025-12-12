@@ -1,0 +1,78 @@
+{% comment %}
+----------------------------------------------------------------------------
+  Snippet: Pagination
+  - Used on blog, collection, orders, addresses, and search.
+----------------------------------------------------------------------------
+{% endcomment %}
+
+{%- if paginate.parts.size > 0 -%}
+	<nav class="pagination" aria-label="{{- 'general.pagination.label' | t | escape -}}">
+		<ul class="pagination__list" role="list">
+			<li class="pagination__item pagination__item--prev {% unless paginate.previous %} pagination__item--no-active {% endunless %}">
+				{%- if paginate.previous -%}
+					<a
+						class="pagination__link focus-visible-outline js-pagination-link"
+						href="{{- paginate.previous.url -}}{{ anchor }}"
+						aria-label="{{- 'general.pagination.previous' | t | escape -}}"
+					>
+						{%- render 'icons', icon: 'slider-arrow-left' -%}
+					</a>
+				{%- else -%}
+					<span class="pagination__link pagination__link--no-active" aria-hidden="true">
+						{%- render 'icons', icon: 'slider-arrow-left' -%}
+					</span>
+				{%- endif -%}
+			</li>
+
+			{%- for part in paginate.parts -%}
+				<li class="pagination__item">
+					{%- if part.is_link -%}
+						<a
+							class="focus-visible-outline pagination__link js-pagination-link"
+							href="{{- part.url -}}{{ anchor }}"
+							{%- if part.title != paginate.pages -%}
+								aria-label="{{- 'general.pagination.page' | t: number: part.title | escape -}}"
+							{%- else -%}
+								aria-label="{{- 'general.pagination.last_page' | t: number: part.title | escape -}}"
+							{%- endif -%}
+						>
+							{{- part.title -}}
+						</a>
+					{%- else -%}
+						{%- if part.title == paginate.current_page -%}
+							<a
+								class="pagination__link pagination__link--dots{% if part.title == paginate.current_page %} is-active {% endif -%}"
+								role="link"
+								aria-disabled="true"
+								aria-current="page"
+								aria-label="{{- 'general.pagination.page' | t: number: part.title | escape -}}"
+							>
+								{{- part.title -}}
+							</a>
+						{%- else -%}
+							<span class="pagination__link pagination__link--dots" aria-hidden="true">
+								{{- part.title -}}
+							</span>
+						{%- endif -%}
+					{%- endif -%}
+				</li>
+			{%- endfor -%}
+
+			<li class="pagination__item pagination__item--next {% unless paginate.next %} pagination__item--no-active {%- endunless -%}">
+				{%- if paginate.next -%}
+					<a
+						class="focus-visible-outline pagination__link js-pagination-link"
+						href="{{- paginate.next.url -}}{{ anchor }}"
+						aria-label="{{- 'general.pagination.next' | t | escape -}}"
+					>
+						{%- render 'icons', icon: 'slider-arrow-right' -%}
+					</a>
+				{%- else -%}
+					<span class="pagination__link pagination__link--no-active" aria-hidden="true">
+						{%- render 'icons', icon: 'slider-arrow-right' -%}
+					</span>
+				{%- endif -%}
+			</li>
+		</ul>
+	</nav>
+{%- endif -%}

@@ -1,0 +1,371 @@
+{% render 'adastra' with '/src/styles/featured-collection.scss' %}
+
+{%- assign collection 			= section.settings.collection -%}
+{%- assign image 				= section.settings.image -%}
+{%- assign image_size 			= section.settings.image_size -%}
+{%- assign products_per_row 	= section.settings.products_per_row -%}
+{%- assign products_to_show 	= section.settings.products_to_show -%}
+{%- assign image_overlay 		= section.settings.image_overlay -%}
+{%- assign image_text 			= section.settings.image_text -%}
+{%- assign container 			= section.settings.container_width -%}
+
+{%- if container == 'inherit' -%}
+	{%- assign container_width = settings.container_width -%}
+{%- else -%}
+	{%- assign container_width = container -%}
+{%- endif -%}
+
+{%- capture style -%}
+	--image-overlay: {{- image_overlay -}};
+	--image-text: {{- image_text -}};
+	--container-width: {{- container_width -}};
+{%- endcapture -%}
+
+{%- case products_per_row -%}
+	{%- when '2' -%}
+		{%- assign product_image_size = 436 -%}
+	{%- when '3' -%}
+		{% assign product_image_size = 376 -%}
+{%- endcase -%}
+
+{%- assign is_lazy = true -%}
+
+{%- if section.index == 1 -%}
+	{%- assign is_lazy = false -%}
+{%- endif -%}
+
+{% capture image_content %}
+	{%- assign collection_image = image | default: collection.image -%}
+	{%- assign collection_title = collection.title -%}
+
+	{%- capture img_focal -%}
+		--img-focal: {{- collection_image.presentation.focal_point -}};
+	{% endcapture %}
+
+	{%- if collection_image != blank -%}
+		{% assign size = 816 %}
+		{% assign size_2x = size | times: 2 %}
+		{% assign size_1500 = 726 %}
+		{% assign size_1500_2x = size_1500 | times: 2 %}
+		{% assign size_991 = 959 %}
+		{% assign size_991_2x = size_991 | times: 2 %}
+		{% assign size_767 = 735 %}
+		{% assign size_767_2x = size_767 | times: 2 %}
+		{% assign size_420 = 388 %}
+		{% assign size_420_2x = size_420 | times: 2 %}
+		{% assign size_380 = 348 %}
+		{% assign size_380_2x = size_380 | times: 2 %}
+
+		{% if products_per_row == '3' %}
+			{% assign size = 459 %}
+			{% assign size_2x = size | times: 2 %}
+			{% assign size_1500 = 356 %}
+			{% assign size_1500_2x = size_1500 | times: 2 %}
+		{% endif %}
+
+		{%- if is_lazy -%}
+			<picture class="lazy">
+				<source
+					data-srcset="{{ collection_image | image_url: width: size_380 }} 1x,
+								 {{ collection_image | image_url: width: size_380_2x }} 2x"
+					srcset="{{ collection_image | image_url: width: 10 }} 1x,
+							{{ collection_image | image_url: width: 20 }} 2x"
+					media="(max-width: 380px)"
+				>
+
+				<source
+					data-srcset="{{ collection_image | image_url: width: size_420 }} 1x,
+								 {{ collection_image | image_url: width: size_420_2x }} 2x"
+					srcset="{{ collection_image | image_url: width: 10 }} 1x,
+							{{ collection_image | image_url: width: 20 }} 2x"
+					media="(max-width: 420px)"
+				>
+
+				<source
+					data-srcset="{{ collection_image | image_url: width: size_767 }} 1x,
+								 {{ collection_image | image_url: width: size_767_2x }} 2x"
+					srcset="{{ collection_image | image_url: width: 10 }} 1x,
+							{{ collection_image | image_url: width: 20 }} 2x"
+					media="(max-width: 767px)"
+				>
+
+				<source
+					data-srcset="{{ collection_image | image_url: width: size_991 }} 1x,
+								 {{ collection_image | image_url: width: size_991_2x }} 2x"
+					srcset="{{ collection_image | image_url: width: 10 }} 1x,
+							{{ collection_image | image_url: width: 20 }} 2x"
+					media="(max-width: 991px)"
+				>
+
+				<source
+					data-srcset="{{ collection_image | image_url: width: size_1500 }} 1x,
+								 {{ collection_image | image_url: width: size_1500_2x }} 2x"
+					srcset="{{ collection_image | image_url: width: 10 }} 1x,
+							{{ collection_image | image_url: width: 20 }} 2x"
+					media="(max-width: 1500px)"
+				>
+
+				<img
+					class="featured-collection__image"
+					data-src="{{ collection_image | image_url: width: size }}"
+					data-srcset="{{ collection_image | image_url: width: size }} 1x,
+								 {{ collection_image | image_url: width: size_2x }} 2x"
+					src="{{ collection_image | image_url: width: size }}"
+					srcset="{{ collection_image | image_url: width: 10 }} 1x,
+							{{ collection_image | image_url: width: 20 }} 2x"
+					alt="{{- collection_image.alt | escape -}}"
+					{%- if img_focal -%}
+						style="{{- img_focal -}}"
+					{%- endif -%}
+				>
+			</picture>
+		{%- else -%}
+			<picture>
+				<source
+					srcset="{{ collection_image | image_url: width: size_380 }} 1x,
+							{{ collection_image | image_url: width: size_380_2x }} 2x"
+					media="(max-width: 380px)"
+				>
+
+				<source
+					srcset="{{ collection_image | image_url: width: size_420 }} 1x,
+							{{ collection_image | image_url: width: size_420_2x }} 2x"
+					media="(max-width: 420px)"
+				>
+
+				<source
+					srcset="{{ collection_image | image_url: width: size_767 }} 1x,
+							{{ collection_image | image_url: width: size_767_2x }} 2x"
+					media="(max-width: 767px)"
+				>
+
+				<source
+					srcset="{{ collection_image | image_url: width: size_991 }} 1x,
+							{{ collection_image | image_url: width: size_991_2x }} 2x"
+					media="(max-width: 991px)"
+				>
+
+				<source
+					srcset="{{ collection_image | image_url: width: size_1500 }} 1x,
+							{{ collection_image | image_url: width: size_1500_2x }} 2x"
+					media="(max-width: 1500px)"
+				>
+
+				<img
+					class="featured-collection__image"
+					src="{{ collection_image | image_url: width: size }}"
+					srcset="{{ collection_image | image_url: width: size }} 1x,
+							{{ collection_image | image_url: width: size_2x }} 2x"
+					alt="{{- collection_image.alt | escape -}}"
+					{%- if img_focal -%}
+						style="{{- img_focal -}}"
+					{%- endif -%}
+				>
+			</picture>
+		{%- endif -%}
+	{%- else -%}
+		{{- 'collection-1' | placeholder_svg_tag: 'featured-collection__image' -}}
+	{%- endif -%}
+
+	<div class="featured-collection__box-title">
+		<div class="featured-collection__title h3">
+			{%- if collection_title -%}
+				{{- collection_title -}}
+			{%- else -%}
+				{{ 'sections.collection_list.card_title' | t }}
+			{%- endif -%}
+		</div>
+	</div>
+
+{% endcapture %}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{ section.settings.offset_top_mobile }}px;
+		padding-bottom: {{ section.settings.offset_bottom_mobile }}px;
+	}
+
+	@media (min-width: 767px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{ section.settings.offset_top_desktop }}px;
+			padding-bottom: {{ section.settings.offset_bottom_desktop }}px;
+		}
+	}
+{%- endstyle -%}
+
+<section class="featured-collection js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}" style="{{- style -}}">
+	<div class="featured-collection__wrapper">
+		<div class="featured-collection__box-products need-animate featured-collection-products--row-{{- products_per_row -}}">
+			{%- for product in collection.products limit: products_to_show -%}
+				{%- render 'product-card', product: product, size: product_image_size, tablet_size: 352, mobile_size: 178, is_lazy: is_lazy -%}
+			{%- else -%}
+				{%- render 'product-card' -%}
+				{%- render 'product-card' -%}
+			{%- endfor -%}
+		</div>
+		<div class="featured-collection__box-image featured-collection-image--row-{{- products_per_row -}}">
+			<div class="featured-collection__image-wrapper{% if image_size == 'height' %} featured-collection-image-wrapper--height{% endif %}">
+				<a href="{{- collection.url -}}" class="featured-collection__image-content need-animate tr-dur-0-75 featured-collection-image--{{- image_size -}}">
+					{{- image_content -}}
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% schema %}
+{
+	"name": "Featured collection",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "collection",
+			"id": "collection",
+			"label": "Collection"
+		},
+		{
+			"type": "image_picker",
+			"id": "image",
+			"label": "Image",
+			"info": "1918 x 1918px recommended"
+		},
+		{
+			"type": "select",
+			"id": "image_size",
+			"label": "Image size",
+			"options": [
+				{
+					"value": "height",
+					"label": "Fit to section height"
+				},
+				{
+					"value": "square",
+					"label": "Square"
+				},
+				{
+					"value": "natural",
+					"label": "Natural"
+				}
+			],
+			"default": "height"
+		},
+		{
+			"type": "select",
+			"id": "products_per_row",
+			"label": "Products per row",
+			"options": [
+				{
+					"value": "2",
+					"label": "2"
+				},
+				{
+					"value": "3",
+					"label": "3"
+				}
+			],
+			"default": "2"
+		},
+		{
+			"type": "range",
+			"id": "products_to_show",
+			"min": 2,
+			"max": 6,
+			"step": 1,
+			"label": "Products to show",
+			"default": 6
+		},
+		{
+			"type": "header",
+			"content": "Color"
+		},
+		{
+			"type": "color_background",
+			"id": "image_overlay",
+			"label": "Image overlay",
+			"default": "linear-gradient(180deg, rgba(255, 140, 140, 0) 5%, rgba(255, 140, 140, 0) 52%, rgba(0, 0, 0, 1) 100%)"
+		},
+		{
+			"type": "color",
+			"id": "image_text",
+			"label": "Image text",
+			"default": "#ffffff"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"presets": [
+		{
+			"name": "Featured collection"
+		}
+	]
+}
+{% endschema %}

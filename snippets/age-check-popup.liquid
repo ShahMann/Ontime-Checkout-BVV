@@ -1,0 +1,133 @@
+{% assign age_check_cookie_time 	= settings.age_check_time %}
+{% assign title 					= settings.age_check_title %}
+{% assign text 						= settings.age_check_text %}
+{% assign button_label 				= settings.age_check_button_label | default: "Yes" %}
+{% assign button_close_label 		= settings.age_check_button_close_label %}
+{% assign redirect_url 				= settings.age_check_redirect_url | default: "https://google.com" %}
+{% assign image_desktop 			= settings.age_check_image_desktop %}
+{% assign image_mobile 				= settings.age_check_image_mobile | default: image_desktop %}
+{% assign hide_image_on_mobile 		= settings.age_check_hide_mobile_img %}
+{% assign popup_icon_button_class 	= '' %}
+{% assign popup_content_modifier 	= '' %}
+
+{%- render 'adastra' with '/src/styles/age-check-popup.scss' -%}
+{%- render 'adastra' with '/src/scripts/section-age-check-popup.js' -%}
+
+{% unless hide_image_on_mobile or image_mobile == blank %}
+	{% assign popup_icon_button_class = 'popup-close-icon-button--round' %}
+{% endunless %}
+
+{% if hide_image_on_mobile or image_mobile == blank %}
+	{% assign popup_content_modifier = 'age-check-popup__content--top-offset'%}
+{% endif %}
+
+<div id="age-check-popup"
+	 class="popup age-check-popup"
+	 data-cookie-time="{{ age_check_cookie_time }}"
+	 data-redirect-url="{{ redirect_url }}"
+	 role="dialog"
+	{% if title != blank %}
+		aria-labelledby="age-check-popup-title"
+	{% endif %}
+>
+	<div class="popup__container age-check-popup__container {% if image_desktop == blank %}age-check-popup__container--no-image{% endif %}">
+		{% if image_desktop != blank %}
+			{%- capture img_focal -%}
+				--img-desktop-pos: {{ image_desktop.presentation.focal_point }}; --img-mob-pos: {{ image_mobile.presentation.focal_point }};
+			{%- endcapture -%}
+
+			<div class="age-check-popup__col {% if hide_image_on_mobile %}age-check-popup__col--hide-img-mob{% endif %}">
+				<picture class="age-check-popup__image-wrapper lazy">
+					<source
+						data-srcset="{{ image_mobile | img_url: '320x' }} 1x, {{ image_mobile | img_url: '640x' }} 2x"
+						srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+						media="(max-width: 360px)"
+					/>
+
+					<source
+						data-srcset="{{ image_mobile | img_url: '343x' }} 1x, {{ image_mobile | img_url: '686x' }} 2x"
+						srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+						media="(max-width: 380px)"
+					/>
+
+					<source
+						data-srcset="{{ image_mobile | img_url: '440x' }} 1x, {{ image_mobile | img_url: '480x' }} 2x"
+						srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+						media="(max-width: 480px)"
+					/>
+
+					<source
+						data-srcset="{{ image_mobile | img_url: '472x' }} 1x, {{ image_mobile | img_url: '944x' }} 2x"
+						srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+						media="(max-width: 767px)"
+					/>
+
+					<img
+						class="age-check-popup__image"
+						srcset="{{- image_desktop | img_url: "10x" -}}"
+						data-srcset="{{ image_desktop | img_url: "520x" }} 1x, {{ image_desktop | img_url: "1040x" }} 2x"
+						src="{{- image_desktop | img_url: "10x" -}}"
+						data-src="{{- image_desktop | img_url: main_image_size -}}"
+						alt="{{- image_desktop.alt -}}"
+						width="520"
+						height="520"
+						style="{{ img_focal }}"
+					/>
+				</picture>
+			</div>
+		{% endif %}
+
+
+		<div class="age-check-popup__col">
+			<div class="age-check-popup__content {{ popup_content_modifier }}">
+				{% if title != blank %}
+					<h2 id="age-check-popup-title" class="age-check-popup__title h3">{{ title }}</h2>
+				{% endif %}
+
+				{% if text != blank %}
+					<p class="age-check-popup__text">{{ text }}</p>
+				{% endif %}
+
+				{% if button_label != blank %}
+					<div class="age-check-popup__buttons">
+						<button class="button button--secondary button--full-width js-age-check-popup-confirm"
+								type="button"
+						>
+							{{- button_label -}}
+						</button>
+
+						{% if button_close_label != blank %}
+							<button
+								type="button"
+								class="button-link-chevron age-check-popup__close-button focus-visible-outline"
+								data-target="age-check-popup"
+								data-js-toggle="AgeCheckPopupToggle"
+							>
+								{{- button_close_label -}}
+								{% render 'icons', icon: 'arrow-right' %}
+							</button>
+						{% endif %}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+
+		<button type="button"
+				class="age-check-popup__close-icon-button age-check-popup__close-icon-button--desktop focus-visible-outline popup-close-icon-button"
+				aria-label="{{- 'general.accessibility.close_modal' | t | escape -}}"
+				data-target="age-check-popup"
+				data-js-toggle="AgeCheckPopupToggle"
+		>
+			{% render 'icons', icon: 'menu-close' %}
+		</button>
+
+		<button type="button"
+				class="age-check-popup__close-icon-button age-check-popup__close-icon-button--mobile focus-visible-outline popup-close-icon-button {{ popup_icon_button_class }}"
+				aria-label="{{- 'general.accessibility.close_modal' | t | escape -}}"
+				data-target="age-check-popup"
+				data-js-toggle="AgeCheckPopupToggle"
+		>
+			{% render 'icons', icon: 'menu-close' %}
+		</button>
+	</div>
+</div>

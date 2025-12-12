@@ -1,0 +1,524 @@
+{%- if section.blocks.size > 0 -%}
+	{%- render 'adastra' with '/src/styles/pricing-table.scss' -%}
+
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_desktop -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+		}
+	{%- endstyle -%}
+
+	{%- assign heading = section.settings.heading -%}
+	{%- assign list_icon = section.settings.list_icon -%}
+	{%- assign container = section.settings.container_width -%}
+
+	{%- assign card_border_color   		= section.settings.card_border_color -%}
+	{%- assign card_background_color   	= section.settings.card_background_color -%}
+	{%- assign title_color          	= section.settings.title_color -%}
+	{%- assign subtitle_color          	= section.settings.subtitle_color -%}
+	{%- assign price_color          	= section.settings.price_color -%}
+	{%- assign price_unit_label_color   = section.settings.price_unit_label_color -%}
+	{%- assign list_color          		= section.settings.list_color -%}
+
+	{%- assign button_label_color      	= section.settings.button_label_color -%}
+	{%- assign button_background_color 	= section.settings.button_background_color -%}
+	{%- assign button_border_color     	= section.settings.button_border_color -%}
+
+	{%- assign button_label_hover_color      = section.settings.button_label_hover_color -%}
+	{%- assign button_background_hover_color = section.settings.button_background_hover_color -%}
+	{%- assign button_border_hover_color     = section.settings.button_border_hover_color -%}
+
+	{% if container == 'inherit' %}
+		{% assign container_width = settings.container_width %}
+	{% else %}
+		{% assign container_width = container %}
+	{% endif %}
+
+	{% capture section_styles %}
+		--container-width: {{ container_width }};
+		--list-icon: url({{ list_icon | img_url: '48x' }});
+		--card-border-color: {{ card_border_color }};
+		--card-background-color: {{ card_background_color }};
+		--title-color: {{ title_color }};
+		--subtitle-color: {{ subtitle_color }};
+		--price-color: {{ price_color }};
+		--price-unit-color: {{ price_unit_label_color }};
+		--list-color: {{ list_color }};
+		--button-label-color: {{ button_label_color }};
+		--button-background-color: {{ button_background_color }};
+		--button-border-color: {{ button_border_color }};
+		--button-label-hover-color: {{ button_label_hover_color }};
+		--button-background-hover-color: {{ button_background_hover_color }};
+		--button-border-hover-color: {{ button_border_hover_color }};
+	{% endcapture %}
+
+	<section
+		class="pricing-table js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}"
+		style="{{ section_styles }}"
+	>
+		<div class="pricing-table__container">
+			{%- if heading != blank -%}
+				<h2 class="pricing-table__heading h2">
+					{{- heading -}}
+				</h2>
+			{%- endif -%}
+
+			<div class="pricing-table__items-container pricing-table__items-container--{{ section.blocks.size }}">
+				{% assign delay_step = 0 %}
+
+				{%- for block in section.blocks -%}
+					{%- assign product     			= block.settings.product -%}
+					{%- assign label       			= block.settings.label -%}
+					{%- assign label_position       = block.settings.label_position -%}
+					{%- assign heading     			= block.settings.heading | default: product.title -%}
+					{%- assign subtitle    			= block.settings.subtitle -%}
+					{%- assign unit_price_label    	= block.settings.unit_price_label -%}
+					{%- assign text        			= block.settings.text -%}
+					{%- assign image       			= block.settings.image | default: product.featured_image -%}
+					{%- assign button_text 			= block.settings.button_text -%}
+
+					{%- assign label_background_color 	= block.settings.label_background_color -%}
+					{%- assign label_text_color       	= block.settings.label_text_color -%}
+					{%- assign hide_image 			  	= block.settings.hide_image -%}
+					{%- assign image_view 			  	= block.settings.image_view -%}
+					{%- assign image_available 		  	= false -%}
+					{%- assign delay_step 				= delay_step | plus: 0.25 -%}
+
+					{%- if image != blank and hide_image == false -%}
+						{%- assign image_available = true -%}
+					{%- endif -%}
+
+					{%- capture block_styles -%}
+						--label-background-color: {{ label_background_color }}; {{-  -}}
+						--label-text-color: {{ label_text_color }}; {{-  -}}
+						--image-view: {{ image_view }}; {{-  -}}
+					{%- endcapture -%}
+
+					<div class="pricing-table__item-wrapper need-animate tr-dur-0-5" style="transition-delay: {{ delay_step | append: 's' }};">
+						<div
+							class="pricing-table__item"
+							style="{{ block_styles }}"
+						>
+							{%- if label != blank -%}
+								{%- if image_available -%}
+									<span class="pricing-table__item-label pricing-table__item-label--{{ label_position }}">
+										{{- label -}}
+									</span>
+								{%- else -%}
+									<div class="pricing-table__item-label-wrapper pricing-table__item-label-wrapper--{{ label_position }}">
+										<span class="pricing-table__item-label pricing-table__item-label--static">
+											{{- label -}}
+										</span>
+									</div>
+								{%- endif -%}
+							{%- endif -%}
+
+							{%- if image_available -%}
+								{%- capture img_focal -%}
+									--img-desktop-pos: {{ image.presentation.focal_point }};
+								{%- endcapture -%}
+
+								<div class="pricing-table__item-image-container">
+									<picture class="lazy">
+										<source
+											data-srcset="{{ image | img_url: '316x' }} 1x, {{ image | img_url: '632x' }} 2x"
+											srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+											media="(max-width: 380px)"
+											width="348"
+											height="188"
+										/>
+
+										<source
+											data-srcset="{{ image | img_url: '416x' }} 1x, {{ image | img_url: '832x' }} 2x"
+											srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+											media="(max-width: 480px)"
+											width="448"
+											height="242"
+										/>
+
+										<source
+											data-srcset="{{ image | img_url: '552x' }} 1x, {{ image | img_url: '1104x' }} 2x"
+											srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+											media="(max-width: 991px)"
+											width="584"
+											height="315"
+										/>
+
+										<source
+											data-srcset="{{ image | img_url: '347x' }} 1x, {{ image | img_url: '694x' }} 2x"
+											srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+											media="(max-width: 1199px)"
+											width="379"
+											height="205"
+										/>
+
+										<source
+											data-srcset="{{ image | img_url: '459x' }} 1x, {{ image | img_url: '918x' }} 2x"
+											srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+											media="(max-width: 1600px)"
+											width="539"
+											height="291"
+										/>
+
+										<img
+											class="pricing-table__item-image"
+											data-srcset="{{ image | img_url: "566x" }} 1x, {{ image | img_url: "1132x" }} 2x"
+											srcset="{{ image | img_url: "10x" }} 1x, {{ image | img_url: "10x" }} 2x"
+											data-src="{{ image | img_url: "619x" }}"
+											src="{{ image | img_url: "10x" }}"
+											alt="{{ image.alt }}"
+											width="619"
+											height="334"
+											style="{{ img_focal }}"
+										/>
+									</picture>
+								</div>
+							{%- endif -%}
+
+
+							<div class="pricing-table__item-content">
+								<h3 class="pricing-table__item-heading">
+									{{- heading -}}
+								</h3>
+
+								{% if subtitle != blank %}
+									<p class="pricing-table__item-subtitle">{{ subtitle }}</p>
+								{% endif %}
+
+								<div class="pricing-table__item-price-container">
+									{% render 'price', product: product, show_discount_percentage: false %}
+
+									{% if unit_price_label != blank %}
+										<span class="pricing-table__item-price-unit">{{ unit_price_label }}</span>
+									{% endif %}
+								</div>
+
+
+								{%- if button_text != blank -%}
+									<a href="{{ product.url }}" class="pricing-table__button button button--primary-border button--full-width focus-visible-outline">
+										{{- button_text -}}
+									</a>
+								{%- endif -%}
+
+								{%- if text != blank -%}
+									<div class="pricing-table__item-list-wrapper {% if list_icon == blank %}pricing-table__item-list-wrapper--without-icon{% endif %}">
+										{{ text }}
+									</div>
+								{%- endif -%}
+							</div>
+						</div>
+					</div>
+				{%- endfor -%}
+			</div>
+		</div>
+	</section>
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Compare price",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"max_blocks": 3,
+	"settings": [
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Compare price"
+		},
+		{
+			"type": "image_picker",
+			"id": "list_icon",
+			"label": "List icon",
+			"info": "48 x 48px .svg recommended"
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "card_border_color",
+			"label": "Card border",
+			"default": "#E9E9E9"
+		},
+		{
+			"type": "color",
+			"id": "card_background_color",
+			"label": "Card background",
+			"default": "#FFFFFF"
+		},
+		{
+			"type": "color",
+			"id": "title_color",
+			"label": "Heading",
+			"default": "#000000"
+		},
+		{
+			"type": "color",
+			"id": "subtitle_color",
+			"label": "Subheading",
+			"default": "#535353"
+		},
+		{
+			"type": "color",
+			"id": "price_color",
+			"label": "Price",
+			"default": "#000000"
+		},
+		{
+			"type": "color",
+			"id": "price_unit_label_color",
+			"label": "Price unit label",
+			"default": "#9D9D9D"
+		},
+		{
+			"type": "color",
+			"id": "list_color",
+			"label": "List",
+			"default": "#535353"
+		},
+		{
+			"type": "color",
+			"id": "button_label_color",
+			"label": "Button label",
+			"default": "#000000"
+		},
+		{
+			"type": "color",
+			"id": "button_background_color",
+			"label": "Button background",
+			"default": "transparent"
+		},
+		{
+			"type": "color",
+			"id": "button_border_color",
+			"label": "Button border",
+			"default": "#4D71F9"
+		},
+		{
+			"type": "color",
+			"id": "button_label_hover_color",
+			"label": "Button label (hover)",
+			"default": "#FFFFFF"
+		},
+		{
+			"type": "color",
+			"id": "button_background_hover_color",
+			"label": "Button background (hover)",
+			"default": "#4D71F9"
+		},
+		{
+			"type": "color",
+			"id": "button_border_hover_color",
+			"label": "Button border (hover)",
+			"default": "#4D71F9"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"blocks": [
+		{
+			"name": "Product",
+			"type": "product",
+			"settings": [
+				{
+					"type": "product",
+					"id": "product",
+					"label": "Product"
+				},
+				{
+					"type": "text",
+					"id": "label",
+					"label": "Label",
+					"default": "Most Popular"
+				},
+				{
+					"type": "select",
+					"id": "label_position",
+					"label": "Label position",
+					"options": [
+						{
+							"value": "left",
+							"label": "Left"
+						},
+						{
+							"value": "center",
+							"label": "Center"
+						}
+					],
+					"default": "center"
+				},
+				{
+				"type": "checkbox",
+				"id": "hide_image",
+				"label": "Hide image",
+				"default": false
+				},
+				{
+					"type": "select",
+					"id": "image_view",
+					"label": "Image view",
+					"options": [
+						{
+							"value": "cover",
+							"label": "Cover"
+						},
+						{
+							"value": "contain",
+							"label": "Contain"
+						}
+					],
+					"default": "cover"
+				},
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading",
+					"default": "Heading"
+				},
+				{
+					"type": "textarea",
+					"id": "subtitle",
+					"label": "Subheading",
+					"default": "Add a short description about the product"
+				},
+				{
+					"type": "text",
+					"id": "unit_price_label",
+					"label": "Price frequency",
+					"default": "/mo"
+				},
+				{
+					"type": "richtext",
+					"id": "text",
+					"label": "Text",
+					"default": "<ul><li>Option 1</li><li>Option 2</li><li>Option 3</li></ul>",
+					"info": "Use bullet or numbered list."
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image",
+					"info": "1132 x 676px recommended"
+				},
+				{
+					"type": "text",
+					"id": "button_text",
+					"label": "Button label",
+					"default": "Get Started Now"
+				},
+				{
+					"type": "header",
+					"content": "Colors"
+				},
+				{
+					"type": "color",
+					"id": "label_background_color",
+					"label": "Label background",
+					"default": "#EF9104"
+				},
+				{
+					"type": "color",
+					"id": "label_text_color",
+					"label": "Label color",
+					"default": "#FFFFFF"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Compare price",
+			"settings": {},
+			"blocks": [
+				{
+					"type": "product"
+				},
+				{
+					"type": "product"
+				},
+				{
+					"type": "product"
+				}
+			]
+		}
+	]
+}
+{%- endschema -%}

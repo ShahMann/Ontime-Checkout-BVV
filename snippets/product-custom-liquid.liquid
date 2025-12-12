@@ -1,0 +1,20 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product custom liquid
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{% assign custom_liquid = block.settings.custom_liquid %}
+
+{% if custom_liquid != blank %}
+	{%- capture styles -%}
+		--offset-top-desktop: {{ block.settings.offset_top_desktop }}px; {{-  -}}
+		--offset-bottom-desktop: {{ block.settings.offset_bottom_desktop }}px; {{-  -}}
+		--offset-top-mobile: {{ block.settings.offset_top_mobile }}px; {{-  -}}
+		--offset-bottom-mobile: {{ block.settings.offset_bottom_mobile }}px;
+	{%- endcapture -%}
+
+	<div class="product-custom-liquid" style="{{ styles }}">
+		{{- custom_liquid -}}
+	</div>
+{% endif %}

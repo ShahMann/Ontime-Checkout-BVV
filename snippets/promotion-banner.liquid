@@ -1,0 +1,169 @@
+{% assign cookie_time 				= settings.promo_banner_cookie_time %}
+{% assign title 					= settings.promo_banner_title  %}
+{% assign subtitle					= settings.promo_banner_subtitle %}
+{% assign button_text 				= settings.promo_banner_button_text %}
+{% assign link 						= settings.promo_banner_link %}
+{% assign button_popup_style 		= settings.promo_banner_popup_button_style %}
+{% assign image						= settings.promo_banner_image %}
+{% assign products_list				= settings.promo_banner_product_list %}
+{% assign show_shadow 				= settings.promo_banner_show_shadow %}
+
+{% assign banner_bg 				= settings.promo_banner_background %}
+{% assign banner_text_color 		= settings.promo_banner_text %}
+{% assign button_close 				= settings.promo_button_close %}
+{% assign button_bg 				= settings.promo_banner_button_background_color %}
+{% assign button_color 				= settings.promo_banner_button_text_color %}
+{% assign button_border_color 		= settings.promo_banner_button_border_color %}
+{% assign button_bg_hover 			= settings.promo_banner_button_background_hover_color %}
+{% assign button_color_hover 		= settings.promo_banner_button_text_hover_color %}
+{% assign button_border_color_hover = settings.promo_banner_button_border_hover_color %}
+
+{% assign link_aria_label 			= 'promo_banner.open_link' | t %}
+
+{% if title != blank %}
+	{% assign link_aria_label = title %}
+{% endif %}
+
+{%- render 'adastra' with '/src/styles/promotion-banner.scss' -%}
+
+{% capture styles %}
+	--banner-bg: {{ banner_bg }}; {{-  -}}
+	--button-text-color: {{ banner_text_color }}; {{-  -}}
+	--button-close-color: {{ button_close }}; {{-  -}}
+	--button-bg: {{ button_bg }}; {{-  -}}
+	--button-color: {{ button_color }}; {{-  -}}
+	--button-border-color: {{ button_border_color }}; {{-  -}}
+	--button-bg-hover: {{ button_bg_hover }}; {{-  -}}
+	--button-color-hover: {{ button_color_hover }}; {{-  -}}
+	--button-border-color-hover: {{ button_border_color_hover }}; {{-  -}}
+{% endcapture %}
+
+<div id="promotion-banner"
+	 class="promotion-banner{% if image == blank %} promotion-banner--no-image{% endif %}{% if show_shadow %} promotion-banner--shadow{% endif %} js-promotion-banner"
+	 style="{{ styles }}"
+	 data-cookie-time="{{- cookie_time -}}"
+>
+	<div class="promotion-banner__inner">
+		{% if image != blank %}
+			{%- capture img_focal -%}
+				--img-desktop-pos: {{ image.presentation.focal_point }};
+			{%- endcapture -%}
+
+			<div class="promotion-banner__box-image">
+				<picture class="promotion-banner__image-wrap lazy">
+					<source
+						srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								{{ image | image_url: width: 20, height: 20 }} 2x"
+						data-srcset="{{ image | image_url: width: 80, height: 80 }} 1x,
+									 {{ image | image_url: width: 160, height: 160 }} 2x"
+						media="(max-width: 767.98px)"
+						height="80"
+						width="80"
+					>
+
+					<img class="promotion-banner__image"
+						 src="{{ image | image_url: width: 10, height: 10 }}"
+						 srcset="{{ image | image_url: width: 10, height: 10 }} 1x,
+								 {{ image | image_url: width: 20, height: 20 }} 2x"
+						 data-src="{{ image | image_url: width: 220, height: 180 }}"
+						 data-srcset="{{ image | image_url: width: 220, height: 180 }} 1x,
+									  {{ image | image_url: width: 440, height: 360 }} 2x"
+						 alt="{{ image.alt | escape }}"
+						 height="180"
+						 width="220"
+						 style="{{ img_focal }}"
+					>
+				</picture>
+			</div>
+		{% endif %}
+
+		<div class="promotion-banner__content">
+			{% if title != blank %}
+				<div class="promotion-banner__title">{{ title }}</div>
+			{% endif %}
+
+			{% if subtitle != blank %}
+				<p class="promotion-banner__subtitle">{{ subtitle }}</p>
+			{% endif %}
+
+			{% if products_list.count > 0 or link != blank %}
+				{% if button_text != blank %}
+					<a href="{{ link }}"
+					   class="promotion-banner__button button button--small"
+						{% if products_list.count > 0 %}
+							aria-expanded="false"
+							aria-controls="promotion-products-popup"
+							data-target="promotion-products-popup"
+							data-js-toggle="promotion-products-popup-toggle"
+						{% endif %}
+					>
+						{{- button_text -}}
+					</a>
+				{% else %}
+					<a href="{{ link }}"
+					   class="promotion-banner__link-wrapper"
+						{% if products_list.count > 0 %}
+							aria-expanded="false"
+							aria-controls="promotion-products-popup"
+							data-target="promotion-products-popup"
+							data-js-toggle="promotion-products-popup-toggle"
+						{% endif %}
+						{% if link != blank %}
+							aria-label="{{ link_aria_label }}"
+						{% elsif products_list.count > 0 %}
+							aria-label="{{ 'promo_banner.open_popup' | t }}"
+						{% endif %}
+					></a>
+				{% endif %}
+			{% endif %}
+		</div>
+	</div>
+
+	<button
+		class="promotion-banner__close-button js-promotion-banner-close-button"
+		aria-label="{{ "general.accessibility.close" | t }}"
+	>
+		{%- render 'icons', icon: 'menu-close' -%}
+	</button>
+</div>
+
+{% if products_list.count > 0 %}
+	<div id="promotion-products-popup"
+		 class="promotion-products-popup modal"
+		 aria-modal="true"
+		 role="dialog"
+	>
+		<div class="modal__header">
+			{% if title != blank %}
+				<h2 class="promotion-products-popup__title h3">{{ title }}</h2>
+			{% endif %}
+
+			<button
+				class="promotion-products-popup__close-button focus-visible-outline"
+				data-target="promotion-products-popup"
+				aria-label="{{ "general.accessibility.close" | t }}"
+				data-js-toggle="promotion-products-popup-toggle"
+			>
+				{% render 'icons', icon: 'menu-close' %}
+			</button>
+		</div>
+
+		<div class="modal__body">
+			<div class="promotion-products-popup__container">
+				{% for product in products_list %}
+					<div class="promotion-products-popup__product-col">
+						{% render 'product-card', product: product, size: 460, is_lazy: true, simplified_view: true %}
+					</div>
+				{% endfor %}
+			</div>
+
+			{% if link != blank and button_text != blank %}
+				<div class="promotion-products-popup__button-wrapper">
+					<a href="{{ link }}" class="button button--{{ button_popup_style }}">{{ button_text }}</a>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endif %}
+
+{%- render 'adastra' with '/src/scripts/section-promotion-banner.js' -%}

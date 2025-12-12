@@ -1,0 +1,185 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header burger menu content
+	Render header burger menu content
+	- menu: menu object;
+	- menu_id: menu id;
+	- blocks: transfer block object;
+	- level: menu level (1-3).
+
+	Usage:
+	{%- render 'header-burger-menu-brands' -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- case level -%}
+	{%- when 1 -%}
+		<ul
+			class="header-burger-menu-content js-multi-drawer-content is-active"
+			data-drawer-level="1"
+		>
+			{%- for first_level_link in menu.links -%}
+				<li>
+					{%- assign has_nested = false -%}
+
+					{%- assign has_brands_mega_menu = false -%}
+					{%- assign wide_drawer = false -%}
+					{%- assign show_link = false -%}
+					{%- assign is_brands_logos = false -%}
+					{%- assign badge_text = '' -%}
+					{%- assign badge_text_color = '' -%}
+					{%- assign badge_background_color = '' -%}
+
+					{%- for block in blocks -%}
+						{%- if block.type == "megamenu-brands" -%}
+							{%- assign menu_handle 	= block.settings.burger_menu_handle | handleize -%}
+							{%- assign link 		= block.settings.link -%}
+							{%- assign link_text 	= block.settings.link_text -%}
+
+							{%- if first_level_link.handle == menu_handle -%}
+								{%- if first_level_link.links != blank -%}
+									{%- assign has_brands_mega_menu = true -%}
+
+									{%- if link_text != blank and link != blank -%}
+										{%- assign show_link = true -%}
+									{%- endif -%}
+
+									{%- assign badge_text = block.settings.badge_text -%}
+									{%- assign badge_text_color	= block.settings.badge_text_color -%}
+									{%- assign badge_background_color = block.settings.badge_background_color -%}
+
+									{%- break -%}
+								{%- endif -%}
+							{%- endif -%}
+						{%- endif -%}
+					{%- endfor -%}
+
+					{%- for block in blocks -%}
+						{%- if block.type == "megamenu-brands-logo" -%}
+							{%- assign image = block.settings.image -%}
+							{%- assign link = block.settings.link -%}
+
+							{% if link != blank and image != blank %}
+								{%- assign is_brands_logos = true -%}
+								{%- break -%}
+							{% endif %}
+						{%- endif -%}
+					{%- endfor -%}
+
+					{%- if has_brands_mega_menu == true -%}
+						{%- if is_brands_logos == true or show_link == true -%}
+							{%- assign wide_drawer = true -%}
+						{%- endif -%}
+					{%- endif -%}
+
+					{%- if first_level_link.links != blank or has_brands_mega_menu == true -%}
+						{%- capture link_id -%}
+							headerBurgerMenuNested:{{- menu_id -}}-{{- menu.handle -}}-{{ forloop.index }}-{{- first_level_link.handle -}}
+						{%- endcapture -%}
+
+						{%- assign has_nested = true -%}
+					{%- endif -%}
+
+					{%- render 'header-burger-menu-item',
+						has_nested: has_nested,
+						link: first_level_link,
+						link_id: link_id,
+						level: 1,
+						has_brands_mega_menu: has_brands_mega_menu,
+						wide_drawer: wide_drawer,
+						aria_controls: 'headerBurgerMenuNested',
+						badge_text: badge_text,
+						badge_text_color: badge_text_color,
+						badge_background_color: badge_background_color
+					-%}
+				</li>
+			{%- endfor -%}
+		</ul>
+	{%- when 2 -%}
+		{%- for first_level_link in menu.links -%}
+			{%- assign has_megamenu = false -%}
+			{%- assign megamenu_object = "" -%}
+
+			{%- for block in blocks -%}
+				{%- if block.type == "megamenu-brands" -%}
+					{%- assign menu_handle = block.settings.burger_menu_handle | handleize -%}
+
+					{%- if first_level_link.handle == menu_handle -%}
+						{%- if first_level_link.links != blank -%}
+							{%- assign has_megamenu = true -%}
+							{%- assign megamenu_object = block -%}
+
+							{%- break -%}
+						{%- endif -%}
+					{%- endif -%}
+				{%- endif -%}
+			{%- endfor -%}
+
+
+			{%- if has_megamenu -%}
+				<div
+					class="header-burger-menu-content header-burger-menu-content--brands js-multi-drawer-content"
+					data-drawer-level="2"
+					data-drawer-content="headerBurgerMenuNested:{{- menu_id -}}-{{- menu.handle -}}-{{ forloop.index }}-{{- first_level_link.handle -}}"
+				>
+					{%- assign brands_logos_blocks = blocks | where: 'type', 'megamenu-brands-logo' -%}
+
+					{%- render 'header-burger-menu-brands', menu: first_level_link, megamenu_object: megamenu_object, blocks: brands_logos_blocks -%}
+				</div>
+			{%- elsif first_level_link.links != blank -%}
+				<ul
+					class="header-burger-menu-content js-multi-drawer-content"
+					data-drawer-level="2"
+					data-drawer-content="headerBurgerMenuNested:{{- menu_id -}}-{{- menu.handle -}}-{{ forloop.index }}-{{- first_level_link.handle -}}"
+				>
+					{%- for second_level_link in first_level_link.links -%}
+						<li>
+							{%- assign has_nested = false -%}
+
+							{%- if second_level_link.links != blank -%}
+								{%- capture link_id -%}
+									headerBurgerMenuDeepNested:{{- menu_id -}}-{{- menu.handle -}}-{{ forloop.index }}-{{- first_level_link.handle -}}-{{- second_level_link.handle -}}
+								{%- endcapture -%}
+
+								{%- assign has_nested = true -%}
+							{%- endif -%}
+
+							{%- render 'header-burger-menu-item',
+								has_nested: has_nested,
+								link: second_level_link,
+								link_id: link_id,
+								level: 2,
+								aria_controls: "headerBurgerMenuDeepNested"
+							-%}
+						</li>
+					{%- endfor -%}
+				</ul>
+			{%- endif -%}
+		{%- endfor -%}
+	{%- when 3 -%}
+		{%- for first_level_link in menu.links -%}
+			{%- if first_level_link.links != blank -%}
+				{%- for second_level_link in first_level_link.links -%}
+					{%- if second_level_link.links != blank -%}
+						<ul
+							class="header-burger-menu-content js-multi-drawer-content"
+							data-drawer-level="3"
+							data-drawer-content="headerBurgerMenuDeepNested:{{- menu_id -}}-{{- menu.handle -}}-{{ forloop.index }}-{{- first_level_link.handle -}}-{{- second_level_link.handle -}}"
+						>
+							{%- for third_level_link in second_level_link.links -%}
+								<li>
+									{%- render 'header-burger-menu-item',
+										has_nested: false,
+										link: third_level_link,
+										link_id: '',
+										level: 3,
+										aria_controls: ''
+									-%}
+								</li>
+							{%- endfor -%}
+						</ul>
+					{%- endif -%}
+				{%- endfor -%}
+			{%- endif -%}
+		{%- endfor -%}
+{%- endcase -%}

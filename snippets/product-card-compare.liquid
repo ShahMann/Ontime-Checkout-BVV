@@ -1,0 +1,279 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Product card compare
+	- product: Product object (required, object)
+
+	{%- render 'product-card-compare', product: product -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign currency_code_enabled	= settings.is_currency_code_enabled -%}
+{%- assign show_unit_price			= settings.is_show_unit_price -%}
+{%- assign image_width				= settings.image_width -%}
+
+{%- assign size				= 304 -%}
+{%- assign tablet_size		= 311 -%}
+{%- assign mobile_size		= tablet_size -%}
+
+
+{%- assign min	= 1 -%}
+{%- assign max	= 6 -%}
+{%- assign diff	= max | minus: min -%}
+
+{%- capture labels -%}
+	{%- unless product.available -%}
+		<li	class="compare-product-card__label compare-product-card__label--sold-out">
+			<span class="visually-hidden">
+				{{- 'products.product_card.product_label' | t -}}:
+			</span>
+
+			{{- "products.product.sold_out" | t -}}
+		</li>
+	{%- endunless -%}
+
+	{%- assign tag_index = 1 -%}
+
+	{%- for tag in product.tags -%}
+		{%- if tag contains 'label__' -%}
+			{%- assign class = 'compare-product-card__label' -%}
+
+			{%- if tag contains ':primary' -%}
+				{%- assign class = class | append: " compare-product-card__label--primary" | strip -%}
+			{%- elsif tag contains ':secondary' -%}
+				{%- assign class = class | append: " compare-product-card__label--secondary" | strip -%}
+			{%- endif -%}
+
+			{%- assign clipped_tag = tag | remove: 'label__' | remove: ':primary' | remove: ':secondary' -%}
+
+			<li	class="{{- class -}}">
+				<span class="visually-hidden">
+					{{- 'products.product_card.product_label' | t -}}:
+				</span>
+
+				{{- clipped_tag -}}
+			</li>
+
+			{%- assign tag_index = tag_index | plus: 1 -%}
+
+			{%- if tag_index > 3 -%}
+				{%- break -%}
+			{%- endif -%}
+		{%- endif -%}
+	{%- endfor -%}
+{%- endcapture -%}
+
+{%- capture classes -%}
+	compare-product-card js-compare-product
+{%- endcapture -%}
+
+<div class="{{- classes -}}">
+	<div
+		class="compare-product-card__main compare-product-card__row js-product-compare-row"
+		data-index="1"
+		data-product-handle="{{- product.handle -}}"
+	>
+		{%- if labels != blank and labels_enabled -%}
+			<ul
+				class="compare-product-card__labels"
+				aria-label="{{- 'products.product_card.product_labels' | t | escape -}}"
+			>
+				{{- labels -}}
+			</ul>
+		{%- endif -%}
+
+		{%- assign image = product.featured_image | default: product.featured_image | default: settings.product_default_image -%}
+
+		<div class="compare-product-card__image-wrapper-link">
+			<div class="compare-product-card__image-wrapper is-active">
+				{%- if product == blank -%}
+					{%- assign random_number		= "now" | date: "%N" | modulo: diff | plus: min -%}
+					{%- assign placeholer_svg_name	= 'product-' | append: random_number -%}
+
+					<div class="compare-product-card__image-picture">
+						{{- placeholer_svg_name | placeholder_svg_tag: 'compare-product-card__image' -}}
+					</div>
+				{%- else -%}
+					{%- render 'product-card-image',
+						product: product,
+						image: image,
+						is_hover_image: false,
+						is_lazy: false,
+						size: size,
+						tablet_size: tablet_size,
+						mobile_size: mobile_size
+					-%}
+				{%- endif -%}
+			</div>
+		</div>
+
+		<div class="compare-product-card__additional-buttons">
+			<button
+				class="compare-product-card__remove js-product-compare-remove"
+				data-product-handle="{{- product.handle -}}"
+				type="button"
+				aria-label="{{- "products.compare_products.product_button_remove" | t : product: product.title | escape -}}"
+			>
+				{% render 'icons', icon: 'close' %}
+			</button>
+		</div>
+	</div>
+
+	<div
+		class="compare-product-card__footer compare-product-card__row js-product-compare-row"
+		data-index="2"
+		data-product-handle="{{- product.handle -}}"
+	>
+		<div class="compare-product-card__meta-info">
+			{%- if product != blank -%}
+				{{- product.title -}}
+			{%- else -%}
+				{{- 'products.product_card.product_title' | t -}}
+			{%- endif -%}
+
+			<div class="compare-product-card__price">
+				{%- render 'price', product: product, show_unit_price: show_unit_price, currency_code_enabled: currency_code_enabled -%}
+			</div>
+		</div>
+	</div>
+
+	<div
+		class="compare-product-card__options compare-product-card__options--without-border compare-product-card__options--align-center compare-product-card__row js-product-compare-row"
+		data-index="3"
+		data-product-handle="{{- product.handle -}}"
+	>
+		<div class="compare-product-card__option">
+			{{- "products.compare_products.available" | t -}}
+		</div>
+
+		<div class="compare-product-card__value compare-product-card__value--semi-bold">
+			{%- if product.available -%}
+				<span class="compare-product-card__status-icon compare-product-card__status-icon--in-stock">
+					{%- render 'icons', icon: 'check' -%}
+				</span>
+				{{- "products.compare_products.in_stock" | t -}}
+			{%- else -%}
+				<span class="compare-product-card__status-icon compare-product-card__status-icon--out-of-stock">
+					{%- render 'icons', icon: 'close' -%}
+				</span>
+				{{- "products.compare_products.out_of_stock" | t -}}
+			{%- endif -%}
+		</div>
+	</div>
+
+	<div
+		class="compare-product-card__options compare-product-card__row js-product-compare-row"
+		data-index="4"
+		data-product-handle="{{- product.handle -}}"
+		{% if product.vendor == blank %} data-empty {%- endif -%}
+	>
+		<div class="compare-product-card__option">
+			{{- "products.compare_products.vendor" | t -}}
+		</div>
+
+		<div class="compare-product-card__value">
+			{%- if product.vendor != blank -%}
+				<a class="focus-visible-outline" href="{{ product.vendor | url_for_vendor }}">{{- product.vendor -}}</a>
+			{%- else -%}
+				{{- "products.compare_products.empty_value" | t -}}
+			{%- endif -%}
+		</div>
+	</div>
+
+	<div
+		class="compare-product-card__options compare-product-card__row js-product-compare-row"
+		data-index="5"
+		data-product-handle="{{- product.handle -}}"
+		{% if product.type == blank %} data-empty {%- endif -%}
+	>
+		<div class="compare-product-card__option">
+			{{- "products.compare_products.type" | t -}}
+		</div>
+
+		<div class="compare-product-card__value">
+			{%- if product.type != blank -%}
+				<a class="focus-visible-outline" href="{{ product.type | url_for_type }}">{{- product.type -}}</a>
+			{%- else -%}
+				{{- "products.compare_products.empty_value" | t -}}
+			{%- endif -%}
+		</div>
+	</div>
+
+	<div
+		class="compare-product-card__options compare-product-card__row js-product-compare-row"
+		data-index="6"
+		data-product-handle="{{- product.handle -}}"
+		{% if product.has_only_default_variant %} data-empty {%- endif -%}
+	>
+		<div class="compare-product-card__option">
+			{%- unless product.has_only_default_variant -%}
+				{{- product.options[0] -}}
+			{%- else -%}
+				{{- "products.compare_products.option" | t: number: 1 -}}
+			{%- endunless -%}
+		</div>
+
+		<div class="compare-product-card__value">
+			{%- unless product.has_only_default_variant -%}
+				{{- product.options_with_values[0].values | join: ", " -}}
+			{%- else -%}
+				{{- "products.compare_products.empty_value" | t -}}
+			{%- endunless -%}
+		</div>
+	</div>
+
+	<div
+		class="compare-product-card__options compare-product-card__row js-product-compare-row"
+		data-index="7"
+		data-product-handle="{{- product.handle -}}"
+		{% unless product.options[1] %} data-empty {%- endunless -%}
+	>
+		<div class="compare-product-card__option">
+			{%- if product.options[1] -%}
+				{{- product.options[1] -}}
+			{%- else -%}
+				{{- "products.compare_products.option" | t: number: 2 -}}
+			{%- endif -%}
+		</div>
+
+		<div class="compare-product-card__value">
+			{%- if product.options[1] -%}
+				{{- product.options_with_values[1].values | join: ", " -}}
+			{%- else -%}
+				{{- "products.compare_products.empty_value" | t -}}
+			{%- endif -%}
+		</div>
+	</div>
+
+	<div
+		class="compare-product-card__options compare-product-card__row js-product-compare-row"
+		data-index="8"
+		data-product-handle="{{- product.handle -}}"
+		{% unless product.options[2] %} data-empty {%- endunless -%}
+	>
+		<div class="compare-product-card__option">
+			{%- if product.options[2] -%}
+				{{- product.options[2] -}}
+			{%- else -%}
+				{{- "products.compare_products.option" | t: number: 3 -}}
+			{%- endif -%}
+		</div>
+
+		<div class="compare-product-card__value" data-index="10">
+			{%- if product.options[2] -%}
+				{{- product.options_with_values[2].values | join: ", " -}}
+			{%- else -%}
+				{{- "products.compare_products.empty_value" | t -}}
+			{%- endif -%}
+		</div>
+	</div>
+
+	<div
+		class="compare-product-card__view-product-wrapper compare-product-card__row js-product-compare-row"
+		data-index="9"
+		data-product-handle="{{- product.handle -}}"
+	>
+		<a href="{{- product.url -}}" class="button button--secondary button--full-width compare-product-card__view-product">
+			{{- "products.compare_products.link" | t -}}
+		</a>
+	</div>
+</div>

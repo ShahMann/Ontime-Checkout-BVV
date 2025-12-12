@@ -1,0 +1,590 @@
+/* stylelint-disable */
+.account-entrance-section {
+  position: relative;
+}
+.account-entrance {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  gap: 16px;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+.account-entrance .account-entrance__button-link {
+  padding: 4px 0;
+  font-size: calc(var(--body-font-size) * 0.875);
+  line-height: 1.286;
+  border: none;
+}
+.account-entrance .account-entrance__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--img-desktop-pos);
+}
+.account-entrance .account-entrance__container {
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.account-entrance .account-entrance__container.account-entrance__container--with-picture {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - var(--header-height-static, 0) - var(--announcement-bar-height, 0));
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.account-entrance .account-entrance__container.account-entrance__container--large {
+  max-width: 992px;
+}
+.account-entrance .account-entrance__form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+}
+.account-entrance .account-entrance__form.account-entrance__form--rounded {
+  max-width: 580px;
+  padding: 32px 24px;
+  border-radius: calc(var(--global-border-radius) * 2);
+  background-color: var(--color-background);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+.account-entrance .account-entrance__heading-wrapper {
+  margin-bottom: 32px;
+}
+.account-entrance .account-entrance__subtitle.account-entrance__subtitle--small {
+  font-size: 38px;
+}
+.account-entrance .account-entrance__error-title {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+.account-entrance .account-entrance__text {
+  margin-top: 16px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+.account-entrance .account-entrance__input {
+  margin-bottom: 0;
+  font-size: var(--body-font-size);
+  line-height: 1.5;
+}
+.account-entrance .account-entrance__input.account-entrance__input--password {
+  padding-inline-end: 60px;
+}
+.account-entrance .account-entrance__input-wrapper {
+  margin-bottom: 0;
+  text-align: start;
+}
+.account-entrance .account-entrance__input-wrapper + .account-entrance__input-wrapper {
+  margin-top: 16px;
+}
+.account-entrance .account-entrance__buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.account-entrance .account-entrance__buttons-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.account-entrance .account-entrance__button {
+  width: 100%;
+  margin-top: 32px;
+  margin-bottom: 20px;
+  font-size: var(--body-font-size);
+  line-height: 1.375;
+  text-wrap: initial;
+}
+.account-entrance .account-entrance__button + .account-entrance__button {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.account-entrance .account-entrance__button.account-entrance__button--link {
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: transparent;
+}
+.account-entrance .account-entrance__create {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}
+.account-entrance .account-entrance__new-customer {
+  font-size: calc(var(--body-font-size) * 0.875);
+  line-height: 1.286;
+}
+.account-entrance .account-entrance__password-wrapper {
+  position: relative;
+}
+.account-entrance .account-entrance__password-icon {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: 24px;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--color-text-primary, #000);
+}
+.account-entrance .account-entrance__password-icon.active .account-entrance__password-icon-content {
+  position: relative;
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+.account-entrance .account-entrance__password-icon.active .account-entrance__password-icon-content::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  bottom: 0;
+  left: -2px;
+  right: 0;
+  width: 20px;
+  height: 2px;
+  background-color: currentColor;
+  transform: rotate(145deg);
+}
+.account-entrance .account-entrance__return {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  font-size: calc(var(--body-font-size) * 0.875);
+  line-height: 1.286;
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+.account-entrance .account-entrance__return svg {
+  margin-inline-end: 8px;
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+  .account-entrance .account-entrance__return:hover svg {
+    transform: translateX(-3px);
+  }
+}
+.account-entrance .account-entrance__link {
+  background-color: transparent;
+  transition-property: color;
+  text-decoration: none;
+  text-wrap: initial;
+  border-bottom: transparent;
+}
+.account-entrance .account-entrance__link:not(.account-entrance__link--recover) {
+  color: var(--link-color);
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+  .account-entrance .account-entrance__link:not(.account-entrance__link--recover):hover {
+    opacity: 0.7;
+  }
+}
+.account-entrance .account-entrance__link.account-entrance__link--recover {
+  margin-top: 12px;
+  margin-bottom: 4px;
+  margin-inline-end: auto;
+}
+.account-entrance .errors,
+.account-entrance .account-entrance__errors {
+  font-size: var(--body-font-size);
+  color: var(--color-text-attention);
+}
+.account-entrance .errors a,
+.account-entrance .account-entrance__errors a {
+  align-items: center;
+  border-bottom: 1px solid currentColor;
+  text-decoration: none;
+  color: var(--color-text-attention);
+  word-break: break-word;
+  transition-property: border-color;
+  transition-duration: var(--timing-short);
+}
+.account-entrance .errors a:focus-visible,
+.account-entrance .account-entrance__errors a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+  .account-entrance .errors a:hover,
+  .account-entrance .account-entrance__errors a:hover {
+    border-color: transparent;
+  }
+}
+.account-entrance .errors li + li,
+.account-entrance .account-entrance__errors li + li {
+  margin-top: 7px;
+}
+.account-entrance .account-entrance__heading {
+  color: var(--page-heading-color, #000);
+}
+.account-entrance .account-entrance__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 31px;
+  gap: 32px;
+}
+.account-entrance .account-entrance__header .account-entrance__heading {
+  margin-bottom: 0;
+}
+.account-entrance .account-entrance__header-middle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 32px;
+}
+.account-entrance .account-entrance__header-middle .account-entrance__heading {
+  margin-bottom: 0;
+}
+.account-entrance .account-entrance__header-bottom .order--cancelled {
+  font-weight: 600;
+}
+.account-entrance .account-entrance__banner-image-wrapper {
+  position: relative;
+  padding-top: 64%;
+}
+.account-entrance .account-entrance__banner-image-wrapper .account-entrance__heading {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  padding: 16px;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+.account-entrance .account-entrance__banner-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--img-mobile-pos);
+}
+.account-entrance .account-entrance__row {
+  display: flex;
+  justify-content: space-between;
+}
+.account-entrance .account-entrance__row.account-entrance__row--billings {
+  gap: 16px;
+}
+.account-entrance .account-entrance__row.account-entrance__row--date {
+  flex-direction: column;
+  max-width: 380px;
+  width: 100%;
+  padding: 12px 24px;
+  border-radius: calc(var(--global-border-radius) * 2);
+  background-color: var(--color-background-secondary, #f1f1f3);
+}
+.account-entrance .account-entrance__order-title {
+  margin-bottom: 8px;
+  font-size: calc(var(--body-font-size) * 1.375);
+  font-weight: 700;
+  line-height: 1.182;
+  text-align: center;
+}
+.account-entrance .account-entrance__order-date {
+  font-size: calc(var(--body-font-size) * 0.875);
+  line-height: 1.286;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+.account-entrance .account-entrance__discount-item .account-entrance__discount-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.account-entrance .account-entrance__discount-item .account-entrance__discount-summary .account-entrance__order-summary-discount {
+  font-size: 80%;
+}
+.account-entrance .account-entrance__order-summary-discount {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  font-size: 80%;
+}
+.account-entrance .account-entrance__order-summary-discount .icon {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-inline-end: 5px;
+}
+.account-entrance .account-entrance__billings {
+  width: 50%;
+  padding: 24px 16px;
+  text-align: start;
+  border-radius: calc(var(--global-border-radius) * 2);
+  background-color: var(--color-background-secondary);
+  color: var(--color-text-secondary);
+}
+.account-entrance .account-entrance__billings * {
+  font-size: calc(var(--body-font-size) * 0.875);
+  line-height: 1.8;
+}
+.account-entrance .account-entrance__billings .account-entrance__billings-status-wrapper {
+  margin-bottom: 6px;
+  line-height: 1.286;
+}
+.account-entrance .account-entrance__billings .account-entrance__billings-status {
+  padding: 2px 8px;
+  font-size: calc(var(--body-font-size) * 0.75);
+  font-weight: 600;
+  line-height: 1.166;
+  border-radius: calc(var(--global-border-radius) * 3.125);
+  background-color: var(--color-text-thirdly);
+  color: var(--color-white);
+}
+.account-entrance .account-entrance__billings .account-entrance__billings-status.account-entrance__billings-status--paid, .account-entrance .account-entrance__billings .account-entrance__billings-status.account-entrance__billings-status--fulfilled {
+  position: relative;
+  margin-inline-start: 5px;
+  padding-inline-start: 28px;
+}
+.account-entrance .account-entrance__billings .account-entrance__billings-status.account-entrance__billings-status--paid:before, .account-entrance .account-entrance__billings .account-entrance__billings-status.account-entrance__billings-status--fulfilled:before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  background-repeat: no-repeat;
+}
+.account-entrance .account-entrance__billings .account-entrance__billings-status.account-entrance__billings-status--paid {
+  color: var(--color-white);
+  background-color: var(--color-text-success);
+}
+.account-entrance .account-entrance__billings .account-entrance__billings-status.account-entrance__billings-status--paid:before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M13.3346 4L6.0013 11.3333L2.66797 8' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.account-entrance .account-entrance__billings .account-entrance__billings-status.account-entrance__billings-status--fulfilled {
+  color: var(--color-white, #fff);
+  background-color: var(--color-accent);
+}
+.account-entrance .account-entrance__billings .account-entrance__billings-status.account-entrance__billings-status--fulfilled:before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M13.3346 4L6.0013 11.3333L2.66797 8' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.account-entrance .account-entrance__billings .account-entrance__billings-heading {
+  margin-bottom: 8px;
+  font-size: calc(var(--body-font-size) * 1.125);
+  line-height: 1.333;
+}
+.account-entrance .account-entrance__order-detail-properties {
+  margin-top: 8px;
+  font-size: calc(var(--body-font-size) * 0.875);
+  font-weight: 400;
+  line-height: 1.286;
+  color: var(--color-text-secondary);
+}
+.account-entrance .account-entrance__order-detail-properties li + li {
+  margin-top: 8px;
+}
+.account-entrance .account-entrance__order-detail-note {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  margin-top: 8px;
+  padding: 2px 8px;
+  font-size: calc(var(--body-font-size) * 0.75);
+  font-weight: 600;
+  line-height: 1.166;
+  text-align: start;
+  color: var(--color-white, #fff);
+  background-color: var(--color-accent);
+  border-radius: calc(var(--global-border-radius) * 3.125);
+}
+.account-entrance .account-entrance__order-detail-note svg {
+  margin-inline-end: 4px;
+  width: 16px;
+  height: 16px;
+  stroke: var(--color-white, #fff);
+}
+.account-entrance .account-entrance__discount-list-item {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+.account-entrance .account-entrance__discount-list-item .icon {
+  min-width: 12px;
+  width: 12px;
+  min-height: 12px;
+  height: 12px;
+  margin-inline-end: 5px;
+}
+.account-entrance .account-entrance__table.account-entrance__table--desktop {
+  display: none;
+}
+.account-entrance .account-entrance__order-items {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+.account-entrance .account-entrance__order-total {
+  margin-bottom: 16px;
+}
+.account-entrance .account-entrance__order-total div {
+  display: flex;
+  justify-content: space-between;
+  font-size: calc(var(--body-font-size) * 0.875);
+  line-height: 1.286;
+  color: var(--color-text-secondary);
+  text-align: start;
+}
+.account-entrance .account-entrance__order-total div + div {
+  margin-top: 8px;
+}
+.account-entrance .account-entrance__order-total div span:last-child {
+  font-size: var(--body-font-size);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+}
+.account-entrance .account-entrance__image.need-animate {
+  transform: scale(1.2);
+  transition-duration: 20s;
+  transition-property: transform;
+}
+.account-entrance .account-entrance__form.need-animate {
+  opacity: 0;
+  transform: translateY(25px);
+  transition-property: opacity, transform;
+  transition-duration: 1s;
+}
+.account-entrance.animated .account-entrance__image.need-animate {
+  transform: scale(1);
+}
+.account-entrance.animated .account-entrance__form.need-animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (min-width: 481px) {
+  .account-entrance .account-entrance__banner-image-wrapper {
+    padding-top: 35%;
+  }
+}
+@media (min-width: 768px) {
+  .account-entrance {
+    gap: 64px;
+  }
+  .account-entrance .account-entrance__banner-image-wrapper {
+    padding-top: 23.8%;
+  }
+  .account-entrance .account-entrance__table.account-entrance__table--desktop {
+    display: block;
+  }
+  .account-entrance .account-entrance__table.account-entrance__table--desktop.responsive-table td.column-large {
+    width: 49%;
+  }
+  .account-entrance .account-entrance__table.account-entrance__table--desktop .responsive-table__image-wrapper {
+    overflow: hidden;
+    border-radius: calc(var(--global-border-radius) / 2);
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+  }
+  .account-entrance .account-entrance__table.account-entrance__table--desktop .responsive-table__link {
+    font-size: var(--body-font-size);
+    line-height: 1.5;
+    font-weight: 400;
+  }
+  .account-entrance .account-entrance__table.account-entrance__table--desktop.responsive-table tfoot tr .responsive-table__total {
+    padding-top: 12px;
+    padding-bottom: 16px;
+    font-size: calc(var(--body-font-size) * 1.125);
+    line-height: 1.333333;
+    text-align: start;
+  }
+  .account-entrance .account-entrance__table.account-entrance__table--desktop.responsive-table tfoot tr .responsive-table__total + td {
+    padding-top: 10px;
+    padding-bottom: 16px;
+    font-size: calc(var(--body-font-size) * 1.375);
+    line-height: 1.182;
+  }
+  .account-entrance .account-entrance__table.account-entrance__table--desktop.responsive-table tfoot tr td {
+    padding: 6px 16px;
+  }
+  .account-entrance .account-entrance__table.account-entrance__table--desktop.responsive-table tfoot tr:first-child td {
+    padding-top: 16px;
+  }
+  .account-entrance .account-entrance__table.account-entrance__table--desktop.responsive-table th {
+    border-color: var(--color-border-secondary);
+    padding: 16px 8px;
+    font-size: var(--body-font-size);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+  .account-entrance .account-entrance__table.account-entrance__table--desktop.responsive-table th.column-large {
+    width: 40.5%;
+  }
+  .account-entrance .account-entrance__table.account-entrance__table--desktop.responsive-table th:first-child {
+    padding-inline-start: 24px;
+  }
+  .account-entrance .account-entrance__table.account-entrance__table--mobile {
+    display: none;
+  }
+}
+@media (min-width: 992px) {
+  .account-entrance .account-entrance__subtitle.account-entrance__subtitle--small {
+    font-size: 44px;
+  }
+  .account-entrance .account-entrance__header-middle {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+@media (max-width: 767.98px) {
+  .account-entrance .account-entrance__discount-list-item {
+    justify-content: flex-end;
+  }
+  .account-entrance .account-entrance__row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .account-entrance .account-entrance__row.account-entrance__row--date {
+    align-items: center;
+  }
+  .account-entrance .account-entrance__order-title {
+    margin-bottom: 8px;
+    font-size: calc(var(--body-font-size) * 1.125);
+    line-height: 1.222;
+  }
+  .account-entrance .account-entrance__billings {
+    width: 100%;
+    padding: 16px;
+  }
+}
+@media (min-width: 1200px) {
+  .account-entrance .account-entrance__form.account-entrance__form--rounded {
+    padding: 64px 48px;
+  }
+  .account-entrance .account-entrance__new-customer {
+    font-size: var(--body-font-size);
+    line-height: 1.5;
+  }
+  .account-entrance .account-entrance__link:not(.account-entrance__link--recover) {
+    font-size: var(--body-font-size);
+    line-height: 1.5;
+  }
+}
+/* stylelint-enable */

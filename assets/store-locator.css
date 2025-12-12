@@ -1,0 +1,211 @@
+body {
+  background: #f6f6f6;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.store-locator-container,
+.stores-container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
+}
+
+
+.store-locator-container .heading {
+  text-align: center;
+  text-transform: uppercase;
+  margin: 2rem 0 1rem 0;
+}
+
+.store-locator-container .country-selector {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.store-locator-container .country-selector * {
+padding: .5rem 5rem;
+    color: #fff;
+    background-color: #91553d;
+    border: 2px solid #91553d;
+    border-radius: 30px;
+    cursor: pointer;
+      font-weight: 600;
+}
+
+.store-locator-container .country-selector .active-button,
+.store-locator-container .country-selector *:hover {
+  background-color: white;
+  border: 2px solid #91553d;
+  color: #91553d;
+}
+
+.store-locator-container img {
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+  border-radius: 8px;
+}
+
+
+.stores-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin: 2rem auto 3rem auto;
+  justify-content: center;
+}
+
+.stores-container .store-item {
+  flex-basis: 25%; 
+  background: #fff;
+  border: 2px solid lightgray;
+  border-radius: 8px;
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.stores-container .store-item.incomplete {
+  display: none;
+}
+
+#ksa-stores,
+#uae-stores {
+  display: none;
+}
+
+.stores-container .store-item .name {
+  color: black;
+  text-transform: uppercase;
+  font-size: 1.8rem;
+  line-height: 120%;
+}
+
+.stores-container .store-item .location {
+  line-height: 1.4;
+  font-size: 14px;
+  color: #333;
+}
+
+.stores-container .store-item .opening-time {
+  align-self: end;
+}
+
+.stores-container .store-item .opening-time p {
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.5;
+  color: black;
+}
+
+.stores-container .store-item .phone-number {
+  align-self: end;
+  text-decoration: none;
+  color: grey;
+}
+
+.stores-container .store-item .google-maps {
+    cursor: pointer;
+    padding: 10px 20px;
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background: #a44a2f;
+    border-radius: 30px;
+    font-weight: 700;
+    transition: background .3s ease;
+    height: 40px;
+    line-height: 1;
+}
+
+.stores-container .store-item .google-maps:hover {
+  background: #843926;
+  color: #843926;
+}
+
+.stores-container .store-item .google-maps.unavailable-link {
+  background: #d3d3d3;  
+  color: #ffffff;
+  cursor: not-allowed !important;
+  pointer-events: none;
+  border: none;
+  box-shadow: none;
+}
+
+.stores-container .store-item .google-maps.unavailable-link:hover {
+  background: #d3d3d3;
+}
+
+@media (max-width: 1024px) {
+  .stores-container .store-item {
+    flex-basis: 45%;
+  }
+
+  .store-locator-container .country-selector * {
+    padding: 0.5rem 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .stores-container {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .stores-container .store-item {
+    flex-basis: 100%;
+    width: 100%;
+  }
+
+  .stores-container .store-item .name {
+    font-size: 1.4rem;
+  }
+
+  .store-locator-container img {
+    width: 100%;
+    margin: 0;
+  }
+
+  .store-locator-container .country-selector {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .store-locator-container .country-selector * {
+    flex: 1 1 40%;
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stores-container .store-item .name {
+    font-size: 1.2rem;
+  }
+
+  .stores-container .store-item .google-maps {
+    padding: 0.5rem 1rem;
+    width: 100%;
+  }
+
+  .store-locator-container .country-selector * {
+    flex: 1 1 100%;
+  }
+}
+
+.stores-container .store-item .google-maps.unavailable-link:before,
+.stores-container .store-item .google-maps.unavailable-link:after {
+    background-color: #d3d3d3;
+}
+
+

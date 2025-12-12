@@ -1,0 +1,393 @@
+{% doc %}
+  @prompt
+    Create a desktop-only theme section with a two-column layout: left side contains customizable heading and content text, right side has a customizable button with an icon before the button text, position options (left, right, center alignment), and padding controls for left and right sides of the button. Include schema settings for section height adjustment, background color picker, background image upload option, button position selector, icon picker or upload option, button left padding and right padding controls, and ensure the section only displays on desktop devices using CSS media queries., section height till 100
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-desktop-section-{{ ai_gen_id }} {
+    min-height: {{ block.settings.section_height }}px;background-color: {{ block.settings.background_color }};
+    {% if block.settings.background_image %}
+      background-image: url('{{ block.settings.background_image | image_url: width: 2000}}');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    {% endif %}
+    display: none;
+    align-items: center;
+    padding: 40px 20px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .ai-desktop-section-{{ ai_gen_id }} {
+      display: flex;
+    }
+  }
+
+  .ai-desktop-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .ai-desktop-content-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .ai-desktop-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .ai-desktop-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.text_size }}px;
+    color: {{ block.settings.text_color }};
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .ai-desktop-button-container-{{ ai_gen_id }} {
+    display: flex;
+    {% if block.settings.button_position == 'left' %}
+      justify-content: flex-start;
+    {% elsif block.settings.button_position == 'center' %}
+      justify-content: center;
+    {% else %}
+      justify-content: flex-end;
+    {% endif %}
+  }
+
+  .ai-desktop-button-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: {{ block.settings.button_text_size }}px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding-top: {{ block.settings.button_padding_vertical }}px;
+    padding-bottom: {{ block.settings.button_padding_vertical }}px;
+    padding-left: {{ block.settings.button_padding_left }}px;
+    padding-right: {{ block.settings.button_padding_right }}px;}
+
+  .ai-desktop-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+    transform: translateY(-2px);
+  }
+
+  .ai-desktop-button-icon-{{ ai_gen_id }} {
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;flex-shrink: 0;
+  }
+
+  .ai-desktop-button-icon-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .ai-desktop-button-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+{% endstyle %}<div
+  class="ai-desktop-section-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-desktop-container-{{ ai_gen_id }}">
+    <div class="ai-desktop-content-{{ ai_gen_id }}">
+      {% if block.settings.heading != blank %}
+        <h2 class="ai-desktop-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+      {% endif %}
+      {% if block.settings.content_text != blank %}
+        <div class="ai-desktop-text-{{ ai_gen_id }}">{{ block.settings.content_text }}</div>
+      {% endif %}</div><div class="ai-desktop-button-container-{{ ai_gen_id }}">
+
+      {% assign button_text = '' %}
+      {% assign button_link = '' %}
+      {% if request.locale.iso_code == 'ar' %}
+        {% assign button_text = 'English' %}
+         {% assign button_link = '/pages/survey-reward' %}
+       {% else %}
+         {% assign button_text = 'العربية' %}
+         {% assign button_link = '/ar/pages/survey-reward' %}
+      {% endif %}
+
+
+      {% if button_text != blank %}
+        <a
+          href="{{ button_link }}"
+          class="ai-desktop-button-{{ ai_gen_id }}"
+        >
+          {% if block.settings.button_icon %}
+            <div class="ai-desktop-button-icon-{{ ai_gen_id }}">
+              <img
+                src="{{ block.settings.button_icon | image_url: width: 100}}"
+                alt=""
+                loading="lazy"
+                width="100"
+                height="100"
+              >
+            </div>
+          {% elsif block.settings.icon_type == 'arrow' %}
+            <div class="ai-desktop-button-icon-{{ ai_gen_id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7,7 17,717,17"></polyline>
+              </svg>
+            </div>
+          {% elsif block.settings.icon_type == 'play' %}
+            <div class="ai-desktop-button-icon-{{ ai_gen_id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5,3 19,12 5,21"></polygon>
+              </svg>
+            </div>
+          {% elsif block.settings.icon_type == 'download' %}
+            <div class="ai-desktop-button-icon-{{ ai_gen_id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7,10 12,15 17,10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </div>
+          {% endif %}<span>{{ button_text }}</span>
+        </a>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Desktop Two Column",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "min": 100,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Section height",
+      "default": 500
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f8f8f8"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your Heading Here"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 36
+    },
+    {
+      "type": "textarea",
+      "id": "content_text",
+      "label": "Content text",
+      "default": "Add your content text here to describe your product or service."
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "select",
+      "id": "button_position",
+      "label": "Button position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Button Padding"
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_padding_left",
+      "min": 10,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Left padding",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "button_padding_right",
+      "min": 10,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Right padding",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Button Icon"
+    },
+    {
+      "type": "select",
+      "id": "icon_type",
+      "label": "Icon type",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "arrow",
+          "label": "Arrow"
+        },
+        {
+          "value": "play",
+          "label": "Play"
+        },
+        {
+          "value": "download",
+          "label": "Download"
+        }
+      ],
+      "default": "arrow"
+    },
+    {
+      "type": "image_picker",
+      "id": "button_icon",
+      "label": "Custom icon image"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Desktop Two Column"
+    }
+  ],
+  "tag": null
+}
+{% endschema %}

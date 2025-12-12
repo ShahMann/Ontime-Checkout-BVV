@@ -1,0 +1,163 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Article latest posts
+	-----------------------------
+	Used on Article template
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- render 'adastra' with '/src/styles/article-latest-posts.scss' -%}
+
+{%- assign show_author 			= settings.show_author -%}
+{%- assign show_date 			= settings.show_date -%}
+{%- assign show_comments_count 	= settings.show_comments_count -%}
+
+<section class="article-latest-posts">
+	<div class="article-latest-posts__container">
+		{%- if latest_articles_heading != blank -%}
+			<h2 class="article-latest-posts__title h4">
+				{{- latest_articles_heading -}}
+			</h2>
+		{%- endif -%}
+
+		<div class="article-latest-posts__wrapper">
+			{%- assign count = 0 -%}
+
+			{%- for latest_article in blog.articles -%}
+				{%- if article.handle == latest_article.handle -%}
+					{%- continue -%}
+				{%- endif -%}
+
+				{%- if count == 4 -%}
+					{%- break -%}
+				{%- endif -%}
+
+				{%- assign title = latest_article.title -%}
+				{%- assign image = latest_article.image | default: settings.article_default_image -%}
+				{%- assign author = latest_article.author -%}
+				{%- assign published_at = latest_article.published_at | date: "%B %d, %Y" -%}
+				{%- assign url = latest_article.url -%}
+				{%- assign comments_enabled = latest_article.comments_enabled? -%}
+				{%- assign comments_count = latest_article.comments_count -%}
+				{%- assign read_more_label = settings.article_read_more_label -%}
+
+				{%- assign is_author 			= false -%}
+				{%- assign is_comments_count 	= false -%}
+
+				{%- if show_author and author != blank -%}
+					{%- assign is_author = true -%}
+				{% endif %}
+
+				{%- if show_comments_count and comments_enabled -%}
+					{%- assign is_comments_count = true -%}
+				{% endif %}
+
+				{%- capture lazy_image -%}
+					<picture class="lazy">
+						<source
+							srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+							data-srcset="{{- image | image_url: width: 115, height: 76 }} 1x, {{ image | image_url: width: 230, height: 152 }} 2x"
+							media="(max-width: 373px)"
+						/>
+
+						<img class="article-latest-posts__post-image"
+							 src="{{ image | image_url: width: 10 }}"
+							 srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+							 data-src="{{ image | image_url: width: 132, height: 87 }}"
+							 data-srcset="{{ image | image_url: width: 132, height: 87 }} 1x, {{ image | image_url: width: 264, height: 174 }} 2x"
+							 alt="{{ image.alt | escape }}"
+						>
+					</picture>
+				{%- endcapture -%}
+
+				{%- capture default_image -%}
+					<picture>
+						<source
+							srcset="{{- image | image_url: width: 115, height: 76 }} 1x, {{ image | image_url: width: 230, height: 152 }} 2x"
+							media="(max-width: 373px)"
+						/>
+
+						<img class="article-latest-posts__post-image"
+							 src="{{ image | image_url: width: 132, height: 87 }}"
+							 srcset="{{ image | image_url: width: 132, height: 87 }} 1x, {{ image | image_url: width: 264, height: 174 }} 2x"
+							 alt="{{ image.alt | escape }}"
+						>
+					</picture>
+				{%- endcapture -%}
+
+				<article class="article-latest-posts__post">
+					{% if image != blank %}
+						<div class="article-latest-posts__post-aspect-ratio">
+							<a href="{{ url }}"
+							   class="article-latest-posts__post-image-wrapper focus-visible-outline"
+							   aria-label="{{- 'blogs.article.learn_more_link_aria' | t: title: title | escape -}}"
+							>
+								{%- if is_lazy -%}
+									{{ lazy_image }}
+
+									<noscript>
+										{{ default_image }}
+									</noscript>
+								{%- else -%}
+									{{ default_image }}
+								{%- endif -%}
+							</a>
+						</div>
+					{% endif %}
+
+					<div class="article-latest-posts__post-wrapper">
+						{%- if is_author or show_date or is_comments_count -%}
+							<div class="article-latest-posts__post-info">
+								{%- if is_author -%}
+									<span class="visually-hidden">
+										{{- 'blogs.article.author_prefix' | t -}}
+									</span>
+
+									<span class="article-latest-posts__info-text">
+									{{- author -}}
+								</span>
+								{%- endif -%}
+
+								{%- if show_date -%}
+									<span class="visually-hidden">
+										{{- 'blogs.article.published_at' | t -}}
+									</span>
+
+									<span class="article-latest-posts__info-text">
+										{{- published_at -}}
+									</span>
+								{%- endif -%}
+
+								{%- if is_comments_count -%}
+									<span class="visually-hidden">
+										{{- 'blogs.article.comments_count' | t -}}
+									</span>
+
+									<span class="article-latest-posts__info-text">
+										{{ comments_count }}
+
+										{% if comments_count != 1 %}{{ 'blogs.article.many_comments' | t }}{% else %}{{ 'blogs.article.one_comment' | t }}{% endif %}
+									</span>
+								{%- endif -%}
+							</div>
+						{%- endif -%}
+
+						<h3 class="article-latest-posts__post-title">
+							{{ title }}
+						</h3>
+
+						<a href="{{ url }}" class="article-latest-posts__read-more-button"
+						   aria-label="{{- 'blogs.article.learn_more_link_aria' | t: title: title | escape -}}">
+							{{ read_more_label }}
+							<div class="article-latest-posts__read-more-button-arrow">
+								{% render "icons", icon: "arrow-right" %}
+							</div>
+						</a>
+					</div>
+				</article>
+
+				{% assign count = count | plus: 1 %}
+			{%- endfor -%}
+		</div>
+	</div>
+</section>

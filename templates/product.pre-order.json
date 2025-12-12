@@ -1,0 +1,86 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+	"sections": {
+		"product-template": {
+			"type": "product-template",
+			"blocks": {
+				"badges": {
+					"type": "badges",
+					"settings": {}
+				},
+				"vendor": {
+					"type": "vendor",
+					"settings": {}
+				},
+				"title": {
+					"type": "title",
+					"settings": {}
+				},
+				"options": {
+					"type": "options",
+					"settings": {}
+				},
+				"quantity": {
+					"type": "quantity",
+					"settings": {}
+				},
+				"price": {
+					"type": "price",
+					"settings": {}
+				},
+				"sales_point": {
+					"type": "sales_point",
+					"settings": {
+						"sales_point_text": "Write some text here to inform your client that this is a Pre-order product"
+					}
+				},
+				"add_to_cart": {
+					"type": "add_to_cart",
+					"settings": {}
+				},
+				"pickup_availability": {
+					"type": "pickup_availability",
+					"settings": {}
+				},
+				"drawers": {
+					"type": "drawers",
+					"settings": {}
+				},
+				"complementary": {
+					"type": "complementary",
+					"settings": {}
+				}
+			},
+			"block_order": [
+				"badges",
+				"title",
+				"vendor",
+				"options",
+				"quantity",
+				"price",
+				"sales_point",
+				"add_to_cart",
+				"pickup_availability",
+				"drawers",
+				"complementary"
+			],
+			"settings": {}
+		},
+		"product-recommendations": {
+			"type": "product-recommendations",
+			"settings": {}
+		}
+	},
+	"order": [
+		"product-template",
+		"product-recommendations"
+	]
+}

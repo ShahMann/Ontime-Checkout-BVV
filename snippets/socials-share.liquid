@@ -1,0 +1,54 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Social share
+
+	{% render 'socials-share' %}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{% if template contains 'article' or template contains 'blog' %}
+	{% capture permalinkURL %}{{ shop.url }}{{ article.url }}{% endcapture %}
+	{% assign description = article.title | escape %}
+{% elsif template contains 'product' %}
+	{% capture permalinkURL %}{{ shop.url }}{{ product.url }}{% endcapture %}
+	{% assign description = product.title | escape %}
+{% elsif template contains 'page' %}
+	{% capture permalinkURL %}{{ shop.url }}{{ page.url }}{% endcapture %}
+	{% assign description = page.title | escape %}
+{% endif %}
+
+<input id="share-input-{{ section.id }}" class="is-hidden" type="text" value="{{ shop.url | append: article.url }}">
+
+<ul class="socials-share">
+	<li class="socials-share__item">
+		<a href="#"
+		   class="button-social js-social-share"
+		   data-share-title="{{ article.title | escape }}"
+		   data-share-url="{{ shop.url | append: article.url }}"
+		   data-input-fallback="share-input-{{ section.id }}"
+		   aria-label="{{ 'general.social.share_button' | t }}"
+		>
+			<span class="tooltip js-share-tooltip">{{ 'general.social.share_success' | t }}</span>
+
+			{% render 'icons-social', icon: "share" %}
+		</a>
+	</li>
+
+	<li class="socials-share__item">
+		<a target="_blank" rel="nofollow" href="//www.facebook.com/sharer.php?u={{ permalinkURL }}"
+		   class="button-social"
+		   aria-label="{{ 'general.social.alt_text.share_on_facebook' | t | escape }}"
+		>
+			{% render 'icons-social', icon: 'facebook' %}
+		</a>
+	</li>
+
+	<li class="socials-share__item">
+		<a target="_blank" rel="nofollow" href="//twitter.com/share?url={{ permalinkURL }}"
+		   class="button-social"
+		   aria-label="{{ 'general.social.alt_text.share_on_twitter' | t | escape }}"
+		>
+			{% render 'icons-social', icon: 'x-twitter' %}
+		</a>
+	</li>
+</ul>

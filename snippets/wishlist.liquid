@@ -1,0 +1,31 @@
+<wishlist-element
+    data-productId="{{ product.id }}"
+    data-variantId="{{ product.selected_or_first_available_variant.id }}"
+    data-sku="{{ product.selected_or_first_available_variant.sku }}"
+    data-handle="{{ product.handle |  escape }}"
+    data-currency="{{ shop.currency }}"
+    data-value="{{ product.price | money }}"
+    data-title="{{ product.title }}"
+    data-category="{{ product.category }}"
+    data-tags="{{ product.tags | join: ', ' }}"
+    data-vendor="{{ product.vendor }}"
+    data-price="{{ product.price | money_without_currency }}"
+    data-compared-at-price="{% if product.compare_at_price > 0 %}{{ product.compare_at_price |  money_without_currency }}{% else %} {{ 0.00 }}{% endif %}"
+    data-discount-price="{%- capture discount -%}{% if product.compare_at_price > 0 %}{{ product.compare_at_price |  minus: product.price }}{% else %} {{ 0.00 }}{% endif %}{%- endcapture -%}{{ discount | money_without_currency }}"
+    data-variant-count= "{{ product.variants.size }}"
+    data-image="{{- "https:" -}}{{- product.featured_image | img_url: 'master' -}}"
+    data-size="{{ product.metafields.custom.size.value }}"
+    data-color="{{ product.metafields.custom.color.value }}"
+>
+<div class="wishlist-button_wrapper">
+    <button class="wishlist-button is-hidden">
+        <div class="add-to-wishlist">
+            {%- render 'icons', icon: 'heart-empty' -%}
+        </div>
+        <div class="added-to-wishlist">
+            {%- render 'icons', icon: 'heart-fill' -%}
+        </div>
+
+    </button>
+</div>
+</wishlist-element>

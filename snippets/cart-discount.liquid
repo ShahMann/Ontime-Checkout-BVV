@@ -1,0 +1,116 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Cart discount
+	Render discount form for cart
+
+	Usage:
+	{%- render 'cart-discount' -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- if settings.show_cart_discounts -%}
+	{% liquid
+		assign discount_codes = cart.cart_level_discount_applications | where: 'type', 'discount_code' | map: 'title'
+		for item in cart.items
+			for allocation in item.line_level_discount_allocations
+				if allocation.discount_application.type == 'discount_code'
+					assign discount_codes = item.line_level_discount_allocations | slice: forloop.index0 | map: 'discount_application' | map: 'title' | concat: discount_codes
+				endif
+			endfor
+		endfor
+
+		assign discount_codes = discount_codes | uniq
+	%}
+
+	<div class="js-cart-discount-block cart-block">
+		<div class="cart-discount js-cart-discount-accordion-container js-accordion-container">
+			<div class="cart-block__accordion js-accordion-item">
+				<button
+					class="cart-block__header focus-visible-outline js-accordion-control"
+					aria-controls="cart-discounts"
+					aria-expanded="false"
+				>
+					<span class="cart-block__icon cart-block__icon-plus">
+						{% render 'icons', icon: 'plus' %}
+					</span>
+
+					<span class="cart-block__icon cart-block__icon-minus">
+						{% render 'icons', icon: 'minus' %}
+					</span>
+
+					<span class="cart-block__text">
+						{{- "cart.general.discount_accordion_button" | t -}}
+					</span>
+				</button>
+
+				<div
+					id="cart-discounts"
+					class="cart-discount__content cart-block__content js-accordion-content"
+				>
+					<div class="cart-block__wrapper js-accordion-inner">
+						<form class="cart-discount__discount-form js-cart-discount-form" novalidate>
+							<div class="input-wrapper cart-discount__discount-form-input-wrapper">
+								<label class="visually-hidden" for="cart-discount">
+									{{- "cart.general.discount" | t -}}
+								</label>
+
+								<input
+									class="input cart-discount__discount-form-input"
+									type="text"
+									id="cart-discount"
+									name="discount"
+									placeholder="{{- 'cart.general.discount_placeholder' | t -}}"
+								/>
+							</div>
+
+							<button class="button button--secondary cart-discount__discount-form-button js-cart-discount-apply-button">
+								{{- "cart.general.apply_discount" | t -}}
+							</button>
+						</form>
+
+						<div
+							class="cart-discount__discount-form-error js-cart-discount-error is-hidden"
+							role="alert"
+						>
+							<span class="cart-discount__discount-form-error-icon-wrapper">
+								{% render 'icons', icon: 'error' %}
+							</span>
+
+							<span class="cart-discount__discount-form-error-text js-cart-discount-error-code is-hidden">
+								{{ 'cart.general.discount_code_error' | t }}
+							</span>
+
+							<small class="cart-discount__discount-form-error-text js-cart-discount-error-shipping is-hidden">
+								{{ 'cart.general.shipping_discount_error' | t }}
+							</small>
+						</div>
+
+						{%- if discount_codes.size > 0 -%}
+							<ul class="cart-discount__codes">
+								{% for discount_code in discount_codes %}
+									<li
+										class="cart-discount__pill js-cart-discount-pill"
+										aria-label="{{ 'accessibility.discount_applied' | t: code: discount_code }}"
+										data-discount-code="{{ discount_code }}"
+									>
+										<p class="cart-discount__pill-code">
+											{{ discount_code }}
+										</p>
+
+										<button
+											class="cart-discount__pill-remove focus-visible-outline js-cart-discount-pill-remove"
+											aria-label="{{ 'cart.general.remove_discount' | t: code: discount_code }}"
+											type="button"
+										>
+											{% render 'icons', icon: 'close' %}
+										</button>
+									</li>
+								{% endfor %}
+							</ul>
+						{%- endif -%}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{%- endif -%}

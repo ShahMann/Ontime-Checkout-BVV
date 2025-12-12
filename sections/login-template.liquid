@@ -1,0 +1,321 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Login template
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render "adastra" with "/src/styles/account-entrance.scss" -%}
+
+{%- assign desktop_image = section.settings.desktop_image -%}
+{%- assign mobile_image  = section.settings.mobile_image | default: desktop_image -%}
+
+{%- capture img_focal -%}
+	--img-desktop-pos: {{- desktop_image.presentation.focal_point -}};
+	--img-mob-pos: {{- mobile_image.presentation.focal_point -}};
+{%- endcapture -%}
+
+{%- if desktop_image != blank -%}
+	{%- assign account_entrance_form_class = "account-entrance__form account-entrance__form--rounded need-animate" -%}
+	{%- assign account_entrance_container_class = "account-entrance__container--with-picture" -%}
+{%- else -%}
+	{%- assign account_entrance_form_class  = "account-entrance__form" -%}
+{%- endif -%}
+
+{%- capture account_entrance_container -%}
+	<div class="account-entrance__container {{ account_entrance_container_class -}}">
+		{%- if desktop_image != blank -%}
+			<picture>
+				<source
+					srcset="{{ mobile_image | image_url: width: 375 }} 1x, {{ mobile_image | image_url: width: 750 }} 2x"
+					media="(max-width: 375px)"
+				/>
+
+				<source
+					srcset="{{ mobile_image | image_url: width: 575 }} 1x, {{ mobile_image | image_url: width: 1150 }} 2x"
+					media="(max-width: 575px)"
+				/>
+
+				<source
+					srcset="{{ mobile_image | image_url: width: 767 }} 1x, {{ mobile_image | image_url: width: 1534 }} 2x"
+					media="(max-width: 767px)"
+				/>
+
+				<source
+					srcset="{{ desktop_image | image_url: width: 991 }} 1x, {{ desktop_image | image_url: width: 1928 }} 2x"
+					media="(max-width: 991px)"
+				/>
+
+				<source
+					srcset="{{ desktop_image | image_url: width: 1199 }} 1x, {{ desktop_image | image_url: width: 2398 }} 2x"
+					media="(max-width: 1199px)"
+				/>
+
+				<source
+					srcset="{{ desktop_image | image_url: width: 1500 }} 1x, {{ desktop_image | image_url: width: 3000 }} 2x"
+					media="(max-width: 1500px)"
+				/>
+
+				<source
+					srcset="{{ desktop_image | image_url: width: 1600 }} 1x, {{ desktop_image | image_url: width: 3200 }} 2x"
+					media="(max-width: 1600px)"
+				/>
+
+				<source
+					srcset="{{ desktop_image | image_url: width: 1920 }} 1x, {{ desktop_image | image_url: width: 3840 }} 2x"
+					media="(max-width: 1920px)"
+				/>
+
+				<img
+					class="account-entrance__image need-animate"
+					srcset="{{ desktop_image | image_url: width: 2048 }} 1x, {{ desktop_image | image_url: width: 4096 }} 2x"
+					src="{{- desktop_image | image_url: width: 2048 -}}"
+					alt="{{- desktop_image.alt -}}"
+					style="{{- img_focal -}}"
+				/>
+			</picture>
+		{%- endif -%}
+
+		<div class="is-hidden js-recover-password-form" id="RecoverPasswordForm">
+			{%- form "recover_customer_password", class: account_entrance_form_class -%}
+				<div class="account-entrance__heading-wrapper">
+					<h2 id="recover-password-title" class="h2 account-entrance__subtitle" tabindex="-1">
+						{{- "customer.recover_password.title" | t -}}
+					</h2>
+
+					<p class="account-entrance__text">
+						{{- "customer.recover_password.subtext" | t -}}
+					</p>
+				</div>
+
+				{%- if form.errors -%}
+					{{- form.errors | default_errors -}}
+				{%- endif -%}
+
+				{%- if form.posted_successfully? -%}
+					<span class="is-hidden reset-password-success"></span>
+				{%- endif -%}
+
+				<div class="account-entrance__input-wrapper">
+					<label class="label-input label-input--required" for="RecoverEmail">
+						{{- "customer.login.email" | t -}}
+					</label>
+
+					<input
+						class="input account-entrance__input"
+						id="RecoverEmail"
+						name="email"
+						type="email"
+						autocapitalize="off"
+						placeholder="{{- 'customer.login.email_placeholder' | t -}}"
+						aria-label="{{- 'customer.login.email_aria_label' | t | escape -}}"
+						required
+					/>
+				</div>
+
+				<div class="account-entrance__buttons">
+					<button
+						class="button account-entrance__button button--secondary"
+						type="submit"
+					>
+						{{- 'customer.recover_password.submit' | t -}}
+					</button>
+
+					<a
+						class="button-link button-link--small account-entrance__link js-hide-recover-password-link"
+						href="#CustomerLoginForm"
+						aria-label="{{- 'customer.recover_password.cancel_aria_label' | t | escape -}}"
+					>
+						{{- "customer.recover_password.cancel" | t -}}
+					</a>
+				</div>
+			{%- endform -%}
+		</div>
+
+		<div class="js-customer-login-form" id="CustomerLoginForm">
+			{%- form "customer_login", class: account_entrance_form_class -%}
+				<div class="account-entrance__heading-wrapper">
+					<h1 id="login-title" class="account-entrance__heading h2" tabindex="-1">
+						{{- "customer.login.title" | t -}}
+					</h1>
+
+					<div class="is-hidden account-entrance__text js-reset-success">
+						{{- "customer.recover_password.success" | t -}}
+					</div>
+
+					{%- if form.errors -%}
+						<h2 class="account-entrance__error-title h5" tabindex="-1" autofocus>
+							<span class="visually-hidden">{{ 'general.accessibility.error' | t }}</span>
+
+							{{ 'general.accessibility.form_error_title' | t }}
+						</h2>
+
+						{{- form.errors | default_errors -}}
+					{%- endif -%}
+				</div>
+
+				<div class="account-entrance__input-wrapper">
+					<label class="label-input label-input--required" for="CustomerEmail">
+						{{- "customer.login.email" | t -}}
+					</label>
+
+					<input
+						class="input account-entrance__input"
+						id="CustomerEmail"
+						name="customer[email]"
+						type="email"
+						placeholder="{{- 'customer.login.email_placeholder' | t -}}"
+						autocapitalize="off"
+						aria-label="{{- 'customer.login.email_aria_label' | t | escape -}}"
+						required
+					/>
+				</div>
+
+				{%- if form.password_needed -%}
+					<div class="account-entrance__input-wrapper">
+						<label class="label-input label-input--required" for="CustomerPassword">
+							{{- "customer.login.password" | t -}}
+						</label>
+
+						<div class="account-entrance__password-wrapper">
+							<input
+								class="input account-entrance__input account-entrance__input--password js-input-password"
+								id="CustomerPassword"
+								name="customer[password]"
+								type="password"
+								aria-label="{{- 'customer.login.password_aria_label' | t | escape -}}"
+								placeholder="{{- 'customer.login.password_placeholder' | t -}}"
+								required
+								autocomplete="off"
+							/>
+
+							<button
+								class="focus-visible-outline account-entrance__password-icon js-show-password"
+								type="button"
+								aria-label="{{- 'customer.account.show_password' | t -}}"
+							>
+								<span class="account-entrance__password-icon-content">
+									{%- render "icons", icon: "view" -%}
+								</span>
+							</button>
+						</div>
+					</div>
+				{%- endif -%}
+
+				{%- if form.password_needed -%}
+					<a
+						class="account-entrance__link account-entrance__link--recover button-link-chevron button-link-chevron--small js-recover-password-link"
+						href="#RecoverPasswordForm"
+						aria-label="{{- 'customer.login.recover_aria_label' | t | escape -}}"
+					>
+						{{- "customer.login.recover_password" | t -}}
+
+						{% render 'icons', icon: 'arrow-right' %}
+					</a>
+				{%- endif -%}
+
+				<button
+					class="button account-entrance__button button--secondary"
+					type="submit"
+				>
+					{{- 'customer.login.sign_in' | t -}}
+				</button>
+
+				<div class="account-entrance__create">
+					<span class="account-entrance__new-customer">
+						{{- "customer.login.new_customer" | t -}}
+					</span>
+
+					<a
+						class="account-entrance__link button-link button-link--small"
+						href="{{- routes.account_register_url -}}"
+						aria-label="{{- 'customer.login.sign_up_aria_label' | t | escape -}}"
+					>
+						{{- "customer.login.signup" | t -}}
+					</a>
+				</div>
+			{%- endform -%}
+		</div>
+	</div>
+{%- endcapture -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+<section class="account-entrance js-animate">
+	{{- account_entrance_container -}}
+</section>
+
+{%- render 'adastra' with '/src/scripts/template-customers-login.js' -%}
+
+{% schema %}
+{
+	"name": "Login template",
+	"settings": [
+		{
+			"type": "image_picker",
+			"id": "desktop_image",
+			"label": "Image desktop"
+		},
+		{
+			"type": "image_picker",
+			"id": "mobile_image",
+			"label": "Image mobile"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	]
+}
+{%- endschema -%}

@@ -1,0 +1,119 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header brands
+	Render header brands
+	- menu: menu object;
+	- megamenu_object: megamenu object;
+	- show_filters: show filters;
+	- modifier: block modifier.
+
+	Usage:
+	{%- render 'header-brands' -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign show_symbol_filter 	= megamenu_object.settings.show_symbol_filter | default: false -%}
+{%- assign show_filters 		= show_filters | default: false -%}
+
+{%- if modifier != blank -%}
+	{%- assign brands_modifier 				= 'header-brands--' | append: modifier -%}
+	{%- assign brands_filter_modifier 		= 'header-brands-filter--' | append: modifier -%}
+	{%- assign brands_menu_modifier 		= 'header-brands-menu--' | append: modifier -%}
+	{%- assign brands_menu_simple_modifier 	= 'header-brands-menu-simple--' | append: modifier -%}
+{%- endif -%}
+
+{%- if show_filters -%}
+	{%- assign js_class = 'js-header-brands' -%}
+{%- endif -%}
+
+
+<div class="header-brands {{ js_class }} {{ brands_modifier -}}">
+	{%- if show_symbol_filter == true -%}
+		{%- assign sorted_menu = menu.links | sort: 'title' -%}
+		{%- assign first_symbols = '' -%}
+
+		{%- for link in sorted_menu -%}
+			{% assign first_symbol = link.title | slice: 0 %}
+
+			{%- assign first_symbols = first_symbols | append: first_symbol | append: " $$$ " -%}
+		{%- endfor -%}
+
+		{%- assign first_symbols = first_symbols | split: " $$$ " | uniq -%}
+
+		{%- if show_filters == true -%}
+			<div class="header-brands-filter {{ brands_filter_modifier -}}">
+				<ul class="header-brands-filter__items">
+					{%- for first_symbol in first_symbols -%}
+
+						<li class="header-brands-filter__item-wrapper">
+							<button
+								class="header-brands-filter__item js-header-brands-filter-button"
+								data-target="{{ forloop.index }}"
+								aria-label="{{- "layout.navigation.brands.filter_button_aria_label" | t: symbol: first_symbol | escape -}}"
+							>
+								{{ first_symbol }}
+							</button>
+						</li>
+					{%- endfor -%}
+				</ul>
+			</div>
+		{%- endif -%}
+
+		<div class="header-brands-menu {{ brands_menu_modifier -}}">
+			<div class="header-brands-menu__container">
+				<ul class="header-brands-menu__categories js-header-brands-categories">
+					{%- for first_symbol in first_symbols -%}
+						<li
+							class="header-brands-menu__category js-header-brands-category"
+							data-target="{{ forloop.index }}"
+						>
+							<span class="visually-hidden">
+								{{- "layout.navigation.brands.category_label" | t -}}:
+							</span>
+
+							<p class="header-brands-menu__heading">
+								{{ first_symbol }}
+							</p>
+
+							<ul class="header-brands-menu__items">
+								{%- for link in sorted_menu -%}
+									{%- assign menu_first_symbol = link.title | slice: 0 -%}
+
+									{%- if first_symbol == menu_first_symbol -%}
+										<li class="header-brands-menu__item-wrapper">
+											<a
+												href="{{- link.url -}}"
+												class="header-brands-menu__item"
+											>
+												{{ link.title }}
+											</a>
+										</li>
+									{%- endif -%}
+								{%- endfor -%}
+							</ul>
+						</li>
+					{%- endfor -%}
+				</ul>
+			</div>
+		</div>
+	{%- else -%}
+		{% assign sorted_menu = menu.links | sort: 'title' %}
+
+		<div class="header-brands-menu-simple {{ brands_menu_simple_modifier -}}">
+			<div class="header-brands-menu-simple__container">
+				<ul class="header-brands-menu-simple__items">
+					{%- for link in sorted_menu -%}
+						<li class="header-mega-menu-simple__item-wrapper">
+							<a
+								href="{{- link.url -}}"
+								class="header-mega-menu-simple__item"
+							>
+								{{ link.title }}
+							</a>
+						</li>
+					{%- endfor -%}
+				</ul>
+			</div>
+		</div>
+	{%- endif -%}
+</div>

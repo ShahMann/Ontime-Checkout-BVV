@@ -1,0 +1,465 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Section: Image with text(animations)
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/image-with-text-animations.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign heading                   = section.settings.heading -%}
+{%- assign heading_font_size_desktop = section.settings.heading_font_size_desktop | append: "px" -%}
+{%- assign heading_background_image  = section.settings.heading_background_image -%}
+{%- assign enable_heading_outline    = section.settings.enable_heading_outline -%}
+{%- assign subheading                = section.settings.subheading -%}
+{%- assign text                      = section.settings.text -%}
+{%- assign button_label              = section.settings.button_label -%}
+{%- assign button_aria_label         = section.settings.button_aria_label -%}
+{%- assign button_url                = section.settings.button_url -%}
+{%- assign button_style              = section.settings.button_style -%}
+{%- assign image                     = section.settings.image -%}
+{%- assign top_layer                 = section.settings.top_layer -%}
+{%- assign enable_animation          = section.settings.enable_animation -%}
+{%- assign heading_color             = section.settings.heading_color -%}
+{%- assign heading_outline           = section.settings.heading_outline -%}
+{%- assign heading_background        = section.settings.heading_background -%}
+{%- assign subheading_color          = section.settings.subheading_color -%}
+{%- assign text_color 		         = section.settings.text_color -%}
+{%- assign container                 = section.settings.container_width -%}
+{%- assign is_lazy 					 = false -%}
+
+{% if container == 'inherit' %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+{%- if section.index > 1 -%}
+	{%- assign is_lazy = true -%}
+{%- endif -%}
+
+{% if button_label != blank and button_url != blank %}
+	{%- assign is_button = true -%}
+{%- endif -%}
+
+{%- capture styles -%}
+	--container-width: {{ container_width }}; {{-  -}}
+	--heading-desktop-font-size: {{- heading_font_size_desktop -}}; {{-  -}}
+	--heading-background-image: url({{- heading_background_image | img_url: "2000x" -}}); {{-  -}}
+	--heading-color: {{- heading_color -}}; {{-  -}}
+	--heading-outline: {{- heading_outline -}}; {{-  -}}
+	--heading-background: {{- heading_background -}}; {{-  -}}
+	--subheading-color: {{- subheading_color -}}; {{-  -}}
+	--text-color: {{- text_color -}};
+{%- endcapture -%}
+
+<section
+	class="image-with-text-animations {% if section.index > 1 %}image-with-text-animations--delay{% endif %} {% if template == 'index' %}home-feature-shop-all{% endif %} {% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}{% if heading != blank and image != blank %} js-image-with-text-animations{% endif %} js-animate"
+	style="{{- styles -}}"
+	{%- if enable_animation -%}
+		data-enable-animation="true"
+	{%- endif -%}
+>
+	{%- if heading != blank or image != blank -%}
+		<div class="image-with-text-animations__main{% if heading != blank and image != blank %} js-image-with-text-animations-media-container{% endif %}">
+			{%- if heading != blank -%}
+				<div class="image-with-text-animations__heading-wrapper{% if top_layer == "heading" %} image-with-text-animations__heading-wrapper--top-layer{% endif %}">
+					<h2 class="image-with-text-animations__heading{% if heading_background_image %} image-with-text-animations__heading--background-image{% else %}{% if enable_heading_outline %} image-with-text-animations__heading--outline{% endif %}{% endif %}">
+						{{- heading -}}
+					</h2>
+				</div>
+			{%- endif -%}
+
+			{%- if image != blank -%}
+				{%- capture img_styles -%}
+					{%- if enable_animation -%}
+						top: 0; {{-  -}}
+						left: 0; {{-  -}}
+					{%- endif -%}
+					--img-pos: {{ image.presentation.focal_point }};
+				{%- endcapture -%}
+
+				<div class="image-with-text-animations__image-container{% if heading != blank %} image-with-text-animations__image-container--absolute{% endif %}{% if top_layer == "image" %} image-with-text-animations__image-container--top-layer{% endif %}">
+					{%- if is_lazy -%}
+						<picture class="lazy">
+							<source
+								data-srcset="{{ image | image_url: width: 200 }} 1x, {{ image | image_url: width: 400 }} 2x"
+								srcset="{{ image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+								media="(max-width: 375px)"
+								width="200"
+								height="141"
+							/>
+
+							<source
+								data-srcset="{{ image | image_url: width: 200 }} 1x, {{ image | image_url: width: 400 }} 2x"
+								srcset="{{ image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+								media="(max-width: 420px)"
+								width="200"
+								height="160"
+							/>
+
+							<source
+								data-srcset="{{ image | image_url: width: 300 }} 1x, {{ image | image_url: width: 600 }} 2x"
+								srcset="{{ image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+								media="(max-width: 767px)"
+								width="300"
+								height="245"
+							/>
+
+							<source
+								data-srcset="{{ image | image_url: width: 580 }} 1x, {{ image | image_url: width: 1160 }} 2x"
+								srcset="{{ image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+								media="(max-width: 991px)"
+								width="580"
+								height="426"
+							/>
+
+							<source
+								data-srcset="{{ image | image_url: width: 580 }} 1x, {{ image | image_url: width: 1160 }} 2x"
+								srcset="{{ image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+								media="(max-width: 1199px)"
+								width="580"
+								height="432"
+							/>
+
+							<img
+								class="image-with-text-animations__image{% if heading != blank and image != blank %} js-image-with-text-animations-image{% endif %}"
+								data-srcset="{{ image | image_url: width: 580 }} 1x, {{ image | image_url: width: 1160 }} 2x"
+								srcset="{{ image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+								data-src="{{ image | image_url: width: 580 }}"
+								src="{{ image | image_url: width: 10 }}"
+								alt="{{ image.alt }}"
+								width="580"
+								height="641"
+								style="{{- img_styles -}}"
+							/>
+						</picture>
+					{%- else -%}
+						<picture>
+							<source
+								srcset="{{ image | image_url: width: 200 }} 1x, {{ image | image_url: width: 400 }} 2x"
+								media="(max-width: 375px)"
+								width="200"
+								height="141"
+							/>
+
+							<source
+								srcset="{{ image | image_url: width: 200 }} 1x, {{ image | image_url: width: 400 }} 2x"
+								media="(max-width: 420px)"
+								width="200"
+								height="160"
+							/>
+
+							<source
+								srcset="{{ image | image_url: width: 300 }} 1x, {{ image | image_url: width: 600 }} 2x"
+								media="(max-width: 767px)"
+								width="300"
+								height="245"
+							/>
+
+							<source
+								srcset="{{ image | image_url: width: 580 }} 1x, {{ image | image_url: width: 1160 }} 2x"
+								media="(max-width: 991px)"
+								width="580"
+								height="426"
+							/>
+
+							<source
+								srcset="{{ image | image_url: width: 580 }} 1x, {{ image | image_url: width: 1160 }} 2x"
+								media="(max-width: 1199px)"
+								width="580"
+								height="432"
+							/>
+
+							<img
+								class="image-with-text-animations__image{% if heading != blank and image != blank %} js-image-with-text-animations-image{% endif %}"
+								srcset="{{ image | image_url: width: 580 }} 1x, {{ image | image_url: width: 1160 }} 2x"
+								src="{{ image | image_url: width: 580 }}"
+								alt="{{ image.alt }}"
+								width="580"
+								height="641"
+								style="{{- img_styles -}}"
+							/>
+						</picture>
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+		</div>
+	{%- endif -%}
+
+	{%- if subheading != blank or text != blank or is_button -%}
+		<div class="image-with-text-animations__content">
+			{%- if subheading != blank -%}
+				<p class="h2 image-with-text-animations__subheading">
+					{{- subheading -}}
+				</p>
+			{%- endif -%}
+
+			{%- if text != blank -%}
+				<p class="image-with-text-animations__text">
+					{{- text -}}
+				</p>
+			{%- endif -%}
+
+			{%- if button_label != blank and button_url != blank -%}
+				<a
+					class="image-with-text-animations__button button button--{{- button_style -}}"
+					href="{{- button_url -}}"
+					{%- if button_aria_label != blank -%}
+						aria-label="{{- button_aria_label | escape -}}"
+					{%- endif -%}
+				>
+					{{- button_label -}}
+				</a>
+			{%- endif -%}
+		</div>
+	{%- endif -%}
+</section>
+
+{%- if image != blank and heading != blank -%}
+	{%- render 'adastra' with '/src/scripts/section-image-with-text-animations.js' -%}
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Image with animated text",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "textarea",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Heading"
+		},
+		{
+			"type": "range",
+			"id": "heading_font_size_desktop",
+			"min": 100,
+			"max": 200,
+			"step": 1,
+			"unit": "px",
+			"label": "Heading desktop font size",
+			"default": 200
+		},
+		{
+			"type": "image_picker",
+			"id": "heading_background_image",
+			"label": "Heading background-image",
+			"info": "Choose the background image of the heading. 1920 x 1080px recommended"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_heading_outline",
+			"label": "Enable heading outline",
+			"default": false,
+			"info": "Does not function with a heading background image."
+		},
+		{
+			"type": "textarea",
+			"id": "subheading",
+			"label": "Subheading",
+			"default": "Subheading"
+		},
+		{
+			"type": "textarea",
+			"id": "text",
+			"label": "Text",
+			"default": "Text"
+		},
+		{
+			"type": "text",
+			"id": "button_label",
+			"label": "Button label",
+			"default": "Shop all"
+		},
+		{
+			"id": "button_aria_label",
+			"type": "text",
+			"label": "Button aria-label",
+			"info": "Essential for proper accessibility, write an explanation of where the button leads."
+		},
+		{
+			"id": "button_url",
+			"type": "url",
+			"label": "Button link"
+		},
+		{
+			"type": "select",
+			"id": "button_style",
+			"label": "Button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "primary-border",
+					"label": "Primary with border"
+				},
+				{
+					"value": "secondary-border",
+					"label": "Secondary with border"
+				}
+			],
+			"default": "secondary"
+		},
+		{
+			"type": "image_picker",
+			"id": "image",
+			"label": "Image",
+			"info": "1160 x 952px recommended"
+		},
+		{
+			"id": "top_layer",
+			"type": "select",
+			"label": "Top layer",
+			"options": [
+				{
+					"value": "image",
+					"label": "Image"
+				},
+				{
+					"value": "heading",
+					"label": "Heading"
+				}
+			],
+			"default": "image"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_animation",
+			"label": "Enable animation",
+			"default": false,
+			"info": "The animation is triggered on mouseover when the section includes both a heading and an image."
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "heading_color",
+			"label": "Heading",
+			"default": "#000"
+		},
+		{
+			"type": "color",
+			"id": "heading_outline",
+			"label": "Heading outline",
+			"default": "#fff"
+		},
+		{
+			"type": "color",
+			"id": "heading_background",
+			"label": "Heading background"
+		},
+		{
+			"type": "color",
+			"id": "subheading_color",
+			"label": "Subheading",
+			"default": "#000000"
+		},
+		{
+			"type": "color",
+			"id": "text_color",
+			"label": "Text",
+			"default": "#535353"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"presets": [
+		{
+			"name": "Image with animated text",
+			"settings": {}
+		}
+	]
+}
+{%- endschema -%}
+

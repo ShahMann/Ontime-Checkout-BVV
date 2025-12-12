@@ -1,0 +1,20 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Compare products button
+	- product: Product (required, product)
+	- additional_classes: Additional classes (optional, string)
+
+	{%- render 'compare-products-button', product: product, additional_classes: "product-card__compare-products-button"-%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+<button
+	class="compare-products-button {{ additional_classes }} is-hidden js-compare-products-button"
+	data-product-handle="{{- product.handle -}}"
+	data-product-title="{{- product.title | escape -}}"
+	aria-label="{{ 'products.compare_products.product_button_add' | t: product: product.title | escape }}"
+	type="button"
+>
+	{%- render 'icons', icon: 'compare' -%}
+	{%- render 'icons', icon: 'check' -%}
+</button>

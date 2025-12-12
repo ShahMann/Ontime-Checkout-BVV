@@ -1,0 +1,72 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product Badges
+  ---------------------------
+  Require: product.tags
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{% if is_preset %}
+	{% assign tags = 'label__new:primary,label__sale:secondary,label__top' | split: ',' %}
+{% else %}
+	{% assign tags = product.tags %}
+{% endif %}
+
+{% if tags.size > 0 or product.available == false %}
+	{%- capture styles -%}
+		--offset-top-desktop: {{ block.settings.offset_top_desktop }}px; {{-  -}}
+		--offset-bottom-desktop: {{ block.settings.offset_bottom_desktop }}px; {{-  -}}
+		--offset-top-mobile: {{ block.settings.offset_top_mobile }}px; {{-  -}}
+		--offset-bottom-mobile: {{ block.settings.offset_bottom_mobile }}px;
+	{%- endcapture -%}
+
+	<ul
+		class="product-badges"
+		style="{{- styles -}}"
+		aria-label="{{- 'products.product.product_labels' | t | escape -}}"
+	>
+		{%- unless product.available or is_preset -%}
+			<li	class="badge badge--sold-out">
+				<span class="visually-hidden">
+					{{- 'products.product.product_label' | t -}}:
+				</span>
+
+				{{- "products.product.sold_out" | t -}}
+			</li>
+		{%- endunless -%}
+
+		{%- assign tag_index = 1 -%}
+
+		{%- for tag in tags -%}
+			{%- if tag contains 'label__' -%}
+				{%- assign class = 'badge' -%}
+
+				{%- if tag contains ':primary' -%}
+					{%- assign class = class | append: " badge--primary" | strip -%}
+				{%- elsif tag contains ':secondary' -%}
+					{%- assign class = class | append: " badge--secondary" | strip -%}
+				{%- endif -%}
+
+				{%- assign clipped_tag = tag
+					| remove: 'label__'
+					| remove: ':primary'
+					| remove: ':secondary'
+				-%}
+
+				<li	class="{{ class }}">
+					<span class="visually-hidden">
+						{{- 'products.product.product_label' | t -}}:
+					</span>
+
+					{{- clipped_tag -}}
+				</li>
+
+				{%- assign tag_index = tag_index | plus: 1 -%}
+
+				{%- if tag_index > 3 -%}
+					{%- break -%}
+				{%- endif -%}
+			{%- endif -%}
+		{%- endfor -%}
+	</ul>
+{% endif %}

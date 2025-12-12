@@ -1,0 +1,48 @@
+{% comment %}
+------------------------------------------------------------------------------
+Snippet: Product combination
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{% assign option_name 				= block.settings.option_name %}
+{% assign option_value_metafield 	= block.settings.option_value_metafield %}
+{% assign product_list 				= block.settings.product_list %}
+{% assign global_product 			= product %}
+
+{%- capture styles -%}
+	--offset-top-desktop: {{ block.settings.offset_top_desktop }}px; {{-  -}}
+	--offset-bottom-desktop: {{ block.settings.offset_bottom_desktop }}px; {{-  -}}
+	--offset-top-mobile: {{ block.settings.offset_top_mobile }}px; {{-  -}}
+	--offset-bottom-mobile: {{ block.settings.offset_bottom_mobile }}px;
+{%- endcapture -%}
+
+{% if product_list.count > 0 %}
+	<div class="product-combination" style="{{- styles -}}">
+		{% if option_name != blank and option_value_metafield != blank %}
+			<div class="product-combination__label">{{ option_name }}: <span class="product-combination__label-value">{{ option_value_metafield }}</span></div>
+		{% endif %}
+
+		<div class="product-combination__list">
+			{% for combination_product in product_list %}
+				{% assign active_class = "" %}
+
+				{% if global_product.handle == combination_product.handle %}
+					{% assign active_class = "product-combination__swatch--active" %}
+				{% endif %}
+
+				<a href="{{ combination_product.url }}"
+				   class="product-combination__swatch focus-visible-outline {{ active_class }}"
+				>
+					{% if combination_product.featured_image != blank %}
+						<img class="product-combination__image"
+							 src="{{ combination_product.featured_image | image_url: width: 70 }}"
+							 srcset="{{ combination_product.featured_image | image_url: width: 70 }} 1x, {{ combination_product.featured_image | image_url: width: 140 }} 2x"
+							 alt="{{ combination_product.featured_image.alt | escape }}"
+							 loading="lazy"
+						>
+					{% endif %}
+				</a>
+			{% endfor %}
+		</div>
+	</div>
+{% endif %}

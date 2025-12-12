@@ -1,0 +1,85 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Product gallery image
+	This snippet will output main image on product page
+
+	- image: image object (optional, object),
+	- is_lazy: is lazy load enable (optional, default: true, boolean)
+	- show_play_icon: show play icon on poster (optional, default: true, boolean)
+
+	{%- render "product-gallery-image", image: image, is_lazy: is_lazy, show_play_icon: show_play_icon -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- if image -%}
+	<div class="product-media__thumbnail-poster">
+		{%- if is_lazy -%}
+			<picture class="lazy">
+				<source
+					data-srcset="{{- image | img_url: '80x' }} 1x, {{ image | img_url: '160x' }} 2x"
+					srcset="{{- image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+					media="(max-width: 1440px)"
+					width="80"
+					height="80"
+				>
+
+				<img
+					class="product-media__image"
+					data-srcset="{{- image | img_url: '108x' }} 1x, {{ image | img_url: '216x' }} 2x"
+					data-src="{{- image | img_url: '108x' }}"
+					srcset="{{- image | img_url: '10x' -}}"
+					src="{{- image | img_url: '10x' -}}"
+					alt="{{- image.alt -}}"
+					width="108"
+					height="108"
+				>
+			</picture>
+
+			<noscript>
+				<picture>
+					<source
+						srcset="{{- image | img_url: '80x' }} 1x, {{ image | img_url: '160x' }} 2x"
+						media="(max-width: 1440px)"
+						width="80"
+						height="80"
+					>
+
+					<img
+						class="product-media__image"
+						srcset="{{- image | img_url: '108x' -}} 1x, {{- image | img_url: '216x' -}} 1x"
+						src="{{- image | img_url: '108x' -}}"
+						alt="{{- image.alt -}}"
+						width="108"
+						height="108"
+					>
+				</picture>
+			</noscript>
+		{%- else -%}
+			<picture>
+				<source
+					srcset="{{- image | img_url: '80x' }} 1x, {{ image | img_url: '160x' }} 2x"
+					media="(max-width: 1440px)"
+					width="80"
+					height="80"
+				>
+
+				<img
+					class="product-media__image"
+					srcset="{{- image | img_url: '108x' -}} 1x, {{- image | img_url: '216x' -}} 2x"
+					src="{{- image | img_url: '108x' -}}"
+					alt="{{- image.alt -}}"
+					width="80"
+					height="80"
+				>
+			</picture>
+		{%- endif -%}
+
+		<span class="product-media__thumbnail-poster-icon">
+			{%- if media_type == 'model' -%}
+				{%- render 'icons', icon: 'model' -%}
+			{%- else -%}
+				{%- render 'icons', icon: 'product-play' -%}
+			{%- endif -%}
+		</span>
+	</div>
+{% endif %}

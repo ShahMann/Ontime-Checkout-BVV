@@ -1,0 +1,425 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Cart items
+	Render items in the shopping cart
+	- is_drawer: Boolean, is a drawer layout
+
+	Usage:
+	{%- render 'cart-items' -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{% if template == "cart" and is_shipping_enabled == nil %}
+	{%- assign item_modifier = "cart-item--without-border" -%}
+{%- endif -%}
+
+{%- unless cart.empty? -%}
+	{%- for item in cart.items -%}
+		{%- assign image     = item.image | default: settings.product_default_image -%}
+		{%- assign title     = item.product.title -%}
+		{%- assign variant   = item.variant -%}
+		{%- assign volume_pricing_array = variant.quantity_price_breaks | sort: 'quantity' | reverse -%}
+		{%- assign has_quantity_rules	= true -%}
+		{%- capture img_focal -%}{%- endcapture -%}
+
+		{%- if variant.quantity_rule.increment < 2 and variant.quantity_rule.min < 2 and variant.quantity_rule.max == null -%}
+			{%- assign has_quantity_rules = false -%}
+		{%- endif -%}
+
+		{% if image == settings.product_default_image %}
+			{%- capture img_focal -%}
+				--img-desktop-pos: {{ settings.product_default_image.presentation.focal_point }};
+			{%- endcapture -%}
+		{% endif %}
+
+		{%- capture discounts -%}
+			{%- for discount in item.line_level_discount_allocations -%}
+				<li class="discounts__item cart-item__discount">
+					{% render 'icons', icon: 'discount' %}
+
+					{{ discount.discount_application.title }}
+				</li>
+			{%- endfor -%}
+		{%- endcapture -%}
+
+		{%- capture properties -%}
+			{%- for property in item.properties -%}
+				{%- assign property_first_char = property.first | slice: 0 -%}
+
+				{%- if property.last != blank and property_first_char != '_' -%}
+					<div class="cart-item__option cart-item__option--flex">
+						<dt class="cart-item__option-label">{{ property.first }}: </dt>
+
+						<dd>
+							{%- if property.last contains '/uploads/' -%}
+								<a href="{{- property.last -}}" class="link" target="_blank" rel="nofollow">
+									{{- property.last | split: '/' | last -}}
+								</a>
+							{%- else -%}
+								{{- property.last -}}
+							{%- endif -%}
+						</dd>
+					</div>
+				{%- endif -%}
+			{%- endfor -%}
+		{%- endcapture -%}
+
+		{%- capture quantity_rules -%}
+			{%- if volume_pricing_array.size > 0 or has_quantity_rules -%}
+				<div class="popover-container cart-item__quantity-rules no-js-hidden js-popover-container">
+					<button class="focus-visible-outline cart-item__quantity-rules-button js-popover-button" type="button" aria-expanded="false">
+						{%- if volume_pricing_array.size > 0 -%}
+							{{- "cart.general.volume_pricing_available" | t -}}
+						{%- else -%}
+							{{- "cart.general.view_quantity_rules" | t -}}
+						{%- endif -%}
+					</button>
+
+					<div class="popover cart-item__popover js-popover-content">
+						<button class="focus-visible-outline popover__button js-popover-button" type="button" aria-label="{{- 'general.accessibility.close' | t -}}">
+							{% render 'icons', icon: 'close' %}
+						</button>
+
+						<div class="popover__content">
+							{%- if has_quantity_rules -%}
+								<div class="product__quantity-rules">
+									{%- unless variant.quantity_rule.increment < 1 -%}
+										<span class="product__quantity-rules-item">
+											<span class="js-product-quantity-rule-increment-val">{{ 'products.product.increments_of' | t: number: variant.quantity_rule.increment }}</span>
+										</span>
+									{%- endunless -%}
+
+									{%- unless variant.quantity_rule.min < 1 -%}
+										<span class="product__quantity-rules-item">
+											<span class="js-product-quantity-rule-min-val">{{ 'products.product.minimum_of' | t: number: variant.quantity_rule.min }}</span>
+										</span>
+									{%- endunless -%}
+
+									{%- unless variant.quantity_rule.max == null -%}
+										<span class="product__quantity-rules-item">
+											<span class="js-product-quantity-rule-max-val">{{ 'products.product.maximum_of' | t: number: variant.quantity_rule.max }}</span>
+										</span>
+									{%- endunless -%}
+								</div>
+							{%- endif -%}
+
+							{%- if volume_pricing_array.size > 0 -%}
+								<div class="product-volume-pricing">
+									<p class="product-volume-pricing__title">{{ 'products.product.volume_pricing.title' | t }}</p>
+									<ul class="product-volume-pricing__list">
+										<li class="product-volume-pricing__list-item">
+											<span>{{ variant.quantity_rule.min }}+</span>
+											{%- assign price = variant.price | money_with_currency -%}
+											<span data-text="{{ 'products.product.volume_pricing.price_at_each' | t: price: price }}">{{ price }}/ea</span>
+										</li>
+										{%- for price_break in variant.quantity_price_breaks -%}
+											{%- assign price_break_price = price_break.price | money_with_currency -%}
+											<li class="product-volume-pricing__list-item">
+												<span>{{ price_break.minimum_quantity }}<span aria-hidden="true">+</span></span>
+												<span data-text="{{ 'products.product.volume_pricing.price_at_each' | t: price: price_break_price }}">{{ price_break_price }}/ea</span>
+											</li>
+										{%- endfor -%}
+									</ul>
+								</div>
+							{%- endif -%}
+						</div>
+					</div>
+				</div>
+			{%- endif -%}
+		{%- endcapture -%}
+
+		{%- assign is_discounted = false -%}
+
+		{%- if item.original_line_price != item.final_line_price -%}
+			{%- assign is_discounted = true -%}
+		{%- endif -%}
+
+		<div
+			class="cart-item{% if forloop.last %} {{ item_modifier }}{% endif %}"
+			id="CartItem-{{- item.index | plus: 1 -}}"
+			data-index="{{- item.index | plus: 1 -}}"
+			data-cart-item="{{- item.key -}}"
+		>
+			<div class="cart-item__media">
+				<a href="{{ item.url }}" class="cart-item__image-container focus-visible-outline {% if image == blank %}cart-item__image-container--placeholder{% endif %}">
+					{% if image != blank %}
+						<picture class="lazy">
+							<source data-srcset="{{ image | image_url: width: 80, height: 80  }} 1x,
+												{{ image | image_url: width: 160, height: 160 }} 2x"
+									media="(max-width: 991px)"
+							>
+
+							<img
+								class="cart-item__image"
+								src="{{ image | image_url: width: 10 }}"
+								data-src="{{ image | image_url: width: 100, height: 100 }}"
+								data-srcset="{{ image | image_url: width: 100, height: 100  }} 1x, {{ image | image_url: width: 200, height: 200 }} 2x"
+								width="100"
+								height="100"
+								alt="{{- image.alt | escape -}}"
+								{% if img_focal != blank %}
+									style="{{ img_focal }}"
+								{% endif %}
+							/>
+						</picture>
+
+						<noscript>
+							<picture>
+								<img
+									class="cart-item__image"
+									srcset="{{ image | image_url: width: 100, height: 100  }} 1x, {{ image | image_url: width: 200, height: 200 }} 2x"
+									src="{{- image | image_url: width: 100  -}}"
+									alt="{{- image.alt | escape -}}"
+									loading="lazy"
+									width="100"
+									height="100"
+									{% if img_focal != blank %}
+										style="{{ img_focal }}"
+									{% endif %}
+								/>
+							</picture>
+						</noscript>
+					{% endif %}
+				</a>
+			</div>
+
+			<div class="cart-item__content">
+				<div class="cart-item__row">
+					<div class="cart-item__details">
+						{%- if settings.show_vendor -%}
+							<p class="cart-item__details-text cart-item__details-text--small">
+								{{- item.product.vendor -}}
+							</p>
+						{%- endif -%}
+
+						<div class="cart-item__heading">
+							<a href="{{- item.url -}}" class="focus-visible-outline cart-item__details-title">
+								{{- title | escape -}}
+							</a>
+
+
+							<a
+								href="{{- item.url_to_remove -}}"
+								class="focus-visible-outline cart-item__cta {% if template == 'cart' %}cart-item__cta--mobile{% endif %} js-cart-item-remove"
+								id="Remove-{{- item.index | plus: 1 -}}"
+								aria-label="{{- 'cart.general.remove' | t | escape -}}"
+								data-index="{{- item.index | plus: 1 -}}"
+								data-item-key="{{- item.key -}}"
+							>
+								{% render 'icons', icon: 'trash' %}
+							</a>
+						</div>
+
+						{%- unless item.product.has_only_default_variant -%}
+							<p class="cart-item__details-text">
+								{{- variant.title -}}
+							</p>
+						{%- endunless -%}
+
+						{%- if item.selling_plan_allocation != nil -%}
+							<p class="cart-item__option cart-item__option--italic">
+								{{- item.selling_plan_allocation.selling_plan.name -}}
+							</p>
+						{%- endif -%}
+
+						{%- if properties != '' -%}
+							<dl>
+								{{- properties -}}
+							</dl>
+						{%- endif -%}
+
+						{%- if discounts != '' -%}
+							<ul class="discounts cart-item__discounts" role="list" aria-label="{{ 'customer.order.discount' | t | escape }}">
+								{{- discounts -}}
+							</ul>
+						{%- endif -%}
+					</div>
+
+					{% if template == "cart" %}
+						<div class="cart-item__summary {% if variant.available and item.unit_price_measurement %} cart-item__summary--with-unit{% endif %}{% if is_discounted %} cart-item__summary--discounted{% endif %}">
+							{%- if item.original_price != item.final_price -%}
+								<div class="cart-item__price-varies cart-item__price-single qwe">
+									<span class="visually-hidden">
+										{{- 'products.product.sale_price' | t -}}
+									</span>
+
+									<strong class="cart-item__price cart-item__price--new">
+										{{- item.final_price | money -}}
+									</strong>
+
+									<span class="visually-hidden">
+										{{- 'products.product.regular_price' | t -}}
+									</span>
+
+									<s class="cart-item__price cart-item__price--old">
+										{{- item.original_price | money -}}
+									</s>
+								</div>
+							{%- else -%}
+								<div class="cart-item__price cart-item__price-single">
+									{{- item.original_price | money -}}
+								</div>
+							{%- endif -%}
+
+							<div class="cart-item__price-total">
+								{%- if is_discounted -%}
+									<div class="cart-item__price-varies">
+										<span class="visually-hidden">
+											{{- 'products.product.sale_price' | t -}}
+										</span>
+
+										<span class="cart-item__price cart-item__price--new">
+											{{- item.final_line_price | money -}}
+										</span>
+
+										<span class="visually-hidden">
+											{{ 'products.product.regular_price' | t }}
+										</span>
+
+										<s class="cart-item__price cart-item__price--old">
+											{{- item.original_line_price | money -}}
+										</s>
+									</div>
+								{%- else -%}
+									<div class="cart-item__price">
+										{{- item.original_line_price | money -}}
+									</div>
+								{%- endif -%}
+
+								{%- if variant.available and item.unit_price_measurement -%}
+									<small class="unit-price caption">
+										<span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+
+										{{ variant.unit_price | money }}
+
+										<span aria-hidden="true">/</span>
+
+										{%- if variant.unit_price_measurement.reference_value != 1 -%}
+											{{- variant.unit_price_measurement.reference_value -}}
+										{%- endif -%}
+
+										{{ variant.unit_price_measurement.reference_unit }}
+									</small>
+								{%- endif -%}
+							</div>
+						</div>
+					{% endif %}
+
+					<div class="cart-item__actions">
+						<div class="cart-item__quantity">
+							<div class="cart-item__quantity-wrapper">
+								<label class="visually-hidden" for="Quantity-{{- item.index | plus: 1 -}}">
+									{{- 'products.quantity.label' | t -}}
+								</label>
+
+								<div class="quantity js-quantity">
+									<button
+										class="focus-visible-outline quantity__button"
+										name="minus"
+										type="button"
+										data-quantity-decrease
+										aria-label="{{ 'products.quantity.decrease' | t: product: title | escape }}"
+									>
+										{% render 'icons', icon: 'minus' %}
+									</button>
+
+									<input
+										class="focus-visible-outline quantity__input"
+										id="Quantity-{{- item.index | plus: 1 -}}"
+										type="number"
+										name="updates[]"
+										pattern="[0-9]*"
+										value="{{- item.quantity -}}"
+										min="{{ item.variant.quantity_rule.min }}"
+										max="{{ item.variant.quantity_rule.max }}"
+										step="{{ item.variant.quantity_rule.increment }}"
+										data-index="{{- item.index | plus: 1 -}}"
+										data-item-key="{{- item.key -}}"
+										data-quantity-input
+										aria-label="{{ 'products.quantity.input_label' | t: product: title | escape }}"
+									/>
+
+									<button
+										class="focus-visible-outline quantity__button{% if max_inventory_added %} disabled{% endif %}"
+										name="plus"
+										type="button"
+										data-quantity-increase
+										aria-label="{{ 'products.quantity.increase' | t: product: title | escape }}"
+									>
+										{% render 'icons', icon: 'plus' %}
+									</button>
+								</div>
+							</div>
+
+							{%- unless is_drawer -%}
+								{{- quantity_rules -}}
+							{%- endunless -%}
+						</div>
+
+						<div class="cart-item__prices">
+							{%- if is_discounted -%}
+								<div class="cart-item__price-varies">
+									<span class="visually-hidden">
+										{{- 'products.product.sale_price' | t -}}
+									</span>
+
+									<span class="cart-item__price cart-item__price--new">
+										{{- item.final_line_price | money -}}
+									</span>
+
+									<span class="visually-hidden">
+										{{ 'products.product.regular_price' | t }}
+									</span>
+
+									<s class="cart-item__price cart-item__price--old">
+										{{- item.original_line_price | money -}}
+									</s>
+								</div>
+							{%- else -%}
+								<div class="cart-item__price">
+									{{- item.original_line_price | money -}}
+								</div>
+							{%- endif -%}
+
+							{%- if variant.available and item.unit_price_measurement -%}
+								<small class="unit-price caption">
+									<span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+
+									{{ variant.unit_price | money }}
+
+									<span aria-hidden="true">/</span>
+
+									{%- if variant.unit_price_measurement.reference_value != 1 -%}
+										{{- variant.unit_price_measurement.reference_value -}}
+									{%- endif -%}
+
+									{{ variant.unit_price_measurement.reference_unit }}
+								</small>
+							{%- endif -%}
+						</div>
+
+						{% if template == 'cart' %}
+							<a
+								href="{{- item.url_to_remove -}}"
+								class="focus-visible-outline cart-item__cta cart-item__cta--desktop js-cart-item-remove"
+								aria-label="{{- 'cart.general.remove' | t | escape -}}"
+								data-index="{{- item.index | plus: 1 -}}"
+								data-item-key="{{- item.key -}}"
+							>
+								{% render 'icons', icon: 'trash' %}
+							</a>
+						{% endif %}
+					</div>
+
+					{%- if is_drawer -%}
+						{{- quantity_rules -}}
+					{%- endif -%}
+				</div>
+
+				<div class="cart-item__error js-cart-item-error" id="LineItemError-{{ item.index | plus: 1 }}" role="alert">
+					<small class="cart-item__error-text js-cart-item-error-message"></small>
+				</div>
+			</div>
+		</div>
+	{%- endfor -%}
+{%- endunless -%}

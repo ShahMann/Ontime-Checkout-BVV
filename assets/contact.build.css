@@ -1,0 +1,266 @@
+.contact .contact__aspect-ratio {
+  position: relative;
+  padding-top: 72%;
+}
+.contact .contact__aspect-ratio:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background: var(--banner-overlay-color);
+}
+.contact .contact__aspect-ratio .contact__banner-image {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--banner-img-mob-pos);
+}
+.contact .contact__title {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.contact .contact__banner-title {
+  z-index: 3;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--banner-heading-color);
+}
+.contact .contact__content-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: var(--container-width);
+  margin: 33px auto 69px;
+  padding: 0 16px;
+  gap: 52px;
+}
+.contact .contact__info-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.contact .contact__info-subheading {
+  margin-top: 16px;
+  color: var(--color-text-secondary);
+}
+.contact .contact__info-socials-wrapper {
+  margin-top: 38px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.contact .contact__info-social-text {
+  color: var(--color-text-secondary);
+  word-break: break-word;
+}
+.contact .contact__info-items {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+  gap: 24px;
+}
+.contact .contact__info-item {
+  display: flex;
+  gap: 16px;
+}
+.contact .contact__info-item-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  word-break: break-word;
+}
+.contact .contact__info-item-heading {
+  font-size: calc(var(--body-font-size) * 0.875);
+  color: var(--color-text-secondary);
+}
+.contact .contact__info-item-text {
+  font-size: calc(var(--body-font-size) * 1.125);
+  font-weight: 600;
+  line-height: 1.33;
+}
+.contact .contact__form {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  width: 100%;
+  margin: auto;
+  row-gap: 48px;
+  text-align: center;
+}
+.contact .contact__form-rte {
+  width: 100%;
+  margin-top: 24px;
+}
+.contact .contact__form-submitted-title {
+  margin-top: 20px;
+  font-weight: 400;
+}
+.contact .contact__form-fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 16px;
+}
+.contact .contact__form-fields-row {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 16px;
+}
+.contact .contact__field {
+  width: 100%;
+  text-align: start;
+}
+.contact .contact__fields-col {
+  width: 100%;
+}
+.contact .contact__input-error {
+  display: block;
+  margin-top: 5px;
+}
+.contact .contact__submit {
+  align-self: start;
+}
+.contact .contact__map-container {
+  width: 100%;
+  margin: 0 auto;
+}
+.contact .contact__map-container + .contact__form {
+  margin-top: 48px;
+}
+.contact .contact__map-link-image-wrapper,
+.contact .contact__map-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  opacity: 0;
+  padding-top: 74.33%;
+}
+.contact .contact__map-link-image-wrapper.animated,
+.contact .contact__map-wrapper.animated {
+  opacity: 1;
+  transition-property: opacity;
+  transition-duration: var(--animate-time);
+}
+.contact .contact__map-link-image-wrapper:focus-visible,
+.contact .contact__map-wrapper:focus-visible {
+  outline: 2px solid black;
+  outline-offset: 2px;
+}
+html.no-js .contact .contact__map-link-image-wrapper, html.no-js .contact .contact__map-wrapper {
+  opacity: 1;
+}
+.contact .contact__map-image,
+.contact .contact__map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--img-mob-pos);
+  transition-timing-function: ease-out;
+  transition-property: transform, opacity;
+  transition-duration: var(--animate-img-scale);
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+  .contact .contact__map-link-image-wrapper-hover:hover .contact__map-image {
+    transform: scale(1.1);
+  }
+}
+.contact .contact__content-image-wrapper {
+  position: relative;
+  padding-top: 99.126%;
+}
+.contact .contact__content-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.contact .contact__form-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 48px;
+  max-width: 832px;
+  margin-top: 48px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 16px;
+  text-align: center;
+}
+@media (min-width: 481px) {
+  .contact .contact__map-link-image-wrapper,
+  .contact .contact__map-wrapper {
+    padding-top: 60%;
+  }
+}
+@media (min-width: 576px) {
+  .contact .contact__aspect-ratio {
+    padding-top: 23.81%;
+    min-height: 400px;
+  }
+  .contact .contact__aspect-ratio .contact__banner-image {
+    object-position: var(--banner-img-desktop-pos);
+  }
+  .contact .contact__map-image {
+    object-position: var(--img-desktop-pos);
+  }
+}
+@media (min-width: 768px) {
+  .contact .contact__map-link-image-wrapper,
+  .contact .contact__map-wrapper {
+    padding-top: 45%;
+  }
+}
+@media (min-width: 992px) {
+  .contact .contact__title {
+    margin-bottom: 64px;
+  }
+  .contact .contact__info-items {
+    margin-top: 32px;
+  }
+  .contact .contact__content-wrapper {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 89px auto 100px;
+  }
+  .contact .contact__info-wrapper {
+    width: calc(40.715% - 26px);
+  }
+  .contact .contact__info-socials-wrapper {
+    margin-top: 48px;
+  }
+  .contact .contact__form {
+    width: calc(59.245% - 26px);
+    max-width: none;
+    margin: 0;
+    row-gap: 64px;
+  }
+  .contact .contact__map-container + .contact__form {
+    margin-top: 64px;
+  }
+  .contact .contact__map-link-image-wrapper,
+  .contact .contact__map-wrapper {
+    padding-top: 28.53%;
+  }
+  .contact .contact__content-image-wrapper {
+    padding-top: 110%;
+  }
+  .contact .contact__form-fields-row {
+    flex-direction: row;
+  }
+  .contact .contact__field {
+    margin-bottom: 0;
+  }
+}

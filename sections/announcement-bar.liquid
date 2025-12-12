@@ -1,0 +1,1898 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Announcement bar
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign layout 							= section.settings.layout -%}
+{%- assign show_close_button 				= section.settings.show_close_button -%}
+{%- assign background_image 				= section.settings.background_image -%}
+{%- assign background_image_type 			= section.settings.background_image_type -%}
+{%- assign additional_menu 					= section.settings.additional_menu -%}
+{%- assign additional_phone 				= section.settings.additional_phone -%}
+{%- assign autoplay_speed 		  			= section.settings.autoplay_speed | times: 1000 -%}
+{%- assign enable_autoplay 		  			= section.settings.enable_autoplay -%}
+{%- assign text_content_desktop 			= section.settings.text_content_desktop -%}
+{%- assign text_content_mobile 				= section.settings.text_content_mobile | default: text_content_desktop -%}
+
+{%- assign text_desktop 					= section.settings.text_desktop -%}
+{%- assign text_mobile 						= section.settings.text_mobile | default: text_desktop -%}
+{%- assign timer_year 						= section.settings.timer_year -%}
+{%- assign timer_month 						= section.settings.timer_month -%}
+{%- assign timer_day 						= section.settings.timer_day -%}
+{%- assign timer_hour 						= section.settings.timer_hour -%}
+{%- assign timer_timezone 					= section.settings.timer_timezone -%}
+{%- assign button_text 						= section.settings.button_text -%}
+{%- assign button_link 						= section.settings.button_link -%}
+
+{%- assign ticker_hide_bullets 				= section.settings.ticker_hide_bullets -%}
+{%- assign ticker_text 						= section.settings.ticker_text -%}
+{%- assign ticker_desktop_movement_speed 	= section.settings.desktop_movement_speed -%}
+{%- assign ticker_mobile_movement_speed 	= section.settings.mobile_movement_speed -%}
+
+{%- assign background_color 				= section.settings.background_color -%}
+{%- assign text_color 						= section.settings.text_color -%}
+{%- assign timer_text_color					= section.settings.timer_text_color -%}
+{%- assign arrow_color 						= section.settings.arrow_color -%}
+{%- assign link_color 						= section.settings.link_color -%}
+{%- assign button_color 					= section.settings.button_color -%}
+{%- assign button_background 				= section.settings.button_background -%}
+{%- assign button_border 					= section.settings.button_border -%}
+{%- assign button_cross_color 				= section.settings.button_cross_color -%}
+{%- assign button_color_hover 				= section.settings.button_color_hover -%}
+{%- assign button_background_hover 			= section.settings.button_background_hover -%}
+{%- assign button_border_hover 				= section.settings.button_border_hover -%}
+{%- assign button_cross_hover 				= section.settings.button_cross_hover -%}
+
+{% assign show_additional_info 				= false %}
+{% assign show_additional_phone 			= false %}
+{% assign use_slider 						= false %}
+
+{% if section.blocks.size > 0 %}
+	{% assign use_slider = true %}
+{% endif %}
+
+{% if linklists[additional_menu].links.size > 0 %}
+	{% if layout != 'ticker' %}
+		{% assign show_additional_info = true %}
+	{% endif %}
+{% endif %}
+
+{% if additional_phone != blank %}
+	{% if layout != 'ticker' %}
+		{% assign show_additional_phone = true %}
+	{% endif %}
+{% endif %}
+
+{%- if background_image_type == "cover" -%}
+	{%- assign img_size = "1920x" -%}
+{%- else -%}
+	{%- assign img_size = "200x" -%}
+{%- endif -%}
+
+{%- capture section_styles -%}
+	--background-color: {{- background_color -}}; {{-  -}}
+	--text-color: {{- text_color -}}; {{-  -}}
+	--timer-text-color: {{- timer_text_color -}}; {{-  -}}
+	--arrow-color: {{- arrow_color -}}; {{-  -}}
+	--bar-link-color: {{- link_color -}}; {{-  -}}
+	--button-color: {{- button_color -}}; {{-  -}}
+	--button-background: {{- button_background -}}; {{-  -}}
+	--button-border: {{- button_border -}}; {{-  -}}
+	--button-cross-color: {{- button_cross_color -}}; {{-  -}}
+	--button-color-hover: {{- button_color_hover -}}; {{-  -}}
+	--button-background-hover: {{- button_background_hover -}}; {{-  -}}
+	--button-border-hover: {{- button_border_hover -}}; {{-  -}}
+	--button-cross-hover: {{- button_cross_hover -}}; {{-  -}}
+	--desktop-movement-speed: {{- ticker_desktop_movement_speed -}}s; {{-  -}}
+	--desktop-negative-movement-speed: -{{- ticker_desktop_movement_speed -}}s; {{-  -}}
+	--mobile-movement-speed: {{ ticker_mobile_movement_speed }}s; {{-  -}}
+	--mobile-negative-movement-speed: -{{ ticker_mobile_movement_speed }}s; {{-  -}}
+	{%- if background_image != blank -%}
+	--bg-image: url('{{- background_image | img_url: img_size -}}'); {{-  -}}
+	--bg-image-pos: {{ background_image.presentation.focal_point }};
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- capture announcement_bar_simple_text -%}
+	{%- if text_content_desktop != blank -%}
+		<div class="announcement-bar__text announcement-bar__text--desktop rte">
+			{{- text_content_desktop -}}
+		</div>
+
+		<div class="announcement-bar__text announcement-bar__text--mobile rte">
+			{{- text_content_mobile -}}
+		</div>
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- capture timer -%}
+	{%- if timer_year != blank and timer_month != blank and timer_day != blank and timer_hour != blank -%}
+		<p class="announcement-bar__timer js-timer" role="timer" aria-live="off">
+			<script class="js-timer-settings" type="application/json">
+				{
+					"year": {{- timer_year | json -}},
+					"month": {{- timer_month | json -}},
+					"day": {{- timer_day | json -}},
+					"hour": {{- timer_hour | json -}},
+					"timezone": {{- timer_timezone | json -}}
+				}
+			</script>
+
+			<span class="announcement-bar__timer-value is-hidden js-timer-days-hundreds">0</span>
+
+			<span class="announcement-bar__timer-value js-timer-days-dozens">0</span>
+
+			<span class="announcement-bar__timer-value js-timer-days-units">0</span>
+
+			<span>:</span>
+
+			<span class="announcement-bar__timer-value js-timer-hours-dozens">0</span>
+
+			<span class="announcement-bar__timer-value js-timer-hours-units">0</span>
+
+			<span>:</span>
+
+			<span class="announcement-bar__timer-value js-timer-minutes-dozens">0</span>
+
+			<span class="announcement-bar__timer-value js-timer-minutes-units">0</span>
+
+			<span>:</span>
+
+			<span class="announcement-bar__timer-value js-timer-seconds-dozens">0</span>
+
+			<span class="announcement-bar__timer-value js-timer-seconds-units">0</span>
+		</p>
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- capture announcement_bar_countdown_timer -%}
+	{%- if text_desktop != blank or timer != blank -%}
+		<div class="announcement-bar__text-content-wrapper">
+			{%- if text_desktop != blank -%}
+				<p class="announcement-bar__text announcement-bar__text--desktop">
+					{{- text_desktop -}}
+				</p>
+
+				<p class="announcement-bar__text announcement-bar__text--mobile">
+					{{- text_mobile -}}
+				</p>
+			{%- endif -%}
+
+			{%- if timer != blank -%}
+				{{- timer -}}
+			{%- endif -%}
+
+			{%- if button_link != blank and button_text != blank -%}
+				<a class="button button--secondary announcement-bar__link" href="{{- button_link -}}">
+					{{- button_text -}}
+				</a>
+			{%- endif -%}
+		</div>
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- capture ticker_content -%}
+	{% if ticker_text != blank %}
+		<div class="announcement-bar__ticker js-announcement-bar-ticker-container is-loading">
+			<div class="announcement-bar__text announcement-bar__ticker-item {% if ticker_hide_bullets %}announcement-bar__ticker-item--hide-bullets{% endif %} rte js-ticker-content-container">
+				{{- ticker_text -}}
+			</div>
+		</div>
+	{% endif %}
+{%- endcapture -%}
+
+{%- if use_slider -%}
+	{%- capture slider_content -%}
+		<div class="announcement-bar__slider-wrapper">
+			<button class="swiper-button-prev js-announcement-swiper-button-prev">
+				{%- render 'icons', icon: 'arrow-left' -%}
+			</button>
+
+			<div class="announcement-bar__slider swiper js-announcement-bar-slider"
+				 data-autoplay="{{ enable_autoplay }}"
+				 data-autoplay-speed="{{ autoplay_speed }}"
+			>
+				<div class="swiper-wrapper">
+					{% for block in section.blocks %}
+						{% assign slide_layout 			= block.settings.slider_layout %}
+						{% assign text_slider_desktop 	= block.settings.text_slider_desktop %}
+						{% assign text_slider_mobile 	= block.settings.text_slider_mobile | default: text_slider_desktop %}
+
+						<div class="swiper-slide">
+							{% if slide_layout == 'simple_text' %}
+								<div class="announcement-bar__text announcement-bar__text--desktop rte">{{ text_slider_desktop }}</div>
+								<div class="announcement-bar__text announcement-bar__text--mobile rte">{{ text_slider_mobile }}</div>
+							{% else %}
+								{% assign text_slider_timer_desktop = block.settings.text_slider_timer_desktop %}
+								{% assign text_slider_timer_mobile 	= block.settings.text_slider_timer_mobile | default: text_slider_timer_desktop %}
+								{% assign slider_timer_year 		= block.settings.slider_timer_year %}
+								{% assign slider_timer_month 		= block.settings.slider_timer_month %}
+								{% assign slider_timer_day 			= block.settings.slider_timer_day %}
+								{% assign slider_timer_hour 		= block.settings.slider_timer_hour %}
+								{% assign slider_timer_timezone 	= block.settings.slider_timer_timezone %}
+								{% assign slider_button_text 		= block.settings.slider_button_text %}
+								{% assign slider_button_link 		= block.settings.slider_button_link %}
+
+								{% if slider_timer_year != blank and slider_timer_month != blank and slider_timer_day != blank and slider_timer_hour != blank %}
+									<div class="announcement-bar__text-content-wrapper">
+										{%- if text_slider_timer_desktop != blank -%}
+											<p class="announcement-bar__text announcement-bar__text--desktop">
+												{{- text_slider_timer_desktop -}}
+											</p>
+
+											<p class="announcement-bar__text announcement-bar__text--mobile">
+												{{- text_slider_timer_mobile -}}
+											</p>
+										{%- endif -%}
+
+										<p class="announcement-bar__timer js-timer" role="timer" aria-live="off">
+											<script class="js-timer-settings" type="application/json">
+										{
+											"year": {{- slider_timer_year | json -}},
+											"month": {{- slider_timer_month | json -}},
+											"day": {{- slider_timer_day | json -}},
+											"hour": {{- slider_timer_hour | json -}},
+											"timezone": {{- slider_timer_timezone | json -}}
+										}
+									</script>
+
+											<span class="announcement-bar__timer-value is-hidden js-timer-days-hundreds">0</span>
+
+											<span class="announcement-bar__timer-value js-timer-days-dozens">0</span>
+
+											<span class="announcement-bar__timer-value js-timer-days-units">0</span>
+
+											<span>:</span>
+
+											<span class="announcement-bar__timer-value js-timer-hours-dozens">0</span>
+
+											<span class="announcement-bar__timer-value js-timer-hours-units">0</span>
+
+											<span>:</span>
+
+											<span class="announcement-bar__timer-value js-timer-minutes-dozens">0</span>
+
+											<span class="announcement-bar__timer-value js-timer-minutes-units">0</span>
+
+											<span>:</span>
+
+											<span class="announcement-bar__timer-value js-timer-seconds-dozens">0</span>
+
+											<span class="announcement-bar__timer-value js-timer-seconds-units">0</span>
+										</p>
+
+										{%- if slider_button_link != blank and slider_button_text != blank -%}
+											<a class="button button--secondary announcement-bar__link" href="{{- slider_button_link -}}">
+												{{- slider_button_text -}}
+											</a>
+										{%- endif -%}
+									</div>
+								{% endif %}
+							{% endif %}
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+
+			<button class="swiper-button-next js-announcement-swiper-button-next">
+				{%- render 'icons', icon: 'arrow-right' -%}
+			</button>
+		</div>
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- capture announcement_bar -%}
+	{%- case layout -%}
+		{%- when 'simple_text' -%}
+			{%- if announcement_bar_simple_text != blank -%}
+				{{- announcement_bar_simple_text -}}
+			{%- endif -%}
+		{%- when 'countdown_timer' -%}
+			{%- if announcement_bar_countdown_timer != blank -%}
+				{{- announcement_bar_countdown_timer -}}
+			{%- endif -%}
+		{%- when 'ticker' -%}
+			{%- if ticker_content != blank -%}
+				{{ ticker_content }}
+			{%- endif -%}
+	{%- endcase -%}
+{%- endcapture -%}
+
+{%- if announcement_bar != blank or slider_content != blank -%}
+	{% comment %}
+		Critical css
+	{% endcomment %}
+	<style>
+		.announcement-bar {
+			--animateEnd: -50%;
+			position: relative;
+			min-height: 48px;
+			display: flex;
+			padding: 12px 0;
+			background-color: var(--background-color);
+		}
+		.announcement-bar.announcement-bar--with-image {
+			background-image: var(--bg-image);
+			background-position: var(--bg-image-pos);
+		}
+		.announcement-bar.announcement-bar--bg-repeat {
+			background-repeat: repeat;
+		}
+		.announcement-bar.announcement-bar--bg-cover {
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		.announcement-bar.is-hidden {
+			display: none;
+		}
+		.announcement-bar .announcement-bar__content {
+			position: relative;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			padding-left: 45px;
+			padding-right: 45px;
+		}
+		.announcement-bar .announcement-bar__content.announcement-bar__content--no-close-btn {
+			padding-left: 16px;
+			padding-right: 16px;
+		}
+
+		.announcement-bar .announcement-bar__ticker {
+			width: calc(100% + 56px * 2);
+			position: relative;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			overflow: hidden;
+			margin-left: -56px;
+			margin-right: -56px;
+		}
+
+		.announcement-bar .announcement-bar__content.announcement-bar__content--ticker {
+			justify-content: flex-start;
+		}
+
+		.announcement-bar .announcement-bar__text-content-wrapper {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+			gap: 16px;
+		}
+		.announcement-bar .announcement-bar__slider-wrapper {
+			position: relative;
+			width: 100%;
+			max-width: 600px;
+			padding: 0 25px;
+		}
+		.announcement-bar .announcement-bar__slider {
+			text-align: center;
+		}
+		.announcement-bar .swiper-button-prev,
+		.announcement-bar .swiper-button-next {
+			width: 24px;
+			height: 24px;
+			margin: 0;
+			padding: 0;
+			transform: translateY(-50%);
+			color: var(--arrow-color);
+		}
+
+		.announcement-bar .swiper-button-prev:focus-visible,
+		.announcement-bar .swiper-button-next:focus-visible {
+			outline: 2px solid currentColor;
+		}
+
+		.announcement-bar .swiper-button-prev::after,
+		.announcement-bar .swiper-button-next::after {
+			display: none;
+		}
+		.announcement-bar .swiper-button-prev {
+			inset-inline-start: 0;
+			inset-inline-end: auto;
+		}
+		.announcement-bar .swiper-button-next {
+			inset-inline-start: auto;
+			inset-inline-end: 0;
+		}
+		.announcement-bar .announcement-bar__text {
+			font-size: calc(var(--body-font-size) * 0.875);
+			font-weight: 600;
+			line-height: 1.285;
+			text-align: center;
+			color: var(--timer-text-color, #000000);
+		}
+
+		.announcement-bar .announcement-bar__text p,
+		.announcement-bar .announcement-bar__text h1,
+		.announcement-bar .announcement-bar__text h2,
+		.announcement-bar .announcement-bar__text h3,
+		.announcement-bar .announcement-bar__text h4,
+		.announcement-bar .announcement-bar__text h5,
+		.announcement-bar .announcement-bar__text h6 {
+			margin-bottom: 0;
+			word-break: break-word;
+			color: var(--text-color, #000000);
+		}
+
+		.announcement-bar .announcement-bar__text li {
+			color: var(--text-color, #000000);
+		}
+
+		.announcement-bar .announcement-bar__text p {
+			word-break: break-word;
+			-webkit-transform: translate3d(0, 0, 0);
+		}
+		.announcement-bar .announcement-bar__text p + * {
+			margin-top: 5px;
+		}
+
+		.announcement-bar .announcement-bar__text * + p {
+			margin-top: 5px;
+		}
+		.announcement-bar .announcement-bar__text a {
+			color: var(--bar-link-color, #000000);
+		}
+		.announcement-bar .announcement-bar__text a:focus-visible {
+			outline: 2px solid var(--bar-link-color, #000000);
+		}
+		.announcement-bar .announcement-bar__text.announcement-bar__text--desktop {
+			display: none;
+		}
+		.announcement-bar .announcement-bar__timer {
+			flex-shrink: 0;
+			font-size: calc(var(--body-font-size) * 0.875);
+			font-weight: 600;
+			line-height: 1.285;
+			color: var(--text-color, #000000);
+		}
+		.announcement-bar .announcement-bar__timer-value {
+			display: inline-block;
+			min-width: 0.7em;
+		}
+		.announcement-bar .announcement-bar__timer-value.is-hidden {
+			display: none;
+		}
+		.announcement-bar .announcement-bar__link {
+			display: inline-block;
+			flex-shrink: 0;
+			margin-left: 11px;
+			padding: 7px 16px;
+			border: 2px solid var(--button-border, #000000);
+			font-size: calc(var(--body-font-size) * 0.875);
+			line-height: 1.28;
+			text-decoration: none;
+			color: var(--button-color, #ffffff);
+			min-width: 80px;
+		}
+		@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+			.announcement-bar .announcement-bar__link:hover {
+				border-color: var(--button-border-hover, #757575);
+				color: var(--button-color-hover, #000000);
+			}
+		}
+		.announcement-bar .announcement-bar__link::before {
+			background-color: var(--button-background, #000000);
+		}
+		.announcement-bar .announcement-bar__link::after {
+			background-color: var(--button-background-hover, #757575);
+		}
+		.announcement-bar .announcement-bar__extra-col {
+			display: none;
+			align-items: center;
+			flex: 0 1 25%;
+			padding-right: 15px;
+		}
+		.announcement-bar .announcement-bar__extra-col.announcement-bar__extra-col--phone {
+			justify-content: flex-end;
+			flex-shrink: 0;
+			padding-left: 15px;
+			padding-right: 0;
+		}
+		.announcement-bar .announcement-bar__menu {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 32px;
+			row-gap: 16px;
+		}
+		.announcement-bar .announcement-bar__menu-link {
+			font-size: calc(var(--body-font-size) * 0.875);
+			font-weight: 400;
+			line-height: 1.285;
+			-webkit-text-decoration-color: transparent;
+			text-decoration-color: transparent;
+			color: var(--bar-link-color, #000000);
+			transition-property: -webkit-text-decoration-color;
+			transition-property: text-decoration-color;
+			transition-duration: var(--timing-base);
+		}
+		.announcement-bar .announcement-bar__menu-link:focus-visible {
+			outline: 2px solid var(--bar-link-color, #000000);
+		}
+		@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+			.announcement-bar .announcement-bar__menu-link:hover {
+				-webkit-text-decoration-color: var(--bar-link-color, #000000);
+				text-decoration-color: var(--bar-link-color, #000000);
+			}
+		}
+		.announcement-bar .announcement-bar__button-close {
+			position: absolute;
+			top: 50%;
+			right: 16px;
+			width: 24px;
+			height: 24px;
+			margin: 0;
+			padding: 0;
+			color: var(--button-cross-color, #000000);
+			transform: translateY(-50%);
+			transition-property: color;
+			transition-duration: var(--timing-base);
+		}
+
+		.announcement-bar .announcement-bar__button-close .icon {
+			width: 100%;
+			height: 100%;
+		}
+
+		.announcement-bar .announcement-bar__button-close:focus-visible {
+			outline: 2px solid var(--button-cross-color, #000000);
+			outline-offset: 2px;
+		}
+
+		@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+			.announcement-bar .announcement-bar__button-close:hover {
+				color: var(--button-cross-hover);
+			}
+		}
+
+		.announcement-bar .announcement-bar__ticker-item {
+			display: inline-flex;
+			align-items: center;
+			white-space: nowrap;
+			will-change: transform;
+			opacity: 0;
+			transition-property: opacity;
+			transition-duration: var(--timing-base);
+		}
+
+		.announcement-bar .announcement-bar__ticker-item p,
+		.announcement-bar .announcement-bar__ticker-item ol,
+		.announcement-bar .announcement-bar__ticker-item ul,
+		.announcement-bar .announcement-bar__ticker-item h1,
+		.announcement-bar .announcement-bar__ticker-item h2,
+		.announcement-bar .announcement-bar__ticker-item h3,
+		.announcement-bar .announcement-bar__ticker-item h4,
+		.announcement-bar .announcement-bar__ticker-item h5,
+		.announcement-bar .announcement-bar__ticker-item h6 {
+			position: relative;
+			display: inline-flex;
+			gap: 0.3em;
+			margin: 0;
+			padding: 0 22px;
+		}
+
+		.announcement-bar .announcement-bar__ticker-item p::after,
+		.announcement-bar .announcement-bar__ticker-item ol::after,
+		.announcement-bar .announcement-bar__ticker-item ul::after,
+		.announcement-bar .announcement-bar__ticker-item h1::after,
+		.announcement-bar .announcement-bar__ticker-item h2::after,
+		.announcement-bar .announcement-bar__ticker-item h3::after,
+		.announcement-bar .announcement-bar__ticker-item h4::after,
+		.announcement-bar .announcement-bar__ticker-item h5::after,
+		.announcement-bar .announcement-bar__ticker-item h6::after {
+			content: "";
+			position: absolute;
+			top: 50%;
+			right: 0;
+			display: block;
+			width: 4px;
+			height: 4px;
+			border-radius: 50%;
+			background-color: var(--text-color);
+			transform: translate(50%, -50%);
+		}
+
+		.announcement-bar .announcement-bar__ticker-item.announcement-bar__ticker-item--hide-bullets p::after,
+		.announcement-bar .announcement-bar__ticker-item.announcement-bar__ticker-item--hide-bullets ol::after,
+		.announcement-bar .announcement-bar__ticker-item.announcement-bar__ticker-item--hide-bullets ul::after,
+		.announcement-bar .announcement-bar__ticker-item.announcement-bar__ticker-item--hide-bullets h1::after,
+		.announcement-bar .announcement-bar__ticker-item.announcement-bar__ticker-item--hide-bullets h2::after,
+		.announcement-bar .announcement-bar__ticker-item.announcement-bar__ticker-item--hide-bullets h3::after,
+		.announcement-bar .announcement-bar__ticker-item.announcement-bar__ticker-item--hide-bullets h4::after,
+		.announcement-bar .announcement-bar__ticker-item.announcement-bar__ticker-item--hide-bullets h5::after,
+		.announcement-bar .announcement-bar__ticker-item.announcement-bar__ticker-item--hide-bullets h6::after {
+			display: none;
+		}
+
+		.announcement-bar .announcement-bar__ticker-item.after-hidden p:last-child::after,
+		.announcement-bar .announcement-bar__ticker-item.after-hidden ul:last-child::after {
+			 display: none;
+		 }
+
+		.announcement-bar .announcement-bar__content {
+			overflow: hidden;
+		}
+
+		.announcement-bar .announcement-bar__ticker:not(.is-loading) .announcement-bar__ticker-item {
+			opacity: 1;
+			animation-name: animate;
+			animation-duration: var(--mobile-movement-speed);
+			animation-timing-function: linear;
+			animation-delay: var(--mobile-negative-movement-speed);
+			animation-iteration-count: infinite;
+		}
+
+		.announcement-bar__ticker-item:focus-within {
+			animation-play-state: paused !important;
+		}
+
+		@media (max-width: 767.98px) {
+			.announcement-bar__text-content-wrapper {
+				text-align: center;
+			}
+		}
+
+		@media (min-width: 768px) {
+			.announcement-bar .announcement-bar__content {
+				justify-content: center;
+			}
+			.announcement-bar .announcement-bar__text-content-wrapper {
+				flex-direction: row;
+				align-items: center;
+			}
+			.announcement-bar .announcement-bar__extra-col + .announcement-bar__text-content-wrapper {
+				flex-shrink: 0;
+			}
+			.announcement-bar .announcement-bar__text.announcement-bar__text--desktop {
+				display: block;
+			}
+			.announcement-bar .announcement-bar__text.announcement-bar__text--mobile {
+				display: none;
+			}
+		}
+
+		@media (min-width: 1200px) {
+			.announcement-bar {
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.announcement-bar .announcement-bar__content {
+				padding-left: 55px;
+				padding-right: 55px;
+			}
+			.announcement-bar .announcement-bar__content.announcement-bar__content--multi-cols {
+				justify-content: space-between;
+				padding-left: 64px;
+				padding-right: 64px;
+			}
+			.announcement-bar .announcement-bar__extra-col {
+				display: flex;
+			}
+			.announcement-bar .announcement-bar__ticker:not(.is-loading) .announcement-bar__ticker-item {
+				animation-duration: var(--desktop-movement-speed);
+				animation-delay: var(--desktop-negative-movement-speed);
+			}
+		}
+
+		@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+			.announcement-bar__content--ticker:hover .announcement-bar__ticker-item,
+			.announcement-bar__content--ticker:hover .announcement-bar__ticker-item:nth-child(2) {
+				animation-play-state: paused !important;
+			}
+		}
+
+		body.rtl .announcement-bar {
+			--animateEnd: 50%;
+		}
+
+		@keyframes animate {
+			0% {
+				transform: translateX(0%);
+			}
+
+			100% {
+				transform: translateX(var(--animateEnd));
+			}
+		}
+	</style>
+
+	{%- capture announcement_bar_classes -%}
+		announcement-bar js-announcement-bar is-hidden announcement-bar--bg-{{- background_image_type -}} {{-  -}}
+		{% if background_image != blank %} announcement-bar--with-image {%- endif -%}
+	{%- endcapture -%}
+
+	<section class="{{- announcement_bar_classes | strip_newlines -}}" style="{{- section_styles | strip_newlines -}}">
+		<div class="announcement-bar__content{% if show_additional_info or show_additional_phone %} announcement-bar__content--multi-cols{% endif %}{% if show_close_button == false %} announcement-bar__content--no-close-btn{% endif %}{% if layout == 'ticker' and use_slider == false %} announcement-bar__content--ticker{% endif %}">
+			{% if show_additional_info %}
+				<div class="announcement-bar__extra-col">
+					{% if linklists[additional_menu].links.size > 0 %}
+						<ul class="announcement-bar__menu">
+							{% for link in linklists[additional_menu].links limit: 3 %}
+								<li><a href="{{ link.url }}" class="announcement-bar__menu-link">{{ link.title }}</a></li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			{% if use_slider %}
+				{{- slider_content -}}
+			{% else %}
+				{{- announcement_bar -}}
+			{% endif %}
+
+			{% if show_additional_phone %}
+				<div class="announcement-bar__extra-col announcement-bar__extra-col--phone">
+					<a href="tel:{{ additional_phone }}" class="announcement-bar__menu-link">
+						{{ additional_phone }}
+					</a>
+				</div>
+			{% endif %}
+
+			{% if show_close_button %}
+				<button class="announcement-bar__button-close js-bar-closer"
+						aria-label="{{ 'general.accessibility.close_announcement_bar' | t | escape }}"
+						type="button">
+					{% render 'icons', icon: 'close-circle' %}
+				</button>
+			{% endif %}
+		</div>
+	</section>
+
+	{% if section.blocks.size > 1 %}
+		{%- render 'adastra' with '/src/scripts/component-swiper-modules.js' -%}
+	{% endif %}
+
+	{%- render 'adastra' with '/src/scripts/section-announcement-bar.js' -%}
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Announcement bar",
+	"settings": [
+		{
+			"type": "header",
+			"content": "General",
+			"info": "Add blocks to the sections to display a carousel."
+		},
+		{
+			"type": "select",
+			"id": "layout",
+			"label": "Layout",
+			"options": [
+				{
+					"value": "simple_text",
+					"label": "Simple text"
+				},
+				{
+					"value": "countdown_timer",
+					"label": "Countdown timer"
+				},
+				{
+					"value": "ticker",
+					"label": "Ticker"
+				}
+			],
+			"default": "simple_text"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_close_button",
+			"label": "Show close button",
+			"default": true
+		},
+		{
+			"type": "image_picker",
+			"id": "background_image",
+			"label": "Background image",
+			"info": "1920 x 150px recommended"
+		},
+		{
+			"type": "select",
+			"id": "background_image_type",
+			"label": "Background image type",
+			"options": [
+				{
+					"value": "repeat",
+					"label": "Repeat"
+				},
+				{
+					"value": "cover",
+					"label": "Stretch"
+				}
+			],
+			"default": "cover"
+		},
+		{
+			"type": "text",
+			"id": "additional_phone",
+			"label": "Additional phone",
+			"info": "Works only with 'Simple text', 'Countdown timer' layout on the desktop"
+		},
+		{
+			"type": "link_list",
+			"id": "additional_menu",
+			"label": "Additional menu",
+			"info": "Visible only on desktop, this feature displays just the first three menu links and is compatible only with the 'Simple text' and 'Countdown timer' layouts on desktop."
+		},
+		{
+			"type": "header",
+			"content": "Slideshow",
+			"info": "The slideshow will work if 'Text slide' blocks are added to the section."
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_autoplay",
+			"label": "Enable autoplay",
+			"default": true
+		},
+		{
+			"type": "range",
+			"id": "autoplay_speed",
+			"label": "Autoplay speed",
+			"unit": "s",
+			"min": 3,
+			"max": 10,
+			"step": 1,
+			"info": "Works only with enabled autoplay",
+			"default": 5
+		},
+		{
+			"type": "header",
+			"content": "Simple text"
+		},
+		{
+			"type": "richtext",
+			"id": "text_content_desktop",
+			"label": "Text desktop",
+			"default": "<p>Announcement bar text</p>"
+		},
+		{
+			"type": "richtext",
+			"id": "text_content_mobile",
+			"label": "Text mobile",
+			"info": "If the field is empty, then the desktop text will be used"
+		},
+		{
+			"type": "header",
+			"content": "Countdown timer"
+		},
+		{
+			"type": "textarea",
+			"id": "text_desktop",
+			"label": "Text desktop",
+			"default": "Set the date for the timer"
+		},
+		{
+			"type": "textarea",
+			"id": "text_mobile",
+			"label": "Text mobile",
+			"info": "If the field is empty, then the desktop text will be used"
+		},
+		{
+			"type": "number",
+			"id": "timer_year",
+			"label": "Year",
+			"info": "The year should be in this format: 2024"
+		},
+		{
+			"type": "select",
+			"id": "timer_month",
+			"label": "Month",
+			"options": [
+				{
+					"value": "0",
+					"label": "Jan"
+				},
+				{
+					"value": "1",
+					"label": "Feb"
+				},
+				{
+					"value": "2",
+					"label": "Mar"
+				},
+				{
+					"value": "3",
+					"label": "Apr"
+				},
+				{
+					"value": "4",
+					"label": "May"
+				},
+				{
+					"value": "5",
+					"label": "Jun"
+				},
+				{
+					"value": "6",
+					"label": "Jul"
+				},
+				{
+					"value": "7",
+					"label": "Aug"
+				},
+				{
+					"value": "8",
+					"label": "Sep"
+				},
+				{
+					"value": "9",
+					"label": "Oct"
+				},
+				{
+					"value": "10",
+					"label": "Nov"
+				},
+				{
+					"value": "11",
+					"label": "Dec"
+				}
+			],
+			"default": "0"
+		},
+		{
+			"type": "select",
+			"id": "timer_day",
+			"label": "Day",
+			"options": [
+				{
+					"value": "1",
+					"label": "1"
+				},
+				{
+					"value": "2",
+					"label": "2"
+				},
+				{
+					"value": "3",
+					"label": "3"
+				},
+				{
+					"value": "4",
+					"label": "4"
+				},
+				{
+					"value": "5",
+					"label": "5"
+				},
+				{
+					"value": "6",
+					"label": "6"
+				},
+				{
+					"value": "7",
+					"label": "7"
+				},
+				{
+					"value": "8",
+					"label": "8"
+				},
+				{
+					"value": "9",
+					"label": "9"
+				},
+				{
+					"value": "10",
+					"label": "10"
+				},
+				{
+					"value": "11",
+					"label": "11"
+				},
+				{
+					"value": "12",
+					"label": "12"
+				},
+				{
+					"value": "13",
+					"label": "13"
+				},
+				{
+					"value": "14",
+					"label": "14"
+				},
+				{
+					"value": "15",
+					"label": "15"
+				},
+				{
+					"value": "16",
+					"label": "16"
+				},
+				{
+					"value": "17",
+					"label": "17"
+				},
+				{
+					"value": "18",
+					"label": "18"
+				},
+				{
+					"value": "19",
+					"label": "19"
+				},
+				{
+					"value": "20",
+					"label": "20"
+				},
+				{
+					"value": "21",
+					"label": "21"
+				},
+				{
+					"value": "22",
+					"label": "22"
+				},
+				{
+					"value": "23",
+					"label": "23"
+				},
+				{
+					"value": "24",
+					"label": "24"
+				},
+				{
+					"value": "25",
+					"label": "25"
+				},
+				{
+					"value": "26",
+					"label": "26"
+				},
+				{
+					"value": "27",
+					"label": "27"
+				},
+				{
+					"value": "28",
+					"label": "28"
+				},
+				{
+					"value": "29",
+					"label": "29"
+				},
+				{
+					"value": "30",
+					"label": "30"
+				},
+				{
+					"value": "31",
+					"label": "31"
+				}
+			],
+			"default": "1"
+		},
+		{
+			"type": "select",
+			"id": "timer_hour",
+			"label": "Hour",
+			"options": [
+				{
+					"value": "0",
+					"label": "0"
+				},
+				{
+					"value": "1",
+					"label": "1"
+				},
+				{
+					"value": "2",
+					"label": "2"
+				},
+				{
+					"value": "3",
+					"label": "3"
+				},
+				{
+					"value": "4",
+					"label": "4"
+				},
+				{
+					"value": "5",
+					"label": "5"
+				},
+				{
+					"value": "6",
+					"label": "6"
+				},
+				{
+					"value": "7",
+					"label": "7"
+				},
+				{
+					"value": "8",
+					"label": "8"
+				},
+				{
+					"value": "9",
+					"label": "9"
+				},
+				{
+					"value": "10",
+					"label": "10"
+				},
+				{
+					"value": "11",
+					"label": "11"
+				},
+				{
+					"value": "12",
+					"label": "12"
+				},
+				{
+					"value": "13",
+					"label": "13"
+				},
+				{
+					"value": "14",
+					"label": "14"
+				},
+				{
+					"value": "15",
+					"label": "15"
+				},
+				{
+					"value": "16",
+					"label": "16"
+				},
+				{
+					"value": "17",
+					"label": "17"
+				},
+				{
+					"value": "18",
+					"label": "18"
+				},
+				{
+					"value": "19",
+					"label": "19"
+				},
+				{
+					"value": "20",
+					"label": "20"
+				},
+				{
+					"value": "21",
+					"label": "21"
+				},
+				{
+					"value": "22",
+					"label": "22"
+				},
+				{
+					"value": "23",
+					"label": "23"
+				}
+			],
+			"default": "0"
+		},
+		{
+			"type": "select",
+			"id": "timer_timezone",
+			"label": "Timezone",
+			"options": [
+				{
+					"value": "+0",
+					"label": "GMT"
+				},
+				{
+					"value": "+1",
+					"label": "GMT+1:00"
+				},
+				{
+					"value": "+2",
+					"label": "GMT+2:00"
+				},
+				{
+					"value": "+3",
+					"label": "GMT+3:00"
+				},
+				{
+					"value": "+3.5",
+					"label": "GMT+3:30"
+				},
+				{
+					"value": "+4",
+					"label": "GMT+4:00"
+				},
+				{
+					"value": "+5",
+					"label": "GMT+5:00"
+				},
+				{
+					"value": "+5.5",
+					"label": "GMT+5:30"
+				},
+				{
+					"value": "+6",
+					"label": "GMT+6:00"
+				},
+				{
+					"value": "+7",
+					"label": "GMT+7:00"
+				},
+				{
+					"value": "+8",
+					"label": "GMT+8:00"
+				},
+				{
+					"value": "+9",
+					"label": "GMT+9:00"
+				},
+				{
+					"value": "+9.5",
+					"label": "GMT+9:30"
+				},
+				{
+					"value": "+10",
+					"label": "GMT+10:00"
+				},
+				{
+					"value": "+11",
+					"label": "GMT+11:00"
+				},
+				{
+					"value": "+12",
+					"label": "GMT+12:00"
+				},
+				{
+					"value": "-11",
+					"label": "GMT-11:00"
+				},
+				{
+					"value": "-10",
+					"label": "GMT-10:00"
+				},
+				{
+					"value": "-9",
+					"label": "GMT-9:00"
+				},
+				{
+					"value": "-8",
+					"label": "GMT-8:00"
+				},
+				{
+					"value": "-7",
+					"label": "GMT-7:00"
+				},
+				{
+					"value": "-6",
+					"label": "GMT-6:00"
+				},
+				{
+					"value": "-5",
+					"label": "GMT-5:00"
+				},
+				{
+					"value": "-4",
+					"label": "GMT-4:00"
+				},
+				{
+					"value": "-3.5",
+					"label": "GMT-3:30"
+				},
+				{
+					"value": "-3",
+					"label": "GMT-3:00"
+				},
+				{
+					"value": "-1",
+					"label": "GMT-1:00"
+				}
+			],
+			"default": "+0"
+		},
+		{
+			"type": "text",
+			"id": "button_text",
+			"label": "Button label"
+		},
+		{
+			"type": "url",
+			"id": "button_link",
+			"label": "Button link"
+		},
+		{
+			"type": "header",
+			"content": "Ticker"
+		},
+		{
+			"type": "checkbox",
+			"id": "ticker_hide_bullets",
+			"label": "Hide bullets",
+			"default": false
+		},
+		{
+			"type": "richtext",
+			"id": "ticker_text",
+			"label": "Text",
+			"default": "<p>Announcement bar text</p><p>Announcement bar text</p><p>Announcement bar text</p>"
+		},
+		{
+			"type": "range",
+			"id": "desktop_movement_speed",
+			"label": "Movement speed (desktop)",
+			"min": 5,
+			"max": 100,
+			"unit": "s",
+			"default": 20
+		},
+		{
+			"type": "range",
+			"id": "mobile_movement_speed",
+			"label": "Movement speed (mobile)",
+			"min": 5,
+			"max": 100,
+			"unit": "s",
+			"default": 35
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "background_color",
+			"label": "Background",
+			"default": "#4D71F9"
+		},
+		{
+			"type": "color",
+			"id": "text_color",
+			"label": "Text",
+			"default": "#fff"
+		},
+		{
+			"type": "color",
+			"id": "timer_text_color",
+			"label": "Timer text",
+			"default": "#000000"
+		},
+		{
+			"type": "color_background",
+			"id": "arrow_color",
+			"label": "Arrow",
+			"default": "#FFFFFF4D"
+		},
+		{
+			"type": "color",
+			"id": "link_color",
+			"label": "Link",
+			"default": "#000000"
+		},
+		{
+			"type": "color",
+			"id": "button_color",
+			"label": "Button label",
+			"default": "#FFFFFF"
+		},
+		{
+			"type": "color",
+			"id": "button_background",
+			"label": "Button background",
+			"default": "#000000"
+		},
+		{
+			"type": "color",
+			"id": "button_border",
+			"label": "Button border",
+			"default": "#000000"
+		},
+		{
+			"type": "color",
+			"id": "button_color_hover",
+			"label": "Button label (hover)",
+			"default": "#000000"
+		},
+		{
+			"type": "color",
+			"id": "button_background_hover",
+			"label": "Button background (hover)",
+			"default": "#757575"
+		},
+		{
+			"type": "color",
+			"id": "button_border_hover",
+			"label": "Button border (hover)",
+			"default": "#757575"
+		},
+		{
+			"type": "color",
+			"id": "button_cross_color",
+			"label": "Button close",
+			"default": "#fff"
+		},
+		{
+			"type": "color",
+			"id": "button_cross_hover",
+			"label": "Button close (hover)",
+			"default": "#000"
+		}
+	],
+	"blocks": [
+		{
+			"type": "text_slide",
+			"name": "Announcement",
+			"settings": [
+				{
+					"type": "select",
+					"id": "slider_layout",
+					"label": "Layout",
+					"options": [
+						{
+							"value": "countdown_timer",
+							"label": "Countdown timer"
+						},
+						{
+							"value": "simple_text",
+							"label": "Simple text"
+						}
+					],
+					"default": "simple_text"
+				},
+				{
+					"type": "header",
+					"content": "Simple text"
+				},
+				{
+					"type": "richtext",
+					"id": "text_slider_desktop",
+					"label": "Text desktop",
+					"default": "<p>Announcement bar text</p>"
+				},
+				{
+					"type": "richtext",
+					"id": "text_slider_mobile",
+					"label": "Text mobile",
+					"info": "If the field is empty, then the desktop text will be used"
+				},
+				{
+					"type": "header",
+					"content": "Countdown timer"
+				},
+				{
+					"type": "textarea",
+					"id": "text_slider_timer_desktop",
+					"label": "Text desktop",
+					"default": "Set the date for the timer"
+				},
+				{
+					"type": "textarea",
+					"id": "text_slider_timer_mobile",
+					"label": "Text mobile",
+					"info": "If the field is empty, then the desktop text will be used"
+				},
+				{
+					"type": "number",
+					"id": "slider_timer_year",
+					"label": "Year",
+					"info": "The year should be in this format: 2024"
+				},
+				{
+					"type": "select",
+					"id": "slider_timer_month",
+					"label": "Month",
+					"options": [
+						{
+							"value": "0",
+							"label": "Jan"
+						},
+						{
+							"value": "1",
+							"label": "Feb"
+						},
+						{
+							"value": "2",
+							"label": "Mar"
+						},
+						{
+							"value": "3",
+							"label": "Apr"
+						},
+						{
+							"value": "4",
+							"label": "May"
+						},
+						{
+							"value": "5",
+							"label": "Jun"
+						},
+						{
+							"value": "6",
+							"label": "Jul"
+						},
+						{
+							"value": "7",
+							"label": "Aug"
+						},
+						{
+							"value": "8",
+							"label": "Sep"
+						},
+						{
+							"value": "9",
+							"label": "Oct"
+						},
+						{
+							"value": "10",
+							"label": "Nov"
+						},
+						{
+							"value": "11",
+							"label": "Dec"
+						}
+					],
+					"default": "0"
+				},
+				{
+					"type": "select",
+					"id": "slider_timer_day",
+					"label": "Day",
+					"options": [
+						{
+							"value": "1",
+							"label": "1"
+						},
+						{
+							"value": "2",
+							"label": "2"
+						},
+						{
+							"value": "3",
+							"label": "3"
+						},
+						{
+							"value": "4",
+							"label": "4"
+						},
+						{
+							"value": "5",
+							"label": "5"
+						},
+						{
+							"value": "6",
+							"label": "6"
+						},
+						{
+							"value": "7",
+							"label": "7"
+						},
+						{
+							"value": "8",
+							"label": "8"
+						},
+						{
+							"value": "9",
+							"label": "9"
+						},
+						{
+							"value": "10",
+							"label": "10"
+						},
+						{
+							"value": "11",
+							"label": "11"
+						},
+						{
+							"value": "12",
+							"label": "12"
+						},
+						{
+							"value": "13",
+							"label": "13"
+						},
+						{
+							"value": "14",
+							"label": "14"
+						},
+						{
+							"value": "15",
+							"label": "15"
+						},
+						{
+							"value": "16",
+							"label": "16"
+						},
+						{
+							"value": "17",
+							"label": "17"
+						},
+						{
+							"value": "18",
+							"label": "18"
+						},
+						{
+							"value": "19",
+							"label": "19"
+						},
+						{
+							"value": "20",
+							"label": "20"
+						},
+						{
+							"value": "21",
+							"label": "21"
+						},
+						{
+							"value": "22",
+							"label": "22"
+						},
+						{
+							"value": "23",
+							"label": "23"
+						},
+						{
+							"value": "24",
+							"label": "24"
+						},
+						{
+							"value": "25",
+							"label": "25"
+						},
+						{
+							"value": "26",
+							"label": "26"
+						},
+						{
+							"value": "27",
+							"label": "27"
+						},
+						{
+							"value": "28",
+							"label": "28"
+						},
+						{
+						"value": "29",
+						"label": "29"
+						},
+						{
+							"value": "30",
+							"label": "30"
+						},
+						{
+							"value": "31",
+							"label": "31"
+						}
+					],
+					"default": "1"
+				},
+				{
+					"type": "select",
+					"id": "slider_timer_hour",
+					"label": "Hour",
+					"options": [
+						{
+							"value": "0",
+							"label": "0"
+						},
+						{
+							"value": "1",
+							"label": "1"
+						},
+						{
+							"value": "2",
+							"label": "2"
+						},
+						{
+							"value": "3",
+							"label": "3"
+						},
+						{
+							"value": "4",
+							"label": "4"
+						},
+						{
+							"value": "5",
+							"label": "5"
+						},
+						{
+							"value": "6",
+							"label": "6"
+						},
+						{
+							"value": "7",
+							"label": "7"
+						},
+						{
+							"value": "8",
+							"label": "8"
+						},
+						{
+							"value": "9",
+							"label": "9"
+						},
+						{
+							"value": "10",
+							"label": "10"
+						},
+						{
+							"value": "11",
+							"label": "11"
+						},
+						{
+							"value": "12",
+							"label": "12"
+						},
+						{
+							"value": "13",
+							"label": "13"
+						},
+						{
+							"value": "14",
+							"label": "14"
+						},
+						{
+							"value": "15",
+							"label": "15"
+						},
+						{
+							"value": "16",
+							"label": "16"
+						},
+						{
+							"value": "17",
+							"label": "17"
+						},
+						{
+							"value": "18",
+							"label": "18"
+						},
+						{
+							"value": "19",
+							"label": "19"
+						},
+						{
+							"value": "20",
+							"label": "20"
+						},
+						{
+							"value": "21",
+							"label": "21"
+						},
+						{
+							"value": "22",
+							"label": "22"
+						},
+						{
+							"value": "23",
+							"label": "23"
+						}
+					],
+					"default": "0"
+				},
+				{
+					"type": "select",
+					"id": "slider_timer_timezone",
+					"label": "Timezone",
+					"options": [
+						{
+							"value": "+0",
+							"label": "GMT"
+						},
+						{
+							"value": "+1",
+							"label": "GMT+1:00"
+						},
+						{
+							"value": "+2",
+							"label": "GMT+2:00"
+						},
+						{
+							"value": "+3",
+							"label": "GMT+3:00"
+						},
+						{
+							"value": "+3.5",
+							"label": "GMT+3:30"
+						},
+						{
+							"value": "+4",
+							"label": "GMT+4:00"
+						},
+						{
+							"value": "+5",
+							"label": "GMT+5:00"
+						},
+						{
+							"value": "+5.5",
+							"label": "GMT+5:30"
+						},
+						{
+							"value": "+6",
+							"label": "GMT+6:00"
+						},
+						{
+							"value": "+7",
+							"label": "GMT+7:00"
+						},
+						{
+							"value": "+8",
+							"label": "GMT+8:00"
+						},
+						{
+							"value": "+9",
+							"label": "GMT+9:00"
+						},
+						{
+							"value": "+9.5",
+							"label": "GMT+9:30"
+						},
+						{
+							"value": "+10",
+							"label": "GMT+10:00"
+						},
+						{
+							"value": "+11",
+							"label": "GMT+11:00"
+						},
+						{
+							"value": "+12",
+							"label": "GMT+12:00"
+						},
+						{
+							"value": "-11",
+							"label": "GMT-11:00"
+						},
+						{
+							"value": "-10",
+							"label": "GMT-10:00"
+						},
+						{
+							"value": "-9",
+							"label": "GMT-9:00"
+						},
+						{
+							"value": "-8",
+							"label": "GMT-8:00"
+						},
+						{
+							"value": "-7",
+							"label": "GMT-7:00"
+						},
+						{
+							"value": "-6",
+							"label": "GMT-6:00"
+						},
+						{
+							"value": "-5",
+							"label": "GMT-5:00"
+						},
+						{
+							"value": "-4",
+							"label": "GMT-4:00"
+						},
+						{
+							"value": "-3.5",
+							"label": "GMT-3:30"
+						},
+						{
+							"value": "-3",
+							"label": "GMT-3:00"
+						},
+						{
+							"value": "-1",
+							"label": "GMT-1:00"
+						}
+					],
+					"default": "+0"
+				},
+				{
+					"type": "text",
+					"id": "slider_button_text",
+					"label": "Button label",
+					"default": "Shop now"
+				},
+				{
+					"type": "url",
+					"id": "slider_button_link",
+					"label": "Button link"
+				}
+			]
+		}
+	]
+}
+{%- endschema -%}

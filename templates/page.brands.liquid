@@ -1,0 +1,11 @@
+{%- render 'adastra' with '/src/styles/brands_page.css' -%}
+
+<div class="brands-container page-width">
+    {% for collection in collections %}
+        {% if collection.metafields.custom.brand and collection.products.size > 0 %}
+            <a href="{{ collection.url }}" class="brand-item">
+                <img src="{{collection.image | image_url: width: 300 }}" alt="{{collection.handle}}" height="300" width="300"/>
+            </a>
+        {% endif %}
+    {% endfor %}
+</div>

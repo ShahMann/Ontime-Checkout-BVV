@@ -1,0 +1,1815 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Header
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign blocks		 			= section.blocks -%}
+{%- assign logo			 			= section.settings.logo -%}
+{%- assign logo_transparent			= section.settings.logo_transparent | default: logo -%}
+{%- assign logo_width	 			= section.settings.logo_width -%}
+{%- assign menu_position 			= section.settings.menu_position -%}
+{%- assign show_cart_notification 	= settings.show_cart_notification -%}
+
+{%- assign menu							= section.settings.menu -%}
+{%- assign menu_type_desktop			= section.settings.menu_type_desktop -%}
+{%- assign menu_highlighted_link_name	= section.settings.menu_highlighted_link_name -%}
+
+{%- assign show_burger_menu 				= section.settings.show_burger_menu -%}
+{%- assign burger_menu_primary 				= section.settings.burger_menu_primary -%}
+{%- assign burger_menu_secondary 			= section.settings.burger_menu_secondary -%}
+{%- assign burger_menu_image 				= section.settings.burger_menu_image -%}
+{%- assign burger_menu_heading 				= section.settings.burger_menu_heading -%}
+{%- assign burger_menu_subheading 			= section.settings.burger_menu_subheading -%}
+{%- assign burger_menu_link 				= section.settings.burger_menu_link -%}
+
+{%- assign header_bg						= section.settings.header_bg -%}
+{%- assign mobile_menu_bg					= section.settings.mobile_menu_bg -%}
+{%- assign menu_border_color 				= section.settings.menu_border_color -%}
+{%- assign text_color						= section.settings.text_color -%}
+{%- assign text_color_active				= section.settings.text_color_active -%}
+{%- assign text_background_color_selected	= section.settings.text_background_color_selected -%}
+{%- assign text_color_secondary				= section.settings.text_color_secondary -%}
+{%- assign text_color_active_secondary		= section.settings.text_color_active_secondary -%}
+{%- assign text_color_transparent			= section.settings.text_color_transparent -%}
+{%- assign text_color_transparent_active	= section.settings.text_color_transparent_active -%}
+{%- assign menu_highlighted_link_color		= section.settings.menu_highlighted_link_color -%}
+{%- assign icon_color						= section.settings.icon_color -%}
+{%- assign icon_color_transparent			= section.settings.icon_color_transparent -%}
+{%- assign count_text_color					= section.settings.count_text_color -%}
+{%- assign count_text_color_transparent		= section.settings.count_text_color_transparent -%}
+{%- assign count_text_bg					= section.settings.count_text_bg -%}
+{%- assign count_text_bg_transparent		= section.settings.count_text_bg_transparent -%}
+{%- assign megamenu_overlay_color			= section.settings.megamenu_overlay_color -%}
+{%- assign megamenu_image_text				= section.settings.megamenu_image_text -%}
+
+{%- assign burger_button_color						= section.settings.burger_button_color -%}
+{%- assign burger_button_text_color					= section.settings.burger_button_text_color -%}
+{%- assign burger_button_color_hover				= section.settings.burger_button_color_hover -%}
+{%- assign burger_button_text_color_hover			= section.settings.burger_button_text_color_hover -%}
+{%- assign burger_button_color_transparent			= section.settings.burger_button_color_transparent -%}
+{%- assign burger_button_text_color_transparent		= section.settings.burger_button_text_color_transparent -%}
+
+{%- assign burger_button_color_secondary				= section.settings.burger_button_color_secondary -%}
+{%- assign burger_button_text_color_secondary			= section.settings.burger_button_text_color_secondary -%}
+{%- assign burger_button_color_hover_secondary			= section.settings.burger_button_color_hover_secondary -%}
+{%- assign burger_button_text_color_hover_secondary		= section.settings.burger_button_text_color_hover_secondary -%}
+
+{%- assign burger_button_close_color				= section.settings.burger_button_close_color -%}
+{%- assign burger_button_close_text_color			= section.settings.burger_button_close_text_color -%}
+{%- assign burger_button_close_color_hover			= section.settings.burger_button_close_color_hover -%}
+{%- assign burger_button_close_text_color_hover		= section.settings.burger_button_close_text_color_hover -%}
+
+{%- assign search_input_color						= section.settings.search_input_color -%}
+{%- assign search_input_text_color					= section.settings.search_input_text_color -%}
+{%- assign search_input_color_transparent			= section.settings.search_input_color_transparent -%}
+{%- assign search_input_text_color_transparent		= section.settings.search_input_text_color_transparent -%}
+
+{%- assign bottom_menu_bg 					= section.settings.bottom_menu_bg -%}
+{%- assign bottom_menu_border				= section.settings.bottom_menu_border -%}
+{%- assign bottom_menu_border_transparent	= section.settings.bottom_menu_border_transparent -%}
+
+{%- assign is_show_language_selector			= section.settings.is_show_language_selector -%}
+{%- assign is_show_country_selector				= section.settings.is_show_country_selector -%}
+{%- assign header_type 							= section.settings.header_type -%}
+{%- assign enable_sticky_header		 			= true -%}
+{%- assign enable_transparent_header			= false -%}
+{%- assign enable_transparent_header_homepage	= section.settings.enable_transparent_header_homepage -%}
+{%- assign enable_transparent_header_collection	= section.settings.enable_transparent_header_collection -%}
+{%- assign enable_rounded_header				= section.settings.enable_rounded_header -%}
+{%- assign is_show_box_shadow					= section.settings.is_show_box_shadow -%}
+{%- assign open_menu_type			 			= section.settings.open_menu_type -%}
+{%- assign make_first_lvl_clickable				= section.settings.make_first_lvl_clickable -%}
+{%- assign cart_type 							= settings.cart_type -%}
+
+{% assign display_link_on_first_lvl = false %}
+
+{% if make_first_lvl_clickable and open_menu_type == 'hover' %}
+	{% assign display_link_on_first_lvl = true %}
+{% endif %}
+
+{%- if header_type == "static" -%}
+	{%- assign enable_sticky_header	= false -%}
+{%- endif -%}
+
+{%- if enable_transparent_header_homepage and template.name == "index" -%}
+	{%- assign enable_transparent_header = true -%}
+{%- endif -%}
+
+{%- if enable_transparent_header_collection and template.name == "collection" -%}
+	{%- assign enable_transparent_header = true -%}
+{%- endif -%}
+
+{%- assign enable_burger_menu = false -%}
+
+{%- if show_burger_menu -%}
+	{%- if burger_menu_primary != blank or burger_menu_secondary != blank -%}
+		{%- assign enable_burger_menu = true -%}
+	{%- endif -%}
+{%- endif -%}
+
+
+<style>
+	:root {
+		--header-position: {% if enable_sticky_header == true %}sticky{% else %}static{% endif %};
+		--header-background: {{ header_bg -}};
+		--header-mobile-menu-bg: {{ mobile_menu_bg -}};
+		--header-menu-border-color: {{ menu_border_color -}};
+		--header-text-color: {{ text_color -}};
+		--header-text-color-active: {{ text_color_active -}};
+		--header-text-background-color-selected: {{ text_background_color_selected -}};
+		--header-text-color-secondary: {{ text_color_secondary -}};
+		--header-text-color-active-secondary: {{ text_color_active_secondary -}};
+		--header-transparent-text-color: {{ text_color_transparent -}};
+		--header-transparent-text-color-active: {{ text_color_transparent_active -}};
+		--header-menu-highlighted-link-color: {{ menu_highlighted_link_color -}};
+		--header-icon-color: {{ icon_color -}};
+		--header-transparent-icon-color: {{ icon_color_transparent -}};
+		--header-count-text-color: {{ count_text_color -}};
+		--header-transparent-count-text-color: {{ count_text_color_transparent -}};
+		--header-count-text-bg: {{ count_text_bg -}};
+		--header-transparent-count-text-bg: {{ count_text_bg_transparent -}};
+		--header-megamenu-overlay: {{ megamenu_overlay_color -}};
+		--header-megamenu-image-text: {{ megamenu_image_text -}};
+		--header-height-sticky: {% if enable_sticky_header == true %}var(--header-height){% else %}0px{% endif %};
+		--header-box-shadow: {%- if is_show_box_shadow -%} 0px 4px 11px 0px rgb(0 0 0 / 10%); {%- else -%} none {%- endif -%};
+		--header-burger-button-color: {{ burger_button_color -}};
+		--header-burger-button-text-color: {{ burger_button_text_color -}};
+		--header-burger-button-color-hover: {{ burger_button_color_hover -}};
+		--header-burger-button-text-color-hover: {{ burger_button_text_color_hover -}};
+		--header-burger-button-color-secondary: {{ burger_button_color_secondary -}};
+		--header-burger-button-text-color-secondary: {{ burger_button_text_color_secondary -}};
+		--header-burger-button-color-hover-secondary: {{ burger_button_color_hover_secondary -}};
+		--header-burger-button-text-color-hover-secondary: {{ burger_button_text_color_hover_secondary -}};
+		--header-burger-button-transparent-color: {{ burger_button_color_transparent -}};
+		--header-burger-button-text-transparent-color: {{ burger_button_text_color_transparent -}};
+		--header-burger-button-close-color: {{ burger_button_close_color -}};
+		--header-burger-button-close-text-color: {{ burger_button_close_text_color -}};
+		--header-burger-button-close-color-hover: {{ burger_button_close_color_hover -}};
+		--header-burger-button-close-text-color-hover: {{ burger_button_close_text_color_hover -}};
+		--header-search-input-color: {{ search_input_color -}};
+		--header-search-input-text-color: {{ search_input_text_color -}};
+		--header-search-input-transparent-color: {{ search_input_color_transparent | color_modify: 'alpha', 0.1 -}};
+		--header-search-input-text-transparent-color: {{ search_input_text_color_transparent -}};
+		--header-bottom-menu-bg: {{ bottom_menu_bg -}};
+		--header-bottom-menu-border: {{ bottom_menu_border -}};
+		--header-bottom-menu-border-transparent: {{- bottom_menu_border_transparent | color_modify: 'alpha', 0.1 -}};
+	}
+</style>
+
+{%- capture classes -%}
+	{% if menu_position == 'left' %}
+		header--menu-left
+	{% elsif menu_position == 'middle' %}
+		header--menu-middle
+	{% elsif menu_position == 'bottom' %}
+		header--menu-bottom
+
+		{%- if menu == blank and enable_burger_menu == false -%}
+			header--menu-bottom--empty
+		{%- endif -%}
+	{% endif %}
+
+	{% if enable_rounded_header == true %}
+		header--rounded
+	{% endif %}
+{%- endcapture -%}
+
+{%- capture logo_shippet -%}
+	<div class="header__logo">
+		<span class="visually-hidden">
+			{{ "layout.header.labels.store_logo" | t }}"
+		</span>
+
+		{%- if request.page_type == 'index' -%}
+			<h1 class="header__heading">
+				{%- endif -%}
+				<a
+					href="{{ routes.root_url }}"
+					class="header__heading-link"
+				>
+					{%- if logo != blank -%}
+						{%- assign logo_alt 			= logo.alt | default: shop.name | escape -%}
+						{%- assign logo_alt_transparent = logo_transparent.alt | default: shop.name | escape -%}
+
+						{%- assign logo_height 		= logo_width | divided_by: logo.aspect_ratio | round: 0 -%}
+						{%- assign logo_width_x2 	= logo_width | times: 2 -%}
+
+						{%- assign logo_height_mobile 		= logo_height | times: 0.7 -%}
+						{%- assign logo_width_mobile 		= logo_width | times: 0.7 -%}
+						{%- assign logo_width_x2_mobile 	= logo_width_x2 | times: 0.7 -%}
+
+
+						{%- capture img_focal -%}
+							--img-desktop-pos: {{ logo.presentation.focal_point }}; {{- -}}
+						{%- endcapture -%}
+
+						{%- capture img_focal_transparent -%}
+							--img-desktop-pos-transparent: {{ logo_transparent.presentation.focal_point }}; --base-logo-width: {{ logo_width -}}px; --base-logo-height: {{ logo_height -}}px;
+						{%- endcapture -%}
+
+						<picture class="header__heading-logo-picture">
+							<source
+								srcset="{{ logo | image_url: width: logo_width_mobile }} 1x, {{ logo | image_url: width: logo_width_x2_mobile }} 2x"
+								media="(max-width: 1199px)"
+								width="{{ logo_width_mobile }}"
+								height="{{ logo_height_mobile }}"
+							>
+
+							<img
+								srcset="{{ logo | image_url: width: logo_width }} 1x, {{ logo | image_url: width: logo_width_x2 }} 2x"
+								src="{{ logo | image_url: width: logo_width }}"
+								alt="{{ logo.alt }}"
+								class="header__heading-logo"
+								height="{{ logo_height }}"
+								width="{{ logo_width }}"
+								style="{{ img_focal }}"
+							/>
+						</picture>
+
+						{%- if enable_transparent_header -%}
+							<img
+								srcset="{{ logo_transparent | image_url: width: logo_width }} 1x, {{ logo_transparent | image_url: width: logo_width_x2 }} 2x"
+								src="{{ logo_transparent | image_url: width: logo_width }}"
+								alt="{{ logo_alt_transparent.alt }}"
+								class="header__heading-logo header__heading-logo--transparent"
+								height="{{ logo_height }}"
+								width="{{ logo_width }}"
+								style="{{ img_focal_transparent }}"
+							/>
+						{%- endif -%}
+					{%- else -%}
+						<span class="h2">{{ shop.name }}</span>
+					{%- endif -%}
+				</a>
+				{%- if request.page_type == 'index' -%}
+			</h1>
+		{%- endif -%}
+	</div>
+{%- endcapture -%}
+
+{%- capture header_search_snippet -%}
+	<div class="header__search">
+		<button
+			type="button"
+			class="header__search-input"
+			data-target="headerPopupSearch"
+			data-js-toggle="searchTogglePopup"
+			aria-expanded="false"
+			aria-controls="headerPopupSearch"
+			aria-label="{{- "layout.navigation.search" | t | escape -}}"
+		>
+			{%- render 'icons', icon: 'search' -%}
+
+			<span class="header__search-input-label">
+				{{- "layout.navigation.search_input" | t -}}
+			</span>
+		</button>
+	</div>
+{%- endcapture -%}
+
+<header
+	class="header {{ classes | strip_newlines }} js-header"
+	data-open-menu-type="{{- open_menu_type -}}"
+	{% if header_type == "sticky_hide" %}
+		data-hide-on-scroll-down
+	{% endif %}
+	{% if header_type == "static" %}
+		data-static-header
+	{% endif %}
+	{% if enable_transparent_header %}
+		data-header-transparent
+	{% endif %}
+>
+	<div
+		class="header__container"
+		data-header-container
+		{% if enable_sticky_header == true %}
+			data-header-sticky
+		{% endif %}
+	>
+		<div class="header__main">
+			<div class="header__burger-menu-button-wrapper">
+				<button
+					class="header-burger-menu-button js-header-drawer-toggler js-main-menu-toggler"
+					type="button"
+					data-target="headerDrawerMenu"
+					data-js-toggle="headerToggleMenuDrawer"
+					aria-expanded="false"
+					aria-controls="headerDrawerMenu"
+					aria-label="{{ "layout.navigation.open_drawer_menu" | t | escape }}"
+				>
+					{%- render 'icons', icon: 'burger-menu-main' -%}
+
+					<span class="header-burger-menu-button__label">
+						{{ "layout.navigation.main_drawer_menu_button_label" | t }}
+					</span>
+				</button>
+			</div>
+
+			{%- if menu_position == 'middle' or menu_position == 'bottom' -%}
+				{{- logo_shippet -}}
+			{%- endif -%}
+
+			{%- if menu_position == 'bottom' -%}
+				{{ header_search_snippet }}
+			{%- endif -%}
+
+
+			{%- if menu_position != 'bottom' -%}
+				{%- if menu != blank or enable_burger_menu == true -%}
+					<div class="header__menu">
+						{%- render 'header-menu',
+							menu: menu,
+							menu_type_desktop: menu_type_desktop,
+							menu_position: menu_position,
+							blocks: blocks,
+							enable_rounded_header: enable_rounded_header,
+							menu_highlighted_link_name: menu_highlighted_link_name,
+							enable_burger_menu: enable_burger_menu,
+							display_link_on_first_lvl: display_link_on_first_lvl
+						-%}
+					</div>
+				{%- endif -%}
+			{%- endif -%}
+
+			{%- if menu_position == 'left' -%}
+				{{- logo_shippet -}}
+			{%- endif -%}
+
+			<div class="header__utils">
+				{% if menu_position != 'bottom' %}
+					{{ header_search_snippet }}
+				{% endif %}
+
+				{%- if is_show_language_selector == true and localization.available_languages.size > 1 -%}
+					{% assign language_selector = true %}
+				{%- endif -%}
+
+				{%- if is_show_country_selector == true -%}
+					{% assign country_selector = true %}
+				{%- endif -%}
+
+
+				{%- if language_selector == true or country_selector -%}
+					<div class="header__localization">
+						{%- if language_selector == true -%}
+							{%- render 'language-localization-form', class: 'header', id_prefix: 'header', form_id: 'header-localization-form' -%}
+						{%- endif -%}
+
+						{%- if country_selector == true -%}
+							{%- render 'country-localization-form', class: 'header', id_prefix: 'header', form_id: 'header-country-form', show_full_name: section.settings.show_country_full_name -%}
+						{%- endif -%}
+					</div>
+				{%- endif -%}
+
+				<div class="header__icons">
+					<button
+						type="button"
+						class="header__icon header__icon--search js-header-drawer-toggler"
+						data-target="headerPopupSearch"
+						data-js-toggle="searchTogglePopup"
+						aria-expanded="false"
+						aria-controls="headerPopupSearch"
+						aria-label="{{- "layout.navigation.search" | t | escape -}}"
+					>
+						<span class="header__icon-wrapper">
+							{%- render 'icons', icon: 'search' -%}
+						</span>
+
+						<span class="header__icon-label" aria-hidden="true">
+							{{- "layout.navigation.search" | t -}}
+						</span>
+					</button>
+
+					<a
+						href="{{- routes.search_url -}}"
+						class="header__icon header__icon--search no-js"
+						aria-label="{{- "layout.navigation.search" | t | escape -}}"
+					>
+						<span class="header__icon-wrapper">
+							{%- render 'icons', icon: 'search' -%}
+						</span>
+
+						<span
+							class="header__icon-label"
+							aria-hidden="true"
+						>
+							{{- "layout.navigation.search" | t -}}
+						</span>
+					</a>
+
+					{%- if shop.customer_accounts_enabled -%}
+						<a
+							href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+							class="header__icon header__icon--account"
+							{% if customer %}
+								aria-label="{{- "layout.customer.account" | t | escape -}}"
+							{% else %}
+								aria-label="{{- "layout.customer.log_in" | t | escape -}}"
+							{% endif %}
+						>
+							<span class="header__icon-wrapper">
+								{%- render 'icons', icon: 'account' -%}
+							</span>
+
+							<span
+								class="header__icon-label"
+								aria-hidden="true"
+							>
+								{% if customer %}
+									{{- "layout.customer.account" | t -}}
+								{% else %}
+									{{- "layout.customer.log_in" | t -}}
+								{% endif %}
+							</span>
+						</a>
+					{%- endif -%}
+
+					{% if settings.enable_wishlist %}
+						{%- render 'wishlist-header' -%}
+					{% endif %}
+
+					<a
+						href="{{- routes.cart_url -}}"
+						class="header__icon header__icon--cart no-js"
+						aria-label="{{- "layout.header.labels.cart" | t | escape -}}"
+					>
+						<span class="header__icon-wrapper">
+							{%- render 'icons', icon: 'cart' -%}
+
+							<span
+								class="header__cart-count"
+								data-cart-count="{{- cart.item_count -}}"
+							>
+								<span class="visually-hidden">
+									{{ "layout.header.labels.cart_item_count" | t }}"
+								</span>
+
+								<span>
+									{%- if cart.item_count > 99 -%}
+										99+
+									{%- else -%}
+										{{- cart.item_count -}}
+									{%- endif -%}
+								</span>
+							</span>
+						</span>
+
+						<span
+							class="header__icon-label"
+							aria-hidden="true"
+						>
+							{{- "layout.header.labels.cart" | t -}}
+						</span>
+					</a>
+
+					{%- if cart_type == 'page' -%}
+						<a href="{{- routes.cart_url -}}"
+						   class="header__icon header__icon--cart"
+						>
+							<span class="header__icon-wrapper">
+								{%- render 'icons', icon: 'cart' -%}
+
+								<span class="visually-hidden">
+									{{- "layout.header.labels.cart" | t | escape -}}.
+								</span>
+
+								<span
+									class="header__cart-count js-header-cart-item-count-wrapper"
+									data-cart-count="{{- cart.item_count -}}"
+								>
+									<span class="visually-hidden">
+										{{ "layout.header.labels.cart_item_count" | t }}"
+									</span>
+
+									<span class="js-header-cart-item-count">
+										{%- if cart.item_count > 99 -%}
+											99+
+										{%- else -%}
+											{{- cart.item_count -}}
+										{%- endif -%}
+									</span>
+								</span>
+							</span>
+
+							<span
+								class="header__icon-label"
+								aria-hidden="true"
+							>
+								{{- "layout.header.labels.cart" | t -}}
+							</span>
+						</a>
+					{%- else -%}
+						<button
+							type="button"
+							class="header__icon header__icon--cart"
+							data-target="CartDrawer"
+							data-js-toggle="CartDrawer"
+							aria-expanded="false"
+							aria-controls="CartDrawer"
+						>
+							<span class="header__icon-wrapper">
+								{%- render 'icons', icon: 'cart' -%}
+
+								<span class="visually-hidden">
+									{{- "layout.header.labels.cart_drawer" | t | escape -}}.
+								</span>
+
+								<span
+									class="header__cart-count js-header-cart-item-count-wrapper"
+									data-cart-count="{{- cart.item_count -}}"
+								>
+									<span class="visually-hidden">
+										{{ "layout.header.labels.cart_item_count" | t }}"
+									</span>
+
+									<span class="js-header-cart-item-count">
+										{%- if cart.item_count > 99 -%}
+											99+
+										{%- else -%}
+											{{- cart.item_count -}}
+										{%- endif -%}
+									</span>
+								</span>
+							</span>
+
+							<span
+								class="header__icon-label"
+								aria-hidden="true"
+							>
+								{{- "layout.header.labels.cart" | t -}}
+							</span>
+						</button>
+					{%- endif -%}
+				</div>
+			</div>
+		</div>
+
+		{%- if menu_position == "bottom" -%}
+			{%- if menu != blank or enable_burger_menu == true -%}
+				<div class="header__bottom-menu">
+					{%- render 'header-menu',
+						menu_style_type: 'secondary',
+						menu_position: 'middle',
+						menu: menu,
+						menu_type_desktop: menu_type_desktop,
+						blocks: blocks,
+						enable_rounded_header: enable_rounded_header,
+						menu_highlighted_link_name: menu_highlighted_link_name,
+						enable_burger_menu: enable_burger_menu,
+						display_link_on_first_lvl: display_link_on_first_lvl
+					-%}
+				</div>
+			{%- endif -%}
+		{%- endif -%}
+	</div>
+
+	{%- if show_cart_notification -%}
+		{%- render 'cart-notification' -%}
+	{%- endif -%}
+
+	{%- render 'cart-notification-error' -%}
+</header>
+
+{%- if enable_burger_menu == true -%}
+	{%- render 'header-burger-menu',
+		burger_menu_primary: burger_menu_primary,
+		burger_menu_secondary: burger_menu_secondary,
+		burger_menu_image: burger_menu_image,
+		burger_menu_heading: burger_menu_heading,
+		burger_menu_subheading: burger_menu_subheading,
+		burger_menu_link: burger_menu_link,
+		blocks: blocks
+	-%}
+{%- endif -%}
+
+{%- render 'header-mobile-menu',
+	menu: menu,
+	enable_rounded_header: enable_rounded_header,
+	is_show_language_selector: is_show_language_selector,
+	is_show_country_selector: is_show_country_selector,
+	show_country_full_name: section.settings.show_country_full_name,
+	blocks: blocks,
+	enable_burger_menu: enable_burger_menu,
+	burger_menu_primary: burger_menu_primary,
+	burger_menu_secondary: burger_menu_secondary,
+	burger_menu_image: burger_menu_image,
+	burger_menu_heading: burger_menu_heading,
+	burger_menu_subheading: burger_menu_subheading,
+	burger_menu_link: burger_menu_link,
+	menu_highlighted_link_name: menu_highlighted_link_name
+-%}
+
+{%- render 'adastra' with '/src/scripts/section-header.js' -%}
+
+{% schema %}
+{
+	"name": "Header",
+	"class": "header-section",
+	"settings": [
+		{
+			"type": "header",
+			"content": "General"
+		},
+		{
+			"type": "select",
+			"id": "header_type",
+			"label": "Type",
+			"options": [
+				{
+					"value": "static",
+					"label": "Static"
+				},
+				{
+					"value": "sticky",
+					"label": "Sticky"
+				},
+				{
+					"value": "sticky_hide",
+					"label": "Sticky (hide on scroll down)"
+				}
+			],
+			"default": "sticky"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_transparent_header_homepage",
+			"default": false,
+			"label": "Show Transparent Header for Homepage.",
+			"info": "Works only for Homepage"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_transparent_header_collection",
+			"default": false,
+			"label": "Show Transparent Header for Collection page.",
+			"info": "Works only for Collection page"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_rounded_header",
+			"label": "Enable rounded header",
+			"default": false
+		},
+		{
+			"id": "is_show_box_shadow",
+			"type": "checkbox",
+			"label": "Show box shadow",
+			"default": true
+		},
+		{
+			"id": "is_show_language_selector",
+			"type": "checkbox",
+			"label": "Show language selector",
+			"default": false,
+			"info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+		},
+		{
+			"id": "is_show_country_selector",
+			"type": "checkbox",
+			"label": "Show country/region selector",
+			"default": false,
+			"info": "To add a currency, go to your [currency settings.](/admin/settings/markets)"
+		},
+		{
+			"id": "show_country_full_name",
+			"type": "checkbox",
+			"label": "Show full country name",
+			"default": true
+		},
+		{
+			"type": "header",
+			"content": "Logo"
+		},
+		{
+			"type": "image_picker",
+			"id": "logo",
+			"label": "Image",
+			"info": "150 x 35px .svg recommended"
+		},
+		{
+			"type": "image_picker",
+			"id": "logo_transparent",
+			"label": "Image (transparent header)",
+			"info": "It’s best to use a logo that matches the size of the one used for the opaque header. 150 x 35px .svg recommended"
+		},
+		{
+			"type": "range",
+			"id": "logo_width",
+			"min": 20,
+			"max": 200,
+			"step": 5,
+			"default": 150,
+			"unit": "px",
+			"label": "Logo width",
+			"info": "Height will be calculated with the image aspect ratio. On the mobile, if there is not enough space, the logo will automatically shrink."
+		},
+		{
+			"type": "header",
+			"content": "Menu"
+		},
+		{
+			"type": "link_list",
+			"id": "menu",
+			"label": "Main menu",
+			"default": "main-menu"
+		},
+		{
+			"type": "select",
+			"id": "menu_position",
+			"options": [
+				{
+					"value": "left",
+					"label": "Left"
+				},
+				{
+					"value": "middle",
+					"label": "Middle"
+				},
+				{
+					"value": "bottom",
+					"label": "Bottom"
+				}
+			],
+			"default": "left",
+			"label": "Desktop position"
+		},
+		{
+			"type": "select",
+			"id": "menu_type_desktop",
+			"options": [
+				{
+					"value": "both",
+					"label": "Both"
+				},
+				{
+					"value": "dropdown",
+					"label": "Dropdown"
+				},
+				{
+					"value": "megamenu",
+					"label": "Mega menu"
+				}
+			],
+			"default": "both",
+			"label": "Type",
+			"info": "Used only for desktop."
+		},
+		{
+			"type": "select",
+			"id": "open_menu_type",
+			"options": [
+				{
+					"value": "click",
+					"label": "Click"
+				},
+				{
+					"value": "hover",
+					"label": "Hover"
+				}
+			],
+			"default": "hover",
+			"label": "Open by:"
+		},
+		{
+			"type": "checkbox",
+			"id": "make_first_lvl_clickable",
+			"label": "Make 1st-level menu clickable",
+			"default": false,
+			"info": "Only works with open on hover for desktop, if the menu item has a link."
+		},
+		{
+			"type": "text",
+			"id": "menu_highlighted_link_name",
+			"label": "Highlighted link name",
+			"info": "Enter the name of the menu link you want to be highlighted."
+		},
+		{
+			"type": "header",
+			"content": "Burger menu"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_burger_menu",
+			"default": false,
+			"label": "Enable"
+		},
+		{
+			"type": "link_list",
+			"id": "burger_menu_primary",
+			"label": "Primary menu"
+		},
+		{
+			"type": "link_list",
+			"id": "burger_menu_secondary",
+			"label": "Secondary menu"
+		},
+		{
+			"type": "image_picker",
+			"id": "burger_menu_image",
+			"label": "Image",
+			"info": "896 x 732px recommended"
+		},
+		{
+			"type": "text",
+			"id": "burger_menu_heading",
+			"label": "Heading"
+		},
+		{
+			"type": "text",
+			"id": "burger_menu_subheading",
+			"label": "Subheading"
+		},
+		{
+			"type": "url",
+			"id": "burger_menu_link",
+			"label": "Link"
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "header",
+			"content": "Colors (Background)"
+		},
+		{
+			"type": "color",
+			"id": "header_bg",
+			"label": "Background",
+			"default": "#fff"
+		},
+		{
+			"type": "color",
+			"id": "mobile_menu_bg",
+			"label": "Background mobile menu",
+			"default": "#fff"
+		},
+		{
+			"type": "color",
+			"id": "bottom_menu_bg",
+			"label": "Bottom menu background",
+			"default": "#050D2F"
+		},
+		{
+			"type": "header",
+			"content": "Colors (Border)"
+		},
+		{
+			"type": "color",
+			"id": "menu_border_color",
+			"label": "Menu border color",
+			"default": "#E9E9E9"
+		},
+		{
+			"type": "color",
+			"id": "bottom_menu_border",
+			"label": "Bottom menu border",
+			"default": "#050D2F"
+		},
+		{
+			"type": "color",
+			"id": "bottom_menu_border_transparent",
+			"label": "Bottom menu border (transparent)",
+			"default": "#FFFFFF",
+			"info": "An opacity of 10% will be applied"
+		},
+		{
+			"type": "header",
+			"content": "Colors (Text)"
+		},
+		{
+			"type": "color",
+			"id": "text_color",
+			"label": "Text",
+			"default": "#000"
+		},
+		{
+			"type": "color",
+			"id": "text_color_active",
+			"label": "Text (active, hover)",
+			"default": "#CF1D5D",
+			"info": "Allows you to change the color of the active link or on hover"
+		},
+		{
+			"type": "color",
+			"id": "text_background_color_selected",
+			"label": "Text background (selected)",
+			"default": "#F1F1F3"
+		},
+		{
+			"type": "color",
+			"id": "text_color_secondary",
+			"label": "Text secondary",
+			"default": "#FFFFFF",
+			"info": "Used in bottom menu"
+		},
+		{
+			"type": "color",
+			"id": "text_color_active_secondary",
+			"label": "Text secondary (active, hover)",
+			"default": "#CF1D5D",
+			"info": "Used in bottom menu. Allows you to change the color of the active link or on hover"
+		},
+		{
+			"type": "color",
+			"id": "text_color_transparent",
+			"label": "Text (transparent)",
+			"default": "#fff",
+			"info": "Works for transparent header"
+		},
+		{
+			"type": "color",
+			"id": "text_color_transparent_active",
+			"label": "Text (transparent, active)",
+			"default": "#CF1D5D",
+			"info": "Allows you to change the color of the active link. Works for transparent header"
+		},
+		{
+			"type": "header",
+			"content": "Colors (Highlighted link)"
+		},
+		{
+			"type": "color",
+			"id": "menu_highlighted_link_color",
+			"label": "Highlighted link color",
+			"default": "#C42026"
+		},
+		{
+			"type": "header",
+			"content": "Colors (Icon)"
+		},
+		{
+			"type": "color",
+			"id": "icon_color",
+			"label": "Icon",
+			"default": "#000"
+		},
+		{
+			"type": "color",
+			"id": "icon_color_transparent",
+			"label": "Icon (transparent)",
+			"default": "#fff",
+			"info": "Works for transparent header"
+		},
+		{
+			"type": "header",
+			"content": "Colors (Count)"
+		},
+		{
+			"type": "color",
+			"id": "count_text_color",
+			"label": "Count text",
+			"default": "#fff"
+		},
+		{
+			"type": "color",
+			"id": "count_text_color_transparent",
+			"label": "Count text (transparent)",
+			"default": "#000",
+			"info": "Works for transparent header"
+		},
+		{
+			"type": "color",
+			"id": "count_text_bg",
+			"label": "Count background",
+			"default": "#000"
+		},
+		{
+			"type": "color",
+			"id": "count_text_bg_transparent",
+			"label": "Count background (transparent)",
+			"default": "#fff",
+			"info": "Works for transparent header"
+		},
+		{
+			"type": "header",
+			"content": "Colors (Mega menu image)"
+		},
+		{
+			"type": "color",
+			"id": "megamenu_image_text",
+			"label": "Mega menu image text",
+			"default": "#ffffff"
+		},
+		{
+			"type": "color_background",
+			"id": "megamenu_overlay_color",
+			"label": "Mega menu image overlay"
+		},
+		{
+			"type": "header",
+			"content": "Colors (Burger button)"
+		},
+		{
+			"type": "color",
+			"id": "burger_button_color",
+			"label": "Burger button",
+			"default": "#4D71F9"
+		},
+		{
+			"type": "color",
+			"id": "burger_button_text_color",
+			"label": "Burger button text",
+			"default": "#000000"
+		},
+		{
+			"type": "color",
+			"id": "burger_button_color_hover",
+			"label": "Burger button (hover)",
+			"default": "#4D71F9"
+		},
+		{
+			"type": "color",
+			"id": "burger_button_text_color_hover",
+			"label": "Burger button text (hover)",
+			"default": "#4D71F9"
+		},
+		{
+			"type": "color",
+			"id": "burger_button_color_transparent",
+			"label": "Burger button (transparent)",
+			"default": "#FFFFFF"
+		},
+		{
+			"type": "color",
+			"id": "burger_button_text_color_transparent",
+			"label": "Burger button text (transparent)",
+			"default": "#FFFFFF"
+		},
+		{
+			"type": "color",
+			"id": "burger_button_color_secondary",
+			"label": "Bottom burger button",
+			"default": "#FFFFFF",
+			"info": "Used in bottom menu"
+		},
+		{
+			"type": "color",
+			"id": "burger_button_text_color_secondary",
+			"label": "Bottom burger button text",
+			"default": "#FFFFFF",
+			"info": "Used in bottom menu"
+		},
+		{
+			"type": "color",
+			"id": "burger_button_color_hover_secondary",
+			"label": "Bottom burger button (hover)",
+			"default": "#4D71F9",
+			"info": "Used in bottom menu"
+		},
+		{
+			"type": "color",
+			"id": "burger_button_text_color_hover_secondary",
+			"label": "Bottom burger button text (hover)",
+			"default": "#4D71F9",
+			"info": "Used in bottom menu"
+		},
+		{
+			"type": "color",
+			"id": "burger_button_close_color",
+			"label": "Burger button close",
+			"default": "#E9E9E9"
+		},
+		{
+			"type": "color",
+			"id": "burger_button_close_text_color",
+			"label": "Burger button close text",
+			"default": "#000000"
+		},
+		{
+			"type": "color",
+			"id": "burger_button_close_color_hover",
+			"label": "Burger button close (hover)",
+			"default": "#000000"
+		},
+		{
+			"type": "color",
+			"id": "burger_button_close_text_color_hover",
+			"label": "Burger button close text (hover)",
+			"default": "#000000"
+		},
+		{
+			"type": "header",
+			"content": "Colors (Search input)"
+		},
+		{
+			"type": "color",
+			"id": "search_input_color",
+			"label": "Search input",
+			"default": "#F1F1F3"
+		},
+		{
+			"type": "color",
+			"id": "search_input_text_color",
+			"label": "Search input text",
+			"default": "#9D9D9D"
+		},
+		{
+			"type": "color",
+			"id": "search_input_color_transparent",
+			"label": "Search input (transparent)",
+			"default": "#FFFFFF",
+			"info": "An opacity of 10% will be applied"
+		},
+		{
+			"type": "color",
+			"id": "search_input_text_color_transparent",
+			"label": "Search input text (transparent)",
+			"default": "#FFFFFF"
+		}
+	],
+	"blocks": [
+		{
+			"type": "megamenu",
+			"name": "Mega menu",
+			"settings": [
+				{
+					"type": "header",
+					"content": "General"
+				},
+				{
+					"type": "text",
+					"id": "menu_handle",
+					"label": "Link name",
+					"info": "Enter the name of the menu link where you'd like to add a mega menu."
+				},
+				{
+					"type": "select",
+					"id": "menu_type",
+					"options": [
+						{
+							"value": "tabs",
+							"label": "Tabs"
+						},
+						{
+							"value": "list",
+							"label": "List"
+						}
+					],
+					"default": "tabs",
+					"label": "Menu type"
+				},
+				{
+					"type": "text",
+					"id": "badge_text",
+					"label": "Badge text"
+				},
+				{
+					"type": "color",
+					"id": "badge_text_color",
+					"label": "Badge text color",
+					"default": "#fff"
+				},
+				{
+					"type": "color_background",
+					"id": "badge_background_color",
+					"label": "Badge background color",
+					"default": "#cc0000"
+				},
+				{
+					"type": "color_background",
+					"id": "megamenu_background",
+					"label": "Mega menu background",
+					"default": "#ffffff"
+				},
+				{
+					"type": "header",
+					"content": "Media item 1"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image",
+					"info": "896 x 1098px recommended"
+				},
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "subheading",
+					"label": "Subheading"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Link"
+				},
+				{
+					"type": "product",
+					"id": "product1",
+					"label": "Product",
+					"info": "When you choose a product, a product card will appear in place of the image with text."
+				},
+				{
+					"type": "header",
+					"content": "Media item 2"
+				},
+				{
+					"type": "image_picker",
+					"id": "image2",
+					"label": "Image",
+					"info": "896 x 1098px recommended"
+				},
+				{
+					"type": "text",
+					"id": "heading2",
+					"label": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "subheading2",
+					"label": "Subheading"
+				},
+				{
+					"type": "url",
+					"id": "link2",
+					"label": "Link"
+				},
+				{
+					"type": "product",
+					"id": "product2",
+					"label": "Product",
+					"info": "When you choose a product, a product card will appear in place of the image with text."
+				}
+			]
+		},
+		{
+			"type": "megamenu-half-to-half",
+			"name": "Mega menu split menu",
+			"settings": [
+				{
+					"type": "header",
+					"content": "General"
+				},
+				{
+					"type": "text",
+					"id": "menu_handle",
+					"label": "Link name",
+					"info": "Enter the name of the menu link where you'd like to add a mega menu."
+				},
+				{
+					"type": "text",
+					"id": "badge_text",
+					"label": "Badge text"
+				},
+				{
+					"type": "color",
+					"id": "badge_text_color",
+					"label": "Badge text color",
+					"default": "#fff"
+				},
+				{
+					"type": "color_background",
+					"id": "badge_background_color",
+					"label": "Badge background color",
+					"default": "#cc0000"
+				},
+				{
+					"type": "color_background",
+					"id": "megamenu_background",
+					"label": "Mega menu background",
+					"default": "#ffffff"
+				},
+				{
+					"type": "header",
+					"content": "Text side"
+				},
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading",
+					"default": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "subheading",
+					"label": "Subheading",
+					"default": "Subheading"
+				},
+				{
+					"type": "text",
+					"id": "button_label1",
+					"label": "Button label 1",
+					"default": "Button 1"
+				},
+				{
+					"type": "url",
+					"id": "button_link1",
+					"label": "Button link 1",
+					"default": "/"
+				},
+				{
+					"type": "select",
+					"id": "button1_style",
+					"label": "Button style 1",
+					"options": [
+						{
+							"value": "primary",
+							"label": "Primary"
+						},
+						{
+							"value": "secondary",
+							"label": "Secondary"
+						},
+						{
+							"value": "primary-border",
+							"label": "Primary with border"
+						},
+						{
+							"value": "secondary-border",
+							"label": "Secondary with border"
+						}
+					],
+					"default": "primary"
+				},
+				{
+					"type": "text",
+					"id": "button_label2",
+					"label": "Button label 2",
+					"default": "Button 2"
+				},
+				{
+					"type": "url",
+					"id": "button_link2",
+					"label": "Button link 2",
+					"default": "/"
+				},
+				{
+					"type": "select",
+					"id": "button2_style",
+					"label": "Button style 2",
+					"options": [
+						{
+							"value": "primary",
+							"label": "Primary"
+						},
+						{
+							"value": "secondary",
+							"label": "Secondary"
+						},
+						{
+							"value": "primary-border",
+							"label": "Primary with border"
+						},
+						{
+							"value": "secondary-border",
+							"label": "Secondary with border"
+						}
+					],
+					"default": "secondary"
+				},
+				{
+					"type": "header",
+					"content": "Image side"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image",
+					"info": "1920 x 1040px recommended"
+				},
+				{
+					"type": "url",
+					"id": "image_link",
+					"label": "Image link"
+				}
+			]
+		},
+		{
+			"type": "megamenu-images",
+			"name": "Mega menu media",
+			"settings": [
+				{
+					"type": "header",
+					"content": "General"
+				},
+				{
+					"type": "text",
+					"id": "menu_handle",
+					"label": "Link name",
+					"info": "Enter the name of the menu link where you'd like to add a mega menu."
+				},
+				{
+					"type": "text",
+					"id": "badge_text",
+					"label": "Badge text"
+				},
+				{
+					"type": "color",
+					"id": "badge_text_color",
+					"label": "Badge text color",
+					"default": "#fff"
+				},
+				{
+					"type": "color_background",
+					"id": "badge_background_color",
+					"label": "Badge background color",
+					"default": "#cc0000"
+				},
+				{
+					"type": "color_background",
+					"id": "megamenu_background",
+					"label": "Mega menu background",
+					"default": "#ffffff"
+				},
+				{
+					"type": "header",
+					"content": "Media item 1"
+				},
+				{
+					"type": "image_picker",
+					"id": "image1",
+					"label": "Image",
+					"info": "896 x 1098px recommended"
+				},
+				{
+					"type": "text",
+					"id": "heading1",
+					"label": "Heading",
+					"default": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "subheading1",
+					"label": "Subheading",
+					"default": "Subheading"
+				},
+				{
+					"type": "url",
+					"id": "link1",
+					"label": "Link",
+					"default": "/"
+				},
+				{
+					"type": "product",
+					"id": "product1",
+					"label": "Product",
+					"info": "When you choose a product, a product card will appear in place of the image with text."
+				},
+				{
+					"type": "header",
+					"content": "Media item 2"
+				},
+				{
+					"type": "image_picker",
+					"id": "image2",
+					"label": "Image",
+					"info": "896 x 1098px recommended"
+				},
+				{
+					"type": "text",
+					"id": "heading2",
+					"label": "Heading",
+					"default": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "subheading2",
+					"label": "Subheading",
+					"default": "Subheading"
+				},
+				{
+					"type": "url",
+					"id": "link2",
+					"label": "Link",
+					"default": "/"
+				},
+				{
+					"type": "product",
+					"id": "product2",
+					"label": "Product",
+					"info": "When you choose a product, a product card will appear in place of the image with text."
+				},
+				{
+					"type": "header",
+					"content": "Media item 3"
+				},
+				{
+					"type": "image_picker",
+					"id": "image3",
+					"label": "Image",
+					"info": "896 x 1098px recommended"
+				},
+				{
+					"type": "text",
+					"id": "heading3",
+					"label": "Heading",
+					"default": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "subheading3",
+					"label": "Subheading",
+					"default": "Subheading"
+				},
+				{
+					"type": "url",
+					"id": "link3",
+					"label": "Link",
+					"default": "/"
+				},
+				{
+					"type": "product",
+					"id": "product3",
+					"label": "Product",
+					"info": "When you choose a product, a product card will appear in place of the image with text."
+				},
+				{
+					"type": "header",
+					"content": "Media item 4"
+				},
+				{
+					"type": "image_picker",
+					"id": "image4",
+					"label": "Image",
+					"info": "896 x 1098px recommended"
+				},
+				{
+					"type": "text",
+					"id": "heading4",
+					"label": "Heading",
+					"default": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "subheading4",
+					"label": "Subheading",
+					"default": "Subheading"
+				},
+				{
+					"type": "url",
+					"id": "link4",
+					"label": "Link",
+					"default": "/"
+				},
+				{
+					"type": "product",
+					"id": "product4",
+					"label": "Product",
+					"info": "When you choose a product, a product card will appear in place of the image with text."
+				},
+				{
+					"type": "header",
+					"content": "Media item 5"
+				},
+				{
+					"type": "image_picker",
+					"id": "image5",
+					"label": "Image",
+					"info": "896 x 1098px recommended"
+				},
+				{
+					"type": "text",
+					"id": "heading5",
+					"label": "Heading",
+					"default": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "subheading5",
+					"label": "Subheading",
+					"default": "Subheading"
+				},
+				{
+					"type": "url",
+					"id": "link5",
+					"label": "Link",
+					"default": "/"
+				},
+				{
+					"type": "product",
+					"id": "product5",
+					"label": "Product",
+					"info": "When you choose a product, a product card will appear in place of the image with text."
+				},
+				{
+					"type": "header",
+					"content": "Media item 6"
+				},
+				{
+					"type": "image_picker",
+					"id": "image6",
+					"label": "Image",
+					"info": "896 x 1098px recommended"
+				},
+				{
+					"type": "text",
+					"id": "heading6",
+					"label": "Heading",
+					"default": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "subheading6",
+					"label": "Subheading",
+					"default": "Subheading"
+				},
+				{
+					"type": "url",
+					"id": "link6",
+					"label": "Link",
+					"default": "/"
+				},
+				{
+					"type": "product",
+					"id": "product6",
+					"label": "Product",
+					"info": "When you choose a product, a product card will appear in place of the image with text."
+				}
+			]
+		},
+		{
+			"type": "megamenu-row-menus",
+			"name": "Mega menu tier menus",
+			"settings": [
+				{
+					"type": "header",
+					"content": "General"
+				},
+				{
+					"type": "text",
+					"id": "menu_handle",
+					"label": "Link name",
+					"info": "Enter the name of the menu link where you'd like to add a mega menu."
+				},
+				{
+					"type": "text",
+					"id": "badge_text",
+					"label": "Badge text"
+				},
+				{
+					"type": "color",
+					"id": "badge_text_color",
+					"label": "Badge text color",
+					"default": "#fff"
+				},
+				{
+					"type": "color_background",
+					"id": "badge_background_color",
+					"label": "Badge background color",
+					"default": "#cc0000"
+				},
+				{
+					"type": "color_background",
+					"id": "megamenu_background",
+					"label": "Mega menu background",
+					"default": "#ffffff"
+				},
+				{
+					"type": "color",
+					"id": "megamenu_text_nested",
+					"label": "Text nested",
+					"default": "#535353"
+				},
+				{
+					"type": "header",
+					"content": "Media item"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image",
+					"info": "896 x 1098px recommended"
+				},
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "subheading",
+					"label": "Subheading"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Link"
+				},
+				{
+					"type": "product",
+					"id": "product1",
+					"label": "Product",
+					"info": "When you choose a product, a product card will appear in place of the image with text."
+				}
+			]
+		},
+		{
+			"type": "megamenu-brands",
+			"limit": 1,
+			"name": "Mega menu brands",
+			"settings": [
+				{
+					"type": "header",
+					"content": "General"
+				},
+				{
+					"type": "paragraph",
+					"content": "To add a brand logo, add the \"Brand logo\" block."
+				},
+				{
+					"type": "text",
+					"id": "menu_handle",
+					"label": "Link name",
+					"info": "Enter the name of the menu link where you'd like to add a mega menu."
+				},
+				{
+					"type": "text",
+					"id": "burger_menu_handle",
+					"label": "Burger menu link name",
+					"info": "Enter the name of the menu link where you'd like to add a mega menu."
+				},
+				{
+					"type": "checkbox",
+					"id": "show_symbol_filter",
+					"label": "Show in alphabet order",
+					"default": false
+				},
+				{
+					"type": "text",
+					"id": "badge_text",
+					"label": "Badge text"
+				},
+				{
+					"type": "color",
+					"id": "badge_text_color",
+					"label": "Badge text color",
+					"default": "#fff"
+				},
+				{
+					"type": "color_background",
+					"id": "badge_background_color",
+					"label": "Badge background color",
+					"default": "#cc0000"
+				},
+				{
+					"type": "color_background",
+					"id": "megamenu_background",
+					"label": "Mega menu background",
+					"default": "#ffffff"
+				},
+				{
+					"type": "color",
+					"id": "brand_logo_border_hover_color",
+					"label": "Brand logo border (hover)",
+					"default": "#CDCDCD"
+				},
+				{
+					"type": "color",
+					"id": "brand_filter_symbol_color",
+					"label": "Filter symbol color",
+					"default": "#5B5B5B"
+				},
+				{
+					"type": "color",
+					"id": "brand_category_symbol_color",
+					"label": "Category symbol color",
+					"default": "#9D9D9D"
+				},
+				{
+					"type": "header",
+					"content": "Brands logos"
+				},
+				{
+					"type": "text",
+					"id": "link_text",
+					"label": "Link text"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Link"
+				}
+			]
+		},
+		{
+			"type": "megamenu-brands-logo",
+			"name": "Brand logo",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Logo",
+					"info": "228 x 98px recommended"
+				},
+				{
+					"type": "text",
+					"id": "name",
+					"label": "Logo name",
+					"info": "Used for Accessibility"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Logo link"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

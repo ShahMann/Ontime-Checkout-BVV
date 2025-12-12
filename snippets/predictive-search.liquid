@@ -1,0 +1,122 @@
+{%- render 'adastra' with '/src/styles/predictive-search.scss' -%}
+{%- render 'adastra' with '/src/scripts/component-predictive-search.js' -%}
+
+{%- assign default_no_result 	 = "general.predictive_search.no_results" | t -%}
+{%- assign default_button_label  = 'general.predictive_search.submit' | t -%}
+{%- assign default_most_searched = 'general.predictive_search.most_searched' | t -%}
+
+{%- assign search_articles 		 = settings.predictive_search_articles -%}
+{%- assign button_label 		 = settings.predictive_search_button_label | default: default_button_label -%}
+{%- assign search_pages    		 = settings.predictive_search_pages -%}
+{%- assign search_by_sku_barcode   	 = settings.enable_search_by_sku_barcode -%}
+{%- assign no_result    		 = settings.predictive_search_no_result | default: default_no_result-%}
+{%- assign most_searched_heading = settings.predictive_search_most_searched_heading | default: default_most_searched -%}
+{%- assign most_searched_links   = linklists[settings.predictive_search_most_searched_links] -%}
+
+{%- capture search_type_values -%}
+	product
+	{%- if search_articles -%},article{%- endif -%}
+	{%- if search_pages -%},page{%- endif -%}
+	
+{%- endcapture -%}
+
+<div
+	class="predictive-search modal{% if most_searched_links.links.size > 0 %} predictive-search--has-featured-items{% endif %} js-predictive-search"
+	id="headerPopupSearch"
+	aria-labelledby="headerPopupSearchTitle"
+	aria-modal="true"
+	role="dialog"
+>
+	<form
+		class="predictive-search__form js-predictive-search-form"
+		action="{{- routes.predictive_search_url -}}"
+		method="get"
+		role="search"
+	>
+		<div class="predictive-search__header modal__header">
+			<span class="visually-hidden h2" id="headerPopupSearchTitle">
+				{{- "general.predictive_search.title" | t -}}
+			</span>
+
+			<span class="predictive-search__submit">
+				{%- render 'icons', icon: 'search' -%}
+			</span>
+
+			<div class="input-wrapper predictive-search__input-wrapper">
+				<input
+					class="input predictive-search__input js-predictive-search-input"
+					type="text"
+					name="q"
+					id="Search"
+					placeholder="{{- 'general.predictive_search.placeholder' | t -}}"
+					aria-label="{{- 'general.predictive_search.placeholder_aria_label' | t | escape -}}"
+					autocomplete="off"
+					autocapitalize="off"
+					spellcheck="false"
+					required
+				/>
+
+				<button
+					class="focus-visible-outline predictive-search__reset"
+					type="reset"
+					aria-label="{{- 'general.predictive_search.reset_aria_label' | t | escape -}}"
+				>
+					{{- 'general.predictive_search.clear_query' | t | escape -}}
+				</button>
+			</div>
+
+			<button
+				class="predictive-search__close modal__close js-header-drawer-toggler"
+				type="button"
+				aria-label="{{- 'general.predictive_search.close_aria_label' | t | escape -}}"
+				data-target="headerPopupSearch"
+				data-js-toggle="searchTogglePopup"
+			>
+				{%- render 'icons', icon: 'menu-close' -%}
+			</button>
+		</div>
+
+		<div class="predictive-search__body modal__body predictive-search__body--empty js-predictive-search-body">
+			<div class="predictive-search__body-container">
+				{%- if most_searched_links.links.size > 0 -%}
+					<div class="predictive-search__featured-items js-predictive-search-featured-items">
+						{%- if most_searched_heading != blank -%}
+							<h3 class="predictive-search__featured-items-title text">
+								{{- most_searched_heading -}}
+							</h3>
+						{%- endif -%}
+
+						<ul class="predictive-search__featured-items-list">
+							{%- for link in most_searched_links.links -%}
+								<li class="predictive-search__featured-item">
+									<a href="{{ link.url }}" class="focus-visible-outline predictive-search__featured-item-link">
+										{{ link.title }}
+									</a>
+								</li>
+							{%- endfor -%}
+						</ul>
+					</div>
+				{%- endif -%}
+
+				<div class="predictive-search__result-container js-predictive-search-result-container"></div>
+			</div>
+		</div>
+
+		<div class="predictive-search__footer modal__footer is-hidden js-predictive-search-footer">
+			<button
+				class="predictive-search__apply focus-visible-outline js-predictive-search-apply-button"
+				tabindex="0"
+				type="submit"
+				aria-label="{{- 'general.predictive_search.submit_query_aria_label' | t | escape -}}"
+				aria-hidden="true"
+				disabled
+			>
+				{{- button_label -}}
+			</button>
+		</div>
+
+		<input type="hidden" name="type" value="{{- search_type_values -}}" data-search-by-sku-barcode="{{ search_by_sku_barcode }}" />
+	</form>
+
+	{%- render "preloader" -%}
+</div>

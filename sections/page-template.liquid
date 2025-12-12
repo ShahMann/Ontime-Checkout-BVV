@@ -1,0 +1,98 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Default page template
+------------------------------------------------------------------------------
+{%- endcomment -%}
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- render 'adastra' with '/src/styles/page-default.scss' -%}
+
+<section class="page-default">
+	{% if section.settings.enable_headings %}
+		<div class="page-default__title">
+			<h1>{{- page.title -}}</h1>
+		</div>
+	{% endif %}
+
+	{% if page.content != blank and section.settings.enable_content %}
+		<div class="rte">
+			{{- page.content -}}
+		</div>
+	{% endif %}
+</section>
+
+{% schema %}
+{
+	"name": "Page",
+	"settings": [
+		{
+			"type": "checkbox",
+			"id": "enable_heading",
+			"label": "Enable Page default heading",
+			"default": false
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_content",
+			"label": "Enable page default content",
+			"default": true
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	]
+}
+{%- endschema -%}

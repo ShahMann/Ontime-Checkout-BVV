@@ -1,0 +1,60 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product options minimum
+  --------------------------------
+  Add dropdown component with product variants, when options is hidden
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{% liquid
+	assign section_contains_options_block = false
+	for block in blocks
+		if block.type == "options"
+			assign section_contains_options_block = true
+			break
+		endif
+	endfor
+%}
+
+{% unless section_contains_options_block %}
+	<div
+		class="
+		product-variants product-variants--only
+		{% if product.has_only_default_variant %}
+			is-hidden
+		{% endif %}
+	"
+		data-js-product-variant="no-hidden"
+	>
+		{% assign form_id = 'product_form_' | append: product.id | append: '_section_' | append: section.id %}
+
+		<select
+			form="{{- form_id -}}"
+			name="id"
+			aria-label="{{ 'products.product.product_variants' | t | escape }}"
+		>
+			<option value disabled>
+				{{- 'products.product.choose_an_option' | t -}}
+			</option>
+
+			{% for variant in product.variants  %}
+				{% if variant.available %}
+					{%- assign price = variant.price -%}
+					{%- assign money_price = variant.price | money -%}
+					{%- if settings.is_currency_code_enabled -%}
+						{%- assign money_price = price | money_with_currency -%}
+					{%- endif -%}
+
+					<option
+						{% if variant == product.selected_or_first_available_variant %}
+							selected
+						{% endif %}
+						value="{{- variant.id -}}"
+					>
+						{{- variant.title | append: ' - ' | append: money_price -}}
+					</option>
+				{% endif %}
+			{% endfor %}
+		</select>
+	</div>
+{% endunless %}

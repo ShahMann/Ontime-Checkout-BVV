@@ -1,0 +1,154 @@
+.store-location {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 16px;
+  word-break: break-word;
+  row-gap: 32px;
+  border-bottom-left-radius: calc(var(--global-border-radius) * 2);
+  border-bottom-right-radius: calc(var(--global-border-radius) * 2);
+}
+.store-location .store-location__content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.store-location .store-location__items {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+}
+.store-location .store-location__items .store-location__item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  width: 100%;
+}
+.store-location .store-location__content {
+  width: 100%;
+  padding-bottom: 32px;
+}
+.store-location .store-location__media {
+  border-radius: calc(var(--global-border-radius) * 2);
+  overflow: hidden;
+}
+.store-location .store-location__media-wrapper {
+  position: relative;
+  padding-top: 81.63%;
+}
+.store-location .store-location__image,
+.store-location .store-location__map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.store-location .store-location__image {
+  object-fit: cover;
+  object-position: var(--img-desktop-pos);
+}
+.store-location .store-location__image.store-location__image--placeholder {
+  background-color: var(--color-img-placeholder-bg);
+}
+.store-location .store-location__subtitle,
+.store-location .store-location__content-title,
+.store-location .store-location__social-text {
+  color: var(--color-text-secondary);
+}
+.store-location .store-location__subtitle {
+  font-size: var(--body-font-size);
+  line-height: 1.5;
+}
+.store-location .store-location__content-title {
+  font-size: calc(var(--body-font-size) * 0.875);
+  line-height: 1.285;
+  font-weight: 400;
+}
+.store-location .store-location__title + .store-location__subtitle {
+  margin-top: 16px;
+}
+.store-location .store-location__social-links {
+  margin-top: 40px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.store-location .store-location__button {
+  margin-top: 24px;
+  width: 100%;
+}
+.store-location .store-location__title + .store-location__item,
+.store-location .store-location__subtitle + .store-location__item,
+.store-location .store-location__item + .store-location__item {
+  margin-top: 24px;
+}
+.store-location .store-location__content-text {
+  font-size: calc(var(--body-font-size) * 1.125);
+  font-weight: 600;
+  line-height: 1.33;
+}
+.store-location .store-location__content-text a {
+  color: currentColor;
+  text-decoration-color: transparent;
+  transition-property: text-decoration-color;
+  transition-duration: var(--timing-short);
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+  .store-location .store-location__content-text a:hover {
+    text-decoration-color: currentColor;
+  }
+}
+.store-location .store-location__content.need-animate,
+.store-location .store-location__media.need-animate {
+  opacity: 0;
+  transition-property: opacity;
+}
+.store-location.animated .store-location__content.need-animate,
+.store-location.animated .store-location__media.need-animate {
+  opacity: 1;
+}
+@media (min-width: 992px) {
+  .store-location {
+    flex-direction: row;
+    column-gap: 60px;
+  }
+  .store-location.store-location--reverse {
+    flex-direction: row-reverse;
+  }
+  .store-location .store-location__content {
+    width: 38.57%;
+  }
+  .store-location .store-location__media {
+    width: 57.14%;
+  }
+  .store-location .store-location__content {
+    align-self: center;
+    padding: 32px 0;
+  }
+  .store-location .store-location__media-wrapper {
+    padding-top: 77.5%;
+  }
+  .store-location .store-location__media {
+    margin: auto 0;
+  }
+  .store-location .store-location__button {
+    margin-top: 35px;
+    width: auto;
+  }
+}
+@media (min-width: 768px) {
+  .store-location {
+    border-radius: 0;
+  }
+}
+@media (min-width: 1200px) {
+  .store-location.store-location--limited-width {
+    max-width: calc(var(--container-width) - 32px);
+  }
+  .store-location .store-location__content {
+    padding: 30px 0;
+  }
+}

@@ -1,0 +1,71 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+	"sections": {
+		"faq-page-template": {
+			"type": "faq-page-template",
+			"settings": {
+			},
+			"blocks": {
+				"category-0": {
+					"type": "category",
+					"settings": {
+						"heading": "First category"
+					}
+				},
+				"faq-0": {
+					"type": "faq_item",
+					"settings": {
+						"heading": "Accordion heading",
+						"text": "<p>Accordion content.</p>"
+					}
+				},
+				"faq-1": {
+					"type": "faq_item",
+					"settings": {
+						"heading": "Accordion heading",
+						"text": "<p>Accordion content.</p>"
+					}
+				},
+				"category-1": {
+					"type": "category",
+					"settings": {
+						"heading": "Second category"
+					}
+				},
+				"faq-2": {
+					"type": "faq_item",
+					"settings": {
+						"heading": "Accordion heading",
+						"text": "<p>Accordion content.</p>"
+					}
+				},
+				"faq-3": {
+					"type": "faq_item",
+					"settings": {
+						"heading": "Accordion heading",
+						"text": "<p>Accordion content.</p>"
+					}
+				}
+			},
+			"block_order": [
+				"category-0",
+				"faq-0",
+				"faq-1",
+				"category-1",
+				"faq-2",
+				"faq-3"
+			]
+		}
+	},
+	"order": [
+		"faq-page-template"
+	]
+}

@@ -1,0 +1,387 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Promotion banners
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/promotion-banners.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{% assign heading       = section.settings.heading %}
+{% assign container     = section.settings.container_width %}
+{% assign button_style  = section.settings.button_style %}
+{% assign cards_layout  = section.settings.cards_layout %}
+{% assign cards_per_row = section.settings.cards_per_row %}
+
+{% assign is_horizontal = false %}
+
+{% if cards_layout == "horizontal" %}
+	{% assign is_horizontal = true %}
+{% endif %}
+
+{% if container == 'inherit' %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+{%- capture section_styles -%}
+	--container-width: {{ container_width }};
+	--cards-per-row: {{ cards_per_row }};
+{%- endcapture -%}
+
+{% if section.blocks.size > 0 %}
+	<section class="promotion-banners js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}" style="{{ section_styles }}">
+		{% if heading != blank %}
+			<h2 class="promotion-banners__heading">{{ heading }}</h2>
+		{% endif %}
+
+		<div class="promotion-banners__wrapper">
+			{% assign delay_step = 0 %}
+
+			{% for block in section.blocks %}
+				{% assign image        = block.settings.image %}
+				{% assign heading      = block.settings.heading %}
+				{% assign button_label = block.settings.button_label %}
+				{% assign button_link  = block.settings.button_link %}
+				{% assign delay_step = delay_step | plus: 0.25 %}
+
+				{%- capture img_focal -%}
+					--img-pos: {{ image.presentation.focal_point }};
+				{%- endcapture -%}
+
+				{% if cards_layout == "horizontal" %}
+					{% assign w_991 = "155x155" %}
+					{% assign w_991_2x = "310x310" %}
+
+					{% assign w_767 = "104x104" %}
+					{% assign w_767_2x = "208x208" %}
+
+					{% assign w_375 = "99x99" %}
+					{% assign w_375_2x = "198x198" %}
+				{% else %}
+					{% assign w_991 = "471x428" %}
+					{% assign w_991_2x = "942x856" %}
+
+					{% assign w_767 = "359x286" %}
+					{% assign w_767_2x = "718x572" %}
+
+					{% assign w_375 = "343x273" %}
+					{% assign w_375_2x = "686x546" %}
+				{% endif %}
+
+				{% if cards_per_row == "2" %}
+					{% if cards_layout == "horizontal" %}
+						{% assign w_1920 = "325x325" %}
+						{% assign w_1920_2x = "650x650" %}
+
+						{% assign w_1600 = "263x263" %}
+						{% assign w_1600_2x = "526x526" %}
+
+						{% assign w_1200 = "192x192" %}
+						{% assign w_1200_2x = "384x384" %}
+					{% else %}
+						{% assign w_1920 = "952x864" %}
+						{% assign w_1920_2x = "1904x1728" %}
+
+						{% assign w_1600 = "776x704" %}
+						{% assign w_1600_2x = "1552x1408" %}
+
+						{% assign w_1200 = "576x522" %}
+						{% assign w_1200_2x = "1152x1044" %}
+					{% endif %}
+				{% else %}
+					{% if cards_layout == "horizontal" %}
+						{% assign w_1920 = "211x211" %}
+						{% assign w_1920_2x = "422x422" %}
+
+						{% assign w_1600 = "169x169" %}
+						{% assign w_1600_2x = "338x338" %}
+
+						{% assign w_1200 = "121x121" %}
+						{% assign w_1200_2x = "242x242" %}
+					{% else %}
+						{% assign w_1920 = "629x571" %}
+						{% assign w_1920_2x = "1258x1142" %}
+
+						{% assign w_1600 = "512x464" %}
+						{% assign w_1600_2x = "1024x928" %}
+
+						{% assign w_1200 = "378x343" %}
+						{% assign w_1200_2x = "756x686" %}
+					{% endif %}
+				{% endif %}
+
+				{% if heading != blank %}
+					<div
+						class="promotion-banners__block need-animate tr-dur-0-5 {% unless is_horizontal %}promotion-banners__block--vertical{% endunless %}"
+						style="transition-delay: {{ delay_step }}s;"
+					>
+						<div class="promotion-banners__image-wrapper">
+							<div class="promotion-banners__aspect-ratio">
+								{% if image != blank %}
+									<picture class="lazy">
+										<source
+											data-srcset="{{ image | img_url: w_375, crop: "center" }} 1x, {{ image | img_url: w_375_2x, crop: "center" }} 2x"
+											srcset="{{ image | img_url: "10x", crop: "center" }} 1x, {{ image | img_url: "20x", crop: "center" }} 2x"
+											media="(max-width: 375px)"
+										/>
+
+										<source
+											data-srcset="{{ image | img_url: w_767, crop: "center" }} 1x, {{ image | img_url: w_767_2x, crop: "center" }} 2x"
+											srcset="{{ image | img_url: "10x", crop: "center" }} 1x, {{ image | img_url: "20x", crop: "center" }} 2x"
+											media="(max-width: 767px)"
+										/>
+
+										<source
+											data-srcset="{{ image | img_url: w_991, crop: "center" }} 1x, {{ image | img_url: w_991_2x, crop: "center" }} 2x"
+											srcset="{{ image | img_url: "10x", crop: "center" }} 1x, {{ image | img_url: "20x", crop: "center" }} 2x"
+											media="(max-width: 991px)"
+										/>
+
+										<source
+											data-srcset="{{ image | img_url: w_1200, crop: "center" }} 1x, {{ image | img_url: w_1200_2x, crop: "center" }} 2x"
+											srcset="{{ image | img_url: "10x", crop: "center" }} 1x, {{ image | img_url: "20x", crop: "center" }} 2x"
+											media="(max-width: 1200px)"
+										/>
+
+										<source
+											data-srcset="{{ image | img_url: w_1600, crop: "center" }} 1x, {{ image | img_url: w_1600_2x, crop: "center" }} 2x"
+											srcset="{{ image | img_url: "10x", crop: "center" }} 1x, {{ image | img_url: "20x", crop: "center" }} 2x"
+											media="(max-width: 1600px)"
+										/>
+
+										<img class="promotion-banners__block-image"
+											 data-srcset="{{ image | img_url: w_1920, crop: "center" }} 1x, {{ image | img_url: w_1920_2x, crop: "center" }} 2x"
+											 data-src="{{ image | img_url: w_1920, crop: "center" }}"
+											 srcset="{{ image | img_url: "10x", crop: "center" }} 1x, {{ image | img_url: "20x", crop: "center" }} 2x"
+											 src="{{ image | img_url: "10x", crop: "center" }}"
+											 style="{{ img_focal }}"
+											 alt="{{ image.alt | escape }}"/>
+									</picture>
+								{% else %}
+									{{ "image" | placeholder_svg_tag: "promotion-banners__block-image promotion-banners__image-background" }}
+								{% endif %}
+							</div>
+						</div>
+
+						<div class="promotion-banners__block-content">
+							<p class="{% if is_horizontal %}h4{% else %}h3{% endif %}">{{ heading }}</p>
+
+							{% if button_link != blank and button_label != blank %}
+								<a href="{{ button_link }}"
+								   class="button button--small button--{{ button_style }} promotion-banners__block-button">{{ button_label }}</a>
+							{% endif %}
+						</div>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+	</section>
+{% endif %}
+
+{% schema %}
+{
+	"name": "Promotion banners",
+	"disabled_on": {
+		"groups": [
+			"header",
+			"footer"
+		]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Promotion banners"
+		},
+		{
+			"type": "select",
+			"id": "cards_per_row",
+			"label": "Cards per row",
+			"options": [
+				{
+					"value": "2",
+					"label": "2 cards per row"
+				},
+				{
+					"value": "3",
+					"label": "3 cards per row"
+				}
+			],
+			"default": "3"
+		},
+		{
+			"type": "select",
+			"id": "cards_layout",
+			"label": "Cards layout",
+			"options": [
+				{
+					"value": "horizontal",
+					"label": "Horizontal"
+				},
+				{
+					"value": "vertical",
+					"label": "Vertical"
+				}
+			],
+			"default": "horizontal"
+		},
+		{
+			"type": "select",
+			"id": "button_style",
+			"label": "Button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "primary-border",
+					"label": "Primary with border"
+				},
+				{
+					"value": "secondary-border",
+					"label": "Secondary with border"
+				}
+			],
+			"default": "secondary"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"blocks": [
+		{
+			"name": "Promotion banner",
+			"type": "promotion_banner",
+			"settings": [
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading",
+					"default": "Promotion banner"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image",
+					"info": "650 x 650px for horizontal and 1904 x 1728px for vertical recommended"
+				},
+				{
+					"type": "text",
+					"id": "button_label",
+					"label": "Button label",
+					"default": "Shop Now"
+				},
+				{
+					"type": "url",
+					"id": "button_link",
+					"label": "Button link",
+					"default": "/"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Promotion banners",
+			"blocks": [
+				{
+					"type": "promotion_banner"
+				},
+				{
+					"type": "promotion_banner"
+				},
+				{
+					"type": "promotion_banner"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

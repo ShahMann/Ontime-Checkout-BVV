@@ -1,0 +1,166 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product add to cart
+------------------------------------------------------------------------------
+{% endcomment %}
+{% render 'product-options-minimum',
+	block: block,
+	blocks: blocks,
+	product: product
+%}
+
+{% assign button_type 			= block.settings.button_type %}
+{% assign button_buy_it_type 	= block.settings.button_buy_it_type %}
+
+{%- capture button_buy_it_type_styles -%}
+	{%- case button_buy_it_type -%}
+		{%- when 'primary' -%}
+			--button-color: var(--button-text-color-primary); {{-  -}}
+			--button-background: var(--button-background-color-primary); {{-  -}}
+			--button-border-color: transparent; {{-  -}}
+			--button-color-hover: var(--button-text-color-primary-hover); {{-  -}}
+			--button-background-color-hover: var(--button-background-color-primary-hover); {{-  -}}
+			--button-border-color-hover: transparent; {{-  -}}
+		{%- when 'secondary' -%}
+			--button-color: var(--button-text-color-secondary); {{-  -}}
+			--button-background: var(--button-background-color-secondary); {{-  -}}
+			--button-border-color: transparent; {{-  -}}
+			--button-color-hover: var(--button-text-color-secondary-hover); {{-  -}}
+			--button-background-color-hover: var(--button-background-color-secondary-hover); {{-  -}}
+			--button-border-color-hover: transparent; {{-  -}}
+		{%- when 'primary-border' -%}
+			--button-color: var(--button-text-color-primary-with-border); {{-  -}}
+			--button-background: var(--button-background-color-primary-with-border); {{-  -}}
+			--button-border-color: var(--button-border-color-primary-with-border); {{-  -}}
+			--button-color-hover: var(--button-text-color-primary-with-border-hover); {{-  -}}
+			--button-background-color-hover: var(--button-background-color-primary-with-border-hover); {{-  -}}
+			--button-border-color-hover: var(--button-border-color-primary-with-border-hover); {{-  -}}
+		{%- when 'secondary-border' -%}
+			--button-color: var(--button-text-color-secondary-with-border); {{-  -}}
+			--button-background: var(--button-background-color-secondary-with-border); {{-  -}}
+			--button-border-color: var(--button-border-color-secondary-with-border); {{-  -}}
+			--button-color-hover: var(--button-text-color-secondary-with-border-hover); {{-  -}}
+			--button-background-color-hover: var(--button-background-color-secondary-with-border-hover); {{-  -}}
+			--button-border-color-hover: var(--button-border-color-secondary-with-border-hover); {{-  -}}
+	{%- endcase -%}
+{%- endcapture -%}
+
+{% liquid
+	for block in blocks
+		if block.type == "quantity"
+			assign section_contains_quantity_block = true
+			break
+		endif
+	endfor
+%}
+
+{%- capture styles -%}
+	{{- button_buy_it_type_styles -}} {{-  -}}
+	--offset-top-desktop: {{ block.settings.offset_top_desktop }}px; {{-  -}}
+	--offset-bottom-desktop: {{ block.settings.offset_bottom_desktop }}px; {{-  -}}
+	--offset-top-mobile: {{ block.settings.offset_top_mobile }}px; {{-  -}}
+	--offset-bottom-mobile: {{ block.settings.offset_bottom_mobile }}px;
+{%- endcapture -%}
+
+<div class="product-add-to-cart" style="{{- styles -}}">
+	{% unless section_contains_quantity_block %}
+		<div class="product-add-to-cart__error" id="ProductQuantityError-{{- product.id -}}" role="alert">
+			<small class="js-product-quantity-error"></small>
+		</div>
+	{% endunless %}
+
+	{% if product != blank %}
+		{% assign form_id = 'product_form_' | append: product.id | append: '_section_' | append: section.id %}
+		{% form 'product',
+			product,
+			id: form_id,
+			data-js-product-form: true,
+			data-enable-history-state: enable_history_state
+		%}
+			{% render 'product-form-content',
+				section: section,
+				product: product,
+				block: block,
+				form: form
+			%}
+		{% endform %}
+	{% else %}
+		<form
+			id="product_form_{{- product.id -}}"
+			class="shopify-product-form"
+			data-section-id="{{- section.id -}}"
+			data-js-product-form="true"
+		>
+			{% render 'product-form-content',
+				section: section,
+				product: product,
+				block: block
+			%}
+		</form>
+	{% endif %}
+</div>
+
+{%- if show_sticky_add_to_cart -%}
+	<div class="product-sticky-add-to-cart js-sticky-add-to-cart">
+		<div class="product-sticky-add-to-cart__container">
+			<div class="product-sticky-add-to-cart__col product-sticky-add-to-cart__col--mobile">
+				<div class="product-sticky-add-to-cart__title">
+					{{ product.title }}
+				</div>
+			</div>
+
+			<div class="product-sticky-add-to-cart__col product-sticky-add-to-cart__col--action">
+				{%- render 'price',
+					product: product,
+					use_variant: use_variant,
+					show_unit_price: settings.is_show_unit_price,
+					currency_code_enabled: settings.is_currency_code_enabled,
+					price_class: 'product-price',
+					hide_from_price: true,
+					show_taxes_included: false,
+					show_pay_installments: false,
+					show_discount_percentage: false,
+					form: form
+				-%}
+
+				{% assign form_id = 'product_form_' | append: product.id | append: '_section_' | append: section.id %}
+
+				<button
+					form="{{- form_id -}}"
+					type="submit"
+					class="product-sticky-add-to-cart__button add-to-cart button button--small button--{{ button_type }} js-sticky-add-to-cart-button
+						{% unless product.first_available_variant.available %}
+							disabled
+						{% endunless %}
+					"
+					{% unless product.first_available_variant.available %}
+						disabled
+					{% endunless %}
+					{% if product.template_suffix == 'pre-order' %}
+						data-preorder
+					{% endif %}
+				>
+					{%- render 'icons', icon: 'cart' -%}
+
+					<span class="js-product-add-to-cart-button-text">
+						{% if product.first_available_variant.available %}
+							{% if product.template_suffix == 'pre-order' %}
+								{{- 'products.product.pre_order' | t -}}
+							{% else %}
+								{{- 'products.product.add_to_cart' | t -}}
+							{% endif %}
+						{% else %}
+							{{- 'products.product.sold_out' | t -}}
+						{% endif %}
+					</span>
+				</button>
+			</div>
+		</div>
+
+		<style>
+			html .footer {
+				padding-bottom: 80px;
+			}
+		</style>
+	</div>
+{%- endif -%}

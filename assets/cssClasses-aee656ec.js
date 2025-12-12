@@ -1,0 +1,26 @@
+const cssClasses = {
+  active: "is-active",
+  childActive: "is-child-active",
+  grandChildActive: "is-grand-child-active",
+  added: "is-added",
+  collapsed: "is-collapsed",
+  disabled: "is-disabled",
+  hidden: "is-hidden",
+  shadowHidden: "is-shadow-hidden",
+  lazyload: "lazyload",
+  lazyloaded: "lazyloaded",
+  loading: "is-loading",
+  removing: "is-removing",
+  sticky: "is-sticky",
+  tabbable: "is-tabbable",
+  transparent: "is-transparent",
+  full: "is-full",
+  current: "is-current",
+  clone: "clone",
+  error: "error",
+  hover: "is-hover",
+  drawerActive: "is-drawer-active"
+};
+export {
+  cssClasses as c
+};

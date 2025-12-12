@@ -1,0 +1,179 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header mobile mega menu
+	Render header mobile mega menu
+	- menu: Menu object;
+	- megamenu_object: mega menu object.
+
+	Usage:
+	{%- render 'header-mobile-mega-menu' -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign image            = megamenu_object.settings.image -%}
+{%- assign subheading		= megamenu_object.settings.subheading -%}
+{%- assign heading          = megamenu_object.settings.heading -%}
+{%- assign link             = megamenu_object.settings.link -%}
+{%- assign product1         = megamenu_object.settings.product1 -%}
+
+{%- assign subheading2		= megamenu_object.settings.subheading2 -%}
+{%- assign image2           = megamenu_object.settings.image2 -%}
+{%- assign heading2         = megamenu_object.settings.heading2 -%}
+{%- assign link2            = megamenu_object.settings.link2 -%}
+{%- assign product2         = megamenu_object.settings.product2 -%}
+
+<div class="header-mega-menu">
+	<div class="header-mega-menu__container">
+		<div class="header-mega-menu__content-container">
+			{%- capture media1 -%}
+				{%- if image != blank or product1 != blank -%}
+					<div class="header-mega-menu__block header-mega-menu__block--image {% if product1 != blank %}header-mega-menu__block--product{% else %} header-mega-menu__block--image {% endif %}">
+						{%- if product1 != blank -%}
+							{%- render 'product-card', product: product1, size: 415, simplified_view: true -%}
+						{%- elsif image != blank -%}
+							{%- capture img_focal -%}
+								--img-desktop-pos: {{ image.presentation.focal_point }};
+							{%- endcapture -%}
+
+							{%- capture image_capture -%}
+								<picture>
+									<source
+										srcset="{{ image | img_url: '348x' }} 1x, {{ image | img_url: '696x' }} 2x"
+										media="(max-width: 380px)"
+									>
+
+									<source
+										srcset="{{ image | img_url: '388x' }} 1x, {{ image | img_url: '996x' }} 2x"
+										media="(max-width: 991px)"
+									>
+
+									<img
+										class="header-mega-menu__image"
+										src="{{- image | img_url: "448x" -}}"
+										srcset="{{- image | img_url: "448x" }} 1x, {{ image | img_url: "896x" }} 2x"
+										alt="{{- image.alt | escape -}}"
+										style="{{ img_focal }}"
+										loading="lazy"
+									>
+								</picture>
+
+								{%- if subheading != blank or heading != blank -%}
+									<div class="header-mega-menu__image-text-content">
+										{%- if heading != blank -%}
+											<div class="header-mega-menu__image-heading">
+												{{- heading -}}
+											</div>
+										{%- endif -%}
+
+										{%- if subheading != blank -%}
+											<p class="header-mega-menu__image-subheading">
+												{{- subheading -}}
+											</p>
+										{%- endif -%}
+									</div>
+								{%- endif -%}
+							{%- endcapture -%}
+
+							{%- if link != blank -%}
+								<a
+									href="{{- link -}}"
+									class="header-mega-menu__image-wrapper header-mega-menu__image-wrapper--hover"
+								>
+									{{- image_capture -}}
+								</a>
+							{%- else -%}
+								<div class="header-mega-menu__image-wrapper">
+									{{- image_capture -}}
+								</div>
+							{%- endif -%}
+						{%- endif -%}
+					</div>
+				{%- endif -%}
+			{%- endcapture -%}
+
+			{%- capture media2 -%}
+				{%- if image2 != blank or product2 != blank -%}
+					<div class="header-mega-menu__block header-mega-menu__block--image {% if product2 != blank %}header-mega-menu__block--product{% else %} header-mega-menu__block--image {% endif %}">
+						{%- if product2 != blank -%}
+							{%- render 'product-card', product: product2, size: 415, simplified_view: true -%}
+						{%- elsif image2 != blank -%}
+							{%- capture img_focal2 -%}
+								--img-desktop-pos: {{ image2.presentation.focal_point }};
+							{%- endcapture -%}
+
+							{%- capture image_capture -%}
+								<picture>
+									<source
+										srcset="{{ image2 | img_url: '348x' }} 1x, {{ image2 | img_url: '696x' }} 2x"
+										media="(max-width: 380px)"
+									>
+
+									<source
+										srcset="{{ image2 | img_url: '388x' }} 1x, {{ image2 | img_url: '996x' }} 2x"
+										media="(max-width: 991px)"
+									>
+
+									<img
+										class="header-mega-menu__image"
+										src="{{- image2 | img_url: "448x" -}}"
+										srcset="{{- image2 | img_url: "448x" }} 1x, {{ image2 | img_url: "896x" }} 2x"
+										alt="{{- image2.alt | escape -}}"
+										style="{{ img_focal }}"
+										loading="lazy"
+									>
+								</picture>
+
+								{%- if subheading2 != blank or heading2 != blank -%}
+									<div class="header-mega-menu__image-text-content">
+										{%- if heading2 != blank -%}
+											<div class="header-mega-menu__image-heading">
+												{{- heading2 -}}
+											</div>
+										{%- endif -%}
+
+										{%- if subheading2 != blank -%}
+											<p class="header-mega-menu__image-subheading">
+												{{- subheading2 -}}
+											</p>
+										{%- endif -%}
+									</div>
+								{%- endif -%}
+							{%- endcapture -%}
+
+							{%- if link2 != blank -%}
+								<a
+									href="{{- link2 -}}"
+									class="header-mega-menu__image-wrapper header-mega-menu__image-wrapper--hover"
+								>
+									{{- image_capture -}}
+								</a>
+							{%- else -%}
+								<div class="header-mega-menu__image-wrapper">
+									{{- image_capture -}}
+								</div>
+							{%- endif -%}
+						{%- endif -%}
+					</div>
+				{%- endif -%}
+			{%- endcapture -%}
+
+			{%- capture class -%}
+				{% if media1 != blank and media2 != blank -%}
+					header-mega-menu__block--menu-rows
+				{%- elsif media1 == blank and media2 == blank -%}
+					header-mega-menu__block--menu-rows header-mega-menu__block--menu-rows-no-image
+				{%- else -%}
+					header-mega-menu__block--menu-rows header-mega-menu__block--menu-rows-one-image
+				{%- endif -%}
+			{%- endcapture -%}
+
+			{%- if media1 != blank -%}
+				{{- media1 -}}
+			{%- endif -%}
+
+			{%- if media2 != blank -%}
+				{{- media2 -}}
+			{%- endif -%}
+		</div>
+	</div>
+</div>

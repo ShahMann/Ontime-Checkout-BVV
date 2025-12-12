@@ -1,0 +1,154 @@
+.gift-card {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  gap: 32px;
+  padding: 0 16px;
+}
+.gift-card .gift-card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 0 auto;
+  max-width: calc(50% - 8px);
+  width: 100%;
+  gap: 16px;
+  padding: 32px 36px;
+  background-color: var(--color-background-secondary);
+  border-radius: calc(var(--global-border-radius) * 2);
+}
+.gift-card .gift-card__qr-code {
+  width: 150px;
+  height: 150px;
+  padding: 15px;
+}
+.gift-card .gift-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.gift-card .gift-card__logo {
+  vertical-align: middle;
+  object-fit: contain;
+  object-position: var(--img-desktop-pos);
+}
+.gift-card .gift-card__value {
+  font-size: var(--body-font-size);
+  line-height: 1.5;
+}
+.gift-card .gift-card__body {
+  display: flex;
+  align-items: start;
+  max-width: 960px;
+  width: 100%;
+  gap: 16px;
+}
+.gift-card .gift-card__body .button {
+  text-decoration: none;
+}
+.gift-card .gift-card__image-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex: 1 0 auto;
+  max-width: calc(50% - 8px);
+  width: 100%;
+  border-radius: calc(var(--global-border-radius) * 2);
+}
+.gift-card .gift-card__image {
+  width: 100%;
+  object-fit: contain;
+}
+.gift-card .gift-card__number {
+  font-size: var(--body-font-size);
+  line-height: 1.5;
+  text-align: center;
+  background-color: var(--color-background);
+}
+.gift-card .gift-card__copy-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 1;
+  font-size: var(--body-font-size);
+  line-height: 1.375;
+  color: var(--color-text-primary);
+  transition: opacity var(--timing-micro);
+}
+.gift-card .gift-card__copy-link .text {
+  text-decoration: underline;
+  color: inherit;
+}
+.gift-card .gift-card__copy-link:hover {
+  opacity: 0.8;
+}
+.gift-card .gift-card__copy-link:focus-visible {
+  outline: 2px solid var(--color-text-primary);
+}
+.gift-card .gift-card__copy-code {
+  width: 100%;
+}
+.gift-card .gift-card__copy-code .icon-success {
+  width: 24px;
+  height: 24px;
+  margin-inline-end: 10px;
+}
+.gift-card .gift-card__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.gift-card .gift-card__redeem {
+  font-size: var(--body-font-size);
+  line-height: 1.5;
+}
+.gift-card .gift-card__buttons-wrapper {
+  display: flex;
+  gap: 16px;
+}
+.gift-card .gift-card__apple-wallet:focus-visible {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 1px;
+}
+.gift-card .gift-card__apple-wallet-image {
+  vertical-align: middle;
+}
+.gift-card .gift-card__copy-success {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0;
+  color: var(--color-text-primary);
+}
+.gift-card .gift-card__copy-success.show {
+  display: flex;
+}
+@media (max-width: 991.98px) {
+  .gift-card {
+    gap: 16px;
+  }
+  .gift-card .gift-card__body {
+    flex-direction: column;
+    max-width: 512px;
+  }
+  .gift-card .gift-card__content {
+    max-width: 100%;
+    padding: 16px;
+  }
+  .gift-card .gift-card__footer {
+    margin-top: 16px;
+  }
+  .gift-card .gift-card__image-wrapper {
+    max-width: calc(100% - 11px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .gift-card .gift-card__buttons-wrapper {
+    flex-direction: column;
+    width: 100%;
+  }
+}

@@ -1,0 +1,191 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Cart upsell
+	Render upsell products in the shopping cart
+	- products: Products list (required)
+	- id: Upsell section identification (required)
+	- heading: Upsell section heading (required)
+	- is_default: Upsell section opened by default (optional)
+
+	Usage:
+	{%- render 'cart-upsell', products: products, heading: heading -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- if products != blank and products.count > 0 and cart != empty and heading != blank and id != blank -%}
+	{%- assign currency_code_enabled = settings.is_currency_code_enabled -%}
+	{%- assign show_unit_price		 = settings.is_show_unit_price -%}
+
+	{%- capture	upsell_items -%}
+		{%- assign added_products = cart.items | map: 'product_id' -%}
+
+		{%- for product in products -%}
+			{%- if added_products contains product.id -%}
+				{%- continue -%}
+			{%- endif -%}
+
+			{%- assign image = product.featured_image | default: settings.product_default_image -%}
+
+			<div class="cart-upsell__item js-product-card">
+				<div class="cart-upsell__item-media">
+					<a href="{{ product.url }}" class="cart-upsell__item-image-wrapper focus-visible-outline {% if image == blank %}cart-upsell__item-image-wrapper--placeholder{% endif %}">
+						{% if image != blank %}
+							<picture class="lazy">
+								<source
+									data-srcset="{{ image | image_url: width: 65, height: 65 }} 1x, {{ image | image_url: width: 130, height: 130 }} 2x"
+									srcset="{{ image | image_url: width: 10 }}"
+									media="(max-width: 374px)"
+									width="65"
+									height="{{- 65 | divided_by: image.aspect_ratio | ceil -}}"
+								/>
+
+								<img
+									class="cart-upsell__image"
+									alt="{{- image.alt | escape -}}"
+									src="{{ image | image_url: width: 10 }}"
+									data-src="{{ image | image_url: width: 80 }}"
+									srcset="{{ image | image_url: width: 10 }}"
+									data-srcset="{{ image | image_url: width: 80, height: 80 }} 1x, {{ image | image_url: width: 160, height: 160 }} 2x"
+									width="80"
+									height="{{- 80 | divided_by: image.aspect_ratio | ceil -}}"
+								/>
+							</picture>
+
+							<noscript>
+								<picture>
+									<source
+										srcset="{{ image | image_url: width: 65, height: 65 }} 1x, {{ image | image_url: width: 130, height: 130 }} 2x"
+										media="(max-width: 374px)"
+										width="65"
+										height="{{- 65 | divided_by: image.aspect_ratio | ceil -}}"
+									/>
+
+									<img
+										class="cart-upsell__image"
+										src="{{- image | image_url: width: 80 -}}"
+										srcset="{{ image | image_url: width: 80, height: 80 }} 1x, {{ image | image_url: width: 160, height: 160 }} 2x"
+										alt="{{- image.alt | escape | escape -}}"
+										loading="lazy"
+										width="80"
+										height="{{- 80 | divided_by: image.aspect_ratio | ceil -}}"
+									/>
+								</picture>
+							</noscript>
+						{% endif %}
+					</a>
+				</div>
+
+				<div class="cart-upsell__item-content">
+					<a class="focus-visible-outline cart-upsell__item-title" href="{{- product.url -}}">
+						{{- product.title -}}
+					</a>
+
+					{%- form 'product', product, class: 'no-js-hidden js-product-card-form', novalidate: 'novalidate' -%}
+						{%- unless product.has_only_default_variant -%}
+							{%- for option in product.options_with_values -%}
+								{%- assign option_position  		= option.position -%}
+								{%- assign option_name_downcased	= option.name | downcase -%}
+								{%- assign option_name_handle		= option.name | handle -%}
+
+								<div class="cart-upsell__item-select-wrapper">
+									<label class="cart-upsell__item-select-label" for="cart-upsell-item--{{- option.name -}}-{{ product.handle }}-{{ forloop.index }}">
+										{{- option.name -}}:
+									</label>
+
+									<select class="cart-upsell__item-select" id="cart-upsell-item--{{- option.name -}}-{{ product.handle }}-{{ forloop.index }}" data-option="option{{- option_position -}}" required>
+										{%- for value in option.values -%}
+											<option value="{{- value | escape -}}" {% if option.selected_value == value %}selected{% endif %}>
+												{{- value -}}
+											</option>
+										{%- endfor %}
+									</select>
+								</div>
+							{%- endfor -%}
+						{%- endunless -%}
+
+						<small class="product-card__error-message js-product-card-error">
+							{%- if hide_buttons and product.selected_or_first_available_variant.available == false -%}
+								{{- "products.product.sold_out" | t -}}
+							{%- endif -%}
+						</small>
+
+						<input
+							type="hidden"
+							name="id"
+							class="is-hidden js-product-card-variant-input"
+							value="{{- product.selected_or_first_available_variant.id -}}"
+						>
+
+						<input type="hidden" class="js-product-card-min-value" name="quantity" value="{{- product.selected_or_first_available_variant.quantity_rule.min -}}" />
+
+						<script class="js-product-card-product" type="application/json">
+							{{- product | json -}}
+						</script>
+
+						<div class="cart-upsell__item-details">
+							<div class="cart-upsell__item-price js-price-container">
+								{%- render 'price', product: product, show_unit_price: show_unit_price, use_variant: true, currency_code_enabled: currency_code_enabled, show_discount_percentage: false -%}
+							</div>
+
+							<div class="cart-upsell__item-actions">
+								{%- assign form_id = 'upsell-form-' | append: forloop.index | append: '-' | append: product.id -%}
+								{%- assign variant = product.selected_or_first_available_variant.id -%}
+
+								{%- capture atc_attributes -%}
+									{%- if product.available == false -%}
+										disabled
+									{%- endif -%}
+									{% if product.available %}
+										aria-label="{{- 'products.product.add_to_cart' | t -}}"
+									{% else %}
+										aria-label="{{- 'products.product.sold_out' | t -}}"
+									{% endif %}
+								{%- endcapture -%}
+
+								<button
+									class="cart-upsell__item-button focus-visible-outline js-product-card-button"
+									data-type-icon
+									type="submit"
+									name="add"
+									{{ atc_attributes -}}
+								>
+									{%- render 'icons', icon: 'cart' -%}
+								</button>
+							</div>
+						</div>
+					{% endform %}
+				</div>
+			</div>
+		{%- endfor -%}
+	{%- endcapture	-%}
+
+	{%- if upsell_items != '' -%}
+		<div class="cart-upsell js-accordion-container" data-cart-upsell-block="cart-upsell-{{- id -}}">
+			<div class="cart-upsell__container js-accordion-item js-cart-upsell-container {% if is_default %} is-active{%- endif -%}">
+				<button
+					class="cart-upsell__header focus-visible-outline js-accordion-control js-cart-upsell-header"
+					aria-controls="cart-upsell-{{- id -}}"
+					aria-expanded="{{- is_default -}}"
+				>
+					<span class="cart-upsell__header-text">
+						{{- heading -}}
+					</span>
+
+					<span class="cart-upsell__header-icon">
+						{% render 'icons', icon: 'arrow-down' %}
+					</span>
+				</button>
+
+				<div
+					id="cart-upsell-{{- id -}}"
+					class="cart-upsell__content js-accordion-content js-cart-upsell-body"
+					style="{%- unless is_default -%}height: 0;{%- endunless -%}"
+				>
+					<div class="js-accordion-inner">
+						{{- upsell_items -}}
+					</div>
+				</div>
+			</div>
+		</div>
+	{%- endif -%}
+{%- endif -%}

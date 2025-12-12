@@ -1,0 +1,29 @@
+{%- capture title -%}
+  {{- 'products.product.store_availability.drawer.title' | t -}}
+{%- endcapture -%}
+
+{%- capture toggle_id -%}
+  showDrawer-click-and-collect-drawer
+{%- endcapture -%}
+
+<div class="product-drawers__item">
+  <button
+    type="button"
+    class="product-drawers__item-toggle"
+    data-target="{{ toggle_id }}"
+    data-js-toggle="{{ toggle_id }}"
+  >
+    <span>{{- 'products.product.store_availability.click_and_collect.link' | t -}}</span>
+    {% render 'icons', icon: 'slider-arrow-right' %}
+  </button>
+</div>
+
+<click-and-collect-drawer class="click-and-collect-drawer">
+  {%- capture skeleton -%}
+    {% render 'skeleton' %}
+    {% render 'skeleton' %}
+    {% render 'skeleton' %}
+    {% render 'skeleton' %}
+  {%- endcapture -%}
+  {%- render 'product-form-drawer', title: title, content: skeleton, toggle_id: toggle_id -%}
+</click-and-collect-drawer>

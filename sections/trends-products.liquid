@@ -1,0 +1,504 @@
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- render 'adastra' with '/src/styles/trend-products.scss' -%}
+
+{% assign title 		= section.settings.title %}
+{% assign show_one_open = section.settings.show_one_open %}
+{% assign container 	= section.settings.container_width %}
+
+{% if container == 'inherit' %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+<section class="trend-products js-trend-products-section js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}" style="--container-width: {{ container_width }};">
+	<div class="trend-products__container {% if container_width == "100%" %}trend-products__container--full-width{% endif %}">
+		{% if title != blank %}
+			<h2 class="trend-products__title h2">{{ title }}</h2>
+		{% endif %}
+
+		{% if section.blocks.size > 0 %}
+			<div class="trend-products__slider {% if section.blocks.size > 1 %}swiper js-trend-products-slider{% endif %}">
+				<div class="trend-products__row {% if section.blocks.size > 1 %} swiper-wrapper{% endif %}">
+					{% assign delay_card = 0 %}
+					{% assign delay_spot = 1 %}
+
+					{% for block in section.blocks %}
+						{% assign image = block.settings.image %}
+						{% assign delay_card = delay_card | plus: 0.25 %}
+
+						<div class="trend-product trend-products__col swiper-slide need-animate tr-dur-0-5" style="--delay-card: {{ delay_card }}s;">
+							{% if image != blank %}
+								{%- capture img_focal -%}
+									--img-desktop-pos: {{ image.presentation.focal_point }};
+								{%- endcapture -%}
+
+								<picture class="trend-product__image-wrapper lazy">
+									<source
+										data-srcset="{{ image | image_url: width: 420, height: 522 }} 1x, {{ image | image_url: width: 840, height: 1044 }} 2x"
+										srcset="{{ image | image_url: width: 10 }}"
+										media="(max-width: 420px)"
+									>
+
+									<source
+										data-srcset="{{ image | image_url: width: 381, height: 474 }} 1x, {{ image | image_url: width: 762, height: 948 }} 2x"
+										srcset="{{ image | image_url: width: 10 }}"
+										media="(max-width: 767px)"
+									>
+
+									<source
+										data-srcset="{{ image | image_url: width: 247, height: 308 }} 1x, {{ image | image_url: width: 494, height: 616 }} 2x"
+										srcset="{{ image | image_url: width: 10 }}"
+										media="(max-width: 991px)"
+									>
+
+									<source
+										data-srcset="{{ image | image_url: width: 400, height: 498 }} 1x, {{ image | image_url: width: 800, height: 996 }} 2x"
+										srcset="{{ image | image_url: width: 10 }}"
+										media="(max-width: 1600px)"
+									>
+
+									<img class="trend-product__image"
+										 src="{{ image | image_url: width: 10 }}"
+										 data-src="{{ image | image_url: width: 488, height: 607 }}"
+										 data-srcset="{{ image | image_url: width: 488, height: 607 }} 1x, {{ image | image_url: width: 976, height: 1214 }} 2x"
+										 style="{{ img_focal }}"
+										 alt="{{ image.alt | escape }}"
+									>
+								</picture>
+							{% else %}
+								{%- assign placeholer_svg_name = 'product-' | append: forloop.index -%}
+
+								<div class="trend-product__image-wrapper">
+									{{- placeholer_svg_name | placeholder_svg_tag: 'trend-product__image trend-product__image--placeholder' -}}
+								</div>
+							{% endif %}
+
+							{% for i in (1..4) %}
+								{% assign product_key = "product_" | append: i %}
+								{% assign product_image_key = "product_image_" | append: i %}
+								{% assign horizontal_spot_key = "horizontal_position_" | append: i %}
+								{% assign vertical_spot_key = "vertical_position_" | append: i %}
+								{% assign delay_spot = delay_spot | plus: 0.15 %}
+
+								{% assign product = block.settings[product_key] %}
+								{% assign product_image = block.settings[product_image_key] | default: product.featured_image %}
+								{% assign y_pos = block.settings[vertical_spot_key] %}
+								{% assign x_pos = block.settings[horizontal_spot_key] %}
+
+								{% assign use_placeholder = false %}
+
+								{% if block.settings.product_1 == nill and block.settings.product_2 == nill and block.settings.product_3 == nill and block.settings.product_4 == nill %}
+									{% assign use_placeholder = true %}
+								{% endif %}
+
+								{%- capture popup_class -%}
+									{%- if y_pos >= 50 -%}
+										trend-product__popup--top
+									{%- else -%}
+										trend-product__popup--bottom
+									{%- endif -%}
+
+									{% if forloop.parentloop.last or forloop.parentloop.index == 3 %} trend-product__popup--left{% else %} trend-product__popup--right{% endif %}
+								{%- endcapture -%}
+
+								{% if product != blank %}
+									<div class="trend-product__spot {{ use_placeholder }}" style="--y-pos: {{ y_pos }}%; --x-pos: {{ x_pos }}%; --delay-spot: {{ delay_spot }}s;">
+										<button class="trend-product__spot-button need-animate focus-visible-outline js-trend-products-spot {% if forloop.parentloop.first and i == 1 and show_one_open %}is-active{% endif %}"
+												data-target="{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+												aria-label="{{ 'sections.trend_products.open_popup' | t: title: product.title | escape  }}"
+												aria-expanded="{% if forloop.parentloop.first and i == 1 and show_one_open %}true{% else %}false{% endif %}"
+												aria-controls="{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+										>
+											<span class="trend-product__spot-plus">
+												{%- render 'icons', icon: 'plus' -%}
+											</span>
+
+											<span class="trend-product__spot-close">
+												{%- render 'icons', icon: 'menu-close' -%}
+											</span>
+										</button>
+
+										<div id="{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+											 class="trend-product__popup {{ popup_class }} js-trend-product-popup {% if forloop.parentloop.first and i == 1 and show_one_open %}is-active need-animate{% endif %}"
+										>
+											{% if product_image != blank %}
+												<a href="{{ product.url }}" class="trend-product__popup-image-wrapper focus-visible-outline">
+													<picture class="lazy">
+														<img class="trend-product__popup-image"
+															 src="{{ product_image | image_url: width: 10 }}"
+															 data-src="{{ product_image | image_url: width: 64, height: 64 }}"
+															 data-srcset="{{ product_image | image_url: width: 64, height: 64 }} 1x, {{ product_image | image_url: width: 128, height: 128 }} 2x"
+															 alt="{{ product_image.alt | escape }}"
+														>
+													</picture>
+												</a>
+											{% endif %}
+
+											<div class="trend-product__popup-content">
+												<a href="{{ product.url }}"
+												   class="trend-product__popup-title focus-visible-outline"
+												>
+													{{- product.title -}}
+												</a>
+
+												<div class="trend-product__popup-price">
+													{% render 'price', product: product, show_discount_percentage: false %}
+												</div>
+
+												<button class="trend-product__popup-button focus-visible-outline js-add-to-cart"
+														type="button"
+														data-product-handle="{{- product.handle -}}"
+														data-min-quantity="{{- product.selected_or_first_available_variant.quantity_rule.min -}}"
+													{% if product.has_only_default_variant or product.variants.size == 1 %}
+														data-variant-id="{{- product.variants[0].id -}}"
+													{% endif %}
+													{% unless product.available %}
+														disabled
+													{% endunless %}
+												>
+													{% if product.available %}
+														{{- 'products.product.add_to_cart' | t -}}
+													{% else %}
+														{{- 'products.product.sold_out' | t -}}
+													{% endif %}
+												</button>
+											</div>
+										</div>
+									</div>
+								{% elsif use_placeholder %}
+									<div class="trend-product__spot {{ use_placeholder }}" style="--y-pos: {{ y_pos }}%; --x-pos: {{ x_pos }}%; --delay-spot: {{ delay_spot }}s;">
+										<button class="trend-product__spot-button need-animate focus-visible-outline js-trend-products-spot {% if forloop.parentloop.first and i == 1 and show_one_open %}is-active{% endif %}"
+												data-target="{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+												aria-label="{{ 'sections.trend_products.open_popup' | t: title: product.title | escape  }}"
+												aria-expanded="{% if forloop.parentloop.first and i == 1 and show_one_open %}true{% else %}false{% endif %}"
+												aria-controls="{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+										>
+											<span class="trend-product__spot-plus">
+												{%- render 'icons', icon: 'plus' -%}
+											</span>
+
+											<span class="trend-product__spot-close">
+												{%- render 'icons', icon: 'menu-close' -%}
+											</span>
+										</button>
+
+										<div id="{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+											 class="trend-product__popup {{ popup_class }} js-trend-product-popup {% if forloop.parentloop.first and i == 1 and show_one_open %}is-active{% endif %}"
+										>
+											{%- assign placeholer_svg_name = 'product-' | append: forloop.index -%}
+
+											<div class="trend-product__popup-image-wrapper">
+												{{- placeholer_svg_name | placeholder_svg_tag: 'trend-product__popup-image trend-product__popup-image--placeholder' -}}
+											</div>
+
+											<div class="trend-product__popup-content">
+												<p class="trend-product__popup-title">
+													{{- 'products.product_card.product_title' | t -}}
+												</p>
+
+												<div class="trend-product__popup-price">
+													{% render 'price', product: product, show_discount_percentage: false %}
+												</div>
+
+												<button class="trend-product__popup-button focus-visible-outline js-add-to-cart"
+														data-min-quantity="{{- product.selected_or_first_available_variant.quantity_rule.min -}}"
+														type="button"
+														disabled
+												>
+													{{- 'products.product.sold_out' | t -}}
+												</button>
+											</div>
+										</div>
+									</div>
+								{% endif %}
+							{% endfor %}
+						</div>
+					{% endfor %}
+				</div>
+
+				{% if section.blocks.size > 1 %}
+					<div class="trend-products__pagination js-trend-products-slider-pagination"></div>
+				{% endif %}
+			</div>
+		{% endif %}
+	</div>
+
+	{%- render 'adastra' with '/src/scripts/section-trend-products.js' -%}
+</section>
+
+{% schema %}
+{
+	"name": "Sale looks",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "title",
+			"label": "Heading",
+			"default": "Sale looks"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_one_open",
+			"label": "Make first opened",
+			"default": false
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"blocks": [
+		{
+			"type": "product",
+			"name": "Product",
+			"limit": 4,
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image",
+					"info": "976 x 1214px recommended"
+				},
+				{
+					"type": "header",
+					"content": "Product 1"
+				},
+				{
+					"type": "product",
+					"id": "product_1",
+					"label": "Product"
+				},
+				{
+					"type": "image_picker",
+					"id": "product_image_1",
+					"label": "Product image",
+					"info": "Select a custom image instead of a product image. 128 x 128px recommended"
+				},
+				{
+					"type": "range",
+					"id": "horizontal_position_1",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"unit": "%",
+					"label": "Spot horizontal position",
+					"default": 20
+				},
+				{
+					"type": "range",
+					"id": "vertical_position_1",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"unit": "%",
+					"label": "Spot vertical position",
+					"default": 20
+				},
+				{
+					"type": "header",
+					"content": "Product 2"
+				},
+				{
+					"type": "product",
+					"id": "product_2",
+					"label": "Product"
+				},
+				{
+					"type": "image_picker",
+					"id": "product_image_2",
+					"label": "Product image",
+					"info": "Select a custom image instead of a product image. 128 x 128px recommended"
+				},
+				{
+					"type": "range",
+					"id": "horizontal_position_2",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"unit": "%",
+					"label": "Spot horizontal position",
+					"default": 50
+				},
+				{
+					"type": "range",
+					"id": "vertical_position_2",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"unit": "%",
+					"label": "Spot vertical position",
+					"default": 50
+				},
+				{
+					"type": "header",
+					"content": "Product 3"
+				},
+				{
+					"type": "product",
+					"id": "product_3",
+					"label": "Product"
+				},
+				{
+					"type": "image_picker",
+					"id": "product_image_3",
+					"label": "Product image",
+					"info": "Select a custom image instead of a product image. 128 x 128px recommended"
+				},
+				{
+					"type": "range",
+					"id": "horizontal_position_3",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"unit": "%",
+					"label": "Spot horizontal position",
+					"default": 65
+				},
+				{
+					"type": "range",
+					"id": "vertical_position_3",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"unit": "%",
+					"label": "Spot vertical position",
+					"default": 65
+				},
+				{
+					"type": "header",
+					"content": "Product 4"
+				},
+				{
+					"type": "product",
+					"id": "product_4",
+					"label": "Product"
+				},
+				{
+					"type": "image_picker",
+					"id": "product_image_4",
+					"label": "Product image",
+					"info": "Select a custom image instead of a product image. 128 x 128px recommended"
+				},
+				{
+					"type": "range",
+					"id": "horizontal_position_4",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"unit": "%",
+					"label": "Spot horizontal position",
+					"default": 85
+				},
+				{
+					"type": "range",
+					"id": "vertical_position_4",
+					"min": 0,
+					"max": 100,
+					"step": 1,
+					"unit": "%",
+					"label": "Spot vertical position",
+					"default": 85
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Sale looks",
+			"blocks": [
+				{
+					"type": "product"
+				},
+				{
+					"type": "product"
+				},
+				{
+					"type": "product"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

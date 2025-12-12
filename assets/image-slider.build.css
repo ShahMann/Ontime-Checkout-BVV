@@ -1,0 +1,83 @@
+.image-slider .image-slider__heading {
+  margin-bottom: 20px;
+  padding: 0 16px;
+  text-align: center;
+}
+.image-slider .image-slider__heading.need-animate {
+  opacity: 0;
+  transition-property: opacity;
+}
+.image-slider .image-slider__items-container {
+  position: relative;
+  overflow: hidden;
+  padding: 4px 0;
+  cursor: grab;
+}
+.image-slider .image-slider__items-container.need-animate {
+  opacity: 0;
+  transform: translateY(45px);
+  transition-property: transform, opacity;
+}
+.image-slider .image-slider__item {
+  width: 100%;
+  padding: 0;
+}
+.image-slider .image-slider__item-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  height: 0;
+  padding-top: 100%;
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+  .image-slider .image-slider__item-image-wrapper.image-slider__item-image-wrapper--hover:hover .image-slider__item-image {
+    transform: scale(1.1);
+  }
+}
+.image-slider .image-slider__item-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--img-desktop-pos);
+  transition: var(--timing-base);
+}
+.image-slider .image-slider__item-image.image-slider__item-image--placeholder {
+  background-color: var(--color-img-placeholder-bg);
+}
+.image-slider .image-slider__pagination {
+  position: static;
+  margin-top: 15px;
+  padding: 10px 0;
+  line-height: 0;
+}
+.image-slider .image-slider__pagination.swiper-pagination-bullets-dynamic {
+  position: relative;
+  bottom: 0;
+}
+.image-slider.animated .image-slider__heading.need-animate {
+  opacity: 1;
+}
+.image-slider.animated .image-slider__items-container.need-animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (min-width: 576px) {
+  .image-slider .image-slider__item {
+    width: 60%;
+    padding: 0 2px;
+  }
+}
+@media (min-width: 768px) {
+  .image-slider .image-slider__heading {
+    margin-bottom: 28px;
+  }
+}
+@media (min-width: 992px) {
+  .image-slider .image-slider__item {
+    width: 21.2%;
+  }
+}

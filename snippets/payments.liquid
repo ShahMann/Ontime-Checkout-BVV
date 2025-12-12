@@ -1,0 +1,32 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Payments
+
+	Render enabled payment types
+
+	Usage:
+	{%- render 'payments' -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- capture payment_types -%}
+	{%- for type in shop.enabled_payment_types -%}
+		<li class="payment-types__item">
+			{{- type | payment_type_svg_tag: class: 'icon' -}}
+		</li>
+	{%- endfor -%}
+{%- endcapture -%}
+
+{%- if payment_types != '' -%}
+	<div class="payment-types">
+		<span class="visually-hidden">
+			{{- 'general.payment.methods' | t -}}
+		</span>
+
+		<ul class="payment-types__list" role="list">
+			{{- payment_types -}}
+		</ul>
+	</div>
+{%- endif -%}
+
+

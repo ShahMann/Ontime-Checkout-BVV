@@ -1,0 +1,290 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Related articles
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign current_article 		= article -%}
+{%- assign blog 				= section.settings.blog | default: blog -%}
+{%- assign heading 				= section.settings.heading -%}
+{%- assign link_url 			= section.settings.link_url -%}
+{%- assign link_text 			= section.settings.link_text -%}
+{%- assign link_aria_label_text = section.settings.link_aria_label_text -%}
+{%- assign button_style 		= section.settings.button_style -%}
+{%- assign container 			= section.settings.container_width -%}
+
+{%- if blog == blank -%}
+	{%- assign show_section = true -%}
+	{%- assign enable_slider = true -%}
+{%- else -%}
+	{%- assign count = 0 -%}
+
+	{%- capture blog_posts -%}
+		{%- for article in blog.articles -%}
+			{%- if article.handle == current_article.handle -%}
+				{%- continue -%}
+			{%- endif -%}
+
+			{%- if count == 3 -%}
+				{% break %}
+			{%- endif -%}
+
+			<div class="related-articles__col swiper-slide js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}">
+				{%- render 'article-card', article: article -%}
+			</div>
+
+			{%- assign count = count | plus: 1 -%}
+		{%- endfor -%}
+	{%- endcapture -%}
+
+	{%- if count > 0 -%}
+		{%- assign show_section = true -%}
+
+		{%- if blog.articles.size > 1 -%}
+			{%- assign enable_slider = true -%}
+		{%- endif -%}
+	{%- endif -%}
+{% endif %}
+
+{%- if show_section -%}
+	{%- render 'adastra' with '/src/styles/related-articles.scss' -%}
+
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_mobile -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+			}
+		}
+	{%- endstyle -%}
+
+	{% if container == 'inherit' %}
+		{% assign container_width = settings.container_width %}
+	{% else %}
+		{% assign container_width = container %}
+	{% endif %}
+
+	{%- capture section_styles -%}
+		--container-width: {{ container_width }}; {{-  -}}
+	{%- endcapture -%}
+
+	{%- capture blog_posts_container -%}
+		{%- capture related_articles_row_wrapper_classes -%}
+			related-articles__row-wrapper swiper {{-  -}}
+			{% if enable_slider %} js-featured-content-slider {%- endif -%}
+		{%- endcapture -%}
+
+		<div class="{{- related_articles_row_wrapper_classes | strip_newlines -}}">
+			<div class="related-articles__row swiper-wrapper">
+				{%- if blog_posts != blank -%}
+					{{- blog_posts -}}
+				{%- else -%}
+					{%- for i in (1..3) -%}
+						<div class="related-articles__col swiper-slide js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}">
+							{%- render 'article-card', article: blank -%}
+						</div>
+					{%- endfor -%}
+				{%- endif -%}
+			</div>
+
+			{%- if enable_slider -%}
+				<div class="related-articles__slider-pagination js-featured-content-slider-pagination"></div>
+			{%- endif -%}
+		</div>
+	{%- endcapture -%}
+
+	{%- capture related_articles -%}
+		{%- if heading != blank -%}
+			<h2 class="related-articles__heading">
+				{{- heading -}}
+			</h2>
+		{%- endif -%}
+
+		{{- blog_posts_container -}}
+
+		{%- if link_text != blank -%}
+			<div class="related-articles__link-wrapper js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}">
+				<a
+					class="focus-visible-outline button button--{{- button_style }} related-articles__link"
+					href="{{- blog.url -}}"
+					aria-label="{{- link_aria_label_text | escape -}}"
+				>
+					{{- link_text -}}
+				</a>
+			</div>
+		{%- endif -%}
+	{%- endcapture -%}
+
+	<section class="related-articles js-related-articles" id="{{- section.id -}}" style="{{ section_styles }}">
+		<div class="related-articles__container">
+			{{- related_articles -}}
+		</div>
+
+		{%- if enable_slider -%}
+			<script class="js-slider-settings" type="application/json">
+				{
+					"spaceBetween": 17,
+					"a11y": {
+						"prevSlideMessage": {{ "general.accessibility.slider.prev_slide_message" | t | json -}},
+						"nextSlideMessage": {{ "general.accessibility.slider.next_slide_message" | t | json -}},
+						"firstSlideMessage": {{ "general.accessibility.slider.first_slide_message" | t | json -}},
+						"lastSlideMessage": {{ "general.accessibility.slider.last_slide_message" | t | json -}},
+						"slideLabelMessage": {{ "general.accessibility.slider.slide_label_message" | t | json -}},
+						"paginationBulletMessage": {{ "general.accessibility.slider.pagination_bullet_message" | t | json }}
+				}
+			}
+			</script>
+		{% endif %}
+	</section>
+
+	{%- if enable_slider -%}
+		{%- render 'adastra' with '/src/scripts/component-featured-content-slider.js' -%}
+		{%- render 'adastra' with '/src/scripts/section-related-articles.js' -%}
+	{%- endif -%}
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Related articles",
+	"disabled_on": {
+		"groups": [
+			"header",
+			"footer"
+		]
+	},
+	"settings": [
+		{
+			"type": "blog",
+			"id": "blog",
+			"label": "Blog",
+			"info": "This section will show the last three posts from the selected blog. If you add the section to a blog page template without selecting a specific blog, it will display the most recent three posts from the blog page."
+		},
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading"
+		},
+		{
+			"type": "text",
+			"id": "link_text",
+			"label": "Button label",
+			"default": "See all"
+		},
+		{
+			"type": "text",
+			"id": "link_aria_label_text",
+			"label": "Button aria-label",
+			"info": "Essential for proper accessibility, write an explanation of where the button leads."
+		},
+		{
+			"type": "select",
+			"id": "button_style",
+			"label": "Button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "primary-border",
+					"label": "Primary with border"
+				},
+				{
+					"value": "secondary-border",
+					"label": "Secondary with border"
+				}
+			],
+			"default": "secondary-border"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"presets": [
+		{
+			"name": "Related articles",
+			"settings": {
+				"heading": "Heading",
+				"link_text": "Link text",
+				"link_aria_label_text": "Link to blog",
+				"button_style": "secondary-border"
+			}
+		}
+	]
+}
+{%- endschema -%}

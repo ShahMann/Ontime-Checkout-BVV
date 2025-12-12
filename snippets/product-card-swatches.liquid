@@ -1,0 +1,89 @@
+{%- comment -%}
+  ------------------------------------------------------------------------------
+  Snippet: Product card swatches
+  - swatches: Swatches array (required, object)
+  - product: Product (required, object)
+  - swatch_pos: swatch position (Index)
+
+  {%- render 'product-card-swatches', swatches: swatches -%}
+  ------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign desktop_limit = 5 -%}
+{%- assign desktop_overlimit = 5 -%}
+
+{%- assign mobile_limit = 3 -%}
+{%- assign mobile_overlimit = 3 -%}
+
+<div class="product-card__swatches-wrapper">
+  <span class="product-card__swatches-label-name">{{ swatch_name }}:</span>
+
+  <div class="product-card__swatches">
+    {%- for value in swatches limit: 5 -%}
+      {%- assign value_handle = value | handle -%}
+
+      {%- capture swatch_styles -%}
+				{% assign image_name = value | handle | prepend: 'swatch-' | append: '.png' %}
+				{% comment %} {% assign swatch_color_fallback = value | split: ' ' | last | handle %} {% endcomment %}
+				{% assign swatch_image = value.swatch.image | default: images[image_name] %}
+				{% comment %} {% assign swatch_color = value.swatch.color | default: swatch_color_fallback %} {% endcomment %}
+				{% assign swatch_color_handle = value |  handleize %}
+				{% assign swatch_color =  metaobjects['color_mapping'][swatch_color_handle].hex_color %}
+
+				style="
+				{%- if swatch_image != blank -%}
+					--swatch-image: url({{- swatch_image | image_url: width: 24, height: 24 -}});
+				{%- else -%}
+					--swatch-color: {{ swatch_color }};
+				{%- endif -%}"
+			{%- endcapture -%}
+
+      {%- capture swatch_classes -%}
+				product-card__swatch-button js-product-card-swatch{% if value == product.selected_or_first_available_variant.options[swatch_pos] %} is-active{%- endif %}
+			{%- endcapture -%}
+
+      <button
+        class="{{- swatch_classes -}} radio-option-swatch-circle"
+        {{ swatch_styles | strip_newlines }}
+        data-swatch="{{- value | escape -}}"
+        aria-label="{{- 'products.product_card.swatch_color' | t: swatch: value | escape -}}"
+        type="button"
+      >
+        <span class="product-card__swatch {{ value_handle }}"></span>
+		<span class="radio-option-tooltip" aria-hidden="true">{{- value -}}</span>
+      </button>
+    {%- endfor %}
+  </div>
+
+  {%- if swatches.size > desktop_limit -%}
+    {%- assign overlimit = swatches.size | minus: desktop_limit -%}
+
+    <span
+      class="product-card__overlimit product-card__overlimit--desktop"
+    >
+      <span class="visually-hidden">
+        {{- 'products.product_card.product_swatches_overlimit_label' | t: count: overlimit -}}
+      </span>
+
+      <span aria-hidden="true">
+        {{- 'products.product_card.product_swatches_overlimit' | t: count: overlimit -}}
+      </span>
+    </span>
+  {%- endif -%}
+
+  {%- if swatches.size > mobile_limit -%}
+    {%- assign overlimit = swatches.size | minus: mobile_limit -%}
+
+    <span
+      class="product-card__overlimit product-card__overlimit--mobile"
+    >
+      <span class="visually-hidden">
+        {{- 'products.product_card.product_swatches_overlimit_label' | t: count: overlimit -}}
+      </span>
+
+      <span aria-hidden="true">
+        {{- 'products.product_card.product_swatches_overlimit' | t: count: overlimit -}}
+      </span>
+    </span>
+  {%- endif -%}
+</div>

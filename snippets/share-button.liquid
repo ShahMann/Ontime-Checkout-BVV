@@ -1,0 +1,78 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Share button
+  ----------------------
+  Connects the logic of the "share" button of different social networks
+  Required:
+  - social: 'facebook', 'twitter'
+  - product: product object
+------------------------------------------------------------------------------
+{% endcomment %}
+{% capture facebook %}
+	{% assign url = 'https://www.facebook.com/sharer/sharer.php?u='
+		| append: request.host
+		| append: product.url
+		| append: '&amp;src=sdkpreparse'
+	%}
+
+	<a
+		class="button-social"
+		target="_blank"
+		rel="nofollow"
+		href="{{- url | escape -}}"
+		aria-label="{{ 'general.social.alt_text.share_on_facebook' | t | escape }}"
+	>
+		{% render 'icons-social', icon: "facebook" %}
+	</a>
+{% endcapture %}
+
+{% capture twitter %}
+	{% assign url = 'https://twitter.com/intent/tweet?text='
+		| append: product.title
+		| append: '&url='
+		| append: request.host
+		| append: product.url
+	%}
+
+	<a
+		class="button-social"
+		target="_blank"
+		rel="nofollow"
+		href="{{- url | escape -}}"
+		aria-label="{{ 'general.social.alt_text.share_on_twitter' | t | escape }}"
+	>
+		{% render 'icons-social', icon: "x-twitter" %}
+	</a>
+{% endcapture %}
+
+{% capture pinterest %}
+	{% assign url = 'https://pinterest.com/pin/create/button/?url='
+		| append: request.origin
+		| append: product.url
+		| append: "&description="
+		| append: product.title
+	%}
+
+	<a
+		class="button-social"
+		target="_blank"
+		rel="nofollow"
+		href="{{- url | escape -}}"
+		aria-label="{{ 'general.social.alt_text.share_on_pinterest' | t | escape }}"
+	>
+		{% render 'icons-social', icon: "pinterest" %}
+	</a>
+{% endcapture %}
+
+{% if social != blank %}
+	{% case social %}
+		{% when 'facebook' %}
+			{{- facebook -}}
+		{% when 'twitter' %}
+			{{- twitter -}}
+		{% when 'pinterest' %}
+			{{- pinterest -}}
+		{% else %}
+			<div>Social network not found</div>
+	{% endcase %}
+{% endif %}

@@ -1,0 +1,391 @@
+<!doctype html>
+<html class="no-js" lang="{{- request.locale.iso_code -}}">
+	<head>
+		 <!-- Google Tag Manager -->
+		<script>
+		(function (w, d, s, l, i) {
+			w[l] = w[l] || [];
+			w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+			var f = d.getElementsByTagName(s)[0],
+			j = d.createElement(s),
+			dl = l != 'dataLayer' ? '&l=' + l : '';
+			j.async = true;
+			j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+			f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', 'GTM-KLMHBWL');
+		</script>
+		<!-- End Google Tag Manager -->
+
+		<!-- Live Chat Code -->
+		<script>
+		(function (I, n, f, o, b, i, p) {
+			I[b] =
+			I[b] ||
+			function () {
+				(I[b].q = I[b].q || []).push(arguments);
+			};
+			I[b].t = 1 * new Date();
+			i = n.createElement(f);
+			i.async = 1;
+			i.src = o;
+			p = n.getElementsByTagName(f)[0];
+			p.parentNode.insertBefore(i, p);
+		})(window, document, 'script', 'https://livechat.infobip.com/widget.js', 'liveChat');
+
+		liveChat('init', 'b6d02022-271a-41d3-b374-b0f3d06159be');
+		</script>
+		<style>
+
+		.lc-widget-button{
+			background-color: #a36246 !important;
+		}
+		.ib-close-mobile-button {
+			display: block !important;
+			top: unset !important;
+		}
+		#ib-button-messaging-icon {
+			display: block !important;
+		}
+		.lc-widget-button{
+			visibility: visible !important;
+			z-index: 999;
+		}
+
+		.ib-widget-window .ib-header-container{
+			background-color:#a36246d4 !important;
+		}
+
+		html[lang='ar'] .lc-widget-button{
+			float: left;
+		}
+		</style>
+		<!-- End Live Chat Code -->
+		
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<meta name="theme-color" content="{{- settings.color_button -}}">
+
+		{%- if settings.hide_search_engine -%}
+			<meta name="robots" content="noindex">
+		{%- endif -%}
+
+		{% comment %}
+		-- BEGIN HREFLANG BLOCK --
+
+		Added manually by Elhusseiny.
+
+		Although Shopify can automatically generate hreflang tags,
+		this behavior was disabled because it appends ?page=1 to URLs
+		on the first page of collection listings. This causes a mismatch
+		with the canonical URL, which does not include the ?page=1 param.
+
+		To ensure hreflang URLs always match their canonical counterparts,
+		they are manually constructed here.
+		{% endcomment %}
+		{% liquid
+		if shop.locale == "ar"
+			assign ar_canonical_url = canonical_url
+			assign en_canonical_url = canonical_url | replace_first: "/ar/", "/"
+		else
+			assign request_path = canonical_url | remove_first: shop.url
+			assign en_canonical_url = canonical_url
+			assign ar_canonical_url = shop.url | append: '/ar' | append: request_path
+		endif
+		%}
+		<link rel="alternate" hreflang="x-default" href="{{ canonical_url }}">
+		<link rel="alternate" hreflang="en-KW" href="{{ en_canonical_url }}">
+		<link rel="alternate" hreflang="ar-KW" href="{{ ar_canonical_url }}">
+		{% comment %} -- END HREFLANG BLOCK -- {% endcomment %}
+
+		<meta name="google-site-verification" content="A08nPckS--9t-WfcpkI1aJZtQdUTzf5VqT0Qt7QKYAQ">
+		{% if canonical_url contains 'ontime.com/ar' %}
+		<meta
+			name="keywords"
+			content="تسوق ساعات يد أون لاين، ساعات يد أنيقة للرجال، ساعات يد أنيقة للنساء، مجوهرات أنيقة أون لاين، ساعات يد نسائية، مجوهرات ذات ماركات عالمية أون لاين، تسوق مجوهرات أون لاين، ساعات يد للرجال، ساعات يد رجالية، أون تايم، ساعة، ساعات ذات ماركات عالمية، ساعات ذات علامات تجارية للنساء، ساعات ذكية، ساعات أصلية ذات علامات تجارية، ساعات ذكية الكويت."
+		>
+		{% else %}
+		<meta
+			name="keywords"
+			content="shop watches online, stylish watches for men, stylish watches for women, stylish jewelry online, womens watches, designer jewelry online, shop jewelry online, mens watches, ontime, watch, designer watches, branded watches for women, smart watches, genuine branded watches, smart watches Kuwait."
+		>
+		{% endif %}
+
+		<link rel="canonical" href="{{- canonical_url -}}">
+		<link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+		{%- if settings.favicon != blank -%}
+			<link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+		{%- endif -%}
+
+		<link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+
+		{%- capture seo_title -%}
+			{%- if template == 'search' and search.performed == true -%}
+				{{ 'general.search.heading' | t: count: search.results_count }}: {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+			{%- else -%}
+				{{ page_title }}
+			{%- endif -%}
+
+			{%- if current_tags -%}
+				{%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+			{%- endif -%}
+
+			{%- if current_page != 1 -%}
+				&ndash; {{ 'general.meta.page' | t: page: current_page }}
+			{%- endif -%}
+
+			{%- assign escaped_page_title = page_title | escape -%}
+			{%- unless template == "index" or escaped_page_title contains shop.name -%}
+				&ndash; {{ shop.name }}
+			{%- endunless -%}
+		{%- endcapture -%}
+
+		<title>
+			{{- seo_title | strip -}}
+		</title>
+
+		{%- if page_description -%}
+			<meta name="description" content="{{- page_description | escape -}}">
+		{%- endif -%}
+
+		{%- render 'social-meta-tags' -%}
+		{%- render 'head-theme-meta', layout: 'theme' -%}
+
+		{%- render 'custom-variables.css' -%}
+
+		{{ 'custom-css.css' | asset_url | stylesheet_tag }}
+
+		{%- render 'adastra' with '/src/styles/main.scss' -%}
+
+		{%- if template.directory == 'customers' or settings.show_shipping_rates_calculator -%}
+			<script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+		{%- endif -%}
+		<script text="application/javascript">
+		window.__ENV__ = {
+			PUBLIC_API_URL: '{{ settings.public_api_url }}',
+		};
+		</script>
+		<script src="{{ 'theme.js' | asset_url }}" async></script>
+
+			<script>
+			window.themeCore = window.themeCore || {};
+			window.themeCore.productPlaceholderImage = {{- settings.product_default_image | img_url: "master" | replace: "//", "https://" | json -}};
+			window.themeCore.productPlaceholderImageFocal = {{ settings.product_default_image.presentation.focal_point | json }};
+			{%- if settings.enable_compare_products -%}
+				window.themeCore.compareProductsTitle = {{ settings.compare_products_heading |  json }};
+			{%- endif -%}
+			{% if settings.cart_reminder_enable %}
+				window.themeCore.CartReminder = {
+					config: {
+						cookieTime: {{- settings.cart_reminder_cookie_time | json -}},
+						displayFrequency: {{- settings.cart_reminder_display_frequency | json -}},
+						text: {{- settings.cart_reminder_text | json -}},
+						colorText: {{- settings.cart_reminder_color_text | json -}},
+						colorBg: {{- settings.cart_reminder_color_bg | json -}},
+						colorIcon: {{- settings.cart_reminder_color_icon | json -}},
+						colorButtonClose: {{- settings.cart_reminder_color_button_close | json -}},
+						cartType: {{- settings.cart_type | json -}},
+						cartRoute: {{- routes.cart_url | json -}},
+						cartLinkA11y: {{- "cart.reminder.accessibility.cart" | t | escape | json -}},
+						cartButtonA11y: {{- "cart.reminder.accessibility.cart_drawer" | t | escape | json -}},
+						closeButtonA11y: {{- "cart.reminder.accessibility.close_button" | t | escape | json -}}
+					}
+				}
+			{% endif %}
+		</script>
+
+		{%- render 'translations-methods' -%}
+		{%- render 'translations' -%}
+
+		{{ content_for_header }}
+
+		<script>
+			document.querySelector("html").classList.remove("no-js");
+		</script>
+	</head>
+
+	{%- assign rtl_langs = 'ar,arc,dv,fa,ha,he,khw,ks,ku,ps,ur,yi' | split: ',' -%}
+	{%- assign current_lang = localization.language.iso_code | split: '-' | first -%}
+
+	<body class="template-{{ template | split: '.' | first }}{% if rtl_langs contains current_lang %} rtl{% endif %}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}">
+		<!-- Google Tag Manager (noscript) -->
+		<noscript>
+			<iframe
+				src="https://www.googletagmanager.com/ns.html?id=GTM-KLMHBWL"
+				height="0"
+				width="0"
+				style="display:none;visibility:hidden"
+			>
+			</iframe>
+		</noscript>
+		<!-- End Google Tag Manager (noscript) -->
+		
+		<a
+			href="#MainContent"
+			class="skip-content-link visually-hidden"
+		>
+			{{- "general.accessibility.skip_to_content" | t -}}
+		</a>
+
+		{%- if template.name != 'cart' and settings.cart_type == 'drawer' -%}
+			{%- sections 'header-group-with-cart-drawer' -%}
+		{%- else -%}
+			{%- sections 'header-group' -%}
+		{%- endif -%}
+
+		{%- render 'predictive-search' -%}
+
+		{%- if settings.is_product_promo_enabled and settings.product_promo_product != blank  -%}
+			{%- render 'product-promo' -%}
+		{%- endif -%}
+
+		{% if settings.is_promo_banner_enabled %}
+			{%- render 'promotion-banner' -%}
+		{% endif %}
+
+		{%- if settings.is_cookie_bar_enabled -%}
+			{%- render 'cookie-bar' -%}
+		{%- endif -%}
+
+		{%- if settings.enable_compare_products -%}
+			{%- render 'compare-products-popup-button' -%}
+		{%- endif -%}
+
+		<main id="MainContent" class="content" role="main" tabindex="-1">
+			{%- if settings.show_breadcrumbs and template.name != 'article' -%}
+				{%- render "breadcrumbs" -%}
+			{%- endif -%}
+
+			{{ content_for_layout }}
+		</main>
+		{%- section 'mobile-app-download' -%}
+
+		{%- sections 'footer-group' -%}
+
+		{%- render 'page-preloader' -%}
+
+		{%- if settings.is_age_check_enable -%}
+			{%- render 'age-check-popup' -%}
+		{%- endif -%}
+
+		{%- if settings.is_geo_location_enable -%}
+			{%- render 'geo-location-popup' -%}
+		{%- endif -%}
+
+		{%- if settings.is_newsletter_popup_enabled -%}
+			{%- render 'newsletter-popup' -%}
+		{%- endif -%}
+
+		{%- render 'js-objects' -%}
+
+		{%- render 'adastra' with '/src/styles/carousel.scss' -%}
+
+		{%- render 'adastra' with '/src/styles/deferred-main.scss' -%}
+
+		{% render 'js-animate-observer' %}
+
+		
+		{% comment %} {%- render 'adastra' with '/src/scripts/theme.js' -%} {% endcomment %}
+
+		{%- render 'adastra' with '/src/scripts/wishlist-header.js' -%}
+
+		{%- render 'adastra' with '/src/scripts/wishlist.js' -%}
+
+		{%- render 'adastra' with '/src/scripts/main.js' -%}
+
+		{% if settings.enable_compare_products %}
+			{%- render 'adastra' with '/src/styles/compare-products.scss' -%}
+			{%- render 'adastra' with '/src/scripts/component-compare-products.js' -%}
+		{% endif %}
+
+		{% if settings.cart_reminder_enable %}
+			{%- render 'adastra' with '/src/styles/cart-reminder.scss' -%}
+			{%- render 'adastra' with '/src/scripts/component-cart-reminder.js' -%}
+		{% endif %}
+
+		{%- render 'adastra' with '/src/scripts/component-ar-model.js' -%}
+
+		{% if settings.is_show_click_and_collect %}
+			{%- render 'adastra' with '/src/scripts/product-card.js' -%}
+		{% endif %}
+
+		{% render 'seo-schema' %}
+
+		{% comment %} <script>
+			async function postProxyData() {
+			
+			const proxyPath = "app-proxy";
+
+			const url = `/apps/${proxyPath}`;
+
+			try {
+				const response = await fetch(url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"Accept": "application/json" 
+				},
+				body: JSON.stringify({
+					productId: 123,
+					action: "fetchDetails"
+				})
+				});
+
+				const data = await response.json();
+				console.log("Proxy Response:", data);
+			} catch (error) {
+				console.error("Error calling proxy:", error);
+			}
+			}
+
+			postProxyData();
+
+		</script> {% endcomment %}
+
+		{% if request.design_mode %}
+			<script>
+				console.log(`Design mode on....`)
+				let isPosting = false;
+
+				const postThemeChangeOnce = async () => {
+				if (isPosting) return; // already running
+				isPosting = true;
+
+				const headers = {
+					'Accept': "application/json",
+					"Content-type": "application/json",
+					"Authorization": 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiZnJvbnQtYXBpIiwiaWF0IjoxNzQ1OTkyNDQyfQ.5sgCiS6_MC8p9ry1p_A3XFpKqQaTRlqFeKfmin6Ddtg'
+				}
+
+				try {
+					const response = await fetch(
+					"https://sls-weur-liv-1921e9-apim.azure-api.net/api/v1/theme-dynamic-content",
+					{
+						method: "POST",
+						headers: headers,
+						body: JSON.stringify({ "theme_changed": true, "store_name": "ONTIME-CHECKOUT.BVV.KW", "theme_id": {{ theme.id | times: 1 }} }),
+					}
+					);
+					if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+					const data = await response.json().catch(() => ({}));
+					console.log("Success:", data);
+				} catch (error) {
+					console.error("Error posting theme change:", error.message);
+				} finally {
+					// Allow next call after delay
+					setTimeout(() => {
+					isPosting = false;
+					}, 3000); // 3s cooldown
+				}
+				};
+
+				if (Shopify.designMode) {
+					window.addEventListener("message", () => {
+						postThemeChangeOnce();
+					});
+				}
+			</script>
+		{% endif %}
+	</body>
+</html>

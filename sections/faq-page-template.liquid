@@ -1,0 +1,436 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: FAQ page template
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/faq-page-template.scss' -%}
+{%- render 'adastra' with '/src/styles/faq-simple.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign title = section.settings.heading -%}
+{%- assign banner_image = section.settings.banner_image -%}
+{%- assign banner_heading = section.settings.banner_heading -%}
+{%- assign banner_link = section.settings.banner_link -%}
+{%- assign blocks = section.blocks -%}
+{%- assign blocks_category = blocks | where: 'type', 'category' -%}
+{%- assign delay_step_sidebar = 0.15 -%}
+{%- assign delay_step = 0.4 -%}
+{%- assign delay_banner = 0.15 | times: blocks_category.size | plus: 0.3 -%}
+
+{%- if banner_image != blank -%}
+	{%- capture img_focal -%}
+		--img-desktop-pos: {{ banner_image.presentation.focal_point }};
+	{%- endcapture -%}
+
+	{% assign is_lazy = false %}
+
+	{% if section.index > 1 %}
+		{% assign is_lazy = true %}
+	{% endif %}
+
+	{%- capture default_image -%}
+		<picture>
+			<source
+				srcset="{{- banner_image | image_url: width: 343, height: 439 }} 1x, {{ banner_image | image_url: width: 686, height: 898 }} 2x"
+				media="(max-width: 767px)"
+				width="343"
+				height="439"
+			/>
+
+			<source
+				srcset="{{- banner_image | image_url: width: 220, height: 330 }} 1x, {{ banner_image | image_url: width: 686, height: 878 }} 2x"
+				media="(max-width: 1199px)"
+				width="220"
+				height="330"
+			/>
+
+			<img
+				srcset="{{- banner_image | image_url: width: 320, height: 480 }} 1x, {{ banner_image | image_url: width: 640, height: 1280 }} 2x"
+				src="{{- banner_image | image_url: width: 320, height: 480 -}}"
+				alt="{{- banner_image.alt -}}"
+				class="faq-page__banner-image"
+				width="320"
+				height="480"
+				style="{{ img_focal }}"
+			/>
+		</picture>
+	{%- endcapture -%}
+
+	{%- capture lazy_image -%}
+		<picture class="lazy">
+			<source
+				data-srcset="{{- banner_image | image_url: width: 343, height: 439 }} 1x, {{ banner_image | image_url: width: 686, height: 878 }} 2x"
+				srcset="{{- banner_image | image_url: width: 10 }} 1x, {{ banner_image | image_url: width: 10 }} 2x"
+				media="(max-width: 767px)"
+				width="343"
+				height="439"
+			/>
+
+			<source
+				data-srcset="{{- banner_image | image_url: width: 220, height: 330 }} 1x, {{ banner_image | image_url: width: 440, height: 660 }} 2x"
+				srcset="{{- banner_image | image_url: width: 10 }} 1x, {{ banner_image | image_url: width: 10 }} 2x"
+				media="(max-width: 1199px)"
+				width="220"
+				height="330"
+			/>
+
+			<img
+				data-srcset="{{- banner_image | image_url: width: 320, height: 480 }} 1x, {{ banner_image | image_url: width: 640, height: 1280 }} 2x"
+				data-src="{{- banner_image | image_url: width: 320, height: 480 -}}"
+				srcset="{{- banner_image | image_url: width: 10 }} 1x, {{ banner_image | image_url: width: 10 }} 2x"
+				src="{{- banner_image | image_url: width: 10 -}}"
+				alt="{{- banner_image.alt -}}"
+				class="faq-page__banner-image"
+				width="320"
+				height="480"
+				style="{{ img_focal }}"
+			/>
+		</picture>
+	{%- endcapture -%}
+
+	{%- capture banner -%}
+		<div class="faq-page__banner  need-animate tr-dur-0-4"
+			 style="{{- img_focal -}} transition-delay: {{ delay_banner | append: 's' }};">
+			<div class="faq-page__banner-content">
+				{%- if banner_link -%}
+					<a class="faq-page__banner-link focus-visible-outline"
+					   href="{{- banner_link -}}"
+					   aria-label="{{- 'general.faq_page.banner_link_aria' | t: title: banner_heading | escape -}}"
+					>
+					</a>
+				{%- endif -%}
+
+				{%- if is_lazy -%}
+					{{ lazy_image }}
+
+					<noscript>
+						{{ default_image }}
+					</noscript>
+				{%- else -%}
+					{{ default_image }}
+				{%- endif -%}
+
+				{%- if banner_heading != blank -%}
+					<p class="faq-page__banner-title h3">
+						{{- banner_heading -}}
+					</p>
+				{%- endif -%}
+			</div>
+		</div>
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- assign sidenav_items = '' -%}
+{%- assign content = '' -%}
+
+{%- for block in blocks -%}
+{% assign delay_step = delay_step | plus: 0.15 %}
+
+{%- case block.type -%}
+{%- when "category" -%}
+{%- assign category_heading = block.settings.heading -%}
+{% assign delay_step_sidebar = delay_step_sidebar | plus: 0.15 %}
+
+{%- if category_heading != blank -%}
+{%- assign handle = category_heading | handleize -%}
+
+{%- capture sidenav_items -%}
+	{{- sidenav_items -}}
+
+	<li class="faq-page__sidenav-item js-faq-anchor-wrapper need-animate tr-dur-0-4"
+		style="transition-delay: {{ delay_step_sidebar | append: 's' }}; ">
+		<a
+			href="{{- handle | prepend: '#' -}}"
+			class="faq-page__sidenav-item-link js-faq-anchor-link{% if sidenav_items == '' %} is-active{%- endif -%}"
+			aria-current="page"
+		>
+			{{- category_heading -}}
+		</a>
+	</li>
+{%- endcapture -%}
+
+{%- capture content -%}
+{{- content -}}
+
+{%- if content != '' -%}
+	</div>
+{%- endif -%}
+
+<div id="{{- handle -}}" class="faq-simple__category js-faq-block">
+
+	<h2 class="faq-simple__category-heading need-animate tr-dur-0-4 h4"
+		style="transition-delay: {{ delay_step | append: 's' }}">
+		{{- category_heading -}}
+	</h2>
+	{%- endcapture -%}
+	{%- endif -%}
+
+	{%- when "faq_item" -%}
+	{%- assign item_heading = block.settings.heading -%}
+	{%- assign text = block.settings.text -%}
+	{%- assign heading_icon = block.settings.heading_icon -%}
+	{%- capture img_focal -%}{%- endcapture -%}
+
+	{%- if item_heading == blank or text == blank -%}
+		{%- continue -%}
+	{%- endif -%}
+
+	{%- capture icon -%}
+		{%- if heading_icon != blank -%}
+			{%- capture img_focal -%}
+				--img-desktop-pos: {{ heading_icon.presentation.focal_point }};
+			{%- endcapture -%}
+
+			<img
+				class="faq-simple__item-image"
+				srcset="{{ heading_icon | img_url: "20x" }} 1x, {{ heading_icon | img_url: "40x" }} 2x"
+				src="{{- heading_icon | img_url: "40x" -}}"
+				alt="{{- heading_icon.alt -}}"
+				style="{{ img_focal }}"
+			/>
+		{%- endif -%}
+	{%- endcapture -%}
+
+	{%- capture content -%}
+	{{- content -}}
+
+{%- if content == '' -%}
+	<div class="faq-simple__category js-faq-block">
+		{%- endif -%}
+
+		<div class="accordion__item faq-simple__item need-animate tr-dur-0-4 js-accordion-item"
+			 style="transition-delay: {{ delay_step | append: 's' }}">
+			<h4 class="accordion__title faq-simple__item-title">
+				<button
+					id="control-{{- block.id -}}"
+					class="accordion__control faq-simple__item-control js-accordion-control focus-visible-outline"
+					aria-controls="content-{{- block.id -}}"
+					aria-expanded="false"
+				>
+							<span class="faq-simple__item-title-text">
+								{%- if icon != blank -%}
+									<span class="faq-simple__item-icon">
+										{{- icon -}}
+									</span>
+								{%- endif -%}
+
+								{{- item_heading -}}
+							</span>
+
+					<span class="faq-simple__item-control-icon">
+							</span>
+				</button>
+			</h4>
+
+			<div
+				id="content-{{- block.id -}}"
+				class="accordion__content accordion__content--animate faq-simple__item-content js-accordion-content"
+				style="height: 0;"
+				role="region"
+				aria-labelledby="control-{{- block.id -}}"
+			>
+				<div class="faq-simple__item-inner js-accordion-inner rte">
+					{{- text -}}
+				</div>
+			</div>
+		</div>
+		{%- endcapture -%}
+		{%- endcase -%}
+		{%- endfor -%}
+
+		{%- capture sidenav -%}
+			{%- if sidenav_items != '' -%}
+				<ul class="faq-page__sidenav js-side-navigation-list">
+					{{- sidenav_items -}}
+				</ul>
+			{%- endif -%}
+		{%- endcapture -%}
+
+		{%- if content != '' and sidenav == '' -%}
+		{%- capture content -%}
+		{{- content -}}
+
+	</div>
+	{%- endcapture -%}
+	{%- endif -%}
+
+	<section
+		class="faq-page"
+		data-section-id="{{- section.id -}}"
+		data-section-type="faq-template"
+	>
+		<div class="faq-page__container">
+			{% if title != blank %}
+				<h1 class="h1 faq-page__heading">
+					{{- title -}}
+				</h1>
+			{% endif %}
+
+			{% if page.content != blank %}
+				<div class="faq-page__rte rte">{{ page.content }}</div>
+			{% endif %}
+
+			{%- if content != '' -%}
+				<div class="faq-page__main js-animate {% if request.visual_preview_mode %}animated{% endif %}">
+					{%- if sidenav != '' or banner_image != blank -%}
+						<div class="faq-page__navigation-wrapper js-side-navigation-container">
+							{%- if sidenav != blank -%}
+								<div class="faq-page__navigation js-side-navigation">
+									{{- sidenav -}}
+								</div>
+							{%- endif -%}
+
+							{%- if sidenav == blank -%}
+								{%- assign banner_class = "faq-page__banner-wrapper--small-offset" -%}
+							{%- endif -%}
+
+							{%- if banner_image != blank -%}
+								<div
+									class="faq-page__banner-wrapper faq-page__banner-wrapper--desktop {{ banner_class -}}">
+									{{- banner -}}
+								</div>
+							{%- endif -%}
+						</div>
+					{%- endif -%}
+
+					<div class="accordion faq-simple faq-page__content js-accordion-container">
+						{{- content -}}
+					</div>
+
+					{%- if banner_image != blank -%}
+						<div class="faq-page__banner-wrapper faq-page__banner-wrapper--mobile">
+							{{- banner -}}
+						</div>
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+		</div>
+	</section>
+
+	{%- render 'adastra' with '/src/scripts/section-faq.js' -%}
+
+	{%- schema -%}
+	{
+		"name": "FAQ",
+		"settings": [
+			{
+				"type": "text",
+				"id": "heading",
+				"label": "Heading",
+				"default": "FAQ"
+			},
+			{
+				"type": "header",
+				"content": "Banner"
+			},
+			{
+				"type": "image_picker",
+				"id": "banner_image",
+				"label": "Image"
+			},
+			{
+				"type": "text",
+				"id": "banner_heading",
+				"label": "Heading"
+			},
+			{
+				"type": "url",
+				"id": "banner_link",
+				"label": "Link"
+			},
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 25
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 25
+			}
+		],
+		"blocks": [
+			{
+				"name": "Category",
+				"type": "category",
+				"settings": [
+					{
+						"type": "text",
+						"id": "heading",
+						"label": "Heading"
+					}
+				]
+			},
+			{
+				"name": "Question and answer",
+				"type": "faq_item",
+				"settings": [
+					{
+						"type": "textarea",
+						"id": "heading",
+						"label": "Heading"
+					},
+					{
+						"type": "richtext",
+						"id": "text",
+						"label": "Text"
+					},
+					{
+						"type": "image_picker",
+						"id": "heading_icon",
+						"label": "Icon",
+						"info": "48 x 48px recommended"
+					}
+				]
+			}
+		]
+	}
+	{%- endschema -%}

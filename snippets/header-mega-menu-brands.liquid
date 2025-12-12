@@ -1,0 +1,85 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header mega menu brands
+	Render header mega menu row menus
+	- menu: menu object;
+	- blocks: transfer logo block object;
+	- megamenu_object: mega menu object;
+	- enable_rounded_header: enable rounded header (true/false).
+
+	Usage:
+	{%- render 'header-mega-menu-brands' -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign megamenu_background 				= megamenu_object.settings.megamenu_background -%}
+{%- assign brand_logo_border_hover_color 	= megamenu_object.settings.brand_logo_border_hover_color -%}
+{%- assign brand_filter_symbol_color 		= megamenu_object.settings.brand_filter_symbol_color -%}
+{%- assign brand_category_symbol_color 		= megamenu_object.settings.brand_category_symbol_color -%}
+
+{%- capture styles -%}
+	--megamenu-background: {{ megamenu_background -}};
+	--header-brand-logo-border-hover-color: {{ brand_logo_border_hover_color -}};
+	--header-brand-filter-symbol-color: {{ brand_filter_symbol_color -}};
+	--header-brand-category-symbol-color: {{ brand_category_symbol_color -}};
+{%- endcapture -%}
+
+{%- capture brands_logos -%}
+	{%- render 'header-brands-logos',
+		blocks: blocks,
+		megamenu_object: megamenu_object,
+		logo_size: 114,
+		link_type: 'primary',
+		modifier: 'mega-menu'
+	-%}
+{%- endcapture -%}
+
+{%- assign header_brands_logos_modifier = "mega-menu" -%}
+
+{%- if brands_logos == blank -%}
+	{%- assign header_brands_column_class 	= "header-mega-menu__brands-column--brands-wide" -%}
+	{%- assign header_brands_wrapper_class 	= "header-mega-menu__brands-wrapper--short" -%}
+	{%- assign header_brands_logos_modifier = "mega-menu-short" -%}
+{%- endif -%}
+
+{%- capture brands -%}
+	{%- render 'header-brands',
+		menu: menu,
+		megamenu_object: megamenu_object,
+		modifier: header_brands_logos_modifier,
+		show_filters: true
+	-%}
+{%- endcapture -%}
+
+{%- assign mega_menu_class = "" -%}
+
+{%- if enable_rounded_header == true -%}
+	{%- assign mega_menu_class = "header-mega-menu--rounded" -%}
+{%- endif -%}
+
+<div
+	id="headerMegaMenu:{{- menu.title | handleize -}}"
+	class="header-mega-menu is-hidden js-header-mega-menu {{ mega_menu_class -}}"
+>
+	<span class="visually-hidden">
+		{{- "layout.navigation.mega_menu" | t -}}
+	</span>
+
+	<div class="header-mega-menu__container header-mega-menu__container--brands js-header-mega-menu-content"
+		 style="{{- styles -}}"
+	>
+		<div class="header-mega-menu__content-container">
+			<div class="header-mega-menu__brands-wrapper {{ header_brands_wrapper_class -}}">
+				<div class="header-mega-menu__brands-column header-mega-menu__brands-column--brands {{ header_brands_column_class -}}">
+					{{- brands -}}
+				</div>
+
+				{%- if brands_logos != blank -%}
+					<div class="header-mega-menu__brands-column header-mega-menu__brands-column--logos">
+						{{ brands_logos }}
+					</div>
+				{%- endif -%}
+			</div>
+		</div>
+	</div>
+</div>

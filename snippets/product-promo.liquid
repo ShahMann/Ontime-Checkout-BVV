@@ -1,0 +1,170 @@
+{%- assign enabled		= settings.is_product_promo_enabled -%}
+{%- assign layout		= settings.product_promo_layout -%}
+{%- assign cookie_time	= settings.product_promo_cookie_time -%}
+{%- assign show_shadow	= settings.product_promo_show_shadow -%}
+
+{%- assign heading 		= settings.product_promo_heading -%}
+{%- assign icon 		= settings.product_promo_icon -%}
+{%- assign text 		= settings.product_promo_text -%}
+{%- assign button_label = settings.product_promo_button_label -%}
+
+{%- assign product							= settings.product_promo_product -%}
+{%- assign product_additional_description	= settings.product_promo_product_description -%}
+
+{%- assign background_color 				= settings.product_promo_background_color | default: '#161E13' -%}
+{%- assign text_color 						= settings.product_promo_text_color | default: '#ffffff' -%}
+{%- assign button_background_color 			= settings.product_promo_button_background_color | default: "#161E13" -%}
+{%- assign button_close_color 				= settings.product_promo_button_close_color | default: "#ffffff" -%}
+{%- assign button_label_color 				= settings.product_promo_button_label_color | default: "#ffffff" -%}
+{%- assign button_border_color 				= settings.product_promo_button_border_color | default: "#ffffff" -%}
+{%- assign button_background_hover_color 	= settings.product_promo_button_background_hover_color | default: "#ffffff" -%}
+{%- assign button_label_hover_color 		= settings.product_promo_button_label_hover_color | default: "#161E13" -%}
+{%- assign button_border_hover_color 		= settings.product_promo_button_border_hover_color | default: "#161E13" -%}
+
+{%- capture style -%}
+	--background-color: {{ background_color -}}; {{-  -}}
+	--text-color: {{ text_color -}};
+	--button-close-color: {{ button_close_color }}; {{-  -}}
+	--button-background-color: {{- button_background_color -}}; {{-  -}}
+	--button-label-color: {{- button_label_color -}}; {{-  -}}
+	--button-border-color: {{- button_border_color -}}; {{-  -}}
+	--button-background-hover-color: {{- button_background_hover_color -}}; {{-  -}}
+	--button-label-hover-color: {{- button_label_hover_color -}}; {{-  -}}
+	--button-border-hover-color: {{- button_border_hover_color -}};
+{%- endcapture -%}
+
+{%- if enabled and product != blank -%}
+	<div
+		class="product-promo product-promo--{{- layout }}{% if show_shadow %} product-promo--shadow{% endif %} js-product-promo is-hidden"
+		style="{{- style -}}"
+		data-cookie-time="{{- cookie_time -}}"
+		data-handle="{{- product.handle -}}"
+		data-variant-id="{{- product.first_available_variant.id -}}"
+		data-variant-count="{{- product.variants.size -}}"
+	>
+		{%- render 'adastra' with '/src/styles/product-promo.scss' -%}
+
+		{%- if layout == "text" -%}
+			<div class="product-promo__content">
+				<div class="product-promo__header">
+
+					<div class="product-promo__heading-container">
+						{%- if icon != blank -%}
+							<img
+								class="product-promo__icon"
+								src="{{ icon | img_url: '24x' }}"
+								srcset="{{ icon | img_url: '24x' }} 1x, {{ icon | img_url: '48x' }} 2x"
+								width="24"
+								height="24"
+								alt="{{- icon.alt | escape -}}"
+							/>
+						{%- endif -%}
+
+						{%- if heading != blank -%}
+							<div class="product-promo__heading">
+								{{- heading -}}
+							</div>
+						{%- endif -%}
+					</div>
+
+
+					<button
+						class="product-promo__close focus-visible-outline js-product-promo-quick-view-button-close"
+						data-target="product-promo"
+						aria-label="{{ "general.accessibility.close" | t }}"
+						data-js-toggle="product-promo"
+					>
+						{%- render 'icons', icon: 'menu-close' -%}
+					</button>
+				</div>
+
+				{%- if text != blank -%}
+					<p class="product-promo__text">
+						{{- text -}}
+					</p>
+				{%- endif -%}
+
+				<button class="product-promo__button js-product-promo-quick-view-button focus-visible-outline"
+						aria-label="{{- 'product_promo.button_aria' | t: product_title: product.title | escape -}}"
+						{%- unless product.available -%}disabled{%- endunless -%}
+				>
+					{%- unless product.available -%}
+						{{- "product_promo.sold_out" | t -}}
+					{%- else -%}
+						{%- if button_label != blank -%}
+							{{- button_label -}}
+						{%- else -%}
+							{{- "product_promo.add_to_cart" | t -}}
+						{%- endif -%}
+					{%- endunless -%}
+				</button>
+			</div>
+
+		{%- else -%}
+			{% assign image = product.featured_image | default: settings.product_default_image %}
+
+			{%- capture img_focal -%}
+				--img-desktop-pos: {{ image.presentation.focal_point }};
+			{%- endcapture -%}
+
+			<div class="product-promo__media">
+				<a href="{{- product.url -}}" class="focus-visible-outline product-promo__link">
+					<span class="visually-hidden">
+						{{- product.title -}}
+					</span>
+				</a>
+
+				<div class="product-promo__image-container">
+					<picture class="lazy">
+						<img
+							class="product-promo__image"
+							src="{{ image | img_url: '10x' }}"
+							data-src="{{ image | img_url: '80x' }}"
+							data-srcset="{{ image | img_url: '80x'  }} 1x, {{ image | img_url: '160x' }} 2x"
+							width="80"
+							height="80"
+							alt="{{- image.alt | escape -}}"
+							{% if img_focal != blank %}
+								style="{{ img_focal }}"
+							{% endif %}
+						/>
+					</picture>
+				</div>
+			</div>
+
+			<div class="product-promo__content">
+				<div class="product-promo__meta-content">
+					<a class="focus-visible-outline product-promo__title" href="{{ product.url }}">
+						{{- product.title -}}
+					</a>
+
+					<div class="product-promo__price">
+						{%- render 'price', product: product -%}
+					</div>
+				</div>
+				<button
+					class="product-promo__button js-product-promo-quick-view-button focus-visible-outline"
+					aria-label="{{- 'product_promo.button_aria' | t: product_title: product.title | escape -}}"
+					{%- unless product.available -%}disabled{%- endunless -%}
+				>
+					{%- unless product.available -%}
+						{{- "product_promo.sold_out" | t -}}
+					{%- else -%}
+						{{- "product_promo.add_to_cart" | t -}}
+					{%- endunless -%}
+				</button>
+			</div>
+
+		<button
+			class="product-promo__close focus-visible-outline js-product-promo-quick-view-button-close"
+			data-target="product-promo"
+			aria-label="{{ "general.accessibility.close" | t }}"
+			data-js-toggle="product-promo"
+		>
+			{%- render 'icons', icon: 'menu-close' -%}
+		</button>
+		{%- endif -%}
+
+		{%- render 'adastra' with '/src/scripts/section-product-promo.js' -%}
+	</div>
+{%- endif -%}

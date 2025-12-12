@@ -1,0 +1,37 @@
+<script>
+	{%- raw -%}
+	function unescape(value) {
+		const doc = new DOMParser().parseFromString(value, "text/html");
+
+		return doc.body.innerHTML;
+	}
+
+	window.themeCore = window.themeCore || {};
+	window.themeCore.translations = window.themeCore.translations || {};
+	window.themeCore.translations = {
+		...window.themeCore.translations,
+		get(name, params = {}) {
+			try {
+				const translation = name.split(".").reduce((translations, key) => {
+					if (translations.hasOwnProperty(key)) {
+						return translations[key];
+					}
+
+					throw new Error("Translation missed");
+				}, this.translations);
+
+				return Object.keys(params).reduce((result = "", key) => {
+					let regex = new RegExp(`{{(\\s+)?(${key})(\\s+)?}}`, "gm");
+
+					return result.replace(regex, params[key]);
+				}, unescape(translation));
+			} catch (e) {}
+
+			return `"${name}" translation missed`;
+		},
+		all() {
+			return this.translations;
+		}
+	}
+	{%- endraw -%}
+</script>

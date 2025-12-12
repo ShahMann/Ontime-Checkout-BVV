@@ -1,0 +1,68 @@
+{%- assign enabled 		= settings.is_cookie_bar_enabled -%}
+{%- assign cookie_time 	= settings.cookie_bar_cookie_time | default: "Cookies" -%}
+{%- assign heading 		= settings.cookie_bar_heading -%}
+{%- assign text 		= settings.cookie_bar_text -%}
+{%- assign button_label = settings.cookie_bar_button_label | default: "Accept all cookies" -%}
+{%- assign show_shadow	= settings.cookie_bar_show_shadow -%}
+
+{%- assign background_color 				= settings.cookie_bar_background_color | default: "#161E13" -%}
+{%- assign text_color 						= settings.cookie_bar_text_color | default: "#ffffff" -%}
+{%- assign button_close_color 				= settings.cookie_bar_button_close_color | default: "#ffffff" -%}
+{%- assign button_background_color 			= settings.cookie_bar_button_background_color | default: "#161E13" -%}
+{%- assign button_label_color 				= settings.cookie_bar_button_label_color | default: "#ffffff" -%}
+{%- assign button_border_color 				= settings.cookie_bar_button_border_color | default: "#ffffff" -%}
+{%- assign button_background_hover_color 	= settings.cookie_bar_button_background_hover_color | default: "#ffffff" -%}
+{%- assign button_label_hover_color 		= settings.cookie_bar_button_label_hover_color | default: "#161E13" -%}
+{%- assign button_border_hover_color 		= settings.cookie_bar_button_border_hover_color | default: "#161E13" -%}
+
+
+{%- capture styles -%}
+	--background-color: {{- background_color -}}; {{-  -}}
+	--text-color: {{- text_color -}}; {{-  -}}
+	--button-close-color: {{ button_close_color }}; {{-  -}}
+	--button-background-color: {{- button_background_color -}}; {{-  -}}
+	--button-label-color: {{- button_label_color -}}; {{-  -}}
+	--button-border-color: {{- button_border_color -}}; {{-  -}}
+	--button-background-hover-color: {{- button_background_hover_color -}}; {{-  -}}
+	--button-label-hover-color: {{- button_label_hover_color -}}; {{-  -}}
+	--button-border-hover-color: {{- button_border_hover_color -}};
+{%- endcapture -%}
+
+{%- if enabled -%}
+	<div
+		class="cookie-bar {% if show_shadow %} cookie-bar--shadow{% endif %} js-cookie-bar is-hidden"
+		style="{{- styles -}}"
+		data-cookie-time="{{- cookie_time -}}"
+	>
+		{%- render 'adastra' with '/src/styles/cookie-bar.scss' -%}
+
+		<div class="cookie-bar__content">
+			<div class="cookie-bar__header">
+				{%- if heading != blank -%}
+					<div class="cookie-bar__heading">
+						{{- heading -}}
+					</div>
+				{%- endif -%}
+
+				<button
+					class="cookie-bar__close focus-visible-outline js-cookie-bar-accept"
+					aria-label="{{ "general.accessibility.close" | t }}"
+				>
+					{%- render 'icons', icon: 'menu-close' -%}
+				</button>
+			</div>
+
+			{%- if text != blank -%}
+				<p class="cookie-bar__text">
+					{{- text -}}
+				</p>
+			{%- endif -%}
+
+			<button class="cookie-bar__button focus-visible-outline js-cookie-bar-accept">
+				{{- button_label -}}
+			</button>
+		</div>
+
+		{%- render 'adastra' with '/src/scripts/section-cookie-bar.js' -%}
+	</div>
+{%- endif -%}

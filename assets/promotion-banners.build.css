@@ -1,0 +1,134 @@
+.promotion-banners {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.promotion-banners .promotion-banners__heading {
+  margin-bottom: 16px;
+  text-align: center;
+}
+.promotion-banners .promotion-banners__wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.promotion-banners .promotion-banners__block {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border-radius: var(--global-border-radius);
+  background-color: var(--color-background-secondary);
+}
+.promotion-banners .promotion-banners__block.promotion-banners__block--vertical {
+  padding: 0;
+  gap: 15px;
+  flex-direction: column-reverse;
+  border-radius: calc(var(--global-border-radius) * 2);
+  overflow: hidden;
+}
+.promotion-banners .promotion-banners__block.promotion-banners__block--vertical .promotion-banners__image-wrapper {
+  width: 100%;
+}
+.promotion-banners .promotion-banners__block.promotion-banners__block--vertical .promotion-banners__block-content {
+  padding: 24px 24px 0;
+  margin: 0;
+  gap: 16px;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+}
+.promotion-banners .promotion-banners__block.promotion-banners__block--vertical .promotion-banners__aspect-ratio {
+  padding-top: 79.65%;
+  border-radius: 0;
+}
+.promotion-banners .promotion-banners__block.promotion-banners__block--vertical .promotion-banners__block-button {
+  font-size: var(--body-font-size);
+  line-height: 1.5;
+}
+.promotion-banners .promotion-banners__block.need-animate {
+  opacity: 0;
+  transform: translateY(-25px);
+  transition-property: opacity, transform;
+}
+.promotion-banners .promotion-banners__image-wrapper {
+  width: 32%;
+  display: flex;
+}
+.promotion-banners .promotion-banners__aspect-ratio {
+  position: relative;
+  padding-top: 100%;
+  width: 100%;
+  margin: auto;
+  border-radius: calc(var(--global-border-radius) * 2);
+  overflow: hidden;
+}
+.promotion-banners .promotion-banners__aspect-ratio .promotion-banners__block-image {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--img-pos);
+}
+.promotion-banners .promotion-banners__aspect-ratio .promotion-banners__image-background {
+  background-color: var(--color-background-darken);
+}
+.promotion-banners .promotion-banners__block-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 58.96%;
+}
+.promotion-banners .promotion-banners__block-button {
+  width: fit-content;
+}
+.promotion-banners.animated .promotion-banners__block.need-animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (min-width: 576px) {
+  .promotion-banners .promotion-banners__block.promotion-banners__block--vertical {
+    gap: 20px;
+  }
+  .promotion-banners .promotion-banners__block.promotion-banners__block--vertical .promotion-banners__block-content {
+    justify-content: space-between;
+  }
+  .promotion-banners .promotion-banners__wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 768px) {
+  .promotion-banners .promotion-banners__block-content {
+    justify-content: center;
+    gap: 16px;
+  }
+  .promotion-banners .promotion-banners__block {
+    gap: 24px;
+  }
+  .promotion-banners .promotion-banners__block.promotion-banners__block--vertical .promotion-banners__block-content {
+    padding: 40px 40px 0;
+    gap: 32px;
+  }
+  .promotion-banners .promotion-banners__block.promotion-banners__block--vertical .promotion-banners__aspect-ratio {
+    padding-top: 90.79%;
+  }
+  .promotion-banners .promotion-banners__block.promotion-banners__block--vertical .promotion-banners__block-button {
+    padding: 14px 32px;
+  }
+  .promotion-banners .promotion-banners__image-wrapper {
+    width: 35.38%;
+  }
+  .promotion-banners .promotion-banners__block-button {
+    font-size: var(--body-font-size);
+    line-height: 1.5;
+  }
+}
+@media (min-width: 992px) {
+  .promotion-banners .promotion-banners__heading {
+    margin-bottom: 32px;
+  }
+  .promotion-banners .promotion-banners__wrapper {
+    grid-template-columns: repeat(var(--cards-per-row), 1fr);
+  }
+}

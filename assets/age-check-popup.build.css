@@ -1,0 +1,99 @@
+.age-check-popup {
+  z-index: 50;
+}
+.age-check-popup .age-check-popup__container {
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+}
+.age-check-popup .age-check-popup__col {
+  flex-basis: 50%;
+  flex-grow: 1;
+}
+.age-check-popup .age-check-popup__image-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding-top: 73.39%;
+  border-radius: calc(var(--global-border-radius) * 2);
+}
+.age-check-popup .age-check-popup__image {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--img-mob-pos);
+}
+.age-check-popup .age-check-popup__content {
+  width: 100%;
+  padding: 16px;
+  text-align: center;
+  word-break: break-word;
+}
+.age-check-popup .age-check-popup__title {
+  text-align: center;
+}
+.age-check-popup .age-check-popup__text {
+  margin-top: 16px;
+  text-align: center;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+.age-check-popup .age-check-popup__buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+}
+.age-check-popup .age-check-popup__close-button {
+  margin-top: 20px;
+}
+@media (min-width: 768px) {
+  .age-check-popup .age-check-popup__container {
+    max-width: 1040px;
+    flex-direction: row;
+    align-items: center;
+  }
+  .age-check-popup .age-check-popup__container.age-check-popup__container--no-image {
+    max-width: 520px;
+  }
+  .age-check-popup .age-check-popup__image-wrapper {
+    padding-top: 100%;
+  }
+  .age-check-popup .age-check-popup__image {
+    object-position: var(--img-desktop-pos);
+  }
+  .age-check-popup .age-check-popup__content {
+    padding: 32px 24px;
+  }
+  .age-check-popup .age-check-popup__close-icon-button.age-check-popup__close-icon-button--mobile {
+    display: none;
+  }
+}
+@media (max-width: 767.98px) {
+  .age-check-popup .age-check-popup__content.age-check-popup__content--top-offset {
+    padding-top: 32px;
+  }
+  .age-check-popup .age-check-popup__col.age-check-popup__col--hide-img-mob {
+    display: none;
+  }
+  .age-check-popup .age-check-popup__close-icon-button.age-check-popup__close-icon-button--desktop {
+    display: none;
+  }
+}
+@media (max-width: 1199.98px) {
+  .age-check-popup .age-check-popup__container {
+    padding: 8px;
+  }
+}
+@media (min-width: 1200px) {
+  .age-check-popup .age-check-popup__content {
+    padding: 32px;
+  }
+}

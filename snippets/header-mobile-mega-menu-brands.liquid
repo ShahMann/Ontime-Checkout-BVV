@@ -1,0 +1,58 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header mobile mega menu brands
+	Render header mega menu row menus
+	- menu: menu object;
+	- blocks: transfer logo block object;
+	- megamenu_object: mega menu object.
+
+	Usage:
+	{%- render 'header-mobile-mega-menu-brands' -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+
+{%- assign show_symbol_filter 				= megamenu_object.settings.show_symbol_filter -%}
+{%- assign brand_logo_border_hover_color 	= megamenu_object.settings.brand_logo_border_hover_color -%}
+{%- assign brand_filter_symbol_color 		= megamenu_object.settings.brand_filter_symbol_color -%}
+{%- assign brand_category_symbol_color 		= megamenu_object.settings.brand_category_symbol_color -%}
+
+{%- capture styles -%}
+	--header-brand-logo-border-hover-color: {{ brand_logo_border_hover_color -}};
+	--header-brand-filter-symbol-color: {{ brand_filter_symbol_color -}};
+	--header-brand-category-symbol-color: {{ brand_category_symbol_color -}};
+{%- endcapture -%}
+
+{%- capture brands -%}
+	{%- render 'header-brands',
+		menu: menu,
+		megamenu_object: megamenu_object,
+		modifier: 'mobile-menu',
+		show_filters: false
+	-%}
+{%- endcapture -%}
+
+{%- capture brands_logos -%}
+	{%- render 'header-brands-logos',
+		blocks: blocks,
+		megamenu_object: megamenu_object,
+		logo_size: 108,
+		link_type: 'secondary',
+		modifier: 'mobile-menu'
+	-%}
+{%- endcapture -%}
+
+<div
+	class="header-mobile__brands-wrapper"
+	style="{{- styles -}}"
+>
+	<div class="header-mobile__brands-column header-mobile__brands-column--brands">
+		{{- brands -}}
+	</div>
+
+	{%- if brands_logos -%}
+		<div class="header-mobile__brands-column header-mobile__brands-column--logos">
+			{{- brands_logos -}}
+		</div>
+	{%- endif -%}
+</div>

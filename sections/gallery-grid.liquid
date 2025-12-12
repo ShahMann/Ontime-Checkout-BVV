@@ -1,0 +1,494 @@
+{%- render 'adastra' with '/src/styles/gallery-grid.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign title                    = section.settings.title -%}
+{%- assign aspect_ratio             = section.settings.aspect_ratio -%}
+{%- assign card_per_row             = section.settings.card_per_row -%}
+{%- assign card_per_row_mobile      = section.settings.card_per_row_mobile -%}
+{%- assign overlay_color            = section.settings.overlay_color -%}
+{%- assign container 	            = section.settings.container_width -%}
+{%- assign blocks 		            = section.blocks -%}
+{%- assign delay_step 		        = 0 -%}
+
+{% if container == 'inherit' %}
+    {% assign container_width = settings.container_width %}
+{% else %}
+    {% assign container_width = container %}
+{% endif %}
+
+{% if container_width != '100%' %}
+	{% assign section_class = 'gallery--limited-width' %}
+{% endif %}
+
+{%- capture styles -%}
+    --container-width: {{ container_width }}; {{-  -}}
+    --img-overlay-color: {{ overlay_color }}; {{-  -}}
+{%- endcapture -%}
+
+<section class="gallery-grid {{ section_class }} js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}" style="{{- styles -}}">
+    {% if title != blank %}
+        <h2 class="gallery-grid__title h2">{{ title }}</h2>
+    {% endif %}
+
+    <div class="gallery-grid__row">
+        {%- if blocks.size > 0 -%}
+        {%- for block in blocks -%}
+            {%- assign image 			= block.settings.image -%}
+            {%- assign video 			= block.settings.video -%}
+			{%- assign delay_step 		= delay_step | plus: 0.15 -%}
+
+			{% if video != blank %}
+				{% assign image = video.preview_image %}
+			{% endif %}
+
+            {%- assign icon_hover 		= block.settings.icon_hover -%}
+            {%- assign url 				= block.settings.url -%}
+            {%- assign open_in_new_tab 	= block.settings.open_in_new_tab -%}
+
+            {%- if image != blank -%}
+                {%- capture img_focal -%}
+                    --img-desktop-pos: {{ image.presentation.focal_point }};
+                {%- endcapture -%}
+
+				{% assign is_lazy = true %}
+
+				{% if section.index == 1 and forloop.index < 3 and card_per_row_mobile == "1" %}
+					{% assign is_lazy = false %}
+				{% elsif section.index == 1 and forloop.index < 5 and card_per_row_mobile == "2" %}
+					{% assign is_lazy = false %}
+				{% endif %}
+
+                <div class="gallery-grid__col need-animate tr-dur-0-5 gallery-grid__col--{{ card_per_row }} gallery-grid__col-mob--{{ card_per_row_mobile }}"
+					 style="transition-delay: {{ delay_step | append: 's' }};"
+				>
+                    {%- if url != blank -%}
+                        <a
+                            class="gallery-grid__link{% if video != blank %} js-gallery-grid-video-container{% endif %}"
+                            href="{{- url -}}"
+							{% if open_in_new_tab %}
+								target="_blank"
+							{% endif %}
+                            aria-label="{{ image.alt | escape }}">
+                        {%- endif -%}
+
+                        <span class="gallery-grid__col-content">
+                            <span class="gallery-grid__image-wrapper gallery-grid__image-wrapper--{{ aspect_ratio }}{% if video != blank and url == blank %} js-gallery-grid-video-container{% endif %}">
+								{% if video != blank %}
+									<video
+										class="gallery-grid__video js-gallery-grid-video"
+										muted
+										loop
+										playsinline
+									>
+										{%- for source in video.sources -%}
+											{%- if source.mime_type == 'video/mp4' -%}
+												<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+											{%- endif -%}
+										{%- endfor -%}
+									</video>
+								{% endif %}
+
+                                {% comment %} 6 per row {% endcomment %}
+								{% assign wh_1920 = '317' %}
+								{% assign x1_1920 = '317x317' %}
+                                {% assign x2_1920 = '634x634' %}
+
+								{% assign wh_1600 = '264' %}
+								{% assign x1_1600 = '264x264' %}
+                                {% assign x2_1600 = '528x528' %}
+
+                                {% comment %} On mobile we have only 1 or 2 cards {% endcomment %}
+								{% assign wh_991 = '494' %}
+								{% assign x1_991 = '494x494' %}
+                                {% assign x2_991 = '988x988' %}
+
+								{% assign wh_767 = '382' %}
+								{% assign x1_767 = '382x382' %}
+                                {% assign x2_767 = '764x764' %}
+
+								{% assign wh_480 = '238' %}
+								{% assign x1_480 = '238x238' %}
+                                {% assign x2_480 = '476x476' %}
+
+								{% assign wh_420 = '208' %}
+								{% assign x1_420 = '208x208' %}
+								{% assign x2_420 = '416x416' %}
+
+								{% assign wh_380 = '188' %}
+								{% assign x1_380 = '188x188' %}
+                                {% assign x2_380 = '376x376' %}
+
+                                {% if card_per_row_mobile == "1" %}
+									{% assign wh_991 = '991' %}
+									{% assign x1_991 = '991x991' %}
+                                    {% assign x2_991 = '1982x1982' %}
+
+									{% assign wh_767 = '767' %}
+									{% assign x1_767 = '767x767' %}
+                                    {% assign x2_767 = '1534x1534' %}
+
+									{% assign wh_480 = '480' %}
+									{% assign x1_480 = '480x480' %}
+                                    {% assign x2_480 = '960x960' %}
+
+									{% assign wh_420 = '420' %}
+									{% assign x1_420 = '420x420' %}
+									{% assign x2_420 = '840x840' %}
+
+									{% assign wh_380 = '380' %}
+                                    {% assign x1_380 = '380x380' %}
+                                    {% assign x2_380 = '760x760' %}
+                                {% endif %}
+
+                                {% comment %} 4 per row {% endcomment %}
+								{% assign wh_4_per_row_1920 = '477' %}
+                                {% assign x1_4_per_row_1920 = '477x477' %}
+                                {% assign x2_4_per_row_1920 = '954x954' %}
+
+								{% assign wh_4_per_row_1600 = '397' %}
+                                {% assign x1_4_per_row_1600 = '397x397' %}
+                                {% assign x2_4_per_row_1600 = '794x794' %}
+
+                                {% comment %} 2 per row {% endcomment %}
+								{% assign wh_2_per_row_1920 = '958' %}
+                                {% assign x1_2_per_row_1920 = '958x958' %}
+                                {% assign x2_2_per_row_1920 = '1916x1916' %}
+
+								{% assign wh_2_per_row_1600 = '798' %}
+                                {% assign x1_2_per_row_1600 = '798x798' %}
+                                {% assign x2_2_per_row_1600 = '1596x1596' %}
+
+                                {% if card_per_row == "4" %}
+									{% assign wh_1920 = wh_4_per_row_1920 %}
+									{% assign x1_1920 = x1_4_per_row_1920 %}
+                                    {% assign x2_1920 = x2_4_per_row_1920 %}
+
+									{% assign wh_1600 = wh_4_per_row_1600 %}
+									{% assign x1_1600 = x1_4_per_row_1600 %}
+                                    {% assign x2_1600 = x2_4_per_row_1600 %}
+                                {% elsif card_per_row == "2" %}
+									{% assign wh_1920 = wh_2_per_row_1920 %}
+									{% assign x1_1920 = x1_2_per_row_1920 %}
+                                    {% assign x2_1920 = x2_2_per_row_1920 %}
+
+									{% assign wh_1600 = wh_2_per_row_1600 %}
+									{% assign x1_1600 = x1_2_per_row_1600 %}
+                                    {% assign x2_1600 = x2_2_per_row_1600 %}
+                                {% endif %}
+
+                                <picture {% if is_lazy %}class="lazy"{% endif %}>
+                                    <source
+										{% if is_lazy %}
+											data-srcset="{{ image | img_url: x1_380, crop: 'center' }} 1x, {{ image | img_url: x2_380, crop: 'center' }} 2x"
+											srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+										{% else %}
+											srcset="{{ image | img_url: x1_380, crop: 'center' }} 1x, {{ image | img_url: x2_380, crop: 'center' }} 2x"
+										{% endif %}
+                                        media="(max-width: 380px)"
+                                        width="{{ wh_380 }}"
+                                        height="{{ wh_380 }}" />
+
+									<source
+										{% if is_lazy %}
+											data-srcset="{{ image | img_url: x1_420, crop: 'center' }} 1x, {{ image | img_url: x2_420, crop: 'center' }} 2x"
+											srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+										{% else %}
+											srcset="{{ image | img_url: x1_420, crop: 'center' }} 1x, {{ image | img_url: x2_420, crop: 'center' }} 2x"
+										{% endif %}
+										 media="(max-width: 420px)"
+										 width="{{ wh_420 }}"
+										 height="{{ wh_420 }}" />
+
+                                    <source
+										{% if is_lazy %}
+											data-srcset="{{ image | img_url: x1_480, crop: 'center' }} 1x, {{ image | img_url: x2_480, crop: 'center' }} 2x"
+											srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+										{% else %}
+											srcset="{{ image | img_url: x1_480, crop: 'center' }} 1x, {{ image | img_url: x2_480, crop: 'center' }} 2x"
+										{% endif %}
+                                        media="(max-width: 480px)"
+                                        width="{{ wh_480 }}"
+                                        height="{{ wh_480 }}" />
+
+                                    <source
+										{% if is_lazy %}
+											srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '20x' }} 2x"
+											data-srcset="{{ image | img_url: x1_767, crop: 'center' }} 1x, {{ image | img_url: x2_767, crop: 'center' }} 2x"
+										{% else %}
+											srcset="{{ image | img_url: x1_767, crop: 'center' }} 1x, {{ image | img_url: x2_767, crop: 'center' }} 2x"
+										{% endif %}
+                                        media="(max-width: 767px)"
+                                        width="{{ wh_767 }}"
+                                        height="{{ wh_767 }}" />
+
+                                    <source
+										{% if is_lazy %}
+											data-srcset="{{ image | img_url: x1_991, crop: 'center' }} 1x, {{ image | img_url: x2_991, crop: 'center' }} 2x"
+											srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+										{% else %}
+											srcset="{{ image | img_url: x1_991, crop: 'center' }} 1x, {{ image | img_url: x2_991, crop: 'center' }} 2x"
+										{% endif %}
+                                        media="(max-width: 991px)"
+                                        width="{{ wh_991 }}"
+                                        height="{{ wh_991 }}" />
+
+                                     <source
+										 {% if is_lazy %}
+											 data-srcset="{{ image | img_url: x1_1600, crop: 'center' }} 1x, {{ image | img_url: x2_1600, crop: 'center' }} 2x"
+											 srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+										 {% else %}
+											 srcset="{{ image | img_url: x1_1600, crop: 'center' }} 1x, {{ image | img_url: x2_1600, crop: 'center' }} 2x"
+										 {% endif %}
+                                             media="(max-width: 1600px)"
+                                             width="{{ wh_1600 }}"
+                                             height="{{ wh_1600 }}" />
+
+                                    <img
+                                        class="gallery-grid__image"
+										{% if is_lazy %}
+											src="{{- image | img_url: '10x' -}}"
+											data-src="{{- image | img_url: x1_1920, crop: 'center' -}}"
+											srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '20x' }} 2x"
+											data-srcset="{{ image | img_url: x1_1920, crop: 'center' }} 1x, {{ image | img_url: x2_1920, crop: 'center' }} 2x"
+										{% else %}
+											src="{{- image | img_url: x1_1920, crop: 'center' -}}"
+											srcset="{{ image | img_url: x1_1920, crop: 'center' }} 1x, {{ image | img_url: x2_1920, crop: 'center' }} 2x"
+										{% endif %}
+                                        alt="{%- if url == blank -%}{{- image.alt -}}{%- endif -%}"
+                                        width="{{ wh_1920 }}"
+                                        height="{{ wh_1920 }}"
+                                        style="{{ img_focal }}" />
+                                </picture>
+                            </span>
+
+                            <span class="gallery-grid__overlay">
+								{% if icon_hover != blank %}
+									<span class="gallery-grid__icon" aria-hidden="true">
+										<img class="gallery-grid__icon-img"
+											 src="{{ icon_hover | img_url: '48x48' }}"
+											 srcset="{{ icon_hover | img_url: '24x24' }} 1x, {{ icon_hover | img_url: '48x48' }} 2x"
+											 alt=""
+											 width="24"
+											 height="24"
+											 style="object-position: {{ icon_hover.presentation.focal_point }};"
+											 aria-hidden="true"
+										>
+									</span>
+								{% endif %}
+                            </span>
+                        </span>
+                        {%- if url != blank -%}
+                        </a>
+                    {%- endif -%}
+                </div>
+            {%- endif -%}
+        {%- endfor -%}
+    {%- else -%}
+        {%- for i in (1..6) -%}
+            <div class="gallery-grid__col need-animate tr-dur-0-5 gallery-grid__col--{{ card_per_row }} gallery-grid__col-mob--{{ card_per_row_mobile }}">
+                {{- "image" | placeholder_svg_tag: "gallery-grid__image-placeholder" -}}
+            </div>
+        {%- endfor -%}
+    {%- endif -%}
+    </div>
+</section>
+
+{%- render 'adastra' with '/src/scripts/section-gallery-grid.js' -%}
+
+{%- schema -%}
+    {
+        "name": "Motivational images",
+        "disabled_on": {
+            "groups": ["header", "footer"]
+        },
+        "settings": [
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Heading"
+            },
+            {
+                "type": "select",
+                "id": "card_per_row",
+                "label": "Cards per row desktop",
+                "options": [
+                    {
+                        "value": "2",
+                        "label": "2"
+                    },
+                    {
+                        "value": "4",
+                        "label": "4"
+                    },
+                    {
+                        "value": "6",
+                        "label": "6"
+                    }
+                ],
+                "default": "6"
+            },
+            {
+                "type": "select",
+                "id": "card_per_row_mobile",
+                "label": "Cards per row mobile",
+                "options": [
+                    {
+                        "value": "1",
+                        "label": "1"
+                    },
+                    {
+                        "value": "2",
+                        "label": "2"
+                    }
+                ],
+                "default": "2"
+            },
+            {
+                "type": "select",
+                "id": "aspect_ratio",
+                "label": "Image aspect ratio",
+                "options": [
+                    {
+                        "value": "square",
+                        "label": "Square"
+                    },
+                    {
+                        "value": "landscape",
+                        "label": "Landscape"
+                    }
+                ],
+                "default": "square"
+            },
+            {
+              "type": "color_background",
+              "id": "overlay_color",
+              "label": "Overlay color",
+              "default": "rgba(0,0,0,.5)"
+            },
+            {
+                "type": "header",
+                "content": "Layout"
+            },
+            {
+                "type": "select",
+                "id": "container_width",
+                "label": "Container width",
+                "options": [
+                    {
+                        "value": "1432px",
+                        "label": "Default - 1400px"
+                    },
+                    {
+                        "value": "1952px",
+                        "label": "Large - 1920px"
+                    },
+                    {
+                        "value": "100%",
+                        "label": "Full width"
+                    },
+                    {
+                        "value": "inherit",
+                        "label": "Inherit of general setting"
+                    }
+                ],
+                "default": "inherit",
+                "info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+            },
+            {
+                "type": "range",
+                "id": "offset_top_desktop",
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "unit": "px",
+                "label": "Desktop offset top",
+                "default": 40
+            },
+            {
+                "type": "range",
+                "id": "offset_bottom_desktop",
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "unit": "px",
+                "label": "Desktop offset bottom",
+                "default": 40
+            },
+            {
+                "type": "range",
+                "id": "offset_top_mobile",
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "unit": "px",
+                "label": "Mobile offset top",
+                "default": 25
+            }, {
+                "type": "range",
+                "id": "offset_bottom_mobile",
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "unit": "px",
+                "label": "Mobile offset bottom",
+                "default": 25
+            }
+        ],
+        "blocks": [
+            {
+                "type": "block",
+                "name": "Image",
+                "limit": 8,
+                "settings": [
+                    {
+                        "type": "image_picker",
+                        "id": "image",
+                        "label": "Image",
+						"info": "1982 x 1982px recommended"
+                    },
+					{
+						"type": "video",
+						"id": "video",
+						"label": "Video",
+						"info": "The video will play on hover (desktop only), taking priority over the image. On mobile, the video preview image will be displayed. 1982 x 1982px recommended"
+					},
+					{
+						"type": "image_picker",
+						"id": "icon_hover",
+						"label": "Icon hover",
+						"info": "24 x 24px .svg recommended"
+					},
+					{
+                        "type": "url",
+                        "id": "url",
+                        "label": "Link"
+                    },
+					{
+						"type": "checkbox",
+						"id": "open_in_new_tab",
+						"label": "Open link in new tab",
+						"default": false
+					}
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Motivational images"
+            }
+        ]
+    }
+{%- endschema -%}

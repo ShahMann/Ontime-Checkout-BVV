@@ -1,0 +1,26 @@
+<div class="product-filters__open-menu-button-wrapper js-filter-menu-opener-wrapper">
+	<button
+		class="focus-visible-outline product-filters__open-menu-button js-filter-menu-opener"
+		data-count="{{- active_filters_size -}}"
+		aria-controls="filterMenuDrawer"
+		data-target="filterMenuDrawer"
+		data-opener="true"
+		data-js-toggle="filterMenuToggler"
+		type="button"
+		aria-label="{{- 'general.filters.open_filter_menu_aria' | t | escape -}}"
+	>
+		{%- render 'icons', icon: 'filters' -%}
+
+		<span class="product-filters__open-menu-button-text">
+			{{- 'collections.general.filter_and_sort' | t -}}
+		</span>
+
+		{%- capture filter_button_counter_classes -%}
+			product-filters__open-menu-button-counter js-active-filters-counter {% if active_filters_size == 0 %} is-hidden {% endif %}
+		{%- endcapture -%}
+
+		<span class="{{- filter_button_counter_classes | strip_newlines -}}">
+			{{- active_filters_size -}}
+		</span>
+	</button>
+</div>

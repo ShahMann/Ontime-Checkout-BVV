@@ -1,0 +1,306 @@
+{% comment %}
+  ------------------------------------------------------------------------------
+    Snippet: Product form content
+  ------------------------------------------------------------------------------
+{% endcomment %}
+
+{% liquid
+  assign section_contains_quantity_block = false
+  assign gift_card_recipient_feature_active = false
+
+  if product.gift_card? and block.settings.show_gift_card_recipient
+    assign gift_card_recipient_feature_active = true
+  endif
+
+  assign button_type = block.settings.button_type
+%}
+
+{% if gift_card_recipient_feature_active %}
+  {%- assign gift_card_recipient_control_flag = 'properties[__shopify_send_gift_card_to_recipient]' -%}
+
+  <div class="recipient-form">
+    <div class="recipient-form__checkbox-field">
+      <input
+        id="Recipient-checkbox-{{ section.id }}"
+        class="checkbox recipient-form__checkbox js-recipient-form-checkbox"
+        type="checkbox"
+        name="{{ gift_card_recipient_control_flag }}"
+        disabled
+      >
+
+      <label for="Recipient-checkbox-{{ section.id }}" class="checkbox-label">
+        <span class="checkbox-label__box "></span>
+        {{ 'products.product.recipient.form.checkbox' | t }}
+      </label>
+    </div>
+
+    <div class="recipient-form__fields is-hidden js-recipient-form-fields">
+      <div class="recipient-form__field">
+        <label class="label-input" for="Recipient-email-{{ section.id }}">
+          <span class="recipient-form__label-normal">{{ 'products.product.recipient.form.email_label' | t }}</span>
+          <span class="recipient-form__label-no-js">
+            {{- 'products.product.recipient.form.email_label_optional_for_no_js_behavior' | t -}}
+          </span>
+        </label>
+
+        <input
+          class="input js-recipient-form-field"
+          id="Recipient-email-{{ section.id }}"
+          type="email"
+          placeholder="Recipient email"
+          name="properties[Recipient email]"
+          value="{{ form.email }}"
+          {% if form.errors contains 'email' %}
+            aria-invalid="true"
+            aria-describedby="RecipientForm-email-error-{{ section.id }}"
+          {% endif %}
+        >
+
+        <div
+          id="RecipientForm-email-error-{{ section.id }}"
+          class="error js-form-error{% unless form.errors contains 'email' %} is-hidden{% endunless %}"
+        >
+          {%- if form.errors contains 'email' -%}
+            {{ form.errors.messages.email }}.
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="recipient-form__field">
+        <label class="label-input" for="Recipient-name-{{ section.id }}">
+          {{- 'products.product.recipient.form.name_label' | t -}}
+        </label>
+
+        <input
+          class="input js-recipient-form-field"
+          autocomplete="name"
+          type="text"
+          id="Recipient-name-{{ section.id }}"
+          name="properties[Recipient name]"
+          placeholder="{{ 'products.product.recipient.form.name' | t }}"
+          value="{{ form.name }}"
+          {% if form.errors contains 'name' %}
+            aria-invalid="true"
+            aria-describedby="RecipientForm-name-error-{{ section.id }}"
+          {% endif %}
+        >
+
+        <div
+          id="RecipientForm-name-error-{{ section.id }}"
+          class="error js-form-error {% unless form.errors contains 'name' %} is-hidden{% endunless %}"
+        >
+          {%- if form.errors contains 'name' -%}
+            {{ form.errors.messages.name }}.
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="recipient-form__field">
+        {%- assign max_chars_message = 200 -%}
+        {%- assign max_chars_message_rendered = 'products.product.recipient.form.max_characters'
+          | t: max_chars: max_chars_message
+        -%}
+        {%- assign message_label_rendered = 'products.product.recipient.form.message_label' | t -%}
+
+        <label class="label-input" for="Recipient-message-{{ section.id }}">
+          {{ message_label_rendered }}
+        </label>
+
+        <textarea
+          rows="10"
+          id="Recipient-message-{{ section.id }}"
+          class="recipient-form__textarea input js-recipient-form-field"
+          name="properties[Message]"
+          maxlength="{{ max_chars_message }}"
+          placeholder="{{ 'products.product.recipient.form.message' | t }}"
+          aria-label="Max characters 200"
+          {% if form.errors contains 'message' %}
+            aria-invalid="true"
+            aria-describedby="RecipientForm-message-error-{{ section.id }}"
+          {% endif %}
+        >{{- form.message -}}</textarea>
+
+        <div class="recipient-form__input-info">{{ max_chars_message_rendered }}</div>
+
+        <div
+          id="RecipientForm-message-error-{{ section.id }}"
+          class="error js-form-error{% unless form.errors contains 'message' %} is-hidden{% endunless %}"
+        >
+          {%- if form.errors contains 'message' -%}
+            {{ form.errors.messages.message }}.
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="recipient-form__field">
+        <label class="label-input" for="Recipient-send_on-{{ section.id }}">
+          {{ 'products.product.recipient.form.send_on_label' | t }}
+        </label>
+
+        <input
+          class="input js-recipient-form-field"
+          autocomplete="off"
+          type="date"
+          id="Recipient-send_on-{{ section.id }}"
+          name="properties[Send on]"
+          pattern="\d{4}-\d{2}-\d{2}"
+          value="{{ form.send_on }}"
+          {% if form.errors contains 'send_on' %}
+            aria-invalid="true"
+            aria-describedby="RecipientForm-send_on-error-{{ section.id }}"
+          {% endif %}
+        >
+
+        <div
+          id="RecipientForm-send_on-error-{{ section.id }}"
+          class="error js-form-error {% unless form.errors contains 'send_on' %} is-hidden{% endunless %}"
+        >
+          {%- if form.errors contains 'send_on' -%}
+            {{ form.errors.messages.send_on }}.
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <input
+      type="hidden"
+      name="{{ gift_card_recipient_control_flag }}"
+      value="if_present"
+      id="Recipient-control-{{ section.id }}"
+      class="js-recipient-form-no-js-control"
+    >
+
+    <input
+      type="hidden"
+      name="properties[__shopify_offset]"
+      value=""
+      id="Recipient-timezone-offset-{{ section.id }}"
+      class="js-recipient-form-timezone-offset"
+    >
+  </div>
+{% endif %}
+
+{% if product.template_suffix == 'pre-order' %}
+  <input type="hidden" name="properties[_Pre-order]" value="true">
+{% endif %}
+
+{% if settings.hide_store_credit_for_web %}
+  <input type="hidden" name="properties[__cart_type]" value="web" />
+{% endif %}
+
+<button
+  type="submit"
+  class="
+    product-add-to-cart__button add-to-cart button button--block button--{{- button_type -}}
+    {% unless product.first_available_variant.available %}
+    	disabled
+    {% endunless %}
+  "
+  {% unless product.first_available_variant.available %}
+    disabled
+  {% endunless %}
+  {% if product.template_suffix == 'pre-order' %}
+    data-preorder
+  {% endif %}
+>
+  {%- render 'icons', icon: 'cart' -%}
+
+  <span class="js-product-add-to-cart-button-text">
+    {% if product.first_available_variant.available %}
+      {% if product.template_suffix == 'pre-order' %}
+        {{- 'products.product.pre_order' | t -}}
+      {% else %}
+        {{- 'products.product.add_to_cart' | t -}}
+      {% endif %}
+    {% else %}
+      {{- 'products.product.sold_out' | t -}}
+    {% endif %}
+  </span>
+</button>
+
+{%- if settings.show_alert_button -%}
+  <alert-modal-buttons
+    data-productId="{{ product.id }}"
+    data-variantId="{{ product.selected_or_first_available_variant.id }}"
+    data-currency="{{ shop.currency }}"
+    data-title="{{ product.title }}"
+    data-tags="{{ product.tags | join: ', ' }}"
+    data-vendor="{{ product.vendor }}"
+    data-price="{{ product.price | money_without_currency }}"
+    data-compared-at-price="{% if product.compare_at_price > 0 %}{{ product.compare_at_price |  money_without_currency }}{% else %} {{ 0.00 }}{% endif %}"
+    data-discount-price="{%- capture discount -%}{% if product.compare_at_price > 0 %}{{ product.compare_at_price |  minus: product.price }}{% else %} {{ 0.00 }}{% endif %}{%- endcapture -%}{{ discount | money_without_currency }}"
+    data-variant-count= "{{ product.variants.size }}"
+    data-image="{{- "https:" -}}{{- product.featured_image | img_url: 'master' -}}"
+    data-size="{{ product.metafields.custom.size.value }}"
+    data-color="{{ product.metafields.custom.color.value }}"
+  >
+    {% if product.selected_or_first_available_variant.available == false and block.settings.show_back_in_stock %}
+      <button
+        id="backInStockBtn"
+        class="button button--block button--primary alert-button"
+      >
+        <span>
+          {{ 'products.product.notify' | t }}
+        </span>
+        <div class="loading-overlay__spinner is-hidden">
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            class="spinner"
+            viewBox="0 0 66 66"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+          </svg>
+        </div>
+        <script type="javascript/ld+json" name="alert-back-in-stock">
+          {
+            "customer_id": "{{- customer.id -}}",
+            "email": "{{- customer.email -}}",
+            "product_id": "{{- product.id -}}",
+            "variant_id": "{{- product.selected_or_first_available_variant.id -}}",
+            "sku": "{{- product.selected_or_first_available_variant.sku -}}"
+          }
+        </script>
+      </button>
+    {% endif %}
+    {% unless product.selected_or_first_available_variant.compare_at_price and product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
+      <button
+        id="priceDropBtn"
+        class="button button--block button--primary alert-button"
+      >
+        <span>
+          {{ 'products.product.price_drop' | t }}
+        </span>
+        <div class="loading-overlay__spinner is-hidden">
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            class="spinner"
+            viewBox="0 0 66 66"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+          </svg>
+        </div>
+        <script type="javascript/ld+json" name="alert-price-drop">
+          {
+            "customer_id": "{{- customer.id -}}",
+            "email": "{{- customer.email -}}",
+            "product_id": "{{- product.id -}}",
+            "variant_id": "{{- product.selected_or_first_available_variant.id -}}",
+            "sku": "{{- product.selected_or_first_available_variant.sku -}}",
+            "current_price": "{{- product.selected_or_first_available_variant.price | divided_by: 100  -}}"
+          }
+        </script>
+      </button>
+    {% endunless %}
+    <message-wrapper></message-wrapper>
+  </alert-modal-buttons>
+{%- endif -%}
+
+{% if block.settings.show_additional_buttons %}
+  <div class="product-add-to-cart__additional-buttons">
+    {{- form | payment_button -}}
+  </div>
+{% endif %}

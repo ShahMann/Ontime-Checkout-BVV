@@ -1,0 +1,127 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header mobile mega menu images
+	Render header mobile mega menu images
+	- menu: Menu object (required);
+	- megamenu_object: mega menu object.
+
+	Usage:
+	{%- render 'header-mobile-mega-menu-images' -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign megamenu_background	= megamenu_object.settings.megamenu_background -%}
+{%- assign filled_blocks		= 0 -%}
+
+{%- for i in (1..6) -%}
+	{%- assign image_key 		= 'image' | append: i -%}
+	{%- assign heading_key 		= 'heading' | append: i -%}
+	{%- assign subheading_key 	= 'subheading' | append: i -%}
+	{%- assign link_key 		= 'link' | append: i -%}
+	{%- assign product_key 		= 'product' | append: i -%}
+
+	{%- assign image 			= megamenu_object.settings[image_key] -%}
+	{%- assign heading 			= megamenu_object.settings[heading_key] -%}
+	{%- assign subheading 		= megamenu_object.settings[subheading_key] -%}
+	{%- assign link 			= megamenu_object.settings[link_key] -%}
+	{%- assign product 			= megamenu_object.settings[product_key] -%}
+
+	{%- if image != blank or product != blank -%}
+		{%- assign filled_blocks = filled_blocks | plus: 1 -%}
+	{%- endif -%}
+{%- endfor -%}
+
+{%- assign cycle_count = 4 -%}
+
+{%- if filled_blocks != 0 -%}
+	{%- assign cycle_count = 6 -%}
+{%- endif -%}
+
+<div class="header-mega-menu">
+	<div class="header-mega-menu__container">
+		<div class="header-mega-menu__content-container">
+			{% for i in (1..cycle_count) %}
+				{% assign image_key 		= 'image' | append: i %}
+				{% assign heading_key 		= 'heading' | append: i %}
+				{% assign subheading_key 	= 'subheading' | append: i %}
+				{% assign link_key 			= 'link' | append: i %}
+				{% assign product_key 		= 'product' | append: i %}
+
+				{% assign image 			= megamenu_object.settings[image_key] %}
+				{% assign heading 			= megamenu_object.settings[heading_key] -%}
+				{% assign subheading 		= megamenu_object.settings[subheading_key] %}
+				{% assign link 				= megamenu_object.settings[link_key] %}
+				{% assign product 			= megamenu_object.settings[product_key] %}
+
+
+				{%- if image != blank or filled_blocks == 0 or product != blank -%}
+					<div class="header-mega-menu__block {% if product != blank %}header-mega-menu__block--product{% else %} header-mega-menu__block--image {% endif %}">
+						{%- if product != blank -%}
+							{%- render 'product-card', product: product, size: 494, tablet_size: 354, mobile_size_small: 294, simplified_view: true -%}
+						{%- elsif image != blank or filled_blocks == 0 -%}
+							{%- capture img_focal -%}
+								--img-desktop-pos: {{ image.presentation.focal_point }};
+							{%- endcapture -%}
+
+							{%- capture image_capture -%}
+								{%- if filled_blocks == 0 -%}
+									{{ 'image' | placeholder_svg_tag: 'header-mega-menu__image' }}
+								{%- else -%}
+									<picture>
+										<source
+											srcset="{{ image | img_url: '348x' }} 1x, {{ image | img_url: '696x' }} 2x"
+											media="(max-width: 380px)"
+										>
+
+										<source
+											srcset="{{ image | img_url: '388x' }} 1x, {{ image | img_url: '996x' }} 2x"
+											media="(max-width: 991px)"
+										>
+
+										<img
+											class="header-mega-menu__image"
+											src="{{- image | img_url: "448x" -}}"
+											srcset="{{- image | img_url: "448x" }} 1x, {{ image | img_url: "896x" }} 2x"
+											alt="{{- image.alt | escape -}}"
+											style="{{ img_focal }}"
+											loading="lazy"
+										>
+									</picture>
+								{%- endif -%}
+
+								{%- if subheading != blank or heading != blank -%}
+									<div class="header-mega-menu__image-text-content">
+										{%- if heading != blank -%}
+											<div class="header-mega-menu__image-heading">
+												{{- heading -}}
+											</div>
+										{%- endif -%}
+
+										{%- if subheading != blank -%}
+											<p class="header-mega-menu__image-subheading">
+												{{- subheading -}}
+											</p>
+										{%- endif -%}
+									</div>
+								{%- endif -%}
+							{%- endcapture -%}
+
+							{%- if link != blank -%}
+								<a
+									href="{{- link -}}"
+									class="header-mega-menu__image-wrapper header-mega-menu__image-wrapper--hover"
+								>
+									{{- image_capture -}}
+								</a>
+							{%- else -%}
+								<div class="header-mega-menu__image-wrapper">
+									{{- image_capture -}}
+								</div>
+							{%- endif -%}
+						{%- endif -%}
+					</div>
+				{%- endif -%}
+			{% endfor %}
+		</div>
+	</div>
+</div>

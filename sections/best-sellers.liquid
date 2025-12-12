@@ -1,0 +1,646 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Section: Best sellers
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/best-sellers.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+	padding-top: {{- section.settings.offset_top_mobile -}}px;
+	padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+	#shopify-section-{{- section.id -}} {
+	padding-top: {{- section.settings.offset_top_desktop -}}px;
+	padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+	}
+	}
+{%- endstyle -%}
+
+{%- assign label                           = section.settings.label -%}
+{%- assign heading                         = section.settings.heading -%}
+{%- assign button_label                    = section.settings.button_label -%}
+{%- assign button_style                    = section.settings.button_style -%}
+{%- assign product_button_style            = section.settings.product_button_style -%}
+{%- assign product_info_background_opacity = section.settings.product_info_background_opacity -%}
+{%- assign is_product_info_background_blur = section.settings.is_product_info_background_blur -%}
+{%- assign product_info_background         = section.settings.product_info_background -%}
+{%- assign product_info_text               = section.settings.product_info_text -%}
+{%- assign product_sale_price              = section.settings.product_sale_price -%}
+{%- assign product_compare_price          = section.settings.product_compare_price -%}
+{%- assign blocks                          = section.blocks -%}
+{%- assign container 			           = section.settings.container_width -%}
+{%- assign collection_button               = '' -%}
+
+{%- capture collection_button -%}
+	{%- if button_label != blank -%}
+		{%- for block in blocks -%}
+			{%- assign collection = block.settings.collection -%}
+
+			<div class="best-sellers__button-wrapper need-animate tr-dur-0-5 tr-del-1-25">
+				<a
+					class="button focus-visible-outline{% unless collection != blank %} is-hidden{% endunless %} button--{{ button_style }} js-best-sellers-collection-button"
+					href="{{- collection.url -}}"
+				>
+					{{- button_label -}}
+				</a>
+			</div>
+
+			{%- break -%}
+		{%- endfor -%}
+	{%- endif -%}
+{%- endcapture -%}
+
+{% if container == 'inherit' %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+{% unless container_width == '100%' %}
+	{% assign section_class = 'best-sellers--limited-width' %}
+{% endunless %}
+
+{%- capture styles -%}
+	--container-width: {{- container_width -}}; {{-  -}}
+	--product-info-background: {{- product_info_background | color_modify: 'alpha', product_info_background_opacity -}}; {{-  -}}
+	--product-info-text: {{- product_info_text -}}; {{-  -}}
+	--product-sale-price: {{- product_sale_price -}}; {{-  -}}
+	--product-compare-price: {{- product_compare_price -}};
+{%- endcapture -%}
+
+<section
+	class="best-sellers js-animate js-best-sellers {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %} {{ section_class -}}"
+	style="{{- styles -}}"
+>
+	<div class="best-sellers__row">
+		<div class="best-sellers__column best-sellers__column--meta">
+			{%- if label != blank or heading != blank -%}
+				<div class="best-sellers__top-text">
+					{%- if label != blank -%}
+						<div class="best-sellers__label need-animate tr-dur-0-4 tr-del-0-5">
+							{{- label -}}
+						</div>
+					{%- endif -%}
+
+					{%- if heading != blank -%}
+						<h2 class="h2 best-sellers__heading need-animate tr-dur-0-4 tr-del-0-75">
+							{{- heading -}}
+						</h2>
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+
+			<ul class="best-sellers__collections-list">
+				{% assign delay_step = 0.75 %}
+
+				{%- for block in blocks -%}
+					{%- assign collection_title_from_translations 	= 'products.best_sellers.collection_title' | t -%}
+					{%- assign collection 							= block.settings.collection -%}
+					{%- assign collection_title 					= block.settings.collection_title | default: collection.title | default: collection_title_from_translations -%}
+					{% assign delay_step = delay_step | plus: 0.25 %}
+
+					<li
+						class="best-sellers__collections-list-item{% if forloop.index == 1 %} is-active{% endif %} need-animate tr-dur-0-4 js-best-sellers-collection"
+						style="transition-delay: {{ delay_step }}s;"
+						data-index="{{- forloop.index -}}"
+						data-href="{{- collection.url -}}"
+					>
+						{%- if collection != blank -%}
+							<button class="focus-visible-outline best-sellers__collection">
+								{{- collection_title -}}
+
+								<span class="best-sellers__collection-icon">
+									{% render 'icons', icon: 'arrow-right' %}
+								</span>
+							</button>
+						{%- else -%}
+							<span class="focus-visible-outline best-sellers__collection">
+								{{- collection_title -}}
+
+								<span class="best-sellers__collection-icon">
+									{% render 'icons', icon: 'arrow-right' %}
+								</span>
+							</span>
+						{%- endif -%}
+					</li>
+				{%- endfor -%}
+			</ul>
+		</div>
+
+		<div class="best-sellers__column best-sellers__column--products need-animate tr-dur-0-75">
+			{%- for block in blocks -%}
+				{%- assign product_title_from_translations 	= 'products.best_sellers.product_title' | t -%}
+				{%- assign product 							= block.settings.product -%}
+				{%- assign product_title 					= block.settings.product_title | default: product.title | default: product_title_from_translations -%}
+				{%- assign image   							= block.settings.image | default: product.featured_image -%}
+				{%- assign is_lazy 							= true -%}
+
+				{% if section.index == 1 and forloop.index == 1 %}
+					{% assign is_lazy = false %}
+				{% endif %}
+
+				{%- capture labels -%}
+					{%- if product != blank -%}
+						{%- unless product.available -%}
+							<li	class="best-sellers__product-label best-sellers__product-label--sold-out">
+								<span class="visually-hidden">
+									{{- 'products.best_sellers.product_label' | t -}}:
+								</span>
+
+								{{- "products.product.sold_out" | t -}}
+							</li>
+						{%- endunless -%}
+
+						{% if settings.is_sale_label_enabled %}
+							{% assign discount_value = product.price | times: 100 | divided_by: product.compare_at_price %}
+
+							{% if discount_value < 100 %}
+								<li class="best-sellers__product-label best-sellers__product-label--sale">
+								<span class="visually-hidden">
+									{{- 'products.product_card.product_label' | t -}}:
+								</span>
+
+									-{{ 100 | minus: discount_value | json }}
+									% {{- "products.product.sale" | t | prepend: ' ' -}}
+								</li>
+							{% endif %}
+						{% endif %}
+
+						{% if settings.is_labels_enabled %}
+							{%- assign tag_index = 1 -%}
+
+							{%- for tag in product.tags -%}
+								{%- if tag contains 'label__' -%}
+									{%- assign class = 'best-sellers__product-label' -%}
+
+									{%- if tag contains ':primary' -%}
+										{%- assign class = class | append: " best-sellers__product-label--primary" | strip -%}
+									{%- elsif tag contains ':secondary' -%}
+										{%- assign class = class | append: " best-sellers__product-label--secondary" | strip -%}
+									{%- endif -%}
+
+									{%- assign clipped_tag = tag | remove: 'label__' | remove: ':primary' | remove: ':secondary' -%}
+
+									<li class="{{- class -}}">
+									<span class="visually-hidden">
+										{{- 'products.best_sellers.product_label' | t -}}:
+									</span>
+
+										{{- clipped_tag -}}
+									</li>
+
+									{%- assign tag_index = tag_index | plus: 1 -%}
+
+									{%- if tag_index > 3 -%}
+										{%- break -%}
+									{%- endif -%}
+								{%- endif -%}
+							{%- endfor -%}
+						{% endif %}
+					{%- endif -%}
+				{%- endcapture -%}
+
+				<div
+					class="best-sellers__product{% if forloop.index == 1 %} is-active{% endif %}{% if product == blank and image == blank %} best-sellers__product--placeholder{% endif %} js-best-sellers-product"
+					data-index="{{- forloop.index -}}"
+				>
+					{%- if labels != blank -%}
+						<ul
+							class="best-sellers__product-labels"
+							aria-label="{{- 'products.best_sellers.product_labels' | t | escape -}}"
+						>
+							{{- labels -}}
+						</ul>
+					{%- endif -%}
+
+					<div class="best-sellers__product-additional-buttons">
+						{%- if settings.enable_compare_products -%}
+							{%- render 'compare-products-button', product: product, additional_classes: "best-sellers__product-compare-products-button" -%}
+						{%- endif -%}
+
+						{%- if settings.enable_favorites and settings.favorites_page != blank -%}
+							{% render 'favorites-product-button', product: product, additional_classes: "best-sellers__product-favorites-button" %}
+						{%- endif -%}
+					</div>
+
+					{%- if product != blank -%}
+						<a
+							href="{{- product.url -}}"
+							class="best-sellers__product-url"
+							aria-label="{{ product.title | escape }}"
+						></a>
+					{%- endif -%}
+
+					<div class="best-sellers__product-container">
+						{%- if image != blank -%}
+							<picture class="{% if is_lazy %}lazy{% endif %}">
+								{% if is_lazy %}
+									<source
+										data-srcset="{{ image | img_url: "375x" }} 1x, {{ image | img_url: "750x" }} 2x"
+										srcset="{{ image | img_url: "10x" }} 1x, {{ image | img_url: "20x" }} 2x"
+										width="375"
+										height="375"
+										media="(max-width: 375px)"
+									/>
+
+									<source
+										data-srcset="{{ image | img_url: "767x" }} 1x, {{ image | img_url: "1534x" }} 2x"
+										srcset="{{ image | img_url: "10x" }} 1x, {{ image | img_url: "20x" }} 2x"
+										width="767"
+										height="767"
+										media="(max-width: 767px)"
+									/>
+
+									<source
+										data-srcset="{{ image | img_url: "500x" }} 1x, {{ image | img_url: "1000x" }} 2x"
+										srcset="{{ image | img_url: "10x" }} 1x, {{ image | img_url: "20x" }} 2x"
+										width="500"
+										height="500"
+										media="(max-width: 991px)"
+									/>
+
+									<source
+										data-srcset="{{ image | img_url: "600x" }} 1x, {{ image | img_url: "1200x" }} 2x"
+										srcset="{{ image | img_url: "10x" }} 1x, {{ image | img_url: "20x" }} 2x"
+										width="600"
+										height="600"
+										media="(max-width: 1200px)"
+									/>
+
+									<source
+										data-srcset="{{ image | img_url: "800x" }} 1x, {{ image | img_url: "1600x" }} 2x"
+										srcset="{{ image | img_url: "10x" }} 1x, {{ image | img_url: "20x" }} 2x"
+										width="800"
+										height="800"
+										media="(max-width: 1600px)"
+									/>
+
+									<img
+										class="best-sellers__product-image"
+										src="{{- image | img_url: '10x' -}}"
+										srcset="{{- image | img_url: '10x' -}} 1x, {{ image | img_url: '20x' }} 2x"
+										data-src="{{- image | img_url: '960x' -}}"
+										data-srcset="{{ image | img_url: '960x' }} 1x, {{ image | img_url: '1920x' }} 2x"
+										alt="{{- image.alt | default: product.title -}}"
+										width="960"
+										height="960"
+									>
+								{% else %}
+									<source
+										srcset="{{ image | img_url: "375x" }} 1x, {{ image | img_url: "750x" }} 2x"
+										width="375"
+										height="375"
+										media="(max-width: 375px)"
+									/>
+
+									<source
+										srcset="{{ image | img_url: "767x" }} 1x, {{ image | img_url: "1534x" }} 2x"
+										width="767"
+										height="767"
+										media="(max-width: 767px)"
+									/>
+
+									<source
+										srcset="{{ image | img_url: "500x" }} 1x, {{ image | img_url: "1000x" }} 2x"
+										width="500"
+										height="500"
+										media="(max-width: 991px)"
+									/>
+
+									<source
+										srcset="{{ image | img_url: "600x" }} 1x, {{ image | img_url: "1200x" }} 2x"
+										width="600"
+										height="600"
+										media="(max-width: 1200px)"
+									/>
+
+									<source
+										srcset="{{ image | img_url: "800x" }} 1x, {{ image | img_url: "1600x" }} 2x"
+										width="800"
+										height="800"
+										media="(max-width: 1600px)"
+									/>
+
+									<img
+										class="best-sellers__product-image"
+										src="{{- image | img_url: '960x' -}}"
+										srcset="{{ image | img_url: '960x' }} 1x, {{ image | img_url: '1920x' }} 2x"
+										alt="{{- image.alt | default: product.title -}}"
+										width="960"
+										height="960"
+										fetchpriority="high"
+									>
+								{% endif %}
+							</picture>
+						{%- else -%}
+							{%- assign placeholer_svg_name = 'product-' | append: forloop.index -%}
+
+							{{- placeholer_svg_name | placeholder_svg_tag: 'best-sellers__product-image best-sellers__product-image--placeholder' -}}
+						{%- endif -%}
+					</div>
+
+					<div class="best-sellers__product-info">
+						<div class="best-sellers__product-info-container{% if is_product_info_background_blur %} best-sellers__product-info-container--blur{% endif %}">
+							<div class="best-sellers__product-info-header">
+								<h3 class="best-sellers__product-title">
+									{{- product_title -}}
+								</h3>
+
+								{%- if product != blank -%}
+									<div class="best-sellers__product-price">
+										{%- render 'price', product: product, currency_code_enabled: currency_code_enabled -%}
+									</div>
+								{%- endif -%}
+							</div>
+
+							<div class="best-sellers__product-info-footer">
+								<button
+									class="button button--{{ product_button_style }} focus-visible-outline best-sellers__button-product js-add-to-cart"
+									data-product-handle="{{- product.handle -}}"
+									data-min-quantity="{{- product.selected_or_first_available_variant.quantity_rule.min -}}"
+									{%- if product.available == false -%}
+										aria-label="{{- 'products.product.sold_out' | t -}}"
+									{%- elsif product.has_only_default_variant == false -%}
+										aria-label="{{- 'products.best_sellers.open_quick_view' | t | escape -}}"
+									{%- else -%}
+										aria-label="{{- 'products.best_sellers.add_to_cart' | t | escape -}}"
+									{%- endif -%}
+									{%- if product.has_only_default_variant or product.variants.size == 1 -%} data-variant-id="{{- product.selected_or_first_available_variant.id -}}" {%- endif -%}
+									{%- if product.available == false %} disabled {% endif -%}
+									type="button"
+								>
+									<span class="best-sellers__button-product-label">
+										{% if product.available %}
+											{{- 'products.product.add_to_cart' | t -}}
+										{% else %}
+											{{- 'products.product.sold_out' | t -}}
+										{% endif %}
+									</span>
+
+									<span class="best-sellers__button-product-icon">
+										{%- render 'icons', icon: 'cart' -%}
+									</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			{%- endfor -%}
+		</div>
+	</div>
+
+	{%- if collection_button != '' -%}
+		{{- collection_button -}}
+	{%- endif -%}
+</section>
+
+{%- render 'adastra' with '/src/scripts/section-best-sellers.js' -%}
+
+{%- schema -%}
+{
+	"name": "Best deals",
+	"max_blocks": 4,
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "label",
+			"label": "Label",
+			"default": "Section label"
+		},
+		{
+			"type": "textarea",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Section heading"
+		},
+		{
+			"id": "button_label",
+			"type": "text",
+			"label": "Section button label",
+			"default": "Shop all"
+		},
+		{
+			"id": "button_style",
+			"type": "select",
+			"label": "Section button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "primary-border",
+					"label": "Primary with border"
+				},
+				{
+					"value": "secondary-border",
+					"label": "Secondary with border"
+				}
+			],
+			"default": "secondary-border"
+		},
+		{
+			"id": "product_button_style",
+			"type": "select",
+			"label": "Product button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "primary-border",
+					"label": "Primary with border"
+				},
+				{
+					"value": "secondary-border",
+					"label": "Secondary with border"
+				}
+			],
+			"default": "secondary"
+		},
+		{
+			"type": "range",
+			"id": "product_info_background_opacity",
+			"label": "Product info background opacity",
+			"min": 0.1,
+			"max": 1,
+			"step": 0.1,
+			"default": 1
+		},
+		{
+			"type": "checkbox",
+			"id": "is_product_info_background_blur",
+			"label": "Enable product info glass effect",
+			"default": false,
+			"info": "This effect is working only when background opacity less than 1"
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "product_info_background",
+			"label": "Product info background",
+			"default": "#fff"
+		},
+		{
+			"type": "color",
+			"id": "product_info_text",
+			"label": "Product info text",
+			"default": "#000"
+		},
+		{
+			"type": "color",
+			"id": "product_sale_price",
+			"label": "Product sale price",
+			"default": "#e41616"
+		},
+		{
+			"type": "color",
+			"id": "product_compare_price",
+			"label": "Product compare price",
+			"default": "#9d9d9d"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+		],
+		"blocks": [
+			{
+				"type": "product_item",
+				"name": "Product",
+				"settings": [
+					{
+						"type": "collection",
+						"id": "collection",
+						"label": "Collection"
+					},
+					{
+						"type": "text",
+						"id": "collection_title",
+						"label": "Collection title"
+					},
+					{
+						"type": "product",
+						"id": "product",
+						"label": "Product"
+					},
+					{
+						"type": "text",
+						"id": "product_title",
+						"label": "Product title"
+					},
+					{
+						"type": "image_picker",
+						"id": "image",
+						"label": "Image",
+						"info": "1920 x 1920px recommended"
+					}
+				]
+			}
+		],
+		"presets": [
+			{
+				"name": "Best deals",
+				"settings": {},
+				"blocks": [
+					{
+						"type": "product_item"
+					},
+					{
+						"type": "product_item"
+					},
+					{
+						"type": "product_item"
+					},
+					{
+						"type": "product_item"
+					}
+				]
+		}
+	]
+}
+{%- endschema -%}

@@ -1,0 +1,55 @@
+{%- render 'adastra' with '/src/styles/product-benefits.scss' -%}
+
+{%- capture styles -%}
+	--offset-top-desktop: {{ block.settings.offset_top_desktop }}px; {{-  -}}
+	--offset-bottom-desktop: {{ block.settings.offset_bottom_desktop }}px; {{-  -}}
+	--offset-top-mobile: {{ block.settings.offset_top_mobile }}px; {{-  -}}
+	--offset-bottom-mobile: {{ block.settings.offset_bottom_mobile }}px;
+{%- endcapture -%}
+
+{%- assign product_benefits_markup = '' -%}
+{%- capture product_benefits_markup -%}
+	{%- for i in (1..3) -%}
+		{%- assign icon_key 		= 'icon_' |  append: i -%}
+		{%- assign title_key 	= 'title_' | append: i -%}
+		{%- assign link_text_key = 'link_text_' | append: i -%}
+		{%- assign link_url_key 	= 'link_url_' | append: i -%}
+		{%- assign icon 			= block.settings[icon_key] -%}
+		{%- assign title 		= block.settings[title_key] -%}
+		{%- assign link_text 	= block.settings[link_text_key] -%}
+		{%- assign link_url 		= block.settings[link_url_key] -%}
+		{%- assign show_link 	= false -%}
+
+		{%- if link_text != blank and link_url != blank -%}
+			{%- assign show_link = true -%}
+		{%- endif -%}
+
+		{%- if assign != blank or title != blank or show_link != false -%}
+			<div class="product-benefits__item">
+				{%- if icon != blank -%}
+					<img class="product-benefits__item-icon"
+						 src="{{ icon | image_url: width: 48, height: 48 }}"
+						 srcset="{{ icon | image_url: width: 48, height: 48 }} 1x,
+								 {{ icon | image_url: width: 96, height: 96 }} 2x"
+						 alt="{{ icon.alt | escape }}"
+						 loading="lazy"
+					>
+				{%- endif -%}
+
+				{%- if title != blank -%}
+					<p class="product-benefits__item-title">{{- title -}}</p>
+				{%- endif -%}
+
+				{%- if show_link -%}
+					<a href="{{- link_url -}}" class="product-benefits__item-link button-link">{{- link_text -}}</a>
+				{%- endif -%}
+			</div>
+		{%- endif -%}
+	{%- endfor -%}
+{%- endcapture -%}
+
+{%- if product_benefits_markup != '' -%}
+	<div class="product-benefits" style="{{ styles }}">
+		{{- product_benefits_markup -}}
+	</div>
+{%- endif -%}

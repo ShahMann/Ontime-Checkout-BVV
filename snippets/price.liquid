@@ -1,0 +1,201 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Price
+	This snippet output price of the product
+	- product: Product object (required, object)
+	- price_class: Custom class(es) (optional, string)
+	- use_variant: If true, then it will be used - product.selected_or_first_available_variant (optional, boolean)
+	- currency_code_enabled: If true, then it will be displayed iso code of the currency (optional, boolean)
+	- show_unit_price: If true, then it will be displayed unit price(optional, boolean)
+	- hide_from_price: If true, then hide from_price_html
+	- show_taxes_included: If true, then it will be displayed message of taxes(optional, boolean)
+	- show_pay_installments: If true, then it will be displayed form method pay installments
+	- show_discount_percentage: If true, show percentage discount when compare price appear (optional, boolean)
+
+	{%- render 'price', product: product, show_unit_price: show_unit_price, currency_code_enabled: currency_code_enabled -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- if use_variant -%}
+	{%- assign target 			= product.selected_or_first_available_variant -%}
+	{%- assign compare_at_price	= target.compare_at_price -%}
+{%- else -%}
+	{%- assign target 			= product -%}
+	{%- assign compare_at_price	= target.compare_at_price -%}
+{%- endif -%}
+
+{%- assign price					= target.price | default: 1999 -%}
+{%- assign available				= target.available | default: false -%}
+{%- assign money_price				= price | money -%}
+{%- assign money_price_min			= product.price_min | money -%}
+{%- assign money_price_max			= product.price_max | money -%}
+{%- assign unit_price				= product.selected_or_first_available_variant.unit_price -%}
+{%- assign unit_price_measurement	= product.selected_or_first_available_variant.unit_price_measurement -%}
+{%- assign reference_value			= product.selected_or_first_available_variant.unit_price_measurement.reference_value -%}
+{%- assign reference_unit			= product.selected_or_first_available_variant.unit_price_measurement.reference_unit -%}
+
+{% if show_discount_percentage == nil %}
+	{% assign show_discount_percentage = true %}
+{% endif %}
+
+{%- if currency_code_enabled -%}
+	{%- assign money_price 			= price | money_with_currency -%}
+	{%- assign money_price_min		= product.price_min | money_with_currency -%}
+	{%- assign money_price_max		= product.price_max | money_with_currency -%}
+{%- endif -%}
+
+{%- if target == product and product.price_varies and hide_from_price != true -%}
+	{%- assign money_price = 'products.product.price.from_price_html' | t: price: money_price -%}
+{%- endif -%}
+
+{%- if block -%}
+	{%- capture styles -%}
+		--offset-top-desktop: {{ block.settings.offset_top_desktop }}px; {{-  -}}
+		--offset-bottom-desktop: {{ block.settings.offset_bottom_desktop }}px; {{-  -}}
+		--offset-top-mobile: {{ block.settings.offset_top_mobile }}px; {{-  -}}
+		--offset-bottom-mobile: {{ block.settings.offset_bottom_mobile }}px;
+	{%- endcapture -%}
+{%- endif -%}
+
+<div
+	class="price{% if price_class %} {{ price_class }}{% endif %}{% if compare_at_price > price %} price--on-sale{% endif %} js-price"
+	{% if styles %}
+		style="{{ styles }}"
+	{% endif %}
+	{% if currency_code_enabled %}
+		data-currency-code-enabled
+	{% endif %}
+>
+	<div class="price__container">
+		<div class="price__sale">
+			<span class="visually-hidden">
+				{{- 'products.product.price.sale_price' | t -}}
+			</span>
+
+			<span class="price-item price-item--sale" data-product-price data-amount="{{ price }}">
+				{{- money_price -}}
+			</span>
+
+			{% if show_discount_percentage %}
+				{% assign discount_value = price | times: 100 | divided_by: compare_at_price %}
+
+				<span class="price__discount" data-product-price-discount>-{{ 100 | minus: discount_value }}%</span>
+			{% endif %}
+
+			{%- unless product.price_varies == false and product.compare_at_price_varies -%}
+				<span class="visually-hidden">
+					{{- 'products.product.price.regular_price' | t -}}
+				</span>
+
+				<span class="price__old">
+					<span class="price-item price-item--regular" data-price-old>
+						{%- if currency_code_enabled -%}
+							{{- compare_at_price | money_with_currency -}}
+						{%- else -%}
+							{{- compare_at_price | money -}}
+						{%- endif -%}
+					</span>
+				</span>
+			{%- endunless -%}
+		</div>
+
+		<div class="price__regular">
+			{% if product.quantity_price_breaks_configured? %}
+				{%- if product.compare_at_price -%}
+					{%- unless product.price_varies == false and product.compare_at_price_varies %}
+						<span class="visually-hidden">
+							{{- 'products.product.price.regular_price' | t -}}
+						</span>
+
+						<span>
+							<s class="price-item price-item--regular">
+								{% if settings.currency_code_enabled %}
+									{{ compare_at_price | money_with_currency }}
+								{% else %}
+									{{ compare_at_price | money }}
+								{% endif %}
+							</s>
+						</span>
+					{%- endunless -%}
+				{%- endif -%}
+				<span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.regular_price' | t }}</span>
+				<span class="price-item price-item--regular volume-test">
+					{{- 'products.product.volume_pricing.price_range' | t: minimum: money_price_min, maximum: money_price_max -}}
+				</span>
+			{% else %}
+				<span class="visually-hidden">
+					{{- 'products.product.price.regular_price' | t -}}
+				</span>
+
+				<span class="price-item price-item--regular" data-product-price>
+					{{- money_price -}}
+				</span>
+			{% endif %}
+		</div>
+
+		{%- if show_unit_price != false and simplified_view == nil -%}
+			<div
+				class="unit-price{% if unit_price == blank %} is-hidden{% endif %}"
+				data-js-unit-price="container"
+			>
+				<span class="visually-hidden">
+					{{- 'products.product.price.unit_price' | t -}}
+				</span>
+
+				<span class="price-item price-item--last">
+					<span data-js-unit-price="money">
+						{{- unit_price | money -}}
+					</span>
+
+					<span aria-hidden="true">/</span>
+
+					<span class="visually-hidden">&nbsp;
+						{{- 'general.accessibility.unit_price_separator' | t -}}&nbsp;
+					</span>
+
+					<span data-js-unit-price="reference">
+						{%- if reference_value != 1 -%}
+							{{- reference_value }}
+						{%- endif -%}
+
+						{{- reference_unit -}}
+					</span>
+				</span>
+			</div>
+		{%- endif -%}
+	</div>
+
+	{% if show_volume_pricing_info and product.quantity_price_breaks_configured? %}
+		<div class="price__volume-pricing-note">
+			<span>{{ 'products.product.volume_pricing.note' | t }}</span>
+		</div>
+	{% endif %}
+
+	{% if cart.taxes_included and show_taxes_included %}
+		<div class="price__taxes-included">
+			{{- 'products.product.price.taxes_included' | t -}}
+			{% if shop.shipping_policy.body != blank %}
+				{{- 'products.product.price.shipping_policy_html' | t: link: shop.shipping_policy.url -}}
+			{% endif %}
+		</div>
+	{% endif %}
+
+	{% if show_pay_installments and product != blank %}
+		{% assign product_form_installment_id = 'product-form-installment' | append: section.id %}
+
+		{% form
+			'product',
+			product,
+			id: product_form_installment_id,
+			class: 'price__installments'
+		%}
+			<input
+				type="hidden"
+				name="id"
+				value="{{- product.selected_or_first_available_variant.id -}}"
+			/>
+
+			{{- form | payment_terms -}}
+		{% endform %}
+	{% endif %}
+</div>

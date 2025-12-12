@@ -1,0 +1,631 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Collection template
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/collection-body.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign show_grid_selector			= section.settings.show_grid_selector -%}
+{%- assign disable_lazy					= section.settings.disable_lazy -%}
+{%- assign pagination_type 				= section.settings.pagination_type -%}
+{%- assign paginate_by 					= section.settings.paginate_by -%}
+{%- assign show_color_swatch_in_filters = section.settings.show_color_swatch_in_filters -%}
+{%- assign filters_type					= section.settings.filters_type -%}
+{%- assign container					= section.settings.container_width -%}
+{%- assign blocks						= section.blocks -%}
+
+{% if container == 'inherit' %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+{%- assign active_filters_size = 0 -%}
+
+{%- for filter in collection.filters -%}
+	{%- case filter.type -%}
+		{%- when 'list' or 'boolean' -%}
+			{%- assign active_filters_size = active_filters_size | plus: filter.active_values.size -%}
+		{%- when 'price_range' -%}
+			{%- if filter.min_value.value > 0 or filter.max_value.value < filter.range_max -%}
+				{%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+					{%- assign active_filters_size = active_filters_size | plus: 1 -%}
+				{%- endif -%}
+			{%- endif -%}
+	{%- endcase -%}
+{%- endfor -%}
+
+{%- capture styles -%}
+	--container-width: {{ container_width }}; {{- -}}
+{%- endcapture -%}
+
+<section
+	class="collection{% if filters_type == 'sidebar' %} collection--with-sidebar{% else %} collection--with-topbar{% endif %} js-collection"
+	id="{{- section.id -}}"
+	style="{{ styles }}"
+>
+	<div class="collection__body">
+		{%- if filters_type == 'sidebar' -%}
+			{%- assign extra_class = 'product-filters--sidebar' -%}
+
+			<div class="collection__sidebar">
+				{%- render 'product-filters-and-sort',
+					product_list: collection,
+					show_swatches: show_color_swatch_in_filters,
+					extra_class: extra_class,
+					without_filter_button: true
+				-%}
+			</div>
+		{%- else -%}
+			{%- assign extra_class = 'product-filters--topbar-drawer' -%}
+
+			<div class="collection__topbar">
+				{%- render 'product-filters-and-sort',
+					product_list: collection,
+					show_swatches: show_color_swatch_in_filters,
+					extra_class: extra_class,
+					without_filter_button: true,
+					grid_selector: grid_selector
+				-%}
+			</div>
+		{%- endif -%}
+
+		<div class="collection__items-wrapper">
+			{%- if blocks.size > 0 -%}
+				<div class="collection__banners">
+					{%- for block in blocks -%}
+						{%- assign image		= block.settings.image -%}
+						{%- assign heading		= block.settings.heading -%}
+						{%- assign button_label	= block.settings.button_label -%}
+						{%- assign button_link	= block.settings.button_link -%}
+
+						{%- assign background				= block.settings.background -%}
+						{%- assign text_color				= block.settings.text_color -%}
+						{%- assign button_label_color		= block.settings.button_label_color -%}
+						{%- assign button_background		= block.settings.button_background -%}
+						{%- assign button_border			= block.settings.button_border -%}
+						{%- assign button_label_hover		= block.settings.button_label_hover -%}
+						{%- assign button_background_hover	= block.settings.button_background_hover -%}
+						{%- assign button_border_hover		= block.settings.button_border_hover -%}
+
+						{%- capture banner_styles -%}
+							--banner-background: {{- background -}}; {{- -}}
+							--banner-text-color: {{- text_color -}}; {{- -}}
+							--banner-button-label-color: {{- button_label_color -}}; {{- -}}
+							--banner-button-background: {{- button_background -}}; {{- -}}
+							--banner-button-border: {{- button_border -}}; {{- -}}
+							--banner-button-label-hover: {{- button_label_hover -}}; {{- -}}
+							--banner-button-background-hover: {{- button_background_hover -}}; {{- -}}
+							--banner-button-border-hover: {{- button_border_hover -}}; {{- -}}
+						{%- endcapture -%}
+
+						<div class="collection__banner" style="{{- banner_styles -}}">
+							<div class="collection__banner-image-container">
+								{%- if image != blank -%}
+									{%- capture img_focal -%}
+										--img-pos: {{ image.presentation.focal_point }};
+									{%- endcapture -%}
+
+									<picture class="lazy">
+										<source
+											srcset="{{ image |  img_url: "10x" }}"
+											data-srcset="{{ image | img_url: '158x' }} 1x, {{ image | img_url: '316x' }} 2x"
+											media="(max-width: 380px)"
+											width="158"
+											height="120"
+										/>
+
+										<source
+											srcset="{{ image | img_url: "10x" }}"
+											data-srcset="{{ image | img_url: '178x' }} 1x, {{ image | img_url: '356x' }} 2x"
+											media="(max-width: 420px)"
+											width="178"
+											height="136"
+										/>
+
+										<source
+											srcset="{{ image | img_url: "10x" }}"
+											data-srcset="{{ image | img_url: '255x' }} 1x, {{ image | img_url: '510x' }} 2x"
+											media="(max-width: 575px)"
+											width="255"
+											height="195"
+										/>
+
+										<source
+											srcset="{{ image | img_url: "10x" }}"
+											data-srcset="{{ image | img_url: '352x' }} 1x, {{ image | img_url: '704x' }} 2x"
+											media="(max-width: 767px)"
+											width="352"
+											height="268"
+										/>
+
+										<source
+											srcset="{{ image | img_url: "10x" }}"
+											data-srcset="{{ image | img_url: "464x" }} 1x, {{ image | img_url: "928x" }} 2x"
+											media="(max-width: 991px)"
+											width="464"
+											height="354"
+										/>
+
+										<source
+											srcset="{{ image | img_url: "10x" }}"
+											data-srcset="{{ image | img_url: "268x" }} 1x, {{ image | img_url: "536x" }} 2x"
+											media="(max-width: 1199px)"
+											width="268"
+											height="204"
+										/>
+
+										<source
+											srcset="{{ image | img_url: "10x" }}"
+											data-srcset="{{ image | img_url: "343x" }} 1x, {{ image | img_url: "652x" }} 2x"
+											media="(max-width: 1500px)"
+											width="343"
+											height="262"
+										/>
+
+										<img
+											class="collection__banner-image"
+											data-srcset="{{ image | img_url: "448x" }} 1x, {{ image | img_url: "896x" }} 2x"
+											data-src="{{ image | img_url: "448x" }}"
+											srcset="{{ image | img_url: "10x" }} 1x"
+											src="{{ image | img_url: "10x" }}"
+											alt="{{- image.alt -}}"
+											width="448"
+											height="342"
+											style="{{ img_focal }}"
+										/>
+									</picture>
+								{%- else -%}
+									{%- assign placeholer_svg_name	= 'hero-apparel-' | append: forloop.index -%}
+
+									{{- placeholer_svg_name | placeholder_svg_tag: 'collection__banner-image collection__banner-image--placeholder' -}}
+
+
+								{%- endif -%}
+							</div>
+
+							<div class="collection__banner-text-content">
+								{%- if heading != blank -%}
+									<h4 class="h4 collection__banner-heading">
+										{{- heading -}}
+									</h4>
+								{%- endif -%}
+
+
+								{%- if button_link != blank and button_label != blank -%}
+									<a href="{{- button_link -}}" class="button button--small button--primary-border collection__banner-button">
+										{{- button_label -}}
+									</a>
+								{%- endif -%}
+							</div>
+						</div>
+					{%- endfor -%}
+				</div>
+			{%- endif -%}
+
+			<div class="collection__header js-collection-header">
+				{%- capture grid_selector -%}
+					{% if show_grid_selector %}
+						<div class="collection__grid-buttons js-grid-view-buttons">
+							<button
+								class="collection__grid-button is-active js-grid-view-btn"
+								data-grid-cols="4"
+								type="button"
+							>
+								<span class="collection__grid-button-icon-desktop">
+									<span class="visually-hidden">{{ 'collections.general.grid_view_4' | t }}</span>
+
+									{% render 'icons', icon: 'grid-4' %}
+								</span>
+
+								<span class="collection__grid-button-icon-mobile">
+									<span class="visually-hidden">{{ 'collections.general.grid_view_2' | t }}</span>
+
+									{% render 'icons', icon: 'grid-2' %}
+								</span>
+							</button>
+
+							<button
+								class="collection__grid-button js-grid-view-btn"
+								data-grid-cols="3"
+								type="button"
+							>
+								<span class="collection__grid-button-icon-desktop">
+									<span class="visually-hidden">{{ 'collections.general.grid_view_3' | t }}</span>
+
+									{% render 'icons', icon: 'grid-3' %}
+								</span>
+
+								<span class="collection__grid-button-icon-mobile">
+									<span class="visually-hidden">{{ 'collections.general.grid_view_1' | t }}</span>
+
+									{% render 'icons', icon: 'grid-1' %}
+								</span>
+							</button>
+						</div>
+					{% endif %}
+				{%- endcapture -%}
+
+				<div class="collection__header-row">
+					{% if filters_type == 'horizontal' %}
+						<div class="collection__header-col collection__header-col--filter product-filters">
+							{% render 'product-filter-button',
+								active_filters_size: active_filters_size
+							%}
+
+							{%- if filters_type == 'horizontal' -%}
+								{%- assign extra_class = 'product-filters--topbar' -%}
+
+								{%- render 'product-filters-and-sort-bar',
+									product_list: collection,
+									show_swatches: show_color_swatch_in_filters,
+									extra_class: extra_class,
+									without_filter_button: true,
+									grid_selector: grid_selector
+								-%}
+							{%- endif -%}
+
+							{{- grid_selector -}}
+						</div>
+					{% endif %}
+
+					{% if filters_type == 'sidebar' %}
+						<div class="collection__header-col collection__header-col--filter product-filters">
+							{% render 'product-filter-button',
+								active_filters_size: active_filters_size
+							%}
+
+							{{- grid_selector -}}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+
+			{%- paginate collection.products by paginate_by, window_size: 1 -%}
+				<div
+					class="collection__items {% if show_grid_selector %}collection__items-hide-on-load{% endif %} js-grid-wrapper"
+					aria-busy="true"
+					data-grid-col="4"
+				>
+					{%- for product in collection.products -%}
+						{% if product.price <= 0 or product.featured_image == blank or product.available == false %}
+							{% continue %}
+						{% endif %}
+						{% assign is_lazy = true %}
+
+						{%- if forloop.index < 3 and section.index == 1 -%}
+							{% assign is_lazy = false %}
+						{%- elsif forloop.index < 3 and disable_lazy and section.index != 1 -%}
+							{% assign is_lazy = false %}
+						{%- endif -%}
+
+						<div class="collection__item">
+							{% assign product_img_size = 465 %}
+							{% assign product_img_size_tablet = 360 %}
+							{% assign product_img_size_mobile = 188 %}
+
+							{% if show_grid_selector %}
+								{% assign product_img_size = 620 %}
+								{% assign product_img_size_tablet = 580 %}
+								{% assign product_img_size_mobile = 200 %}
+							{% endif %}
+
+							{%- render 'product-card',
+								product: product,
+								size: product_img_size,
+								tablet_size: product_img_size_tablet,
+								mobile_size: product_img_size_mobile,
+								is_lazy: is_lazy
+							-%}
+						</div>
+					{%- endfor -%}
+				</div>
+
+				{%- case pagination_type -%}
+					{%- when 'pagination' -%}
+						<div class="collection__pagination-wrapper js-pagination">
+							{%- if paginate.pages > 1 -%}
+								{%- render 'pagination', paginate: paginate -%}
+							{%- endif -%}
+						</div>
+					{%- when 'infinite_scroll' -%}
+						{%- capture collection_infinite_scroll_classes -%}
+							collection__infinite-scroll no-js-hidden js-infinite-scroll {{- -}}
+							{% unless paginate.next.url %} is-hidden {%- endunless -%}
+						{%- endcapture -%}
+
+						<div class="{{- collection_infinite_scroll_classes | strip_newlines -}}"
+							{%- if paginate.next.url -%}
+								data-next-url="{{- paginate.next.url -}}"
+							{%- else -%}
+								data-next-url=""
+							{%- endif -%}
+						></div>
+					{%- else -%}
+						{%- capture collection_lazy_load_button_classes -%}
+							button button--secondary-border collection__load-more-button js-lazy-load {{- -}}
+							{% unless paginate.next.url %} is-hidden {%- endunless -%}
+						{%- endcapture -%}
+
+						<div class="collection__lazy-load-button-wrapper no-js-hidden">
+							<button
+								class="{{- collection_lazy_load_button_classes | strip_newlines -}}"
+								{% if paginate.next.url %}
+									data-next-url="{{- paginate.next.url -}}"
+								{% else %}
+									data-next-url=""
+								{% endif %}
+								aria-label="{{- 'general.pagination.lazy_load_aria' | t: items: 'products' | escape -}}"
+							>
+								{{- 'general.pagination.lazy_load' | t -}}
+							</button>
+						</div>
+				{%- endcase -%}
+
+				{%- unless pagination_type == 'pagination' -%}
+					<noscript>
+						<div class="collection__pagination-wrapper">
+							{%- if paginate.pages > 1 -%}
+								{%- render 'pagination', paginate: paginate -%}
+							{%- endif -%}
+						</div>
+					</noscript>
+				{%- endunless -%}
+			{%- endpaginate -%}
+
+			{%- capture collection_empty_title_classes -%}
+				h2 collection__title collection__title--empty js-template-empty-title {{- -}}
+				{% if collection.products.size > 0 %} is-hidden {%- endif -%}
+			{%- endcapture -%}
+
+			<h2 class="{{- collection_empty_title_classes | strip_newlines -}}">
+				{{- 'collections.general.empty_collection' | t -}}
+			</h2>
+		</div>
+	</div>
+
+	{%- render 'adastra' with '/src/scripts/component-product-filters.js' -%}
+	{%- render 'adastra' with '/src/scripts/collection-template.js' -%}
+</section>
+
+{%- schema -%}
+{
+	"name": "Collection body",
+	"settings": [
+		{
+			"type": "select",
+			"id": "filters_type",
+			"label": "Filters type",
+			"options": [
+				{
+					"value": "sidebar",
+					"label": "Sidebar"
+				},
+				{
+					"value": "horizontal",
+					"label": "Horizontal"
+				}
+			],
+			"default": "horizontal",
+			"info": "Used only for desktop"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_grid_selector",
+			"label": "Show grid buttons",
+			"default": true,
+			"info": "Display grid buttons to adjust the number of products per row."
+		},
+		{
+			"type": "checkbox",
+			"id": "show_color_swatch_in_filters",
+			"label": "Show color swatch in filters",
+			"default": false
+		},
+		{
+			"type": "checkbox",
+			"id": "disable_lazy",
+			"label": "Disable lazy-load",
+			"info": "Disable lazy-load for the first two products. Use this if you hide collection image banner."
+		},
+		{
+			"type": "range",
+			"id": "paginate_by",
+			"min": 12,
+			"max": 50,
+			"step": 1,
+			"label": "Paginate by",
+			"default": 16
+		},
+		{
+			"type": "select",
+			"id": "pagination_type",
+			"label": "Pagination type",
+			"options": [
+				{
+					"value": "pagination",
+					"label": "Pagination"
+				},
+				{
+					"value": "lazy_load",
+					"label": "Load more"
+				},
+				{
+					"value": "infinite_scroll",
+					"label": "Infinite scrolling"
+				}
+			],
+			"default": "pagination"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "If you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 16
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 60
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 16
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 30
+		}
+	],
+	"blocks": [
+		{
+			"limit": 2,
+			"name": "Promo banner",
+			"type": "custom_liquid",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image",
+					"info": "928 x 708px recommended"
+				},
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading",
+					"default": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "button_label",
+					"label": "Button label",
+					"default": "Shop Now"
+				},
+				{
+					"type": "url",
+					"id": "button_link",
+					"label": "Button link",
+					"default": "/"
+				},
+				{
+					"type": "header",
+					"content": "Colors"
+				},
+				{
+					"type": "color",
+					"id": "background",
+					"label": "Background",
+					"default": "#050D2F"
+				},
+				{
+					"type": "color",
+					"id": "text_color",
+					"label": "Text",
+					"default": "#FFFFFF"
+				},
+				{
+					"type": "color",
+					"id": "button_label_color",
+					"label": "Button label",
+					"default": "#FFFFFF"
+				},
+				{
+					"type": "color",
+					"id": "button_background",
+					"label": "Button background",
+					"default": "transparent"
+				},
+				{
+					"type": "color",
+					"id": "button_border",
+					"label": "Button border",
+					"default": "#FFFFFF"
+				},
+				{
+					"type": "color",
+					"id": "button_label_hover",
+					"label": "Button label (hover)",
+					"default": "#404C38"
+				},
+				{
+					"type": "color",
+					"id": "button_background_hover",
+					"label": "Button background (hover)",
+					"default": "#FFFFFF"
+				},
+				{
+					"type": "color",
+					"id": "button_border_hover",
+					"label": "Button border (hover)",
+					"default": "#FFFFFF"
+				}
+			]
+		}
+	]
+}
+{%- endschema -%}

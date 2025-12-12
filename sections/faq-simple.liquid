@@ -1,0 +1,316 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Section: FAQ simple
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/faq-simple.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+	padding-top: {{- section.settings.offset_top_mobile -}}px;
+	padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+	#shopify-section-{{- section.id -}} {
+	padding-top: {{- section.settings.offset_top_desktop -}}px;
+	padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+	}
+	}
+{%- endstyle -%}
+
+{%- assign sidebar_title = section.settings.sidebar_title -%}
+{%- assign sidebar_text = section.settings.sidebar_text -%}
+{%- assign blocks = section.blocks -%}
+{%- assign delay_step = 0.15 -%}
+
+{%- assign content = '' -%}
+
+{%- for block in blocks -%}
+{% assign delay_step = delay_step | plus: 0.15 %}
+
+{%- case block.type -%}
+{%- when "category" -%}
+{%- assign category_heading = block.settings.heading -%}
+
+{%- if category_heading != blank -%}
+{%- assign handle = category_heading | handleize -%}
+
+{%- capture content -%}
+{{- content -}}
+
+{%- if content != '' -%}
+	</div>
+{%- endif -%}
+
+<div id="{{- handle -}}" class="faq-simple__category js-faq-block">
+	<h3 class="faq-simple__category-heading need-animate tr-dur-0-4 h4"
+		style="transition-delay: {{ delay_step | append: 's' }}">
+		{{- category_heading -}}
+	</h3>
+	{%- endcapture -%}
+	{%- endif -%}
+
+	{%- when "faq_item" -%}
+	{%- assign item_heading = block.settings.heading -%}
+	{%- assign text = block.settings.text -%}
+	{%- assign heading_icon = block.settings.heading_icon -%}
+	{%- capture img_focal -%}{%- endcapture -%}
+
+	{%- if item_heading == blank or text == blank -%}
+		{%- continue -%}
+	{%- endif -%}
+
+	{%- capture icon -%}
+		{%- if heading_icon != blank -%}
+			{%- capture img_focal -%}
+				--img-desktop-pos: {{ heading_icon.presentation.focal_point }};
+			{%- endcapture -%}
+
+			<img
+				class="faq-simple__item-image"
+				srcset="{{ heading_icon | img_url: "20x" }} 1x, {{ heading_icon | img_url: "40x" }} 2x"
+				src="{{- heading_icon | img_url: "40x" -}}"
+				alt="{{- heading_icon.alt -}}"
+				style="{{ img_focal }}"
+			/>
+		{%- endif -%}
+	{%- endcapture -%}
+
+	{%- capture content -%}
+	{{- content -}}
+
+{%- if content == '' -%}
+	<div class="faq-simple__category js-faq-block">
+		{%- endif -%}
+
+		<div class="accordion__item faq-simple__item need-animate tr-dur-0-4 js-accordion-item"
+			 style="transition-delay: {{ delay_step | append: 's' }}">
+			<h4 class="accordion__title faq-simple__item-title">
+				<button
+					id="control-{{- block.id -}}"
+					class="accordion__control faq-simple__item-control js-accordion-control"
+					aria-controls="content-{{- block.id -}}"
+					aria-expanded="false"
+				>
+							<span class="faq-simple__item-title-text">
+								{%- if icon != blank -%}
+									<span class="faq-simple__item-icon">
+										{{- icon -}}
+									</span>
+								{%- endif -%}
+
+								{{- item_heading -}}
+							</span>
+
+					<span class="faq-simple__item-control-icon">
+							</span>
+				</button>
+			</h4>
+
+			<div
+				id="content-{{- block.id -}}"
+				class="accordion__content accordion__content--animate faq-simple__item-content js-accordion-content"
+				style="height: 0;"
+				role="region"
+				aria-labelledby="control-{{- block.id -}}"
+			>
+				<div class="faq-simple__item-inner js-accordion-inner rte">
+					{{- text -}}
+				</div>
+			</div>
+		</div>
+		{%- endcapture -%}
+		{%- endcase -%}
+		{%- endfor -%}
+
+		{%- if content != '' -%}
+		{%- capture content -%}
+		{{- content -}}
+
+	</div>
+	{%- endcapture -%}
+	{%- endif -%}
+
+	{%- if sidebar_title == blank and sidebar_text == blank -%}
+		{% assign container_class = 'faq-simple__container--narrow' %}
+	{%- endif -%}
+
+	<section
+		class="faq-simple js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}">
+		<div class="faq-simple__container {{ container_class }}">
+			<div class="faq-simple__main">
+				{%- if sidebar_title != blank or sidebar_text != blank -%}
+					<div class="faq-simple__sidebar">
+						{% if sidebar_title != blank %}
+							<h2 class="faq-simple__heading need-animate tr-dur-0-5">
+								{{- sidebar_title -}}
+							</h2>
+						{% endif %}
+
+						{% if sidebar_text != blank %}
+							<div class="faq-simple__text rte need-animate tr-dur-0-5">
+								{{- sidebar_text -}}
+							</div>
+						{% endif %}
+					</div>
+				{%- endif -%}
+
+				<div class="accordion faq-simple__content js-accordion-container">
+					{{- content -}}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{%- schema -%}
+	{
+		"name": "FAQ",
+		"disabled_on": {
+			"groups": [
+				"header",
+				"footer"
+			]
+		},
+		"settings": [
+			{
+				"type": "text",
+				"id": "sidebar_title",
+				"label": "Heading",
+				"default": "FAQ"
+			},
+			{
+				"type": "richtext",
+				"id": "sidebar_text",
+				"label": "Text"
+			},
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 25
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 25
+			}
+		],
+		"blocks": [
+			{
+				"name": "Category",
+				"type": "category",
+				"settings": [
+					{
+						"type": "text",
+						"id": "heading",
+						"label": "Heading"
+					}
+				]
+			},
+			{
+				"name": "Question and answer",
+				"type": "faq_item",
+				"settings": [
+					{
+						"type": "textarea",
+						"id": "heading",
+						"label": "Heading"
+					},
+					{
+						"type": "richtext",
+						"id": "text",
+						"label": "Text"
+					},
+					{
+						"type": "image_picker",
+						"id": "heading_icon",
+						"label": "Icon",
+						"info": "24 x 24px .svg recommended"
+					}
+				]
+			}
+		],
+		"presets": [
+			{
+				"name": "FAQ",
+				"blocks": [
+					{
+						"type": "category",
+						"settings": {
+							"heading": "First category"
+						}
+					},
+					{
+						"type": "faq_item",
+						"settings": {
+							"heading": "Accordion heading",
+							"text": "<p>Accordion content.</p>"
+						}
+					},
+					{
+						"type": "faq_item",
+						"settings": {
+							"heading": "Accordion heading",
+							"text": "<p>Accordion content.</p>"
+						}
+					},
+					{
+						"type": "category",
+						"settings": {
+							"heading": "Second category"
+						}
+					},
+					{
+						"type": "faq_item",
+						"settings": {
+							"heading": "Accordion heading",
+							"text": "<p>Accordion content.</p>"
+						}
+					},
+					{
+						"type": "faq_item",
+						"settings": {
+							"heading": "Accordion heading",
+							"text": "<p>Accordion content.</p>"
+						}
+					}
+				]
+			}
+		]
+	}
+	{%- endschema -%}

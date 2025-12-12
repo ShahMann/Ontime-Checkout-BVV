@@ -1,0 +1,491 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Featured blog
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/featured-blog.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{% assign blog                           = section.settings.blog %}
+{% assign articles                       = blog.articles %}
+{% assign heading                        = section.settings.heading %}
+{% assign small_articles_heading         = section.settings.small_articles_heading %}
+{% assign first_post                     = articles | first %}
+{% assign first_post_image               = first_post.image | default: settings.article_default_image %}
+{% assign first_post_author_image        = first_post.metafields.custom.author_image %}
+{% assign first_post_first_tag           = first_post.tags | first %}
+{% assign container                      = section.settings.container_width %}
+{% assign format                         = "%B %d, %Y" %}
+{% assign big_post_color                 = section.settings.big_post_color %}
+{% assign big_post_color_secondary       = section.settings.big_post_color_secondary %}
+{% assign big_post_background            = section.settings.big_post_background %}
+{% assign big_post_tag_color             = section.settings.big_post_tag_color %}
+{% assign big_post_tag_background        = section.settings.big_post_tag_background %}
+{% assign enable_content_glass_effect    = section.settings.enable_content_glass_effect %}
+
+{% assign show_date                      = settings.show_date %}
+{% assign show_author                    = settings.show_author %}
+{% assign show_tag                       = settings.show_tag %}
+{% assign show_comments_count            = settings.show_comments_count %}
+{% assign read_more_label                = settings.article_read_more_label %}
+
+{% capture article_description_example %}
+	An example of a blog post description. An example of a blog post description. An example of a blog post description. An example of a blog post description. An example of a blog post description. An example of a blog post description. An example of a blog post description. An example of a blog post description. An example of a blog post description. An example of a blog post description.
+{% endcapture %}
+
+{% assign article_date_example           = 'May 25, 2020' %}
+{% assign article_author_example         = 'Article author' %}
+{% assign article_title_example          = 'Article title' %}
+{% assign article_tag_example            = 'Article tag' %}
+{% assign article_comment_count_example  = '0' -%}
+
+{% if container == 'inherit' %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+{%- capture section_styles -%}
+	--container-width: {{ container_width }};
+	--big-post-color: {{ big_post_color }};
+	--big-post-color-secondary: {{ big_post_color_secondary }};
+	--big-post-background: {{ big_post_background }};
+	--big-post-tag-color: {{ big_post_tag_color }};
+	--big-post-tag-background: {{ big_post_tag_background }}
+{%- endcapture -%}
+
+<section class="featured-blog js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}" style="{{ section_styles }}">
+	{% if heading != blank %}
+		<h2 class="featured-blog__heading h2">{{ heading }}</h2>
+	{% endif %}
+
+	<div class="featured-blog__container">
+		<article
+			class="featured-blog__big-post need-animate tr-dur-0-75 {% unless container_width == "1432px" %}featured-blog__big-post--full-width{% endunless %}">
+			<a href="{{ first_post.url | default: "#" }}" class="featured-blog__big-post-img-link"
+			   aria-label="{{- 'blogs.article.learn_more_link_aria' | t: title: first_post.title | escape -}}"
+			>
+				{% if first_post_image != blank and first_post != blank %}
+					<picture class="lazy">
+						<source
+							data-srcset="{{ first_post_image | img_url: '348x448', crop: 'center' }} 1x,
+										{{ first_post_image | img_url: '696x896', crop: 'center' }} 2x"
+							srcset="{{ first_post_image | img_url: '10x' }} 1x,
+									{{ first_post_image | img_url: '10x' }} 2x"
+							media="(max-width: 380px)">
+
+						<source
+							data-srcset="{{ first_post_image | img_url: '388x448', crop: 'center' }} 1x,
+										{{ first_post_image | img_url: '776x896', crop: 'center' }} 2x"
+							srcset="{{ first_post_image | img_url: '10x' }} 1x,
+									{{ first_post_image | img_url: '10x' }} 2x"
+							media="(max-width: 420px)">
+
+						<source
+							data-srcset="{{ first_post_image | img_url: '735x418', crop: 'center' }} 1x,
+										{{ first_post_image | img_url: '1470x836', crop: 'center' }} 2x"
+							srcset="{{ first_post_image | img_url: '10x' }} 1x,
+									{{ first_post_image | img_url: '10x' }} 2x"
+							media="(max-width: 767px)">
+
+						<source
+							data-srcset="{{ first_post_image | img_url: '959x417', crop: 'center' }} 1x,
+										{{ first_post_image | img_url: '1918x834', crop: 'center' }} 2x"
+							srcset="{{ first_post_image | img_url: '10x' }} 1x,
+									{{ first_post_image | img_url: '10x' }} 2x"
+							media="(max-width: 991px)">
+
+						<source
+							data-srcset="{{ first_post_image | img_url: '994x481', crop: 'center' }} 1x,
+										{{ first_post_image | img_url: '1988x962', crop: 'center' }} 2x"
+							srcset="{{ first_post_image | img_url: '10x' }} 1x,
+									{{ first_post_image | img_url: '10x' }} 2x"
+							media="(max-width: 1500px)">
+
+						<img
+							class="featured-blog__background-image"
+							src="{{ first_post_image | img_url: '10x' }}"
+							srcset="{{ first_post_image | img_url: '10x' }}"
+							data-src="{{ first_post_image | img_url: '1321x481', crop: 'center' }}"
+							data-srcset="{{ first_post_image | img_url: '1321x481', crop: 'center' }} 1x,
+									{{ first_post_image | img_url: '2642x962', crop: 'center' }} 2x"
+							alt="{{ first_post_image.alt | escape }}"/>
+					</picture>
+				{% else %}
+					{{ "blog-apparel-1" | placeholder_svg_tag: "featured-blog__background-image" }}
+				{% endif %}
+			</a>
+
+			<div class="featured-blog__big-post-content-wrapper">
+				<div
+					class="featured-blog__big-post-content {% if enable_content_glass_effect %}featured-blog__big-post-content--glass-effect{% endif %}">
+					{% if show_tag and first_post_first_tag %}
+						{% assign show_tag_first_post = true %}
+					{% endif %}
+
+					{% if show_tag_first_post or show_date or show_comments_count %}
+						<div class="featured-blog__big-post-info">
+							{% if show_tag and first_post_first_tag or first_post == blank %}
+								<span class="visually-hidden">
+									{{- 'blogs.article.tag' | t -}}
+								</span>
+
+								<div class="featured-blog__tag">
+									{% if first_post != blank %}
+										{{ first_post_first_tag }}
+									{% else %}
+										{{ article_tag_example }}
+									{% endif %}
+								</div>
+							{% endif %}
+
+							{% if show_date %}
+								<span class="visually-hidden">
+									{{- 'blogs.article.published_at' | t -}}
+								</span>
+
+								<span class="feature-blog__big-post-info-text">
+									{% if first_post.published_at != blank %}
+										{{ first_post.published_at | date: format }}
+									{% else %}
+										{{ article_date_example }}
+									{% endif %}
+								</span>
+							{% endif %}
+
+							{% if show_comments_count %}
+								<span class="visually-hidden">
+									{{- 'blogs.article.comments_count' | t -}}
+								</span>
+
+								<span class="feature-blog__big-post-info-text">
+									{% if first_post.comments_count != blank %}
+										{{ first_post.comments_count }}
+									{% else %}
+										{{ article_comment_count_example }}
+									{% endif %}
+
+									{% if first_post.comments_count != 1 %}{{ 'blogs.article.many_comments' | t }}{% else %}{{ 'blogs.article.one_comment' | t }}{% endif %}
+								</span>
+							{% endif %}
+						</div>
+					{% endif %}
+
+					{% if show_author %}
+						<div class="featured-blog__author-info">
+							{% if first_post_author_image != blank %}
+								<img class="featured-blog__author-image"
+									 src="{{ first_post_author_image | image_url: width: 32, height: 32 }}"
+									 alt="{{ first_post_author_image.alt | escape }}"/>
+							{% endif %}
+
+							<span class="visually-hidden">
+								{{- 'blogs.article.author' | t -}}
+							</span>
+
+							<span class="featured-blog__author-name">
+								{% if first_post != blank %}
+									{{ 'blogs.article.author' | t: article_author: first_post.author }}
+								{% else %}
+									{{ 'blogs.article.author' | t: article_author: article_author_example }}
+								{% endif %}
+							</span>
+						</div>
+					{% endif %}
+
+					<h2 class="featured-blog__title h3">
+						{% if first_post != blank %}
+							{{ first_post.title }}
+						{% else %}
+							{{ article_title_example }}
+						{% endif %}
+					</h2>
+
+					{% if first_post != blank %}
+						{% if first_post.excerpt_or_content != blank %}
+							<div class="featured-blog__content">{{ first_post.excerpt_or_content | strip_html }}</div>
+						{% endif %}
+					{% else %}
+						<div class="featured-blog__content">{{ article_description_example }}</div>
+					{% endif %}
+
+					<a class="featured-blog__read-more-button" href="{{ first_post.url | default: "#" }}"
+					   aria-label="{{- 'blogs.article.learn_more_link_aria' | t: title: first_post.title | escape -}}"
+					>
+						{{ read_more_label }}
+						<div class="featured-blog__read-more-button-arrow">
+							{% render "icons", icon: "arrow-right" %}
+						</div>
+					</a>
+				</div>
+			</div>
+		</article>
+
+		{% if blog == blank or blog.articles.size > 1 %}
+			<div class="featured-blog__posts-wrapper">
+				{% if small_articles_heading != blank %}
+					<h3 class="featured-blog__column-title need-animate tr-dur-0-5 tr-del-0-5 h4">{{ small_articles_heading }}</h3>
+				{% endif %}
+
+				{% assign delay_step 		= 0 %}
+
+				{% for index in (1..3) %}
+					{% assign article        	= blog.articles[index] %}
+					{% assign title          	= article.title %}
+					{% assign image          	= article.image | default: settings.article_default_image %}
+					{% assign url            	= article.url | default: "#" %}
+					{% assign comments_count 	= article.comments_count %}
+					{% assign delay_step 		= delay_step | plus: 0.3 %}
+
+					{% if article != blank or blog == blank %}
+						<article class="featured-blog__post need-animate tr-dur-0-75" style="transition-delay: {{ delay_step | append: 's' }}">
+							<div class="featured-blog__post-aspect-ratio">
+								<a href="{{ url }}"
+								   class="featured-blog__post-image-wrapper lazy"
+								   aria-label="{{- 'blogs.article.learn_more_link_aria' | t: title: title | escape -}}"
+								>
+									{% if image != blank and article != blank %}
+										<img class="featured-blog__post-image"
+											 src="{{ image | img_url: '10x' }}"
+											 srcset="{{ image | img_url: '10x' }}"
+											 data-src="{{ image | img_url: '132x88', crop: 'center' }}"
+											 data-srcset="{{ image | img_url: '132x88', crop: 'center' }} 1x,
+											 {{ image | img_url: '264x176', crop: 'center' }} 2x"
+											 alt="{{ image.alt | escape }}">
+									{% else %}
+										{{ "blog-apparel-2" | placeholder_svg_tag: "featured-blog__post-image" }}
+									{% endif %}
+								</a>
+							</div>
+
+							<div class="feature-blog__post-wrapper">
+								{% if show_author or show_date or show_comments_count %}
+									<div class="feature-blog__post-info">
+										{% if show_author %}
+											<span class="visually-hidden">
+												{{- 'blogs.article.author_prefix' | t -}}
+											</span>
+
+											<span class="featured-blog__info-text">
+												{% if article.author != blank %}
+													{{ article.author }}
+												{% else %}
+													{{ article_author_example }}
+												{% endif %}
+											</span>
+										{% endif %}
+
+										{% if show_date %}
+											<span class="visually-hidden">
+												{{- 'blogs.article.published_at' | t -}}
+											</span>
+
+											<span class="featured-blog__info-text">
+												{% if article.published_at != blank %}
+													{{ article.published_at | date: format }}
+												{% else %}
+													{{ article_date_example }}
+												{% endif %}
+											</span>
+										{% endif %}
+
+										{% if show_comments_count %}
+											<span class="visually-hidden">
+												{{- 'blogs.article.comments_count' | t -}}
+											</span>
+
+											<span class="featured-blog__info-text">
+												{% if comments_count != blank %}
+													{{ comments_count }}
+												{% else %}
+													{{ article_comment_count_example }}
+												{% endif %}
+
+												{% if comments_count != 1 %}{{ 'blogs.article.many_comments' | t }}{% else %}{{ 'blogs.article.one_comment' | t }}{% endif %}
+											</span>
+										{% endif %}
+									</div>
+								{% endif %}
+
+								<h4 class="featured-blog__post-title">
+									{% if article != blank %}
+										{{ article.title }}
+									{% else %}
+										{{ article_title_example }}
+									{% endif %}
+								</h4>
+
+								<a href="{{ url }}"
+								   class="featured-blog__read-more-button"
+								   aria-label="{{- 'blogs.article.learn_more_link_aria' | t: title: title | escape -}}"
+								>
+									{{ read_more_label }}
+									<div class="featured-blog__read-more-button-arrow">
+										{% render "icons", icon: "arrow-right" %}
+									</div>
+								</a>
+							</div>
+						</article>
+					{% endif %}
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
+</section>
+
+{% schema %}
+{
+	"name": "Featured blog",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"id": "blog",
+			"type": "blog",
+			"label": "Blog"
+		},
+		{
+			"id": "heading",
+			"type": "text",
+			"label": "Heading",
+			"default": "Featured blogs"
+		},
+		{
+			"id": "small_articles_heading",
+			"type": "text",
+			"label": "Small articles heading",
+			"default": "Latest News"
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"id": "big_post_color",
+			"type": "color",
+			"label": "Big post color",
+			"default": "#fff"
+		},
+		{
+			"id": "big_post_color_secondary",
+			"type": "color",
+			"label": "Big post color secondary",
+			"default": "#9D9D9D"
+		},
+		{
+			"id": "big_post_background",
+			"type": "color_background",
+			"label": "Big post background",
+			"default": "rgba(0, 0, 0, 0.4)"
+		},
+		{
+			"id": "big_post_tag_color",
+			"type": "color",
+			"label": "Big post tag color",
+			"default": "#000"
+		},
+		{
+			"id": "big_post_tag_background",
+			"type": "color",
+			"label": "Big post tag background",
+			"default": "#fff"
+		},
+		{
+			"id": "enable_content_glass_effect",
+			"type": "checkbox",
+			"label": "Enable content glass effect",
+			"info": "Used for large card content",
+			"default": true
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"presets": [
+		{
+			"name": "Featured blog"
+		}
+	]
+}
+{% endschema %}

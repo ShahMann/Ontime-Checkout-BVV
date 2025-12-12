@@ -1,0 +1,13 @@
+order-count  {
+    display: block;
+    background: #00b4ae;
+    color: #fff;
+    padding: 5px 15px;
+    text-align: start;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+}

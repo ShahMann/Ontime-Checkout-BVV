@@ -1,0 +1,164 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Reset Template
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render "adastra" with "/src/styles/account-entrance.scss" -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+<section class="account-entrance">
+	<div class="account-entrance__container">
+		{%- form "reset_customer_password", class: "account-entrance__form" -%}
+			<div class="account-entrance__heading-wrapper">
+				<h1 class="account-entrance__heading">
+					{{- "customer.reset_password.title" | t -}}
+				</h1>
+
+				<p class="account-entrance__text">
+					{{- "customer.reset_password.subtext" | t -}}
+				</p>
+
+				{%- if form.errors -%}
+					<h2 class="account-entrance__error-title h5" tabindex="-1" autofocus>
+						<span class="visually-hidden">{{ 'general.accessibility.error' | t }}</span>
+
+						{{ 'general.accessibility.form_error_title' | t }}
+					</h2>
+
+					{{- form.errors | default_errors -}}
+				{%- endif -%}
+			</div>
+
+			<div class="account-entrance__input-wrapper">
+				<label class="label-input label-input--required" for="ResetPassword">
+					{{- "customer.reset_password.password" | t -}}
+				</label>
+
+				<div class="account-entrance__password-wrapper">
+					<input
+						class="input account-entrance__input account-entrance__input--password"
+						id="ResetPassword"
+						name="customer[password]"
+						type="password"
+						placeholder="{{- 'customer.reset_password.password' | t -}}"
+						aria-label="{{- 'customer.reset_password.reset_password_aria_label' | t | escape -}}"
+						required
+					/>
+
+					<button
+						type="button"
+						class="focus-visible-outline account-entrance__password-icon js-show-password"
+						aria-label="{{- 'customer.account.show_password' | t -}}"
+					>
+						<span class="account-entrance__password-icon-content">
+							{%- render "icons", icon: "view" -%}
+						</span>
+					</button>
+				</div>
+			</div>
+
+			<div class="account-entrance__input-wrapper">
+				<label class="label-input label-input--required" for="PasswordConfirmation">
+					{{- "customer.reset_password.password_confirm" | t -}}
+				</label>
+
+				<div class="account-entrance__password-wrapper">
+					<input
+						class="input account-entrance__input account-entrance__input--password"
+						id="PasswordConfirmation"
+						name="customer[password_confirmation]"
+						type="password"
+						placeholder="{{- 'customer.reset_password.password_confirm' | t -}}"
+						aria-label="{{- 'customer.reset_password.password_confirm_aria_label' | t | escape -}}"
+						required
+					/>
+
+					<button
+						type="button"
+						class="focus-visible-outline account-entrance__password-icon js-show-password"
+						aria-label="{{- 'customer.account.show_password' | t -}}"
+					>
+						<span class="account-entrance__password-icon-content">
+							{%- render "icons", icon: "view" -%}
+						</span>
+					</button>
+				</div>
+			</div>
+
+			<input
+				class="button button--secondary account-entrance__button account-entrance__button--small"
+				type="submit"
+				value="{{- 'customer.reset_password.submit' | t -}}"
+				aria-label="{{- 'customer.reset_password.submit_aria_label' | t | escape -}}"
+			/>
+		{%- endform -%}
+	</div>
+</section>
+
+{%- render 'adastra' with '/src/scripts/template-customers-reset.js' -%}
+
+{% schema %}
+{
+	"name": "Reset password template",
+	"settings": [
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	]
+}
+{%- endschema -%}

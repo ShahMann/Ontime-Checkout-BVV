@@ -1,0 +1,78 @@
+/**
+	Timings
+ */
+:root {
+  --timing-micro: 0.1s;
+  --timing-short: 0.2s;
+  --timing-base: 0.4s;
+  --timing-long: 0.7s;
+  --timing-second: 1s;
+  --animate-time: 0.7s;
+  --animate-delay: 0.3s;
+  --animate-img-scale: 0.5s;
+  /**
+  * Easing.
+  */
+  --easing-linear: cubic-bezier(0, 0, 1, 1);
+  --easing-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --easing-ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+  --easing-ease-in: cubic-bezier(0.42, 0, 1, 1);
+  --easing-ease-out: cubic-bezier(0, 0, 0.09, 1);
+  /**
+  * Config: Layers
+  * -----------------------------------------------------------------------------
+  * Visual motif used to create groupings, content associations and focus through depth.
+  */
+  --layer-negative: -1;
+  --layer-base: 0;
+  --layer-flat: 1;
+  --layer-raised: 2;
+  --layer-sticky-btn: 7;
+  --layer-sticky: 11;
+  --layer-overlay: 14;
+  --layer-temporary: 16;
+  --layer-pop-out: 24;
+  --layer-pop-out-overlay: 25;
+  --layer-pop-out-overlay-loader: 26;
+}
+.product-benefits {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  padding-top: var(--offset-top-mobile);
+  padding-bottom: var(--offset-bottom-mobile);
+  gap: 16px;
+}
+.product-benefits .product-benefits__item {
+  padding: 16px;
+  border-radius: calc(var(--global-border-radius) / 2);
+  border: 1px solid var(--color-border-secondary);
+  text-align: center;
+  word-break: break-word;
+}
+.product-benefits .product-benefits__item-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  margin-bottom: 8px;
+  vertical-align: middle;
+}
+.product-benefits .product-benefits__item-title,
+.product-benefits .product-benefits__item-link {
+  font-size: calc(var(--body-font-size) * 0.875);
+  line-height: 1.285;
+}
+.product-benefits .product-benefits__item-link {
+  margin-top: 12px;
+}
+@media (min-width: 576px) {
+  .product-benefits {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 1200px) {
+  .product-benefits {
+    padding-top: var(--offset-top-desktop);
+    padding-bottom: var(--offset-bottom-desktop);
+  }
+}

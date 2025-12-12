@@ -1,0 +1,65 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Product gallery video
+	This snippet will output main video on product page
+
+	- video: video object (optional, object),
+	- type: [video/external_video]
+
+	{%- render "product-gallery-image", image: image -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+{%- capture html_video -%}
+	<video
+		class="product-gallery-video__html js-video"
+		data-device="desktop"
+		data-type="html"
+		tabindex="-1"
+		aria-hidden="true"
+		preload="metadata"
+		controls
+	>
+		{% for source in video.sources  %}
+			{%- if source.mime_type == 'video/mp4' -%}
+				<source
+					src="{{- source.url -}}#t=0.001"
+					type="{{- source.mime_type -}}"
+				>
+			{%- endif -%}
+		{% endfor %}
+	</video>
+{%- endcapture -%}
+
+{%- capture external_video -%}
+	{%- if video.host == 'youtube' -%}
+		<div
+			class="product-gallery-video__youtube js-video"
+			style="--aspect-ratio: {{ video.aspect_ratio | default: 1.0 }}"
+			data-device="desktop"
+			data-type="{{- video.host -}}"
+		>
+			<div
+				class="js-video-youtube"
+				data-video-id="{{- video.external_id -}}"
+				tabindex="-1"
+				aria-hidden="true"
+			></div>
+		</div>
+	{%- else -%}
+		<div
+			class="product-gallery-video__vimeo js-video"
+			style="--aspect-ratio: {{ video.aspect_ratio | default: 1.0 }}"
+			data-device="desktop"
+			data-video-id="{{- video.external_id -}}"
+			data-type="{{- video.host -}}"
+			aria-hidden="true"
+		></div>
+	{%- endif -%}
+{%- endcapture -%}
+
+{% case type %}
+	{% when 'video' %}
+		{{- html_video -}}
+	{% when 'external_video' %}
+		{{- external_video -}}
+{% endcase %}

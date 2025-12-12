@@ -1,0 +1,186 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: 404 template
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/404-template.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign heading 			  = section.settings.heading -%}
+{%- assign heading_background = section.settings.heading_background -%}
+{%- assign text 			  = section.settings.text -%}
+{%- assign button_text 		  = section.settings.button_text -%}
+{%- assign button_url 		  = section.settings.button_url -%}
+{%- assign button_style 	  = section.settings.button_style -%}
+{%- assign menu 			  = section.settings.menu -%}
+
+{%- capture styles -%}
+	--background-image: url({{- heading_background | img_url: "2000x" -}});
+{%- endcapture -%}
+
+<section class="page-404" style="{{- styles -}}">
+	<div class="page-404__container">
+		{%- if heading -%}
+			<h1 class="page-404__heading{% if heading_background != blank %} page-404__heading--background{% endif %}">
+				{{- heading -}}
+			</h1>
+		{%- endif -%}
+
+		{%- if text != blank -%}
+			<div class="page-404__text rte">
+				{{- text -}}
+			</div>
+		{%- endif -%}
+
+		{%- if button_url != blank and button_text != blank -%}
+			<a class="page-404__button button button--{{- button_style -}}" href="{{- button_url -}}">
+				{{- button_text -}}
+			</a>
+		{%- endif -%}
+
+		{%- if menu != blank -%}
+			<ul class="page-404__navigation-list">
+				{%- for link in linklists[menu].links -%}
+					<li class="page-404__navigation-list-item">
+						<a
+							class="page-404__navigation-list-link"
+							href="{{- link.url -}}"
+						>
+							{{- link.title -}}
+
+							<span class="page-404__navigation-list-link-icon">
+								{%- render 'icons', icon: 'arrow-right' -%}
+							</span>
+						</a>
+					</li>
+				{%- endfor -%}
+			</ul>
+		{%- endif -%}
+	</div>
+</section>
+
+{%- schema -%}
+	{
+		"name": "Page 404",
+		"settings": [
+			{
+				"type": "text",
+				"id": "heading",
+				"label": "Heading",
+				"default": "OOPPS! PAGE NOT FOUND"
+			},
+			{
+				"type": "image_picker",
+				"id": "heading_background",
+				"label": "Heading background",
+				"info": "Choose the background image of the heading."
+			},
+			{
+				"type": "richtext",
+				"id": "text",
+				"label": "Text"
+			},
+			{
+				"type": "text",
+				"id": "button_text",
+				"label": "Button label",
+				"default": "Go to home page"
+			},
+			{
+				"type": "url",
+				"id": "button_url",
+				"label": "Button link",
+				"default": "/"
+			},
+			{
+				"type": "select",
+				"id": "button_style",
+				"label": "Button style",
+				"options": [
+					{
+						"value": "primary",
+						"label": "Primary"
+					},
+					{
+						"value": "secondary",
+						"label": "Secondary"
+					},
+					{
+						"value": "primary-border",
+						"label": "Primary with border"
+					},
+					{
+						"value": "secondary-border",
+						"label": "Secondary with border"
+					}
+				],
+				"default": "secondary"
+			},
+			{
+				"type": "link_list",
+				"id": "menu",
+				"label": "Navigation",
+				"info": "Displays only top-level menu items."
+			},
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 25
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 25
+			}
+		]
+	}
+{%- endschema -%}
+

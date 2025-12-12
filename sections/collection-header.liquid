@@ -1,0 +1,474 @@
+{%- comment -%}
+  ------------------------------------------------------------------------------
+  	Section: Collection template
+  ------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/collection-header.scss' -%}
+
+{%- assign show_image = section.settings.show_image -%}
+{%- assign collection_custom_image = section.settings.collection_custom_image -%}
+{%- assign show_countdown_timer = section.settings.show_countdown_timer -%}
+{%- assign show_description = section.settings.show_description -%}
+{%- assign hide_breadcrumbs = section.settings.hide_breadcrumbs -%}
+{%- assign overlay_color = section.settings.overlay_color -%}
+{%- assign banner_image_text = section.settings.banner_image_text -%}
+{%- assign timer_cell_background_color = section.settings.timer_cell_background_color -%}
+{%- assign timer_cell_color = section.settings.timer_cell_color -%}
+{%- assign container					= section.settings.container_width -%}
+{%- assign blocks						= section.blocks -%}
+
+{% if container == 'inherit' %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+
+{%- capture styles -%}
+	--banner-color: {{ banner_image_text }}; {{-  -}}
+	--overlay-color: {{ overlay_color }}; {{-  -}}
+	--timer-cell-background-color: {{- timer_cell_background_color -}}; {{-  -}}
+	--timer-cell-color: {{- timer_cell_color -}}; {{-  -}}
+	--container-width: {{ container_width }}; {{- -}}
+{%- endcapture -%}
+
+{%- if hide_breadcrumbs -%}
+  <style>
+    .breadcrumb {
+      display: none;
+    }
+  </style>
+{%- endif -%}
+
+{%- capture text_content -%}
+	<div class="collection-header__text-wrapper">
+		{% if section.settings.show_title %}
+		<h1 class="h1 collection-header__title">
+			{{- collection.title -}}
+		</h1>
+	{% endif %}
+		{%- if show_description and collection.description != blank -%}
+			<div class="rte collection-header__description">
+				{{- collection.description -}}
+			</div>
+		{%- endif -%}
+
+		{%- capture timer -%}
+			{%- assign timer_object = collection.metafields.custom.promo_countdown_timer | split: "T" -%}
+			{%- assign timer_date = timer_object | first | split: "-" -%}
+			{%- assign timer_time = timer_object | last | split: ":" -%}
+
+			{%- assign timer_year = timer_date[0] -%}
+			{%- assign timer_month = timer_date[1] -%}
+			{%- assign timer_day = timer_date[2] -%}
+			{%- assign timer_hour = timer_time[0] -%}
+
+			{%- if timer_year != blank and timer_month != blank and timer_day != blank and timer_hour != blank -%}
+				<div class="collection-header__timer js-timer" role="timer" aria-live="off">
+					<script class="js-timer-settings" type="application/json">
+						{
+							"year": {{- timer_year | json -}},
+							"month": {{- timer_month | json -}},
+							"day": {{- timer_day | json -}},
+							"hour": {{- timer_hour | json -}},
+							"timezone": {{- timer_timezone | json -}}
+						}
+					</script>
+
+					<div class="collection-header__timer-col">
+						<div class="collection-header__timer-values">
+							<p class="is-hidden collection-header__timer-value js-timer-days-hundreds">
+								0
+							</p>
+
+							<p class="collection-header__timer-value js-timer-days-dozens">
+								0
+							</p>
+
+							<p class="collection-header__timer-value js-timer-days-units">
+								0
+							</p>
+						</div>
+
+						<p class="collection-header__timer-label">
+							{{- 'sections.banner.timer_days_label' | t -}}
+						</p>
+					</div>
+
+					<div class="collection-header__timer-col">
+						<div class="collection-header__timer-values">
+							<p class="collection-header__timer-value js-timer-hours-dozens">
+								0
+							</p>
+
+							<p class="collection-header__timer-value js-timer-hours-units">
+								0
+							</p>
+						</div>
+
+						<p class="collection-header__timer-label">
+							{{- 'sections.banner.timer_hours_label' | t -}}
+						</p>
+					</div>
+
+					<div class="collection-header__timer-col">
+						<div class="collection-header__timer-values">
+							<p class="collection-header__timer-value js-timer-minutes-dozens">
+								0
+							</p>
+
+							<p class="collection-header__timer-value js-timer-minutes-units">
+								0
+							</p>
+						</div>
+
+						<p class="collection-header__timer-label">
+							{{- 'sections.banner.timer_minutes_label' | t -}}
+						</p>
+					</div>
+
+					<div class="collection-header__timer-col">
+						<div class="collection-header__timer-values">
+							<p class="collection-header__timer-value js-timer-seconds-dozens">
+								0
+							</p>
+
+							<p class="collection-header__timer-value js-timer-seconds-units">
+								0
+							</p>
+						</div>
+
+						<p class="collection-header__timer-label">
+							{{- 'sections.banner.timer_seconds_label' | t -}}
+						</p>
+					</div>
+				</div>
+			{%- endif -%}
+		{%- endcapture -%}
+
+		{%- if show_countdown_timer and timer != blank -%}
+			{{- timer -}}
+		{%- endif -%}
+	</div>
+{%- endcapture -%}
+
+{%- capture collection_image -%}
+	{%- assign image = null -%}
+
+	{%- if collection_custom_image != blank -%}
+		{%- assign image = collection_custom_image -%}
+	{%- elsif collection.image != blank -%}
+		{%- assign image = collection.image -%}
+	{%- endif -%}
+
+	{%- if image != blank -%}
+		<div class="collection-header__image-wrapper">
+			<picture>
+				<source
+					srcset="{{ image | image_url: width: 380 }} 1x, {{ image | image_url: width: 760 }} 2x"
+					media="(max-width: 380px)"
+					width="380"
+					height="360"
+				/>
+
+				<source
+					srcset="{{ image | image_url: width: 420 }} 1x, {{ image | image_url: width: 840 }} 2x"
+					media="(max-width: 420px)"
+					width="420"
+					height="360"
+				/>
+
+				<source
+					srcset="{{ image | image_url: width: 480 }} 1x, {{ image | image_url: width: 960 }} 2x"
+					media="(max-width: 480px)"
+					width="480"
+					height="360"
+				/>
+
+				<source
+					srcset="{{ image | image_url: width: 575 }} 1x, {{ image | image_url: width: 1150 }} 2x"
+					media="(max-width: 575px)"
+					width="575"
+					height="360"
+				/>
+
+				<source
+					srcset="{{ image | image_url: width: 767 }} 1x, {{ image | image_url: width: 1534 }} 2x"
+					media="(max-width: 767px)"
+					width="740"
+					height="360"
+				/>
+
+				<source
+					srcset="{{ image | image_url: width: 991 }} 1x, {{ image | image_url: width: 1982 }} 2x"
+					media="(max-width: 991px)"
+					width="960"
+					height="360"
+				/>
+
+				<source
+					srcset="{{ image | image_url: width: 1199 }} 1x, {{ image | image_url: width: 2398 }} 2x"
+					media="(max-width: 1199px)"
+					width="1199"
+					height="400"
+				/>
+
+				<source
+					srcset="{{ image | image_url: width: 1500 }} 1x, {{ image | image_url: width: 3000 }} 2x"
+					media="(max-width: 1500px)"
+					width="1500"
+					height="500"
+				/>
+
+				<source
+					srcset="{{ image | image_url: width: 1680 }} 1x, {{ image | image_url: width: 3360 }} 2x"
+					media="(max-width: 1680px)"
+					width="1680"
+					height="560"
+				/>
+
+				<img
+					class="collection-header__image"
+					src="{{- image | image_url: width: 1920 -}}"
+					srcset="{{ image | image_url: width: 1920 }} 1x, {{ image | image_url: width: 3840 }} 2x"
+					alt="{{- image.alt |escape -}}"
+					width="1920"
+					height="640"
+					fetchpriority="high"
+				/>
+			</picture>
+
+			{{- text_content -}}
+		</div>
+	{%- endif -%}
+{%- endcapture -%}
+
+{% if section.settings.show_breadcrumbs_swatches %}
+  <div class="collection-breadcrumb" style="{{ styles }}">
+    {% if collection.metafields.custom.brand %}
+      <img
+        src="{{ collection.metafields.custom.desktop_banner | image_url: width: 2000 }}"
+        alt="{{collection.handle}}"
+        class="brand-image"
+      >
+    {% else %}
+      {% liquid
+        assign collection_tree = collection.title | replace: '-', ' ' | replace: '\ ', '-' | split: '_'
+
+        assign collection_link = ''
+        assign collection_string = collection.handle
+        assign collection_links = ''
+        for collection_item in collection_tree
+          if shop.locale == 'ar'
+            assign collection_link = '/ar/collections/' | append: collection_string | replace: '\', '' | append: '@'
+          else
+            assign collection_link = '/collections/' | append: collection_string | replace: '\', '' | append: '@'
+          endif
+          assign collection_links = collection_links | prepend: collection_link
+
+          comment
+            the following 5 lines are just removing the last part of collection_string :)
+            extremely stupid i know
+          endcomment
+          assign collection_string = collection_string | split: '_'
+          assign collection_string = collection_string | remove: collection_string[-1]
+          assign collection_string = collection_string | remove: '[' | remove: ']' | remove: '"' | split: ',' | join: '_' | remove: ' '
+          assign tmp = collection_string.size | minus: 1
+          assign collection_string = collection_string | slice: 0, tmp
+        endfor
+        assign collection_links = collection_links | split: '@'
+      %}
+      <div
+        class="collection-tree"
+        {% if shop.locale == 'ar' %}
+          dir="rtl"
+        {% endif %}
+      >
+        {% if shop.locale == 'ar' %}
+          <a href="/ar" class="collection-link">الرئيسية</a>
+        {% else %}
+          <a href="/" class="collection-link">HOME</a>
+        {% endif %}
+
+        {% for collection_item in collection_tree %}
+          {% if forloop.index == collection_tree.size %}
+            /
+            <span class="collection-link">{{ collection_item }}</span>
+          {% else %}
+            /
+            <a href="{{ collection_links[forloop.index0] }}" class="collection-link">{{ collection_item }}</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% if collection.metafields.custom.desktop_banner %}
+        <img
+          src="{{ collection.metafields.custom.desktop_banner | image_url: width: 2000 }}"
+          alt="{{collection.handle}}"
+          class="brand-image"
+        >
+      {% endif %}
+    {% endif %}
+  </div>
+  <div class="breadcrumbs-section">
+    {% assign collection_parts = collection.handle | split: '_' %}
+    {% assign collection_level = collection_parts.size %}
+
+    {%- comment -%}
+      If we're at level 3, use the first two parts as the parent_collection.
+      Otherwise, use the full handle (original behavior).
+    {%- endcomment -%}
+    {% if collection_level == 3 %}
+      {% assign parent_collection = collection_parts[0] | append: '_' | append: collection_parts[1] %}
+    {% else %}
+      {% assign parent_collection = collection.handle %}
+    {% endif %}
+
+    <div class="breadcrumbs-carousel">
+      {% for col in collections %}
+        {% if col.all_products_count <= 0 %}
+          {% continue %}
+        {% endif %}
+
+        {% assign parent_prefix = col.handle | slice: 0, parent_collection.size %}
+        {% assign next_char = col.handle | slice: parent_collection.size, 1 %}
+        {% assign remainder = col.handle | remove: parent_collection | remove_first: '_' %}
+        {% assign underscore_count = remainder | split: '_' | size %}
+
+        {% if parent_prefix == parent_collection and next_char == '_' and underscore_count == 1 %}
+          <div class="breadcrumb-item {% if col.handle == collection.handle %} active {% endif %}">
+            <a href="{{ col.url }}">{{ col.title | split: '_' | last | replace: '-', ' ' | upcase }}</a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+<section
+  class="collection-header js-collection-header-section"
+  id="{{- section.id -}}"
+  {%- if show_image and collection_image != blank -%}
+    style="{{ styles }}"
+  {%- endif -%}
+>
+  {%- if show_image and collection_image != blank -%}
+    {{- collection_image -}}
+  {%- else -%}
+    {{- text_content -}}
+  {%- endif -%}
+</section>
+
+{%- if show_countdown_timer and timer != blank -%}
+  {%- render 'adastra' with '/src/scripts/section-collection-header.js' -%}
+{%- endif -%}
+
+{%- schema -%}
+{
+  "name": "Collection header",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show collection title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show collection image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show collection description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs_swatches",
+      "label": "Show category swatches",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_countdown_timer",
+      "label": "Show countdown timer",
+      "default": false,
+      "info": "Collection should have metafield `custom.promo_countdown_timer`. [Learn more](https://ultra.arvest.digital/collections/collection-header)"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_breadcrumbs",
+      "label": "Hide breadcrumbs",
+      "default": false,
+      "info": "Turning off the breadcrumbs can make the collection image more appealing."
+    },
+    {
+      "type": "image_picker",
+      "id": "collection_custom_image",
+      "label": "Collection custom image",
+      "info": "You can include an alternate image using metafields connected by a dynamic source. 3840 x 1280px recommended"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_background",
+      "id": "overlay_color",
+      "label": "Banner overlay",
+      "default": "rgba(0,0,0,0.3)"
+    },
+    {
+      "type": "color",
+      "id": "banner_image_text",
+      "label": "Banner text",
+      "default": "#fff",
+      "info": "The color of the heading text when it is inside the image."
+    },
+    {
+      "type": "color",
+      "id": "timer_cell_background_color",
+      "label": "Timer cell background color",
+      "default": "#4D71F9"
+    },
+    {
+      "type": "color",
+      "id": "timer_cell_color",
+      "label": "Timer cell color",
+      "default": "#000"
+    },
+    {
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "If you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+  ]
+}
+{%- endschema -%}

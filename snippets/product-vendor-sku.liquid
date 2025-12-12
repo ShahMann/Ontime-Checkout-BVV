@@ -1,0 +1,73 @@
+{% comment %}
+  ------------------------------------------------------------------------------
+    Snippet: Product Vendor
+  ------------------------------------------------------------------------------
+{% endcomment %}
+{% assign preset_vendor = 'Product vendor' %}
+{% assign preset_sku = '000000' %}
+{% assign vendor = product.vendor %}
+{% assign sku = product.selected_or_first_available_variant.sku | strip %}
+{% assign show_sku = block.settings.show_sku %}
+{% assign show_vendor = block.settings.show_vendor %}
+{% assign make_vendor_link = block.settings.make_vendor_link %}
+
+{% if is_preset %}
+  {% assign vendor = preset_vendor %}
+  {% assign sku = preset_sku %}
+{% endif %}
+
+{% assign sku_text = block.settings.sku_text | replace: '{SKU}', sku | replace: '{sku}', sku %}
+
+{% if show_sku or show_vendor %}
+  {% if product.vendor != blank or show_sku or is_preset %}
+    {%- capture styles -%}
+			--offset-top-desktop: {{ block.settings.offset_top_desktop }}px; {{-  -}}
+			--offset-bottom-desktop: {{ block.settings.offset_bottom_desktop }}px; {{-  -}}
+			--offset-top-mobile: {{ block.settings.offset_top_mobile }}px; {{-  -}}
+			--offset-bottom-mobile: {{ block.settings.offset_bottom_mobile }}px;
+		{%- endcapture -%}
+	<div class="product-vendor-sku-badge_container">
+		<div class="product-vendor" style="{{ styles }}">
+		  {%- if show_vendor and make_vendor_link -%}
+			<a
+			  href="{{ vendor | url_for_vendor }}"
+			  class="product-vendor__link product-vendor__item focus-visible-outline"
+			>
+			  {{- vendor -}}
+			</a>
+		  {%- elsif show_vendor and make_vendor_link == false -%}
+			<span class="product-vendor__item">{{- vendor -}}</span>
+		  {%- endif -%}
+	
+		  {%- if show_sku -%}
+			<span
+			  class="product-sku js-product-sku"
+			  data-sku-text="{{- block.settings.sku_text -}}"
+			>
+			  {% if sku != blank %}
+				{{- sku_text -}}
+			  {% endif %}
+			</span>
+		  {%- endif -%}
+		</div>
+		<div class="badges-container">
+		  {% for collection in product.collections %}
+			{% if collection.metafields.custom.promotional_tag %}
+			{% assign promotional_tag_color = 'black' %}
+			{% if collection.metafields.custom.promotional_tag_color %}
+				{% assign promotional_tag_color = collection.metafields.custom.promotional_tag_color %}
+			{% endif %}
+			  <a
+				href="{{collection.url}}"
+				id="badge-{{ section_id }}-{{ product.id }}"
+				class="badge promotional-tag-badge"
+				style="background-color: {{ promotional_tag_color }};"
+			  >
+				{{ collection.metafields.custom.promotional_tag }}
+			  </a>
+			{% endif %}
+		  {% endfor %}
+		</div>
+	</div>
+  {% endif %}
+{% endif %}

@@ -1,0 +1,151 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Product countdown timer
+	- product: Product object (required, object)
+	- text: heading (optional, string)
+	- icon: image left of heading (optional, image)
+	- text_color: text color (optional, color)
+	- timer_text_color: timer text color (optional, color)
+	- timer_background_color: timer background color (optional, color),
+	- offset_top_desktop: desktop padding top,
+	- offset_bottom_desktop: desktop padding bottom,
+	- offset_top_mobile: mobile padding top,
+	- offset_bottom_mobile: mobile padding bottom
+
+	{%- render 'product-countdown-timer',
+		product: product,
+		text: text,
+		icon: icon,
+		text_color: text_color,
+		timer_text_color: timer_text_color,
+		timer_background_color: timer_background_color,
+		offset_top_desktop: offset_top_desktop,
+		offset_bottom_desktop: offset_bottom_desktop,
+		offset_top_mobile: offset_top_mobile,
+		offset_bottom_mobile: offset_bottom_mobile
+	-%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign promo_deadline 			= product.metafields.custom.promo_timer_date | date: '%s' -%}
+{%- assign promo_deadline_timestamp = promo_deadline | date: '%s' -%}
+{%- assign today_date 				= 'now' | date: '%s' -%}
+
+{%- capture style -%}
+	--text-color: {{ text_color -}}; {{-  -}}
+	--timer-text-color: {{ timer_text_color -}}; {{-  -}}
+	--timer-background-color: {{ timer_background_color -}}; {{-  -}}
+	--offset-top-desktop: {{ offset_top_desktop }}px; {{-  -}}
+	--offset-bottom-desktop: {{ offset_bottom_desktop }}px; {{-  -}}
+	--offset-top-mobile: {{ offset_top_mobile }}px; {{-  -}}
+	--offset-bottom-mobile: {{ offset_bottom_mobile }}px;
+{%- endcapture -%}
+
+{%- if promo_deadline_timestamp != blank and promo_deadline_timestamp > today_date -%}
+	<div class="product-countdown-timer js-product-countdown-timer" style="{{- style -}}">
+		{%- render 'adastra' with '/src/styles/product-countdown-timer.scss' -%}
+
+		{%- if text != blank -%}
+			<div class="product-countdown-timer__header">
+				{%- if icon != blank -%}
+					<img
+						srcset="{{ icon | image_url: width: 24 }} 1x, {{ icon | image_url: width: 48 }} 2x"
+						src="{{ icon | image_url: width: 24 }}"
+						alt="{{ icon.alt }}"
+						class="product-countdown-timer__icon"
+						height="24"
+						width="24"
+					/>
+				{%- endif -%}
+
+				<h3 class="product-countdown-timer__heading">
+					{{- text -}}
+				</h3>
+			</div>
+		{%- endif -%}
+
+		<div class="product-countdown-timer__timer js-timer" role="timer" aria-live="off">
+			<script class="js-timer-settings" type="application/json">
+				{
+					"year": {{ promo_deadline | date: "%Y" | json -}},
+					"month": {{-promo_deadline | date: "%m" | minus: 1 | json -}},
+					"day": {{ promo_deadline | date: "%d" | json -}},
+					"hour": {{ promo_deadline | date: "%H" | json -}},
+					"minutes": {{ promo_deadline | date: "%M" | json -}},
+					"timezone": "-4"
+				}
+			</script>
+
+			<div class="product-countdown-timer__timer-row">
+				<div class="product-countdown-timer__timer-col">
+					<div class="product-countdown-timer__timer-values h4">
+						<p class="is-hidden product-countdown-timer__timer-value js-timer-days-hundreds">
+							0
+						</p>
+
+						<p class="product-countdown-timer__timer-value js-timer-days-dozens">
+							0
+						</p>
+
+						<p class="product-countdown-timer__timer-value js-timer-days-units">
+							0
+						</p>
+					</div>
+
+					<p class="product-countdown-timer__timer-label">
+						{{- 'products.product.timer.timer_days_label' | t -}}
+					</p>
+				</div>
+
+				<div class="product-countdown-timer__timer-col">
+					<div class="product-countdown-timer__timer-values h4">
+						<p class="product-countdown-timer__timer-value js-timer-hours-dozens">
+							0
+						</p>
+
+						<p class="product-countdown-timer__timer-value js-timer-hours-units">
+							0
+						</p>
+					</div>
+
+					<p class="product-countdown-timer__timer-label">
+						{{- 'products.product.timer.timer_hours_label' | t -}}
+					</p>
+				</div>
+
+				<div class="product-countdown-timer__timer-col">
+					<div class="product-countdown-timer__timer-values h4">
+						<p class="product-countdown-timer__timer-value js-timer-minutes-dozens">
+							0
+						</p>
+
+						<p class="product-countdown-timer__timer-value js-timer-minutes-units">
+							0
+						</p>
+					</div>
+
+					<p class="product-countdown-timer__timer-label">
+						{{- 'products.product.timer.timer_minutes_label' | t -}}
+					</p>
+				</div>
+
+				<div class="product-countdown-timer__timer-col">
+					<div class="product-countdown-timer__timer-values h4">
+						<p class="product-countdown-timer__timer-value js-timer-seconds-dozens">
+							0
+						</p>
+
+						<p class="product-countdown-timer__timer-value js-timer-seconds-units">
+							0
+						</p>
+					</div>
+
+					<p class="product-countdown-timer__timer-label">
+						{{- 'products.product.timer.timer_seconds_label' | t -}}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+{%- endif -%}
+

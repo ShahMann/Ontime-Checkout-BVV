@@ -1,0 +1,113 @@
+{% comment %}
+{% if template == 'product' %}
+  <script id="schema-product" type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "image": {{ product.featured_image | img_url: 'master' | prepend: 'https:' | json }},
+      "description": {{ product.description | strip_html | truncate: 300 | json }},
+      "brand": {
+        "@type": "Brand",
+        "name": {{ product.vendor | json }}
+      },
+      "sku": {{ product.selected_or_first_available_variant.sku | json }},
+      "offers": {
+        "@type": "Offer",
+        "url": {{ shop.url | append: product.url | json }},
+        "priceCurrency": {{ shop.currency | json }},
+        "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
+        "availability": "{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+        "itemCondition": "New"
+      }
+    }
+  </script>
+{% endif %}
+{% endcomment %}
+<script id="schema-organization" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    "url": {{ shop.url | json }},
+    "logo": "https://ontime.com/cdn/shop/files/logo-02.png?v=1754904413&width=400",
+    "sameAs": [
+      {% assign socials = '' %}
+      {%- if settings.social_facebook_link != blank -%}{%- assign socials = socials | append: settings.social_facebook_link | append: ',' -%}{%- endif -%}
+      {%- if settings.social_instagram_link != blank -%}{%- assign socials = socials | append: settings.social_instagram_link | append: ',' -%}{%- endif -%}
+      {%- if settings.social_youtube_link != blank -%}{%- assign socials = socials | append: settings.social_youtube_link | append: ',' -%}{%- endif -%}
+      {%- if settings.social_twitter_link != blank -%}{%- assign socials = socials | append: settings.social_twitter_link | append: ',' -%}{%- endif -%}
+      {%- if settings.social_pinterest_link != blank -%}{%- assign socials = socials | append: settings.social_pinterest_link | append: ',' -%}{%- endif -%}
+      {%- if settings.social_tiktok_link != blank -%}{%- assign socials = socials | append: settings.social_tiktok_link | append: ',' -%}{%- endif -%}
+      {%- if settings.social_linkedin_link != blank -%}{%- assign socials = socials | append: settings.social_linkedin_link | append: ',' -%}{%- endif -%}
+      {% assign socials = socials | split: ',' | compact %}
+      {% for social in socials %}
+        {{- social| strip | json -}}{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ],
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "telephone": {{ shop.phone | default: "+9651820012" | json }},
+      "contactType": "customer service",
+      "areaServed": {{ shop.address.country_code | default: "KW" | json }},
+      "availableLanguage": ["en", "ar"]
+    }],
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": {{ shop.address.address1 | default: "3228 Safatt" | json }},
+      "addressLocality": {{ shop.address.city | default: "Kuwait City" | json }},
+      "postalCode": {{ shop.address.zip | default: "13033" | json }},
+      "addressCountry": {{ shop.address.country_code | default: "KW" | json }}
+    }
+  }
+</script>
+{% if template == 'collection' %}
+  <script id="schema-collection" type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement":
+      [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": {{- 'general.breadcrumbs.home' | t | json -}},
+          "item": "{{ shop.url }}"
+        },
+        {%- liquid
+          assign collection_tree = collection.title | replace: '-', ' ' | replace: '\ ', '-' | split: '_'
+          assign collection_link = ''
+          assign collection_string = collection.handle
+          assign collection_links = ''
+          for collection_item in collection_tree
+            if shop.locale == 'ar'
+              assign collection_link = '/ar/collections/' | append: collection_string | replace: '\', '' | append: '@'
+            else
+              assign collection_link = '/collections/' | append: collection_string | replace: '\', '' | append: '@'
+            endif
+            assign collection_links = collection_links | prepend: collection_link
+
+            comment
+              the following 5 lines are just removing the last part of collection_string :)
+              extremely stupid i know
+            endcomment
+            assign collection_string = collection_string | split: '_'
+            assign collection_string = collection_string | remove: collection_string[-1]
+            assign collection_string = collection_string | remove: '[' | remove: ']' | remove: '"' | split: ',' | join: '_' | remove: ' '
+            assign tmp = collection_string.size | minus: 1
+            assign collection_string = collection_string | slice: 0, tmp
+          endfor
+          assign collection_links = collection_links | split: '@'
+        -%}
+        {% for collection_item in collection_tree %}
+          {
+            "@type": "ListItem",
+            "position": {{ forloop.index | plus: 1 }},
+            "name": "{{ collection_item }}",
+            "item": "{{ shop.url | append : collection_links[forloop.index0] }}"
+          }{%- unless forloop.last -%}{{- ',' -}}{%- endunless -%}
+        {% endfor %}
+      ]
+    }
+  </script>
+{% endif %}

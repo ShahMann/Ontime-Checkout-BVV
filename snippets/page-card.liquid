@@ -1,0 +1,36 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Page card
+	- page: Page object (required)
+
+	Usage:
+
+	{%- render 'page-card', page: page -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- render 'adastra' with '/src/styles/page-card.scss' -%}
+
+<div class="page-card">
+	<div class="page-card__container">
+		<div class="page-card__title h4">
+			{{- page.title -}}
+		</div>
+
+		{%- if page.content != blank -%}
+			<p class="page-card__description">
+				{{- page.content | strip_html -}}
+			</p>
+		{%- endif -%}
+
+		<a
+			class="page-card__button button-link-chevron"
+			href="{{- page.url -}}"
+			aria-label="{{- 'blogs.article.learn_more_link_aria' | t: title: page.title | escape -}}"
+		>
+			{{- 'blogs.article.learn_more' | t -}}
+
+			{% render 'icons', icon: 'arrow-right' %}
+		</a>
+	</div>
+</div>

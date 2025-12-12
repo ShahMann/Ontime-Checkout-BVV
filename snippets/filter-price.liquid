@@ -1,0 +1,109 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Filter price
+	- filter: filter object (required)
+
+	Usage:
+
+	{%- render 'filter-price', filter: filter -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- render 'adastra' with '/src/styles/filter-price.scss' -%}
+
+{%- assign filter_max = filter.range_max | divided_by: 100 -%}
+{%- assign thumb_size = 16 -%}
+{%- assign thumb_size_moz = 14 -%}
+
+{%- capture filter_min_value -%}
+	{%- if filter.min_value.value -%}
+		value="{{ filter.min_value.value | divided_by: 100 }}"
+	{%- else -%}
+		value="0"
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- capture filter_max_value -%}
+	{%- if filter.max_value.value -%}
+		value="{{ filter.max_value.value | divided_by: 100 }}"
+	{%- else -%}
+		value="{{- filter_max -}}"
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- capture filter_price_styles -%}
+	--thumb-size: {{- thumb_size -}}px;
+	--thumb-size-moz: {{- thumb_size_moz -}}px;
+{%- endcapture -%}
+
+<div class="filter-price js-filter-price" style="{{ filter_price_styles | strip_newlines }}">
+	<div class="filter-price__inputs">
+		<div class="filter-price__input-wrapper filter-price__input-wrapper--min">
+			<label class="visually-hidden" for="FilterPriceInputMin--{{- section.id -}}{% if is_top_bar %}-bar{% endif %}">
+				{{- 'general.filters.filter_price_from' | t -}}
+			</label>
+
+			<input
+				id="FilterPriceInputMin--{{- section.id -}}{% if is_top_bar %}-bar{% endif %}"
+				class="filter-price__input filter-price__input--min js-price-input js-price-input-min"
+				type="number"
+				name="{{- filter.min_value.param_name -}}"
+				min="0"
+				max="{{- filter_max -}}"
+				placeholder="{{- 'general.filters.price_range_placeholder' | t -}}"
+				data-type="min"
+				{{ filter_min_value }}
+			>
+
+			<span class="filter-price__currency">
+				{{ 0 | money |  split: " " |  last }}
+			</span>
+		</div>
+
+		<div class="filter-price__input-wrapper">
+			<label class="visually-hidden" for="FilterPriceInputMax--{{- section.id -}}{% if is_top_bar %}-bar{% endif %}">
+				{{- 'general.filters.filter_price_to' | t -}}
+			</label>
+
+			<input
+				id="FilterPriceInputMax--{{- section.id -}}{% if is_top_bar %}-bar{% endif %}"
+				class="filter-price__input filter-price__input--max js-price-input js-price-input-max"
+				type="number"
+				name="{{- filter.max_value.param_name -}}"
+				min="0"
+				max="{{- filter_max -}}"
+				placeholder="{{- 'general.filters.price_range_placeholder' | t -}}"
+				{{ filter_max_value }}
+			>
+
+			<span class="filter-price__currency">
+				{{ 0 | money |  split: " " |  last }}
+			</span>
+		</div>
+	</div>
+
+	<div class="filter-price__range-slider">
+		<div class="filter-price__range-inputs js-range-inputs" data-thumb-offset="{{- thumb_size | divided_by: 2 -}}">
+			<input
+				class="filter-price__range-input filter-price__range-input--min js-price-range js-price-range-min"
+				type="range"
+				min="0"
+				data-type="min"
+				max="{{- filter_max -}}"
+				tabindex="-1"
+				aria-label="{{- 'general.filters.filter_price_from' | t | escape -}}"
+				{{ filter_min_value }}
+			>
+
+			<input
+				class="filter-price__range-input filter-price__range-input--max js-price-range js-price-range-max"
+				type="range"
+				min="0"
+				max="{{- filter_max -}}"
+				tabindex="-1"
+				aria-label="{{- 'general.filters.filter_price_to' | t | escape -}}"
+				{{ filter_max_value }}
+			>
+		</div>
+	</div>
+</div>

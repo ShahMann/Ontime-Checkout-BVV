@@ -1,0 +1,141 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: social links
+	- icon_class: Custom class(es) (optional, string)
+
+	{%- render 'social-links' -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- assign social_twitter_link 		= settings.social_twitter_link -%}
+{%- assign social_facebook_link 	= settings.social_facebook_link -%}
+{%- assign social_pinterest_link 	= settings.social_pinterest_link -%}
+{%- assign social_instagram_link 	= settings.social_instagram_link -%}
+{%- assign social_tumblr_link 		= settings.social_tumblr_link -%}
+{%- assign social_youtube_link 		= settings.social_youtube_link -%}
+{%- assign social_tiktok_link 		= settings.social_tiktok_link -%}
+{%- assign social_linkedin_link 	= settings.social_linkedin_link -%}
+{%- assign icon_class 				= icon_class | default: "button-social" -%}
+
+{%- if social_twitter_link != blank or social_facebook_link != blank or social_pinterest_link != blank
+	or social_instagram_link != blank or social_tumblr_link != blank or social_youtube_link != blank
+	or social_tiktok_link != blank or social_linkedin_link != blank
+-%}
+	{%- render 'adastra' with '/src/styles/social-links.scss' -%}
+
+	<div class="social-links">
+		<ul class="social-links__list">
+			{%- if social_facebook_link != blank -%}
+				<li class="social-links__item">
+					<a
+						class="{{ icon_class }}"
+						href="{{- social_facebook_link -}}"
+						target="_blank"
+						rel="nofollow"
+						aria-label="{{- 'general.social.social_link_aria_label' | t: social: 'facebook' | escape -}}"
+					>
+						{%- render 'icons-social', icon: "facebook" -%}
+					</a>
+				</li>
+			{%- endif -%}
+
+			{%- if social_instagram_link != blank -%}
+				<li class="social-links__item">
+					<a
+						class="{{ icon_class }}"
+						href="{{- social_instagram_link -}}"
+						target="_blank"
+						rel="nofollow"
+						aria-label="{{- 'general.social.social_link_aria_label' | t: social: 'instagram' | escape -}}"
+					>
+						{%- render 'icons-social', icon: "instagram" -%}
+					</a>
+				</li>
+			{%- endif -%}
+
+			{%- if social_twitter_link != blank -%}
+				<li class="social-links__item">
+					<a
+						class="{{ icon_class }}"
+						href="{{- social_twitter_link -}}"
+						target="_blank"
+						rel="nofollow"
+						aria-label="{{- 'general.social.social_link_aria_label' | t: social: 'X (Twitter)' | escape -}}"
+					>
+						{%- render 'icons-social', icon: "x-twitter" -%}
+					</a>
+				</li>
+			{%- endif -%}
+
+			{%- if social_tiktok_link != blank -%}
+				<li class="social-links__item">
+					<a
+						class="{{ icon_class }}"
+						href="{{- social_tiktok_link -}}"
+						target="_blank"
+						rel="nofollow"
+						aria-label="{{- 'general.social.social_link_aria_label' | t: social: 'tiktok' | escape -}}"
+					>
+						{%- render 'icons-social', icon: "tiktok" -%}
+					</a>
+				</li>
+			{%- endif -%}
+
+			{%- if social_youtube_link != blank -%}
+				<li class="social-links__item">
+					<a
+						class="{{ icon_class }}"
+						href="{{- social_youtube_link -}}"
+						target="_blank"
+						rel="nofollow"
+						aria-label="{{- 'general.social.social_link_aria_label' | t: social: 'youtube' | escape -}}"
+					>
+						{%- render 'icons-social', icon: "youtube" -%}
+					</a>
+				</li>
+			{%- endif -%}
+
+			{%- if social_pinterest_link != blank -%}
+				<li class="social-links__item">
+					<a
+						class="{{ icon_class }}"
+						href="{{- social_pinterest_link -}}"
+						target="_blank"
+						rel="nofollow"
+						aria-label="{{- 'general.social.social_link_aria_label' | t: social: 'pinterest' | escape -}}"
+					>
+						{%- render 'icons-social', icon: "pinterest" -%}
+					</a>
+				</li>
+			{%- endif -%}
+
+			{%- if social_tumblr_link != blank -%}
+				<li class="social-links__item">
+					<a
+						class="{{ icon_class }}"
+						href="{{- social_tumblr_link -}}"
+						target="_blank"
+						rel="nofollow"
+						aria-label="{{- 'general.social.social_link_aria_label' | t: social: 'tumblr' | escape -}}"
+					>
+						{%- render 'icons-social', icon: "tumblr" -%}
+					</a>
+				</li>
+			{%- endif -%}
+
+			{% if social_linkedin_link != blank %}
+				<li class="social-links__item">
+					<a
+						class="{{ icon_class }}"
+						href="{{- social_linkedin_link -}}"
+						target="_blank"
+						rel="nofollow"
+						aria-label="{{- 'general.social.social_link_aria_label' | t: social: 'linkedin' | escape -}}"
+					>
+						{%- render 'icons-social', icon: "linkedin" -%}
+					</a>
+				</li>
+			{% endif %}
+		</ul>
+	</div>
+{%- endif -%}

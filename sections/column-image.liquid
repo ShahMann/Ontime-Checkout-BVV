@@ -1,0 +1,328 @@
+{%- assign title 		= section.settings.title -%}
+{%- assign aspect_ratio = section.settings.aspect_ratio -%}
+{%- assign container 	= section.settings.container_width -%}
+{%- assign blocks  		= section.blocks -%}
+{%- assign blocks_count = 0 -%}
+
+{% if container == 'inherit' %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+{% if container_width != '100%' %}
+	{% assign section_class = 'column-image--limited-width' %}
+{% endif %}
+
+{%- if blocks.size > 0 -%}
+	{%- for block in blocks -%}
+		{%- assign image = block.settings.image -%}
+
+		{%- if image != blank -%}
+			{%- assign blocks_count = blocks_count | plus: 1 -%}
+		{%- endif -%}
+	{%- endfor -%}
+
+	{%- capture images -%}
+		{%- for block in blocks -%}
+			{%- assign image = block.settings.image -%}
+
+			{%- if image != blank -%}
+				{%- capture img_focal -%}
+					--img-desktop-pos: {{ image.presentation.focal_point }};
+				{%- endcapture -%}
+
+				{%- if blocks_count == 3 -%}
+					{%- assign x1_1920 = 627 -%}
+					{%- assign x1_1600 = 531 -%}
+					{%- assign x1_991  = 328 -%}
+					{%- assign x1_767  = 253 -%}
+
+				{%- else -%}
+					{%- assign x1_1920 = 942 -%}
+					{%- assign x1_1600 = 798 -%}
+					{%- assign x1_991  = 494 -%}
+					{%- assign x1_767  = 382 -%}
+				{%- endif -%}
+
+				{%- assign x1_575  = 575 -%}
+				{%- assign x1_380  = 380 -%}
+
+				{%- assign x2_1920 = x1_1920 | times: 2 -%}
+				{%- assign x2_1600 = x1_1600 | times: 2 -%}
+				{%- assign x2_991  = x1_991 | times: 2 -%}
+				{%- assign x2_767  = x1_767 | times: 2 -%}
+				{%- assign x2_575  = x1_575 | times: 2 -%}
+				{%- assign x2_380  = x1_380 | times: 2 -%}
+
+				{%- capture default_image -%}
+					<picture>
+						<source
+							srcset="{{- image | image_url: width: x1_380 }} 1x, {{ image | image_url: width: x2_380 }} 2x"
+							media="(max-width: 380px)"
+						/>
+
+						<source
+							srcset="{{- image | image_url: width: x1_575 }} 1x, {{ image | image_url: width: x2_575 }} 2x"
+							media="(max-width: 575px)"
+						/>
+
+						<source
+							srcset="{{- image | image_url: width: x1_767 }} 1x, {{ image | image_url: width: x2_767 }} 2x"
+							media="(max-width: 767px)"
+						/>
+
+						<source
+							srcset="{{- image | image_url: width: x1_991 }} 1x, {{ image | image_url: width: x2_991 }} 2x"
+							media="(max-width: 991px)"
+						/>
+
+						<source
+							srcset="{{- image | image_url: width: x1_1600 }} 1x, {{ image | image_url: width: x2_1600 }} 2x"
+							media="(max-width: 1600px)"
+						/>
+
+						<img
+							srcset="{{- image | image_url: width: x1_1920 }} 1x, {{ image | image_url: width: x2_1920 }} 2x"
+							src="{{- image | image_url: width: x1_1920 -}}"
+							alt="{{- image.alt -}}"
+							class="column-image__item"
+							width="{{- x1_1920 -}}"
+							height="{{- x1_1920 -}}"
+							style="{{ img_focal }}"
+						/>
+					</picture>
+				{%- endcapture -%}
+
+				<div class="column-image__col">
+					<a href="{{ block.settings.image_link }}">
+						<div class="column-image__wrapper column-image__wrapper--{{ aspect_ratio }}">
+							<picture class="lazy">
+								<source
+									data-srcset="{{- image | image_url: width: x1_380 }} 1x, {{ image | image_url: width: x2_380 }} 2x"
+									srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+									media="(max-width: 380px)"
+								/>
+	
+								<source
+									data-srcset="{{- image | image_url: width: x1_575 }} 1x, {{ image | image_url: width: x2_575 }} 2x"
+									srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+									media="(max-width: 575px)"
+								/>
+	
+								<source
+									data-srcset="{{- image | image_url: width: x1_767 }} 1x, {{ image | image_url: width: x2_767 }} 2x"
+									srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+									media="(max-width: 767px)"
+								/>
+	
+								<source
+									data-srcset="{{- image | image_url: width: x1_991 }} 1x, {{ image | image_url: width: x2_991 }} 2x"
+									srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+									media="(max-width: 991px)"
+								/>
+	
+								<source
+									data-srcset="{{- image | image_url: width: x1_1600 }} 1x, {{ image | image_url: width: x2_1600 }} 2x"
+									srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+									media="(max-width: 1600px)"
+								/>
+	
+								<img
+									data-srcset="{{- image | image_url: width: x1_1920 }} 1x, {{ image | image_url: width: x2_1920 }} 2x"
+									srcset="{{- image | image_url: width: 10 }} 1x, {{ image | image_url: width: 20 }} 2x"
+									data-src="{{- image | image_url: width: x1_1920 -}}"
+									src="{{- image | image_url: width: 10 -}}"
+									alt="{{- image.alt -}}"
+									class="column-image__item"
+									width="{{- x1_1920 -}}"
+									height="{{- x1_1920 -}}"
+									style="{{ img_focal }}"
+								/>
+							</picture>
+	
+							<noscript>
+								{{- default_image -}}
+							</noscript>
+						</div>
+					</a>
+				</div>
+			{% else %}
+				<div class="column-image__col">
+					<div class="column-image__wrapper column-image__wrapper--{{ aspect_ratio }}">
+						{{- "image" | placeholder_svg_tag: "column-image__item column-image__item--placeholder" -}}
+					</div>
+				</div>
+			{%- endif -%}
+		{%- endfor -%}
+	{%- endcapture -%}
+
+	{%- if images != blank -%}
+		{%- render 'adastra' with '/src/styles/column-image.scss' -%}
+
+		{%- style -%}
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_mobile -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+			}
+
+			@media screen and (min-width: 768px) {
+				#shopify-section-{{- section.id -}} {
+					padding-top: {{- section.settings.offset_top_desktop -}}px;
+					padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+				}
+			}
+		{%- endstyle -%}
+
+		<section class="column-image {{ section_class }}" style="--container-width: {{ container_width }};">
+			{% if title != blank %}
+				<h2 class="column-image__title">{{ title }}</h2>
+
+			{% endif %}
+			<div class="column-image__container">
+				{{- images -}}
+			</div>
+		</section>
+	{%- endif -%}
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Column image",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+		"type": "text",
+		"id": "title",
+		"label": "Heading"
+		},
+		{
+			"type": "select",
+			"id": "aspect_ratio",
+			"label": "Image aspect ratio",
+			"options": [
+				{
+					"value": "square",
+					"label": "Square"
+				},
+				{
+					"value": "landscape",
+					"label": "Landscape"
+				},
+				{
+					"value": "portrait",
+					"label": "Portrait"
+				}
+			],
+			"default": "square"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+			},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"max_blocks": 4,
+	"blocks": [
+		{
+			"type": "column_image",
+			"name": "Image block",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image",
+					"info": "1884 x 1884px for square, 1884 x 2368px for portrait, 1920 x 1060px for landscape recommended"
+				},
+				{
+					"type": "url",
+					"id": "image_link",
+					"label": "Image Link",
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Column image",
+			"blocks": [
+				{
+					"type": "column_image"
+				},
+				{
+					"type": "column_image"
+				},
+				{
+					"type": "column_image"
+				}
+			]
+		}
+	]
+}
+{%- endschema -%}

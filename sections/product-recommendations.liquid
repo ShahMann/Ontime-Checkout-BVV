@@ -1,0 +1,360 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Product recommendations
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign heading    				= section.settings.heading -%}
+{%- assign tab_label    			= section.settings.tab_label -%}
+{%- assign limit      				= section.settings.products_to_show -%}
+{%- assign full_width 				= section.settings.full_width -%}
+{%- assign show_recently_viewed 	= section.settings.show_recently_viewed -%}
+{%- assign recently_viewed_label 	= section.settings.recently_viewed_label -%}
+
+{%- assign container = section.settings.container_width -%}
+
+{% if container == 'inherit' %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+{%- assign collection_handle = section.settings.collection -%}
+{%- assign collection = collections[collection_handle] -%}
+
+{%- assign product_list = collection.products -%}
+
+{%- assign enable_shopify_recommendations = section.settings.enable_shopify_recommendations -%}
+
+{%- liquid
+	assign recommendations_row_centered = false
+	assign recommendations_available = false
+	assign recommendations_scroll_available = false
+	assign slider_enabled = false
+	assign scroll_enabled = false
+
+	if product_list == blank and limit < 3 and enable_shopify_recommendations == false
+		assign recommendations_row_centered = true
+	endif
+
+	if product_list == blank and limit < 4 and enable_shopify_recommendations == false
+		assign recommendations_row_centered = true
+	endif
+
+	if enable_shopify_recommendations and limit < 3
+		assign recommendations_row_centered = true
+	endif
+
+	if enable_shopify_recommendations and limit < 4
+		assign recommendations_row_centered = true
+	endif
+
+	if product_list.count < 3 and enable_shopify_recommendations == false
+		assign recommendations_row_centered = true
+	endif
+
+	if product_list.count < 4 and enable_shopify_recommendations == false
+		assign recommendations_row_centered = true
+	endif
+
+	if product_list.count > 3 and limit < 4
+		assign recommendations_row_centered = true
+	endif
+
+	if enable_shopify_recommendations
+		assign recommendations_available = true
+		assign recommendations_scroll_available = true
+	endif
+
+	if recommendations_available or product_list.count > 2 or product_list == blank
+		assign slider_enabled = true
+	endif
+
+	if recommendations_scroll_available or product_list.count > 3 or product_list == blank
+		assign scroll_enabled = true
+	endif
+-%}
+
+{%- capture product_recommendations_row_wrapper_classes -%}
+	product-recommendations__row-wrapper swiper js-product-recommendations-row-wrapper {{-  -}}
+	{% if slider_enabled %} js-featured-content-slider {{-  -}} {%- endif -%}
+	{% if scroll_enabled %} js-featured-content-scrollable-wrapper {%- endif -%}
+{%- endcapture -%}
+
+{%- capture product_recommendations_row_classes -%}
+	product-recommendations__row swiper-wrapper {{-  -}}
+	{% if recommendations_row_centered %} product-recommendations__row--centered {%- endif -%}
+{%- endcapture -%}
+
+{%- capture styles -%}
+	--container-width: {{- container_width -}};
+	--product-recommendations-desktop-offset-top: {{- section.settings.offset_top_desktop -}}px;
+	--product-recommendations-desktop-offset-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+	--product-recommendations-mobile-offset-top: {{- section.settings.offset_top_mobile -}}px;
+	--product-recommendations-mobile-offset-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+{%- endcapture -%}
+
+{%- render 'adastra' with '/src/styles/product-recommendations.scss' -%}
+
+<section
+	class="product-recommendations is-loading js-product-recommendations"
+	id="{{- section.id -}}"
+	style="{{- styles -}}"
+	data-product-id="{{- product.id -}}"
+	data-limit="{{- limit -}}"
+	{% if enable_shopify_recommendations %}
+		data-product-recommendations
+	{% endif %}
+>
+	<div class="product-recommendations__container">
+		{%- if heading != blank -%}
+			<h2 class="h1 product-recommendations__heading">
+				{{- heading -}}
+			</h2>
+		{%- endif -%}
+
+		{%- if subheading != blank -%}
+			<div class="product-recommendations__subheading">
+				{{- subheading -}}
+			</div>
+		{%- endif -%}
+
+		<div class="product-recommendations__tab-buttons-wrapper {% if show_recently_viewed and recently_viewed_label != blank %}js-product-recommendations--buttons-wrapper{%- endif -%}">
+			{%- if show_recently_viewed and recently_viewed_label != blank -%}
+				<div class="product-recommendations__tab-buttons">
+					{%- if tab_label != blank -%}
+						<button class="focus-visible-outline tab-button is-active {% if show_recently_viewed and recently_viewed_label != blank %}js-product-recommendations-tab-button{%- endif -%}" {% if show_recently_viewed and recently_viewed_label != blank %}data-index="1"{%- endif -%}>
+							{{- tab_label -}}
+						</button>
+					{%- endif -%}
+
+					{%- if show_recently_viewed and recently_viewed_label != blank -%}
+						<button class="focus-visible-outline tab-button is-hidden js-product-recommendations-viewed-label js-product-recommendations-tab-button" data-index="2">
+							{{- recently_viewed_label -}}
+						</button>
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+		</div>
+
+		<div class="js-product-recommendations-content">
+			<div class="{{- product_recommendations_row_wrapper_classes | strip_newlines }} is-active {% if show_recently_viewed and recently_viewed_label != blank %}js-product-recommendations-tab-content{%- endif -%}" {% if show_recently_viewed and recently_viewed_label != blank %}data-index="1"{%- endif -%}>
+				<div class="{{- product_recommendations_row_classes | strip_newlines -}}">
+					{%- capture slides -%}
+						{%- assign image_size        = 480 -%}
+						{%- assign image_size_tablet = 630 -%}
+						{%- assign image_size_mobile = 383 -%}
+
+						{%- if enable_shopify_recommendations -%}
+							{%- if recommendations.products_count > 0 -%}
+								{%- for product in recommendations.products limit: limit -%}
+									<div class="product-recommendations__col swiper-slide js-product-recommendations-col">
+										{%- render
+											'product-card',
+											product: product,
+											size: image_size,
+											tablet_size: image_size_tablet,
+											mobile_size: image_size_mobile,
+										-%}
+
+										<div class="product-recommendations__preloader-wrapper" aria-hidden="true">
+											<div class="product-recommendations__preloader"></div>
+										</div>
+									</div>
+								{%- endfor -%}
+							{%- endif -%}
+						{%- elsif product_list != blank and product_list.count > 0 -%}
+							{%- for product in product_list limit: limit -%}
+								<div class="product-recommendations__col swiper-slide">
+									{%- render
+										'product-card',
+										product: product,
+										size: image_size,
+										tablet_size: image_size_tablet,
+										mobile_size: image_size_mobile,
+									-%}
+								</div>
+							{%- endfor -%}
+						{%- endif -%}
+					{%- endcapture -%}
+
+					{%- if slides != "" -%}
+						{{- slides -}}
+					{%- else -%}
+						{%- for i in (1..limit) -%}
+							<div class="product-recommendations__col swiper-slide">
+								{%- render 'product-card', product: nil -%}
+
+								{%- if enable_shopify_recommendations -%}
+									<div class="product-recommendations__preloader-wrapper" aria-hidden="true">
+										<div class="product-recommendations__preloader"></div>
+									</div>
+								{%- endif -%}
+							</div>
+						{%- endfor -%}
+					{%- endif -%}
+				</div>
+
+				{%- if slider_enabled -%}
+					<div class="js-featured-content-slider-pagination"></div>
+				{%- endif -%}
+			</div>
+
+			<div class="{{- product_recommendations_row_wrapper_classes | strip_newlines }} js-product-recommendations-tab-content" data-index="2">
+				<div class="{{- product_recommendations_row_classes | strip_newlines }} js-product-recommendations-viewed-content">
+				</div>
+
+				{%- if slider_enabled -%}
+					<div class="js-featured-content-slider-pagination"></div>
+				{%- endif -%}
+			</div>
+		</div>
+	</div>
+</section>
+
+{%- render 'adastra' with '/src/scripts/component-featured-content-slider.js' -%}
+{%- render 'adastra' with '/src/scripts/section-product-recommendations.js' -%}
+
+{%- schema -%}
+{
+	"name": "Product recommendations",
+	"settings": [
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Recommendations"
+		},
+		{
+			"type": "range",
+			"id": "products_to_show",
+			"min": 4,
+			"max": 10,
+			"step": 1,
+			"default": 4,
+			"label": "Products to show"
+		},
+		{
+			"type": "header",
+			"content": "Recommendations"
+		},
+		{
+			"type": "text",
+			"id": "tab_label",
+			"label": "Tab label",
+			"default": "Related products"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_shopify_recommendations",
+			"label": "Use Shopify recommendations",
+			"default": true
+		},
+		{
+			"type": "collection",
+			"id": "collection",
+			"label": "Resource collection",
+			"info": "If Shopify recommendations are disabled, use a collection instead."
+		},
+		{
+			"type": "header",
+			"content": "Recently viewed"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_recently_viewed",
+			"label": "Show",
+			"default": false
+		},
+		{
+			"type": "text",
+			"id": "recently_viewed_label",
+			"label": "Tab label",
+			"default": "Recently viewed"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	]
+}
+{%- endschema -%}

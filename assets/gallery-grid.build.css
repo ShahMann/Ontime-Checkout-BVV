@@ -1,0 +1,164 @@
+/**
+	Timings
+ */
+:root {
+  --timing-micro: 0.1s;
+  --timing-short: 0.2s;
+  --timing-base: 0.4s;
+  --timing-long: 0.7s;
+  --timing-second: 1s;
+  --animate-time: 0.7s;
+  --animate-delay: 0.3s;
+  --animate-img-scale: 0.5s;
+  /**
+  * Easing.
+  */
+  --easing-linear: cubic-bezier(0, 0, 1, 1);
+  --easing-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --easing-ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+  --easing-ease-in: cubic-bezier(0.42, 0, 1, 1);
+  --easing-ease-out: cubic-bezier(0, 0, 0.09, 1);
+  /**
+  * Config: Layers
+  * -----------------------------------------------------------------------------
+  * Visual motif used to create groupings, content associations and focus through depth.
+  */
+  --layer-negative: -1;
+  --layer-base: 0;
+  --layer-flat: 1;
+  --layer-raised: 2;
+  --layer-sticky-btn: 7;
+  --layer-sticky: 11;
+  --layer-overlay: 14;
+  --layer-temporary: 16;
+  --layer-pop-out: 24;
+  --layer-pop-out-overlay: 25;
+  --layer-pop-out-overlay-loader: 26;
+}
+.gallery-grid {
+  max-width: var(--container-width);
+  margin: 0 auto;
+}
+.gallery-grid.gallery-grid--limited-width {
+  max-width: calc(var(--container-width) - 32px);
+}
+.gallery-grid .gallery-grid__title {
+  margin-bottom: 24px;
+  text-align: center;
+}
+.gallery-grid .gallery-grid__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+}
+.gallery-grid .gallery-grid__col-content {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+.gallery-grid .gallery-grid__overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  visibility: hidden;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--img-overlay-color);
+  transition-property: visibility, opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+.gallery-grid .gallery-grid__link:focus-visible .gallery-grid__overlay {
+  opacity: 1;
+  visibility: visible;
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+  .gallery-grid .gallery-grid__link:hover .gallery-grid__overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+.gallery-grid .gallery-grid__image-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+.gallery-grid .gallery-grid__image-wrapper.gallery-grid__image-wrapper--square {
+  padding-top: 100%;
+}
+.gallery-grid .gallery-grid__image-wrapper.gallery-grid__image-wrapper--landscape {
+  padding-top: 58.667%;
+}
+.gallery-grid .gallery-grid__image,
+.gallery-grid .gallery-grid__video {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--img-desktop-pos);
+}
+.gallery-grid .gallery-grid__image-placeholder {
+  background-color: var(--color-img-placeholder-bg);
+}
+.gallery-grid .gallery-grid__video {
+  display: none;
+}
+.gallery-grid .gallery-grid__icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.gallery-grid .gallery-grid__icon-img {
+  display: block;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+.gallery-grid .gallery-grid__col.need-animate {
+  opacity: 0;
+  transition-property: opacity;
+}
+.gallery-grid.animated .gallery-grid__col.need-animate {
+  opacity: 1;
+}
+@media (max-width: 991.98px) {
+  .gallery-grid .gallery-grid__col.gallery-grid__col-mob--1 {
+    width: 100%;
+  }
+  .gallery-grid .gallery-grid__col.gallery-grid__col-mob--2 {
+    width: calc(50% - 2px);
+  }
+}
+@media (min-width: 992px) {
+  .gallery-grid .gallery-grid__title {
+    margin-bottom: 32px;
+  }
+  .gallery-grid .gallery-grid__col.gallery-grid__col--2 {
+    width: calc(50% - 2px);
+  }
+  .gallery-grid .gallery-grid__col.gallery-grid__col--4 {
+    width: calc(25% - 3px);
+  }
+  .gallery-grid .gallery-grid__col.gallery-grid__col--6 {
+    width: calc(16.6666666667% - 3.3333333333px);
+  }
+  .gallery-grid .gallery-grid__image-wrapper.gallery-grid__image-wrapper--landscape {
+    padding-top: 64.44%;
+  }
+}
+@media (min-width: 1200px) {
+  .gallery-grid .gallery-grid__video {
+    z-index: 2;
+    display: block;
+  }
+}

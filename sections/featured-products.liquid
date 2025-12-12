@@ -1,0 +1,486 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Featured products
+------------------------------------------------------------------------------
+{%- endcomment -%}
+{% if section.index == 1 %}
+	{%- render 'adastra' with '/src/styles/carousel.scss' -%}
+{% endif %}
+
+{%- render 'adastra' with '/src/styles/featured-products.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign heading = section.settings.heading -%}
+{%- assign products_in_row = section.settings.products_in_row -%}
+{%- assign product_list = section.settings.product_list -%}
+{%- assign container = section.settings.container_width -%}
+{%- assign banner_image = section.settings.banner_image -%}
+{%- assign banner_heading = section.settings.banner_heading -%}
+{%- assign banner_subheading = section.settings.banner_subheading -%}
+{%- assign button_label = section.settings.button_label -%}
+{%- assign button_url = section.settings.button_url -%}
+{%- assign text_color = section.settings.text_color -%}
+{%- assign button_color = section.settings.button_color -%}
+{%- assign button_background_color = section.settings.button_background_color -%}
+{%- assign button_border_color = section.settings.button_border_color -%}
+{%- assign button_hover_color = section.settings.button_hover_color -%}
+{%- assign button_hover_background = section.settings.button_hover_background -%}
+{%- assign button_hover_border = section.settings.button_hover_border -%}
+{%- assign overlay_color = section.settings.overlay_color -%}
+
+{% if container == 'inherit' %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+{% assign pagination_dynamic = false %}
+
+{% if product_list.count > 6 %}
+	{% assign pagination_dynamic = true %}
+{% endif %}
+
+{% capture section_styles %}
+	--container-width: {{ container_width }};
+	--text-color: {{ text_color }};
+	--button-color: {{ button_color }};
+	--button-background-color: {{ button_background_color }};
+	--button-border-color: {{ button_border_color }};
+	--button-hover-color: {{ button_hover_color }};
+	--button-hover-background: {{ button_hover_background }};
+	--button-hover-border: {{ button_hover_border }};
+	--overlay-color: {{ overlay_color }};
+{% endcapture %}
+
+{%- capture focal_point -%}
+	--image-focal: {{- banner_image.presentation.focal_point -}}
+{%- endcapture -%}
+
+{% assign is_button = false %}
+
+{% if button_label != blank and button_url != blank %}
+	{% assign is_button = true %}
+{% endif %}
+
+{% assign is_banner = false %}
+
+{% if is_button or banner_heading != blank or banner_subheading != blank %}
+	{% assign is_banner = true %}
+{% endif %}
+
+{%- capture featured_products_row_wrapper_classes -%}
+	featured-products__slider swiper {% if is_banner %}featured-products__slider--col tr-del-0-5{% endif %} {{- -}}
+	{% if product_list.count > 1 or product_list == blank %} js-featured-products-slider {{- -}} {%- endif -%}
+{%- endcapture -%}
+
+{%- capture featured_product_row_classes -%}
+	{%- unless is_banner -%}
+		featured-products__row--center
+	{%- endunless %}
+
+	featured-products__row swiper-wrapper {{- -}}
+{%- endcapture -%}
+
+<section class="featured-products js-featured-products js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}" id="{{- section.id -}}" style="{{ section_styles }}">
+	<div class="featured-products__container">
+		{%- if heading != blank -%}
+			<h2 class="featured-products__heading h2">
+				{{- heading -}}
+			</h2>
+		{%- endif -%}
+
+		<div class="featured-products__content-wrapper">
+			{% if is_banner %}
+				<div class="featured-products__banner need-animate tr-dur-0-75">
+					{% if products_in_row == "5" %}
+						{% assign w_1920 = "361x479" %}
+						{% assign w_1920_2x = "722x958" %}
+
+						{% assign w_1600 = "300x427" %}
+						{% assign w_1600_2x = "600x854" %}
+					{% elsif products_in_row == "4" %}
+						{% assign w_1920 = "361x536" %}
+						{% assign w_1920_2x = "722x1072" %}
+
+						{% assign w_1600 = "300x472" %}
+						{% assign w_1600_2x = "600x944" %}
+					{% else %}
+						{% assign w_1920 = "361x664" %}
+						{% assign w_1920_2x = "722x1328" %}
+
+						{% assign w_1600 = "300x577" %}
+						{% assign w_1600_2x = "600x1154" %}
+					{% endif %}
+
+					{% if banner_image != blank %}
+						<picture {% if section.index != 1 %}class="lazy"{% endif %}>
+							{% if section.index != 1 %}
+								<source
+									data-srcset="{{ banner_image | img_url: "343x359", crop: "center" }} 1x, {{ banner_image | img_url: "686x718", crop: "center" }} 2x"
+									srcset="{{ banner_image | img_url: "10x" }} 1x, {{ banner_image | img_url: "20x" }} 2x"
+									media="(max-width: 375px)"
+								/>
+
+								<source
+									data-srcset="{{ banner_image | img_url: "735x359", crop: "center" }} 1x, {{ banner_image | img_url: "1470x718", crop: "center" }} 2x"
+									srcset="{{ banner_image | img_url: "10x" }} 1x, {{ banner_image | img_url: "20x" }} 2x"
+									media="(max-width: 767px)"
+								/>
+
+								<source
+									data-srcset="{{ banner_image | img_url: "268x486", crop: "center" }} 1x, {{ banner_image | img_url: "536x972", crop: "center" }} 2x"
+									srcset="{{ banner_image | img_url: "10x" }} 1x, {{ banner_image | img_url: "20x" }} 2x"
+									media="(max-width: 991px)"
+								/>
+
+								<source
+									data-srcset="{{ banner_image | img_url: "268x474", crop: "center" }} 1x, {{ banner_image | img_url: "536x948", crop: "center" }} 2x"
+									srcset="{{ banner_image | img_url: "10x" }} 1x, {{ banner_image | img_url: "20x" }} 2x"
+									media="(max-width: 1200px)"
+								/>
+
+								<source
+									data-srcset="{{ banner_image | img_url: w_1600, crop: "center" }} 1x, {{ banner_image | img_url: w_1600_2x, crop: "center" }} 2x"
+									srcset="{{ banner_image | img_url: "10x" }} 1x, {{ banner_image | img_url: "20x" }} 2x"
+									media="(max-width: 1600px)"
+								/>
+
+								<img class="featured-products__banner-image"
+									 srcset="{{- banner_image | img_url: '10x' -}} 1x, {{ banner_image | img_url: '20x' }} 2x"
+									 src="{{ banner_image | img_url: w_1920 }}"
+									 data-src="{{- banner_image | img_url: w_1920, crop: "center" -}}"
+									 data-srcset="{{ banner_image | img_url: w_1920, crop: "center" }} 1x, {{ banner_image | img_url: w_1920_2x, crop: "center" }} 2x"
+									 style="{{ focal_point }}"
+									 alt="{{ banner_image.alt | escape }}">
+							{% else %}
+								<source
+									srcset="{{ banner_image | img_url: "343x359", crop: "center" }} 1x, {{ banner_image | img_url: "686x718", crop: "center" }} 2x"
+									media="(max-width: 375px)"
+								/>
+
+								<source
+									srcset="{{ banner_image | img_url: "735x359", crop: "center" }} 1x, {{ banner_image | img_url: "1470x718", crop: "center" }} 2x"
+									media="(max-width: 767px)"
+								/>
+
+								<source
+									srcset="{{ banner_image | img_url: "268x486", crop: "center" }} 1x, {{ banner_image | img_url: "536x972", crop: "center" }} 2x"
+									media="(max-width: 991px)"
+								/>
+
+								<source
+									srcset="{{ banner_image | img_url: "268x474", crop: "center" }} 1x, {{ banner_image | img_url: "536x948", crop: "center" }} 2x"
+									media="(max-width: 1200px)"
+								/>
+
+								<source
+									srcset="{{ banner_image | img_url: w_1600, crop: "center" }} 1x, {{ banner_image | img_url: w_1600_2x, crop: "center" }} 2x"
+									media="(max-width: 1600px)"
+								/>
+
+								<img class="featured-products__banner-image"
+									 src="{{- banner_image | img_url: w_1920, crop: "center" -}}"
+									 srcset="{{ banner_image | img_url: w_1920, crop: "center" }} 1x, {{ banner_image | img_url: w_1920_2x, crop: "center" }} 2x"
+									 style="{{ focal_point }}"
+									 fetchpriority="high"
+									 alt="{{ banner_image.alt | escape }}">
+							{% endif %}
+						</picture>
+					{% else %}
+						{{ "detailed-apparel-1" | placeholder_svg_tag: "featured-products__banner-image" }}
+					{% endif %}
+
+					<div class="featured-products__banner-content">
+						{% if banner_heading != blank %}
+							<h3 class="featured-products__banner-heading need-animate tr-dur-0-5 tr-del-0-25">{{ banner_heading }}</h3>
+						{% endif %}
+
+						{% if banner_subheading != blank %}
+							<p class="featured-products__banner-subheading need-animate tr-dur-0-5 tr-del-0-5">{{ banner_subheading }}</p>
+						{% endif %}
+
+						{%- if is_button -%}
+							<div class="featured-products__button-wrapper need-animate tr-dur-0-5 tr-del-0-75">
+								<a class="featured-products__button button button--primary-border"
+								   href="{{- button_url -}}">
+									{{- button_label -}}
+								</a>
+							</div>
+						{%- endif -%}
+					</div>
+				</div>
+			{% endif %}
+
+			<div class="{{- featured_products_row_wrapper_classes | strip_newlines -}}"
+				 data-slides-in-row="{{ products_in_row }}"
+				 data-dynamic-pagination="{{ pagination_dynamic }}"
+			>
+				<div class="{{- featured_product_row_classes | strip_newlines -}}">
+					{%- if product_list != blank and product_list.count > 0 -%}
+						{%- assign image_size = 640 -%}
+						{%- assign image_size_tablet = 382 -%}
+						{%- assign image_size_mobile = 240 -%}
+
+						{%- if products_in_row == '4' -%}
+							{%- assign image_size = 480 -%}
+						{%- endif -%}
+
+						{%- for product in product_list -%}
+							{% assign is_lazy = true %}
+
+							{% if section.index == 1 and forloop.index == 1 %}
+								{% assign is_lazy = false %}
+							{% endif %}
+
+							<div
+								class="featured-products__col swiper-slide featured-products__col--{{- products_in_row -}}">
+								{%- render
+									'product-card',
+									product: product,
+									size: image_size,
+									tablet_size: image_size_tablet,
+									mobile_size: image_size_mobile,
+									is_lazy: is_lazy
+								-%}
+							</div>
+						{%- endfor -%}
+					{%- else -%}
+						{%- for i in (1..4) -%}
+							<div
+								class="featured-products__col swiper-slide featured-products__col--{{- products_in_row -}}">
+								{%- render 'product-card', product: nil -%}
+							</div>
+						{%- endfor -%}
+					{%- endif -%}
+				</div>
+
+				{%- if product_list.count > 1 or product_list == blank -%}
+					<div class="featured-products__slider-pagination js-featured-products-pagination"></div>
+				{%- endif -%}
+			</div>
+		</div>
+	</div>
+</section>
+
+{%- if product_list.count > 1 or product_list == blank -%}
+	{%- render 'adastra' with '/src/scripts/section-featured-products.js' -%}
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Featured products",
+	"disabled_on": {
+		"groups": [
+			"header",
+			"footer"
+		]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Featured products"
+		},
+		{
+			"type": "product_list",
+			"id": "product_list",
+			"label": "Products",
+			"limit": 12
+		},
+		{
+			"type": "select",
+			"id": "products_in_row",
+			"label": "Products in row",
+			"options": [
+				{
+					"value": "3",
+					"label": "3"
+				},
+				{
+					"value": "4",
+					"label": "4"
+				},
+				{
+					"value": "5",
+					"label": "5"
+				}
+			],
+			"default": "4",
+			"info": "Desktop only"
+		},
+		{
+			"type": "header",
+			"content": "Banner"
+		},
+		{
+			"type": "image_picker",
+			"id": "banner_image",
+			"label": "Image",
+			"info": "722 x 1328px recommended"
+		},
+		{
+			"type": "text",
+			"id": "banner_heading",
+			"label": "Heading",
+			"default": "Banner heading"
+		},
+		{
+			"type": "text",
+			"id": "banner_subheading",
+			"label": "Subheading",
+			"default": "Banner subheading"
+		},
+		{
+			"type": "text",
+			"id": "button_label",
+			"label": "Button label",
+			"default": "Shop Now"
+		},
+		{
+			"type": "url",
+			"id": "button_url",
+			"label": "Button link"
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "text_color",
+			"label": "Text color",
+			"default": "#fff"
+		},
+		{
+			"type": "color_background",
+			"id": "overlay_color",
+			"label": "Overlay color",
+			"default": "rgba(0, 0, 0, 0.4)"
+		},
+		{
+			"type": "color",
+			"id": "button_color",
+			"label": "Button color",
+			"default": "#fff"
+		},
+		{
+			"type": "color",
+			"id": "button_background_color",
+			"label": "Button background",
+			"default": "transparent"
+		},
+		{
+			"type": "color",
+			"id": "button_border_color",
+			"label": "Button border",
+			"default": "#fff"
+		},
+		{
+			"type": "color",
+			"id": "button_hover_color",
+			"label": "Button color (hover)",
+			"default": "#000"
+		},
+		{
+			"type": "color",
+			"id": "button_hover_background",
+			"label": "Button background (hover)",
+			"default": "#fff"
+		},
+		{
+			"type": "color",
+			"id": "button_hover_border",
+			"label": "Button border (hover)",
+			"default": "#fff"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "If you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"presets": [
+		{
+			"name": "Featured products"
+		}
+	]
+}
+{%- endschema -%}

@@ -1,0 +1,228 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Collection card extra
+	- collection: Collection object (required)
+	- image: image object
+	- is_lazy: boolean, enable lazy-load
+	- text_position: layout of the card
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- render 'adastra' with '/src/styles/collection-card-extra.scss' -%}
+
+{%- assign min = 1 -%}
+{%- assign max = 6 -%}
+{%- assign diff = max | minus: min -%}
+
+{% if image != blank %}
+	{%- capture img_focal -%}
+		--img-desktop-pos: {{ image.presentation.focal_point }};
+	{%- endcapture -%}
+{% endif %}
+
+<div
+	class="collection-card-extra {% if text_position == 'inside_image' %}collection-card-extra__inside-image{% endif %}">
+{% if text_position == 'inside_image' %}
+	<a {% if collection.url != blank %}href="{{ collection.url }}"{% endif %}
+	   class="collection-card-extra__link collection-card-extra__link-overlay">
+		{% endif %}
+
+	{% if text_position == 'under_image' %}
+		<a class="collection-card-extra__link" {% if collection.url != blank %}href="{{ collection.url }}"{% endif %}>
+			{% endif %}
+
+			<div class="collection-card-extra__image-wrapper">
+				{% if collection.featured_image != blank or image != blank %}
+					<picture class="{% if is_lazy %}lazy{% endif %} no-js-hidden">
+						{% if text_position == 'under_image' %}
+							<source
+								{% if is_lazy %}
+									data-srcset="{{ image | img_url: '297x297', crop: 'center' }} 1x,
+										{{ image | img_url: '594x594', crop: 'center' }} 2x"
+									srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+								{% else %}
+									srcset="{{ image | img_url: '297x297', crop: 'center' }} 1x,
+										{{ image | img_url: '594x594', crop: 'center' }} 2x"
+								{% endif %}
+								media="(max-width: 380px)">
+
+							<source
+								{% if is_lazy %}
+									data-srcset="{{ image | img_url: '332x332', crop: 'center' }} 1x,
+										{{ image | img_url: '664x664', crop: 'center' }} 2x"
+									srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+								{% else %}
+									srcset="{{ image | img_url: '332x332', crop: 'center' }} 1x,
+										{{ image | img_url: '664x664', crop: 'center' }} 2x"
+								{% endif %}
+								media="(max-width: 420px)">
+
+							<source
+								{% if is_lazy %}
+									data-srcset="{{ image | img_url: '631x631', crop: 'center' }} 1x,
+										{{ image | img_url: '1262x1262', crop: 'center' }} 2x"
+									srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+								{% else %}
+									srcset="{{ image | img_url: '631x631', crop: 'center' }} 1x,
+										{{ image | img_url: '1262x1262', crop: 'center' }} 2x"
+								{% endif %}
+								media="(max-width: 767px)">
+
+							<source
+								{% if is_lazy %}
+									data-srcset="{{ image | img_url: '227x227', crop: 'center' }} 1x,
+										{{ image | img_url: '454x454', crop: 'center' }} 2x"
+									srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+								{% else %}
+									srcset="{{ image | img_url: '227x227', crop: 'center' }} 1x,
+										{{ image | img_url: '454x454', crop: 'center' }} 2x"
+								{% endif %}
+								media="(max-width: 991px)">
+
+							<source
+								{% if is_lazy %}
+									data-srcset="{{ image | img_url: '228x228', crop: 'center' }} 1x,
+										{{ image | img_url: '456x456', crop: 'center' }} 2x"
+									srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+								{% else %}
+									srcset="{{ image | img_url: '228x228', crop: 'center' }} 1x,
+										{{ image | img_url: '456x456', crop: 'center' }} 2x"
+								{% endif %}
+								media="(max-width: 1500px)">
+
+							<img
+								class="collection-card-extra__image"
+								{% if is_lazy %}
+									src="{{ image | img_url: '10x' }}"
+									srcset="{{ image | img_url: '10x' }}"
+									data-src="{{ image | img_url: '298x298', crop: 'center' }}"
+									data-srcset="{{ image | img_url: '298x298', crop: 'center' }} 1x,
+									{{ image | img_url: '596x596', crop: 'center' }} 2x"
+								{% else %}
+									src="{{ image | img_url: '298x298', crop: 'center' }}"
+									srcset="{{ image | img_url: '298x298', crop: 'center' }} 1x,
+									{{ image | img_url: '596x596', crop: 'center' }} 2x"
+								{% endif %}
+								alt="{{ image.alt | escape }}"
+								{% if img_focal != blank %}
+									style="{{ img_focal }}"
+								{% endif %}
+							>
+						{% else %}
+							<source
+								{% if is_lazy %}
+									data-srcset="{{ image | img_url: '297x351', crop: 'center' }} 1x,
+										{{ image | img_url: '594x702', crop: 'center' }} 2x"
+									srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+								{% else %}
+									srcset="{{ image | img_url: '297x351', crop: 'center' }} 1x,
+										{{ image | img_url: '594x702', crop: 'center' }} 2x"
+								{% endif %}
+								media="(max-width: 380px)">
+
+							<source
+								{% if is_lazy %}
+									data-srcset="{{ image | img_url: '332x392', crop: 'center' }} 1x,
+										{{ image | img_url: '664x784', crop: 'center' }} 2x"
+									srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+								{% else %}
+									srcset="{{ image | img_url: '332x392', crop: 'center' }} 1x,
+										{{ image | img_url: '664x784', crop: 'center' }} 2x"
+								{% endif %}
+								media="(max-width: 420px)">
+
+							<source
+								{% if is_lazy %}
+									data-srcset="{{ image | img_url: '631x745', crop: 'center' }} 1x,
+										{{ image | img_url: '1262x1490', crop: 'center' }} 2x"
+									srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+								{% else %}
+									srcset="{{ image | img_url: '631x745', crop: 'center' }} 1x,
+										{{ image | img_url: '1262x1490', crop: 'center' }} 2x"
+								{% endif %}
+								media="(max-width: 767px)">
+
+							<source
+								{% if is_lazy %}
+									data-srcset="{{ image | img_url: '227x268', crop: 'center' }} 1x,
+										{{ image | img_url: '454x536', crop: 'center' }} 2x"
+									srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+								{% else %}
+									srcset="{{ image | img_url: '227x268', crop: 'center' }} 1x,
+										{{ image | img_url: '454x536', crop: 'center' }} 2x"
+								{% endif %}
+								media="(max-width: 991px)">
+
+							<source
+								{% if is_lazy %}
+									data-srcset="{{ image | img_url: '228x269', crop: 'center' }} 1x,
+										{{ image | img_url: '456x538', crop: 'center' }} 2x"
+									srcset="{{ image | img_url: '10x' }} 1x,
+									{{ image | img_url: '10x' }} 2x"
+								{% else %}
+									srcset="{{ image | img_url: '228x269', crop: 'center' }} 1x,
+										{{ image | img_url: '456x538', crop: 'center' }} 2x"
+								{% endif %}
+								media="(max-width: 1500px)">
+
+							<img
+								class="collection-card-extra__image"
+								{% if is_lazy %}
+									src="{{ image | img_url: '10x' }}"
+									srcset="{{ image | img_url: '10x' }}"
+									data-src="{{ image | img_url: '298x352', crop: 'center' }}"
+									data-srcset="{{ image | img_url: '298x352', crop: 'center' }} 1x,
+									{{ image | img_url: '596x704', crop: 'center' }} 2x"
+								{% else %}
+									src="{{ image | img_url: '298x352', crop: 'center' }}"
+									srcset="{{ image | img_url: '298x352', crop: 'center' }} 1x,
+									{{ image | img_url: '596x704', crop: 'center' }} 2x"
+								{% endif %}
+								alt="{{ image.alt | escape }}"
+								{% if img_focal != blank %}
+									style="{{ img_focal }}"
+								{% endif %}
+							>
+						{% endif %}
+					</picture>
+				{% else %}
+					{%- assign random_number = "now" | date: "%N" | modulo: diff | plus: min -%}
+					{%- assign placeholder_svg_name = 'collection-' | append: random_number -%}
+
+					{{ placeholder_svg_name | placeholder_svg_tag: "collection-card-extra__image collection-card__image--placeholder" }}
+				{% endif %}
+			</div>
+
+			{% if text_position == 'under_image' %}
+		</a>
+		{% endif %}
+
+		<div
+			class="collection-card-extra__text-wrapper {% if text_position == 'inside_image' %}collection-card-extra__text-wrapper-positioned{% endif %}">
+		{% if text_position == 'under_image' %}
+			<a {% if collection.url != blank %}href="{{ collection.url }}"{% endif %}
+			   class="collection-card-extra__text">
+				{% else %}
+				<span class="collection-card-extra__text">
+			{% endif %}
+					{{ collection.title | default: "Collection title" }}
+					{% if text_position == 'under_image' %}
+			</a>
+		{% else %}
+			</span>
+			{% endif %}
+		</div>
+
+		{% if text_position == 'inside_image' %}
+	</a>
+	{% endif %}
+</div>

@@ -1,0 +1,110 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header mobile mega menu half to half
+	Render header mobile mega menu half to half
+	- menu: menu object;
+	- megamenu_object: mega menu object.
+
+	Usage:
+	{%- render 'header-mobile-mega-menu-half-to-half' -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign heading          = megamenu_object.settings.heading -%}
+{%- assign subheading       = megamenu_object.settings.subheading -%}
+{%- assign button_label1	= megamenu_object.settings.button_label1 -%}
+{%- assign button_label2	= megamenu_object.settings.button_label2 -%}
+{%- assign button_link1		= megamenu_object.settings.button_link1 -%}
+{%- assign button_link2		= megamenu_object.settings.button_link2 -%}
+{%- assign button1_style	= megamenu_object.settings.button1_style -%}
+{%- assign button2_style	= megamenu_object.settings.button2_style -%}
+
+{%- assign image			= megamenu_object.settings.image -%}
+{%- assign image_link		= megamenu_object.settings.image_link -%}
+
+<div class="header-mega-menu header-mega-menu--half-to-half">
+	<div class="header-mega-menu__container">
+		<div class="header-mega-menu__content-container">
+			{%- if image != blank -%}
+				<div class="header-mega-menu__block header-mega-menu__block--image">
+					{%- capture img_focal -%}
+						--img-desktop-pos: {{ image.presentation.focal_point }};
+					{%- endcapture -%}
+
+					{%- capture image_capture -%}
+						<picture>
+							<source
+								srcset="{{ image.image | img_url: '348x' }} 1x, {{ image.image | img_url: '696x' }} 2x"
+								media="(max-width: 380px)"
+							/>
+
+							<source
+								srcset="{{ image.image | img_url: '388x' }} 1x, {{ image.image | img_url: '996x' }} 2x"
+								media="(max-width: 991px)"
+							/>
+
+							<img
+								class="header-mega-menu__image"
+								src="{{- image | img_url: "448x" -}}"
+								srcset="{{- image | img_url: "448x" }} 1x, {{ image | img_url: "896x" }} 2x"
+								alt="{{- image.alt -}}"
+								style="{{ img_focal }}"
+								loading="lazy"
+							>
+						</picture>
+					{%- endcapture -%}
+
+					{%- if image_link != blank -%}
+						<a
+							href="{{- image_link -}}"
+							class="header-mega-menu__image-wrapper header-mega-menu__image-wrapper--hover"
+						>
+							{{- image_capture -}}
+						</a>
+					{%- else -%}
+						<div class="header-mega-menu__image-wrapper">
+							{{- image_capture -}}
+						</div>
+					{%- endif -%}
+
+				</div>
+			{%- endif -%}
+
+			<div class="header-mega-menu__block header-mega-menu__block--text">
+				{%- if heading != blank -%}
+					<h2 class="header-mega-menu__heading">
+						{{- heading -}}
+					</h2>
+				{%- endif %}
+
+				{%- if subheading != blank -%}
+					<p class="header-mega-menu__subheading">
+						{{- subheading -}}
+					</p>
+				{%- endif -%}
+
+				{%- if button_link1 != blank and button_label1 != blank or button_link2 != blank and button_label2 != blank -%}
+					<div class="header-mega-menu__buttons">
+						{%- if button_link1 != blank and button_label1 != blank -%}
+							<a
+								class="button button--{{- button1_style -}}"
+								href="{{- button_link1 -}}"
+							>
+								{{- button_label1 -}}
+							</a>
+						{%- endif -%}
+
+						{%- if button_link2 != blank and button_label2 != blank -%}
+							<a
+								class="button button--{{- button2_style -}}"
+								href="{{- button_link2 -}}"
+							>
+								{{- button_label2 -}}
+							</a>
+						{%- endif -%}
+					</div>
+				{%- endif -%}
+			</div>
+		</div>
+	</div>
+</div>

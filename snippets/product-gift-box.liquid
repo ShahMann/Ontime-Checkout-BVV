@@ -1,0 +1,46 @@
+{% assign gift_product = settings.gift_wrap_product %}
+
+{% if gift_product != blank and gift_product.available and gift_product != product %}
+	{% assign gift_button_icon = settings.gift_wrap_button_icon %}
+
+	{%- capture styles -%}
+		--offset-top-desktop: {{ block.settings.offset_top_desktop }}px; {{-  -}}
+		--offset-bottom-desktop: {{ block.settings.offset_bottom_desktop }}px; {{-  -}}
+		--offset-top-mobile: {{ block.settings.offset_top_mobile }}px; {{-  -}}
+		--offset-bottom-mobile: {{ block.settings.offset_bottom_mobile }}px;
+	{%- endcapture -%}
+
+	<div class="product__button-link-wrapper" style="{{ styles }}">
+		<div class="product__button-link-container">
+			<button class="button-link button-link--with-icon focus-visible-outline js-add-to-cart"
+					type="button"
+					data-product-handle="{{- gift_product.handle -}}"
+					data-min-quantity="{{- gift_product.selected_or_first_available_variant.quantity_rule.min -}}"
+				{% if gift_product.has_only_default_variant or gift_product.variants.size == 1 %}
+					data-variant-id="{{- gift_product.variants[0].id -}}"
+				{% endif %}
+			>
+				{% if gift_button_icon != blank %}
+					{%- capture img_focal -%}
+						--img-desktop-pos: {{ gift_button_icon.presentation.focal_point }};
+					{%- endcapture -%}
+
+					<img class="button-link__icon"
+						 src="{{ gift_button_icon | image_url: width: 24, height: 24 }}"
+						 srcset="{{ gift_button_icon | image_url: width: 24, height: 24 }} 1x,
+							{{ gift_button_icon | image_url: width: 48, height: 48 }} 2x"
+						 style="{{ img_focal }}"
+						 alt=""
+						 loading="lazy"
+					>
+				{% endif %}
+
+				<span class="button-link__text">{{ settings.gift_wrap_button_label }}</span>
+
+				{% render 'icons', icon: 'arrow-right' %}
+			</button>
+		</div>
+	</div>
+{% endif %}
+
+

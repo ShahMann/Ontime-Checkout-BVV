@@ -1,0 +1,75 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Cart shipping
+	Render free shipping progress
+	- amount: Maximum progress bar amount (required)
+	- message: Progress bar message (required)
+	- congratulatory_message: Completed progress message (required)
+	- congratulatory_image: Completed progress image (optional)
+	- bar_color: Progress bar background color (optional)
+	- fill_color: Progress bar completed fill color (optional)
+
+	Usage:
+	{%- render 'cart-shipping',
+		amount: amount,
+		message: message,
+		congratulatory_message: congratulatory_message,
+		congratulatory_image: congratulatory_image,
+		bar_color: bar_color,
+		fill_color: fill_color
+	-%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- if amount != nil and message != nil and congratulatory_message != nil -%}
+	{%- assign cart_total = cart.total_price -%}
+	{%- assign amount_cents = amount | abs | times: 100.0 -%}
+	{%- assign percentage = cart_total | divided_by: amount_cents | times: 100 -%}
+
+	{%- capture styles -%}
+		--shipping-bar-progress-value: {{ percentage -}}%;{{-  -}}
+		--shipping-bar-progress-bar-color: {{ bar_color -}};{{-  -}}
+		--shipping-bar-progress-value-color: {{ fill_color -}};
+	{%- endcapture -%}
+
+	{%- capture icon -%}
+		{%- if congratulatory_image != blank -%}
+			{%- capture img_focal -%}
+				--img-desktop-pos: {{ congratulatory_image.presentation.focal_point }};
+			{%- endcapture -%}
+
+			<img
+				class="cart-shipping__image"
+				srcset="
+					{{- congratulatory_image | image_url: width: 16, height: 16 }} 1x,
+					{{ congratulatory_image | image_url: width: 32, height: 32 }} 2x"
+				src="{{- congratulatory_image | image_url: width: 16, height: 16 -}}"
+				alt="{{- congratulatory_image.alt | escape -}}"
+				style="{{ img_focal }}"
+			/>
+		{%- endif -%}
+	{%- endcapture -%}
+
+	<div
+		class="cart-shipping js-cart-shipping"
+		style="{{- styles -}}"
+		data-amount-cents="{{ amount_cents }}"
+		data-cart-total="{{ cart_total }}"
+		data-amount-message="{{ message | escape }}"
+		data-success-message="{{ congratulatory_message | escape }}"
+	>
+		<p class="cart-shipping__label js-cart-shipping-label">
+			{%- if icon != '' -%}
+				<span class="cart-shipping__icon js-cart-shipping-icon is-hidden">
+					{{- icon -}}
+				</span>
+			{%- endif -%}
+
+			<span class="js-cart-shipping-amount-msg"></span>
+		</p>
+
+		<div class="cart-shipping__progress js-cart-shipping-progress-bar">
+			<span class="visually-hidden js-shipping-bar-progress-hidden-text"></span>
+		</div>
+	</div>
+{%- endif -%}

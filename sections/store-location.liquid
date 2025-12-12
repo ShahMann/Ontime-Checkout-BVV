@@ -1,0 +1,577 @@
+{%- render 'adastra' with '/src/styles/store-location.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign reverse_content          = section.settings.reverse_content -%}
+{%- assign title                    = section.settings.title -%}
+{%- assign subtitle                 = section.settings.subtitle -%}
+{%- assign address_icon             = section.settings.address_icon -%}
+{%- assign address_title            = section.settings.address_title -%}
+{%- assign address_text             = section.settings.address_text -%}
+{%- assign phone_icon               = section.settings.phone_icon -%}
+{%- assign phone_title              = section.settings.phone_title -%}
+{%- assign phone_text               = section.settings.phone_text -%}
+{%- assign email_icon               = section.settings.email_icon -%}
+{%- assign email_title              = section.settings.email_title -%}
+{%- assign email_text               = section.settings.email_text -%}
+{%- assign schedule_icon            = section.settings.schedule_icon -%}
+{%- assign schedule_title           = section.settings.schedule_title -%}
+{%- assign schedule_text            = section.settings.schedule_text -%}
+{%- assign is_shown_social          = section.settings.is_shown_social -%}
+{%- assign social_text              = section.settings.social_text -%}
+{%- assign button_text              = section.settings.button_text -%}
+{%- assign button_link              = section.settings.button_link -%}
+{%- assign button_style             = section.settings.button_style -%}
+{%- assign store_image              = section.settings.store_image -%}
+{%- assign google_map_api_key       = section.settings.google_map_api_key -%}
+{%- assign map_query                = section.settings.map_query -%}
+{%- assign container                = section.settings.container_width -%}
+{%- assign icon_background_color    = section.settings.icon_background_color -%}
+
+{%- if container == 'inherit' -%}
+	{%- assign container_width = settings.container_width -%}
+{%- else -%}
+	{%- assign container_width = container -%}
+{%- endif -%}
+
+{% unless container_width == '100%' %}
+	{% assign section_class = 'store-location--limited-width' %}
+{% endunless %}
+
+{% capture section_styles %}
+	--container-width: {{- container_width -}};
+	--icon-background-color: {{- icon_background_color -}};
+{% endcapture %}
+
+<section
+	class="store-location {{ section_class }} {% if reverse_content %} store-location--reverse{% endif %} {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %} js-animate"
+	style="{{ section_styles }}"
+>
+	<div class="store-location__content need-animate tr-dur-0-75 tr-del-0-3">
+		{%- if title != blank -%}
+			<h2 class="store-location__title h2">
+				{{- title -}}
+			</h2>
+		{%- endif -%}
+
+		{%- if subtitle != blank -%}
+			<p class="store-location__subtitle">
+				{{- subtitle -}}
+			</p>
+		{%- endif -%}
+
+		<div class="store-location__items">
+			{%- if address_title != blank or address_icon != blank or address_text != blank -%}
+				<div class="store-location__item">
+					{%- if address_icon != blank -%}
+						<div>
+							<div class="contact-info-icon-wrapper">
+								<img
+									class="contact-info-icon"
+									srcset="{{ address_icon | image_url: width: 24, height: 24 }} 1x, {{ address_icon | image_url: width: 48, height: 48 }} 2x"
+									src="{{- address_icon | image_url: width: 24, height: 24 -}}"
+									alt="{{- address_icon.alt -}}"
+									height="24"
+									width="24"
+								/>
+							</div>
+						</div>
+					{%- endif -%}
+
+					<div class="store-location__content-wrapper">
+						{%- if address_title != blank -%}
+							<h3 class="store-location__content-title">
+								{{ address_title }}
+							</h3>
+						{%- endif -%}
+
+						{%- if address_text != blank -%}
+							<div class="rte store-location__content-text">
+								{{- address_text -}}
+							</div>
+						{%- endif -%}
+					</div>
+				</div>
+			{%- endif -%}
+
+			{%- if phone_title != blank or phone_icon != blank or phone_text != blank -%}
+				<div class="store-location__item">
+					{%- if phone_icon != blank -%}
+						<div>
+							<div class="contact-info-icon-wrapper">
+								<img
+									class="contact-info-icon"
+									srcset="{{ phone_icon | image_url: width: 24, height: 24 }} 1x, {{ phone_icon | image_url: width: 48, height: 48 }} 2x"
+									src="{{- phone_icon | image_url: width: 24, height: 24 -}}"
+									alt="{{- phone_icon.alt -}}"
+									height="24"
+									width="24"
+								/>
+							</div>
+						</div>
+					{%- endif -%}
+
+					<div class="store-location__content-wrapper">
+						{%- if phone_title != blank -%}
+							<h3 class="store-location__content-title">
+								{{ phone_title }}
+							</h3>
+						{%- endif -%}
+
+						{%- if phone_text != blank -%}
+							<div class="rte store-location__content-text">
+								{{- phone_text -}}
+							</div>
+						{%- endif -%}
+					</div>
+				</div>
+			{%- endif -%}
+
+			{%- if email_title != blank or email_icon != blank or email_text != blank -%}
+				<div class="store-location__item">
+					{%- if email_icon != blank -%}
+						<div>
+							<div class="contact-info-icon-wrapper">
+								<img
+									class="contact-info-icon"
+									srcset="{{ email_icon | image_url: width: 24, height: 24 }} 1x, {{ email_icon | image_url: width: 48, height: 48 }} 2x"
+									src="{{- email_icon | image_url: width: 24, height: 24 -}}"
+									alt="{{- email_icon.alt -}}"
+									height="24"
+									width="24"
+								/>
+							</div>
+						</div>
+					{%- endif -%}
+
+					<div class="store-location__content-wrapper">
+						{%- if email_title != blank -%}
+							<h3 class="store-location__content-title">
+								{{- email_title -}}
+							</h3>
+						{%- endif -%}
+
+						{%- if email_text != blank -%}
+							<div class="rte store-location__content-text">
+								{{- email_text -}}
+							</div>
+						{%- endif -%}
+					</div>
+				</div>
+			{%- endif -%}
+
+			{%- if schedule_title != blank or schedule_icon != blank or schedule_text != blank -%}
+				<div class="store-location__item">
+					{%- if schedule_icon != blank -%}
+						<div>
+							<div class="contact-info-icon-wrapper">
+								<img
+									srcset="{{ schedule_icon | image_url: width: 24, height: 24 }} 1x, {{ schedule_icon | image_url: width: 48, height: 48 }} 2x"
+									src="{{- schedule_icon | image_url: width: 24, height: 24 -}}"
+									alt="{{- schedule_icon.alt -}}"
+									class="contact-info-icon"
+									height="24"
+									width="24"
+								/>
+							</div>
+						</div>
+					{%- endif -%}
+
+					<div class="store-location__content-wrapper">
+						{%- if schedule_title != blank -%}
+							<h3 class="store-location__content-title">
+								{{ schedule_title }}
+							</h3>
+						{%- endif -%}
+
+						{%- if schedule_text != blank -%}
+							<div class="rte store-location__content-text">
+								{{- schedule_text -}}
+							</div>
+						{%- endif -%}
+					</div>
+				</div>
+			{%- endif -%}
+		</div>
+
+		{% if is_shown_social %}
+			<div class="store-location__social-links">
+				{% if social_text != blank %}
+					<p class="store-location__social-text">{{ social_text }}</p>
+				{% endif %}
+				{% render "social-links" %}
+			</div>
+		{% endif %}
+
+		{%- if button_text != blank and button_link != blank -%}
+			{%- if button_text != blank and button_link != blank -%}
+				<a
+					class="store-location__button button button--{{- button_style -}}"
+					href="{{- button_link -}}"
+				>
+					{{- button_text -}}
+				</a>
+			{%- endif -%}
+		{% endif %}
+	</div>
+
+	<div class="store-location__media need-animate tr-dur-0-75 tr-del-0-5">
+		{%- capture img_focal -%}
+			--img-desktop-pos: {{- store_image.presentation.focal_point -}};
+		{%- endcapture -%}
+
+		<div class="store-location__media-wrapper">
+			{%- if google_map_api_key != blank and map_query != blank -%}
+				<iframe
+					class="store-location__map"
+					width="100%"
+					height="100%"
+					frameborder="0"
+					style="border:0"
+					referrerpolicy="no-referrer-when-downgrade"
+					src="https://www.google.com/maps/embed/v1/place?key={{- google_map_api_key -}}&q={{- map_query -}}"
+					allowfullscreen>
+				</iframe>
+			{%- elsif store_image != blank -%}
+				{%- assign enable_lazy_load = true -%}
+
+				{% if section.index == 1 %}
+					{%- assign enable_lazy_load = false -%}
+				{% endif %}
+
+				{% if enable_lazy_load %}
+					<picture class="lazy">
+						<source data-srcset="{{ store_image | image_url: width: 368, height: 300 }} 1x,
+											{{ store_image | image_url: width: 736, height: 600 }} 2x"
+								srcset="{{ store_image | image_url: width: 10, height: 10 }}"
+								media="(max-width: 400px)">
+
+						<source data-srcset="{{ store_image | image_url: width: 388, height: 316 }} 1x,
+											{{ store_image | image_url: width: 776, height: 632 }} 2x"
+								srcset="{{ store_image | image_url: width: 10, height: 10 }}"
+								media="(max-width: 420px)">
+
+						<source data-srcset="{{ store_image | image_url: width: 735, height: 599 }} 1x,
+											{{ store_image | image_url: width: 1470, height: 1198 }} 2x"
+								srcset="{{ store_image | image_url: width: 10, height: 10 }}"
+								media="(max-width: 767px)">
+
+						<source data-srcset="{{ store_image | image_url: width: 959, height: 782 }} 1x,
+											{{ store_image | image_url: width: 1918, height: 1564 }} 2x"
+								srcset="{{ store_image | image_url: width: 10, height: 10 }}"
+								media="(max-width: 991px)">
+
+						<source data-srcset="{{ store_image | image_url: width: 838, height: 650 }} 1x,
+											 {{ store_image | image_url: width: 1676, height: 1300 }} 2x"
+								srcset="{{ store_image | image_url: width: 10, height: 10 }}"
+								media="(max-width: 1500px)">
+
+						<img class="store-location__image"
+							 src="{{- store_image | image_url: width: 10, height: 10 -}}"
+							 data-src="{{- store_image | image_url: width: 1078, height: 836 -}}"
+							 data-srcset="{{ store_image | image_url: width: 1078, height: 836 }} 1x, {{ store_image | image_url: width: 2156, height: 1672 }} 2x"
+							 alt="{{- store_image.alt | escape -}}"
+							 style="{{- img_focal -}}"
+						>
+					</picture>
+				{% else %}
+					<picture>
+						<source srcset="{{ store_image | image_url: width: 368, height: 300 }} 1x,
+											{{ store_image | image_url: width: 736, height: 600 }} 2x"
+								media="(max-width: 400px)">
+
+						<source srcset="{{ store_image | image_url: width: 388, height: 316 }} 1x,
+											{{ store_image | image_url: width: 776, height: 632 }} 2x"
+								media="(max-width: 420px)">
+
+						<source srcset="{{ store_image | image_url: width: 735, height: 599 }} 1x,
+											{{ store_image | image_url: width: 1470, height: 1198 }} 2x"
+								media="(max-width: 767px)">
+
+						<source srcset="{{ store_image | image_url: width: 959, height: 782 }} 1x,
+											{{ store_image | image_url: width: 1918, height: 1564 }} 2x"
+								media="(max-width: 991px)">
+
+						<source srcset="{{ store_image | image_url: width: 838, height: 650 }} 1x,
+											{{ store_image | image_url: width: 1676, height: 1300 }} 2x"
+								media="(max-width: 1500px)">
+
+						<img class="store-location__image"
+							 src="{{- store_image | image_url: width: 1078, height: 836 -}}"
+							 srcset="{{ store_image | image_url: width: 1078, height: 836 }} 1x, {{ store_image | image_url: width: 2156, height: 1672 }} 2x"
+							 alt="{{- store_image.alt | escape -}}"
+							 style="{{- img_focal -}}"
+						>
+					</picture>
+				{% endif %}
+			{%- else -%}
+				{{- 'lifestyle-1' | placeholder_svg_tag: 'store-location__image store-location__image--placeholder' -}}
+			{%- endif -%}
+		</div>
+	</div>
+</section>
+
+{% schema %}
+{
+	"name": "Store locator",
+	"disabled_on": {
+		"groups": [
+			"header",
+			"footer"
+		]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "title",
+			"label": "Heading",
+			"default": "Store name"
+		},
+		{
+			"type": "textarea",
+			"id": "subtitle",
+			"label": "Subheading",
+			"default": "Subheading text about store"
+		},
+		{
+			"type": "text",
+			"id": "address_title",
+			"label": "Address heading",
+			"default": "Address:"
+		},
+		{
+			"type": "image_picker",
+			"id": "address_icon",
+			"label": "Address icon",
+			"info": "50 x 50px recommended"
+		},
+		{
+			"type": "richtext",
+			"id": "address_text",
+			"label": "Address text",
+			"default": "<p>Store address</p>"
+		},
+		{
+			"type": "text",
+			"id": "phone_title",
+			"label": "Phone heading",
+			"default": "Phone:"
+		},
+		{
+			"type": "image_picker",
+			"id": "phone_icon",
+			"label": "Phone icon",
+			"info": "50 x 50px recommended"
+		},
+		{
+			"type": "richtext",
+			"id": "phone_text",
+			"label": "Phone text",
+			"default": "<p>Store phone</p>"
+		},
+		{
+			"type": "text",
+			"id": "email_title",
+			"label": "Email heading",
+			"default": "Email:"
+		},
+		{
+			"type": "image_picker",
+			"id": "email_icon",
+			"label": "Email icon",
+			"info": "50 x 50px recommended"
+		},
+		{
+			"type": "richtext",
+			"id": "email_text",
+			"label": "Email text",
+			"default": "<p>Store email</p>"
+		},
+		{
+			"type": "text",
+			"id": "schedule_title",
+			"label": "Schedule heading",
+			"default": "Schedule:"
+		},
+		{
+			"type": "image_picker",
+			"id": "schedule_icon",
+			"label": "Schedule icon",
+			"info": "50 x 50px recommended"
+		},
+		{
+			"type": "richtext",
+			"id": "schedule_text",
+			"label": "Schedule text",
+			"default": "<p>Store schedule</p>"
+		},
+		{
+			"type": "text",
+			"id": "button_text",
+			"label": "Button label"
+		},
+		{
+			"type": "url",
+			"id": "button_link",
+			"label": "Button link"
+		},
+		{
+			"id": "button_style",
+			"type": "select",
+			"label": "Button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "primary-border",
+					"label": "Primary with border"
+				},
+				{
+					"value": "secondary-border",
+					"label": "Secondary with border"
+				}
+			],
+			"default": "secondary"
+		},
+		{
+			"type": "checkbox",
+			"id": "is_shown_social",
+			"label": "Show social",
+			"default": true
+		},
+		{
+			"type": "text",
+			"id": "social_text",
+			"label": "Social text",
+			"default": "Follow Us"
+		},
+		{
+			"type": "image_picker",
+			"id": "store_image",
+			"label": "Image",
+			"info": "2156 x 1672px recommended"
+		},
+		{
+			"type": "checkbox",
+			"id": "reverse_content",
+			"label": "Reverse content",
+			"default": false
+		},
+		{
+			"type": "text",
+			"id": "google_map_api_key",
+			"label": "Google maps API key (text)",
+			"info": "You’ll need to [register a Google Maps API Key](https://ultra.arvest.digital/templates/contact-template#map) to display the map."
+		},
+		{
+			"type": "text",
+			"id": "map_query",
+			"label": "Map query",
+			"info": "Specify the query parameter [learn more](https://ultra.arvest.digital/templates/contact-template#map)",
+			"default": "Eiffel+Tower,Paris+France"
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "icon_background_color",
+			"default": "#f5f3f6",
+			"label": "Icon background color"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"presets": [
+		{
+			"name": "Store locator"
+		}
+	]
+}
+{% endschema %}

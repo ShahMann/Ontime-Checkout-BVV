@@ -1,0 +1,9 @@
+.page-default {
+  max-width: 992px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.page-default .page-default__title {
+  margin-bottom: 24px;
+  text-align: center;
+}

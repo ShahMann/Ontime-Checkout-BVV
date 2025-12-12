@@ -1,0 +1,163 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	- review_text: text (required)
+	- review_author_name: text
+	- product: product object
+	- custom_image: image object,
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- assign image = custom_image | default: product.featured_image | default: settings.product_default_image -%}
+
+{%- capture product_img_focal -%}
+	--product-img-desktop-pos: {{ image.presentation.focal_point }};
+{%- endcapture -%}
+
+{% if layout == "base" %}
+	{%- if review_text != blank -%}
+		<div class="testimonials__item testimonials__item--base swiper-slide">
+			{%- if review_author_image != blank -%}
+				<picture>
+					<source
+						srcset="{{ review_author_image | image_url: width: 48, height: 48 }} 1x, {{ review_author_image | image_url: width: 112, height: 112 }} 2x"
+						media="(max-width: 767px)"
+					/>
+
+					<img
+						class="testimonials__item-author-image"
+						srcset="{{ review_author_image | image_url: width: 56, height: 56 }} 1x, {{ review_author_image | image_url: width: 112, height: 112 }} 2x"
+						src="{{ review_author_image | image_url: width: 56, height: 56 }}"
+						alt="{{ review_author_image.alt | escape }}"
+						width="56"
+						height="56"
+						loading="lazy"
+					/>
+				</picture>
+			{%- endif -%}
+
+			<div class="testimonials__item-stars">
+				{%- render 'icons', icon: 'five-stars' -%}
+			</div>
+
+			{%- if review_heading != blank -%}
+				<div class="testimonials__item-heading">
+					{{- review_heading -}}
+				</div>
+			{%- endif -%}
+
+			{%- if review_text != blank -%}
+				<div class="testimonials__item-text rte">
+					{{- review_text -}}
+				</div>
+			{%- endif -%}
+
+			{%- if review_author_name != blank -%}
+				<div class="testimonials__item-author">
+					<div class="testimonials__item-author-info">
+						<div class="testimonials__item-author-name">
+							{{- review_author_name -}}
+						</div>
+					</div>
+				</div>
+			{%- endif -%}
+		</div>
+	{%- endif -%}
+{%- elsif layout == 'big-product' -%}
+	{%- if review_text != blank -%}
+		<div class="testimonials__item testimonials__item--big-product swiper-slide">
+			<div class="testimonials__item-product">
+				<a href="{{ product.url }}" class="testimonials__item-product-image-link">
+					{% if product != blank and image != blank %}
+						<picture>
+							<source srcset="{{ image | image_url: width: 346, height: 283 }} 1x,
+											{{ image | image_url: width: 692, height: 566 }} 2x"
+									media="(max-width: 380px)">
+
+							<source srcset="{{ image | image_url: width: 386, height: 315 }} 1x,
+											{{ image | image_url: width: 772, height: 630 }} 2x"
+									media="(max-width: 420px)">
+
+							<source srcset="{{ image | image_url: width: 733, height: 599 }} 1x,
+											{{ image | image_url: width: 1466, height: 1198 }} 2x"
+									media="(max-width: 767px)">
+
+							<source srcset="{{ image | image_url: width: 478, height: 714 }} 1x,
+											{{ image | image_url: width: 956, height: 1428 }} 2x"
+									media="(max-width: 1199px)">
+
+							<img class="testimonials__item-product-image"
+								 src="{{ image | image_url: width: 383, height: 572 }}"
+								 srcset="{{ image | image_url: width: 383, height: 572 }} 1x,
+										{{ image | image_url: width: 766, height: 1144 }} 2x"
+								 alt="{{ image.alt | escape }}"
+								 loading="lazy"
+							>
+						</picture>
+					{% else %}
+						{%- assign random_number       = "now" | date: "%N" | modulo: 5 | plus: 1 -%}
+						{%- assign placeholer_svg_name = 'product-' | append: random_number -%}
+
+						{{- placeholer_svg_name | placeholder_svg_tag: 'testimonials__item-product-image testimonials__item-product-image--placeholder' -}}
+					{% endif %}
+				</a>
+
+				<div class="testimonials__item-product-content">
+					<a href="{{ product.url }}" class="testimonials__item-product-title">
+						{% if product != blank %}
+							{{- product.title -}}
+						{% else %}
+							{{ "products.product_card.product_title" | t }}
+						{% endif %}
+					</a>
+					{% render 'price', product: product %}
+				</div>
+			</div>
+
+			<div class="testimonials__item-content">
+				{%- if review_author_image != blank -%}
+					<picture>
+						<source
+							srcset="{{ review_author_image | image_url: width: 48, height: 48 }} 1x, {{ review_author_image | image_url: width: 112, height: 112 }} 2x"
+							media="(max-width: 767px)"
+						/>
+
+						<img
+							class="testimonials__item-author-image"
+							srcset="{{ review_author_image | image_url: width: 56, height: 56 }} 1x, {{ review_author_image | image_url: width: 112, height: 112 }} 2x"
+							src="{{ review_author_image | image_url: width: 56, height: 56 }}"
+							alt="{{ review_author_image.alt | escape }}"
+							width="56"
+							height="56"
+							loading="lazy"
+						/>
+					</picture>
+				{%- endif -%}
+
+				<div class="testimonials__item-stars">
+					{%- render 'icons', icon: 'five-stars' -%}
+				</div>
+
+				{%- if review_heading != blank -%}
+					<div class="testimonials__item-heading">
+						{{- review_heading -}}
+					</div>
+				{%- endif -%}
+
+				{%- if review_text != blank -%}
+					<div class="testimonials__item-text rte">
+						{{- review_text -}}
+					</div>
+				{%- endif -%}
+
+				{%- if review_author_name != blank -%}
+					<div class="testimonials__item-author">
+						<div class="testimonials__item-author-name">
+							{{- review_author_name -}}
+						</div>
+					</div>
+				{%- endif -%}
+			</div>
+		</div>
+	{%- endif -%}
+{% endif %}
+

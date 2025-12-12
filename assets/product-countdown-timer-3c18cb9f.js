@@ -1,0 +1,1 @@
+const s=()=>{let e;const t={block:".js-product-countdown-timer",timer:".js-timer"};async function r(){e=window.themeCore.utils.Timer,window.themeCore.EventBus.listen("product:count-down-timer-reinit",o),o()}function o(){[...document.querySelectorAll(t.block)].forEach(n=>{const c=n.querySelector(t.timer);e(c).init()})}return Object.freeze({init:r})};export{s as P};

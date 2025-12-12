@@ -1,0 +1,2555 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Section: Featured Product
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- assign product						= section.settings.product -%}
+{%- assign container 					= section.settings.container_width -%}
+{%- assign ui_button_color				= section.settings.ui_button_color -%}
+{%- assign ui_button_background_color	= section.settings.ui_button_background_color -%}
+{%- assign ui_button_border_color		= section.settings.ui_button_border_color -%}
+
+{% if container == 'inherit' %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+{%- render 'adastra' with '/src/styles/carousel.scss' -%}
+{%- render 'adastra' with '/src/styles/product.scss' -%}
+
+{%- if template != 'product' -%}
+	{%- render 'adastra' with '/src/scripts/section-featured-product.js' -%}
+{%- endif -%}
+
+{%- style -%}
+@font-face {
+	font-family: "AmpOnly";
+	src: local("Arial"), local("Liberation Sans"), local("DejaVu Sans"), local("Roboto"), local("Noto Sans");
+	unicode-range: U+0026; /* Unicode for & */
+	}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- capture section_styles -%}
+	--container-width: {{ container_width }};
+	--ui-button-color: {{ ui_button_color }};
+	--ui-button-background-color: {{ ui_button_background_color }};
+	--ui-button-border-color: {{ ui_button_border_color }};
+	--ui-model-view-button-background-color: {{ ui_button_background_color | color_darken: 5 }};
+{%- endcapture -%}
+
+{% assign is_preset = false %}
+
+{% if product == blank %}
+	{% assign is_preset = true %}
+{% endif %}
+
+{%- capture size_guide -%}
+	{%- if section.settings.show_size_guide -%}
+		{%- assign size_guide_page = product.metafields.size_guide.page.value -%}
+
+		{%- if size_guide_page != blank and size_guide_page.content != blank -%}
+			{% assign toggle_id = 'productSizeGuideDrawer-' | append: section.id %}
+			{% assign size_guide_page_content = size_guide_page.content | replace: '<img', '<img loading="lazy"'%}
+
+			{% render 'product-size-guide-popup',
+				product: product,
+				title: section.settings.size_guide_drawer_title,
+				content: size_guide_page_content,
+				toggle_id: toggle_id,
+				tab_general_name: section.settings.size_guide_tab_general_name,
+				tab_model_name: section.settings.size_guide_tab_model_name
+			%}
+		{%- endif -%}
+	{%- endif -%}
+{%- endcapture -%}
+
+<section
+	class="product-section{% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}"
+	style="{{ section_styles }}"
+	data-section-type="product"
+	data-is-preset="{{- is_preset -}}"
+	data-section-id="{{- section.id -}}"
+	data-product-handle="{{- product.handle -}}"
+	data-js-product-container
+>
+	{% include 'product-json' %}
+
+	<div class="product product-featured product--{{ section.settings.product_layout }} js-animate product-featured-de">
+		{%- case section.settings.product_layout -%}
+			{%- when 'two_columns' -%}
+				{%- include 'product-media', media_height: section.settings.media_height -%}
+				{%- include 'product-single-col', blocks: section.blocks, product: product -%}
+			{%- when 'three_columns' -%}
+				{%- render 'product-block-column', col: 'first_column', product: product, section: section, blocks: section.blocks -%}
+				{%- include 'product-media', media_height: section.settings.media_height -%}
+				{%- render 'product-block-column', col: 'third_column', product: product, section: section, blocks: section.blocks -%}
+		{%- endcase -%}
+	</div>
+
+	{{- size_guide -}}
+
+	{%- for block in section.blocks -%}
+		{%- case block.type -%}
+			{% when 'drawers' %}
+				{%- render 'product-drawers-content', block: block, product: product, section_id: section.id -%}
+			{% when 'notify_me' -%}
+				{%- render 'product-notify-me-popup', block: block, section_id: section.id -%}
+			{% when 'ask_question' %}
+				{%- render 'product-ask-question-popup', block: block, section_id: section.id -%}
+		{%- endcase -%}
+	{%- endfor -%}
+</section>
+
+{% schema %}
+{
+	"name": "Featured product",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "product",
+			"id": "product",
+			"label": "Product"
+		},
+		{
+			"type": "header",
+			"content": "Media"
+		},
+		{
+			"type": "checkbox",
+			"id": "is_zoom_enabled",
+			"label": "Enable zoom",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "show_arrows_mobile",
+			"label": "Show arrows on mobile",
+			"default": true
+		},
+		{
+			"type": "select",
+			"id": "media_layout",
+			"label": "Media layout",
+			"info": "Only for Product layout: Two columns",
+			"options": [
+				{
+					"value": "carousel",
+					"label": "Carousel"
+				},
+				{
+					"value": "stacked",
+					"label": "Stacked"
+				},
+				{
+					"value": "stacked_2_col",
+					"label": "Stacked 2 columns"
+				},
+				{
+					"value": "stacked_2_col_with_big_image",
+					"label": "Stacked 2 columns with big image"
+				}
+			],
+			"default": "carousel"
+		},
+		{
+			"type": "select",
+			"id": "thumbnails_position",
+			"label": "Thumbnails position",
+			"options": [
+				{
+					"value": "bottom",
+					"label": "Bottom"
+				},
+				{
+					"value": "left",
+					"label": "Left"
+				}
+			],
+			"default": "bottom",
+			"info": "This setting applies only to the carousel media layout."
+		},
+		{
+			"type": "select",
+			"id": "media_height",
+			"label": "Media height",
+			"options": [
+				{
+					"value": "full_size",
+					"label": "Full size"
+				},
+				{
+					"value": "square",
+					"label": "Square"
+				},
+				{
+					"value": "fit_to_screen",
+					"label": "Fit to screen"
+				}
+			],
+			"default": "full_size"
+		},
+		{
+			"type": "checkbox",
+			"id": "stacked_smooth_scroll",
+			"label": "Make smooth scroll for stacked gallery",
+			"default": true,
+			"info": "Set smooth scroll to anchor on stacked media"
+		},
+		{
+			"type": "checkbox",
+			"id": "is_enable_media_scroller",
+			"label": "Enable media scroll for stacked layout",
+			"default": false,
+			"info": "Enables scroll to variant image when changing product options for stacked layout"
+		},
+		{
+			"type": "header",
+			"content": "General"
+		},
+		{
+			"type": "select",
+			"id": "product_layout",
+			"label": "Layout",
+			"options": [
+				{
+					"value": "two_columns",
+					"label": "Two columns"
+				},
+				{
+					"value": "three_columns",
+					"label": "Three columns"
+				}
+			],
+			"default": "two_columns"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_taxes_included",
+			"label": "Show message of taxes included",
+			"default": true
+		},
+		{
+			"type": "checkbox",
+			"id": "show_pay_installments",
+			"label": "Show pay installments",
+			"default": true
+		},
+		{
+			"type": "header",
+			"content": "Size guide"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_size_guide",
+			"label": "Show size guide",
+			"default": true
+		},
+		{
+			"type": "text",
+			"id": "size_guide_button_text",
+			"label": "Button label",
+			"default": "Size guide"
+		},
+		{
+			"type": "image_picker",
+			"id": "size_guide_button_icon",
+			"label": "Button icon",
+			"info": "24 x 24px .svg recommended"
+		},
+		{
+			"type": "text",
+			"id": "size_guide_drawer_title",
+			"label": "Popup heading",
+			"default": "Size guide"
+		},
+		{
+			"type": "text",
+			"id": "size_guide_tab_general_name",
+			"label": "General tab label",
+			"default": "Dimensions",
+			"info": "Size Guide metafield must not be empty for the tab to appear. [Learn more](https://ultra.arvest.digital/product/featured-product#size-guide)"
+		},
+		{
+			"type": "text",
+			"id": "size_guide_tab_model_name",
+			"label": "Model tab label",
+			"default": "Model parameters",
+			"info": "Size Guide metafield must not be empty for the tab to appear. [Learn more](https://ultra.arvest.digital/product/featured-product#size-guide)"
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "ui_button_color",
+			"label": "UI button color",
+			"default": "#000",
+			"info": "Used for icon color"
+		},
+		{
+			"type": "color",
+			"id": "ui_button_background_color",
+			"label": "UI button background color",
+			"default": "#fff"
+		},
+		{
+			"type": "color",
+			"id": "ui_button_border_color",
+			"label": "UI button border color",
+			"default": "#E9E9E9"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "100%",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"blocks": [
+		{
+			"name": "Badges",
+			"type": "badges",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Badge images",
+			"type": "badge_images",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "paragraph",
+					"content": "Product should have metafield `custom.badge_images`. [Learn more](https://ultra.arvest.digital/product/featured-product#block-badge-images)"
+				},
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 32,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 32,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 32,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 32,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Vendor and SKU",
+			"type": "vendor",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "first_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "checkbox",
+					"id": "show_sku",
+					"label": "Show SKU",
+					"default": true
+				},
+				{
+					"type": "text",
+					"id": "sku_text",
+					"label": "SKU text",
+					"default": "Art: {SKU}",
+					"info": "Use {SKU} to insert SKU into text"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_vendor",
+					"label": "Show vendor",
+					"default": true
+				},
+				{
+					"type": "checkbox",
+					"id": "make_vendor_link",
+					"label": "Make vendor link to collection",
+					"default": true
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Title",
+			"type": "title",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "first_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Description",
+			"type": "description",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "first_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 12
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 12
+				}
+			]
+		},
+		{
+			"name": "Options",
+			"type": "options",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "variant_picker",
+					"label": "Variant picker",
+					"options": [
+						{
+							"value": "radio",
+							"label": "Buttons"
+						},
+						{
+							"value": "select",
+							"label": "Dropdown"
+						}
+					],
+					"default": "radio"
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "first_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Product combination",
+			"type": "product_combination",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "paragraph",
+					"content": "Link products of different colors using swatches. [Learn more](https://ultra.arvest.digital/product/featured-product)"
+				},
+				{
+					"type": "text",
+					"id": "option_name",
+					"label": "Option name",
+					"info": "Example: Color, Style..."
+				},
+				{
+					"type": "text",
+					"id": "option_value_metafield",
+					"label": "Option value metafield",
+					"info": "Enter namespace and key of the metafield holding the value. Eg.: custom.color"
+				},
+				{
+					"type": "product_list",
+					"id": "product_list",
+					"label": "Products",
+					"info": "Select all the variations (including the product itself)."
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 32,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 32,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 32,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 32,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Quantity",
+			"type": "quantity",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "paragraph",
+					"content": "The Compare Products button will be placed here if you enable it."
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Price",
+			"type": "price",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Add to cart",
+			"type": "add_to_cart",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "select",
+					"id": "button_type",
+					"label": "Button style",
+					"options": [
+						{
+							"value": "primary",
+							"label": "Primary"
+						},
+						{
+							"value": "secondary",
+							"label": "Secondary"
+						},
+						{
+							"value": "primary-border",
+							"label": "Primary with border"
+						},
+						{
+							"value": "secondary-border",
+							"label": "Secondary with border"
+						}
+					],
+					"default": "secondary"
+				},
+				{
+					"type": "select",
+					"id": "button_buy_it_type",
+					"label": "Button 'Buy it now' style",
+					"options": [
+						{
+							"value": "primary",
+							"label": "Primary"
+						},
+						{
+							"value": "secondary",
+							"label": "Secondary"
+						},
+						{
+							"value": "primary-border",
+							"label": "Primary with border"
+						},
+						{
+							"value": "secondary-border",
+							"label": "Secondary with border"
+						}
+					],
+					"default": "secondary-border"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_additional_buttons",
+					"label": "Show additional payment buttons",
+					"default": false
+				},
+				{
+					"type": "checkbox",
+					"id": "show_gift_card_recipient",
+					"label": "Show recipient information form for gift cards",
+					"default": true,
+					"info": "Allows buyers to send gift cards on a scheduled date along with a personal message. [Learn more](https://help.shopify.com/manual/online-store/themes/customizing-themes/add-gift-card-recipient-fields)"
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Pickup availability",
+			"type": "pickup_availability",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Drawers",
+			"type": "drawers",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "header",
+					"content": "Product description"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_description",
+					"label": "Show description",
+					"default": true
+				},
+				{
+					"type": "text",
+					"id": "description_toggle_text",
+					"label": "Button label",
+					"default": "Description"
+				},
+				{
+					"type": "text",
+					"id": "description_drawer_title",
+					"label": "Drawer heading",
+					"default": "Description"
+				},
+				{
+					"type": "header",
+					"content": "Custom drawer 1"
+				},
+				{
+					"type": "page",
+					"id": "drawer_page_1",
+					"label": "Page",
+					"info": "Page must not be empty. The page content will be shown in a drawer"
+				},
+				{
+					"type": "text",
+					"id": "drawer_toggle_text_1",
+					"label": "Button label",
+					"default": "Drawer 1"
+				},
+				{
+					"type": "text",
+					"id": "drawer_title_1",
+					"label": "Drawer heading",
+					"default": "Drawer 1"
+				},
+				{
+					"type": "header",
+					"content": "Custom drawer 2"
+				},
+				{
+					"type": "page",
+					"id": "drawer_page_2",
+					"label": "Page",
+					"info": "Page must not be empty. The page content will be shown in a drawer"
+				},
+				{
+					"type": "text",
+					"id": "drawer_toggle_text_2",
+					"label": "Button label",
+					"default": "Drawer 2"
+				},
+				{
+					"type": "text",
+					"id": "drawer_title_2",
+					"label": "Drawer heading",
+					"default": "Drawer 2"
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Complementary products",
+			"type": "complementary",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "paragraph",
+					"content": "To select complementary products, add the Search & Discovery app. [Learn more](https://help.shopify.com/manual/online-store/search-and-discovery/product-recommendations)"
+				},
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "first_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading",
+					"default": "You May Also Like"
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Highlight point",
+			"type": "sales_point",
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "image_picker",
+					"id": "sales_point_icon",
+					"label": "Icon image",
+					"info": "24 x 24px .svg recommended"
+				},
+				{
+					"type": "inline_richtext",
+					"id": "sales_point_text",
+					"label": "Text"
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Inventory status",
+			"type": "inventory_status",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"id": "inv_low_stock_text",
+					"label": "Low stock text",
+					"default": "Low stock"
+				},
+				{
+					"type": "image_picker",
+					"id": "inv_low_stock_icon",
+					"label": "Low stock icon",
+					"info": "24 x 24 .svg recommended"
+				},
+				{
+					"type": "text",
+					"id": "inv_high_stock_text",
+					"label": "High stock text",
+					"default": "Available"
+				},
+				{
+					"type": "image_picker",
+					"id": "inv_high_stock_icon",
+					"label": "High stock icon",
+					"info": "24 x 24 .svg recommended"
+				},
+				{
+					"type": "range",
+					"id": "low_stock_threshold",
+					"min": 0,
+					"max": 50,
+					"step": 1,
+					"label": "Low stock threshold",
+					"default": 10
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Gift product",
+			"type": "gift_wrap_product",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "paragraph",
+					"content": "You can add an icon here: Theme settings > Gift product > Button icon"
+				},
+				{
+					"type": "paragraph",
+					"content": "[Learn more](https://ultra.arvest.digital/product/product-template#block-gift-product) in the theme doc."
+				},
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Sale timer",
+			"type": "countdown_timer",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "paragraph",
+					"content": "Product should have metafield `custom.promo_timer_date`. [Learn more](https://ultra.arvest.digital/product/featured-product#block-sale-timer)"
+				},
+				{
+					"type": "textarea",
+					"id": "text",
+					"label": "Text",
+					"default": "Sale ends in:"
+				},
+				{
+					"type": "image_picker",
+					"id": "icon",
+					"label": "Icon",
+					"info": "24 x 24px .svg recommended"
+				},
+				{
+					"type": "header",
+					"content": "Colors"
+				},
+				{
+					"type": "color",
+					"id": "text_color",
+					"label": "Text",
+					"default": "#535353"
+				},
+				{
+					"type": "color",
+					"id": "timer_text_color",
+					"label": "Timer text",
+					"default": "#000"
+				},
+				{
+					"type": "color",
+					"id": "timer_background_color",
+					"label": "Timer background",
+					"default": "#f1f1f3"
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Stock alert",
+			"type": "notify_me",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "header",
+					"content": "Button settings"
+				},
+				{
+					"type": "text",
+					"id": "notify_me_button_label",
+					"label": "Button label",
+					"default": "Email me when available"
+				},
+				{
+					"type": "image_picker",
+					"id": "notify_me_button_icon",
+					"label": "Button icon",
+					"info": "24 x 24px .svg recommended"
+				},
+				{
+					"type": "header",
+					"content": "Form settings"
+				},
+				{
+					"type": "text",
+					"id": "notify_me_form_heading",
+					"label": "Heading",
+					"default": "Notified by email when this product becomes available"
+				},
+				{
+					"type": "text",
+					"id": "notify_me_form_email_placeholder",
+					"label": "Email label",
+					"default": "Your email"
+				},
+				{
+					"type": "text",
+					"id": "notify_me_form_submit_button_label",
+					"label": "Button label",
+					"default": "Notify me when available"
+				},
+				{
+					"id": "button_style",
+					"type": "select",
+					"label": "Button style",
+					"options": [
+						{
+							"value": "primary",
+							"label": "Primary"
+						},
+						{
+							"value": "secondary",
+							"label": "Secondary"
+						},
+						{
+							"value": "primary-border",
+							"label": "Primary with border"
+						},
+						{
+							"value": "secondary-border",
+							"label": "Secondary with border"
+						}
+					],
+					"default": "secondary"
+				},
+				{
+					"type": "text",
+					"id": "notify_me_form_success_message",
+					"label": "Success message",
+					"default": "Email has been successfully sent"
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Question form",
+			"type": "ask_question",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "header",
+					"content": "Button settings"
+				},
+				{
+					"type": "text",
+					"id": "button_label",
+					"label": "Button label",
+					"default": "Ask a question"
+				},
+				{
+					"type": "image_picker",
+					"id": "button_icon",
+					"label": "Button icon",
+					"info": "24 x 24px .svg recommended"
+				},
+				{
+					"type": "header",
+					"content": "Form settings"
+				},
+				{
+					"type": "text",
+					"id": "heading",
+					"label": "Heading",
+					"default": "Have a question?"
+				},
+				{
+					"type": "text",
+					"id": "email_placeholder",
+					"label": "Email label",
+					"default": "Email",
+					"info": "This field is required"
+				},
+				{
+					"type": "text",
+					"id": "name_placeholder",
+					"label": "Name label",
+					"default": "Name",
+					"info": "This field is required"
+				},
+				{
+					"type": "text",
+					"id": "phone_placeholder",
+					"label": "Phone label",
+					"default": "Phone",
+					"info": "Leave blank to hide field"
+				},
+				{
+					"type": "text",
+					"id": "product_url",
+					"label": "Product URL label",
+					"default": "Reference URL",
+					"info": "This field is required"
+				},
+				{
+					"type": "text",
+					"id": "message_placeholder",
+					"label": "Message label",
+					"default": "Write message",
+					"info": "This field is required"
+				},
+				{
+					"type": "textarea",
+					"id": "success_message",
+					"label": "Success message",
+					"default": "Email has been successfully sent"
+				},
+				{
+					"type": "text",
+					"id": "submit_button_label",
+					"label": "Submit button label",
+					"default": "Submit"
+				},
+				{
+					"id": "button_style",
+					"type": "select",
+					"label": "Button style",
+					"options": [
+						{
+							"value": "primary",
+							"label": "Primary"
+						},
+						{
+							"value": "secondary",
+							"label": "Secondary"
+						},
+						{
+							"value": "primary-border",
+							"label": "Primary with border"
+						},
+						{
+							"value": "secondary-border",
+							"label": "Secondary with border"
+						}
+					],
+					"default": "secondary"
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Share",
+			"type": "socials",
+			"limit": 1,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "checkbox",
+					"id": "show_facebook",
+					"label": "Show Facebook",
+					"default": true
+				},
+				{
+					"type": "checkbox",
+					"id": "show_twitter",
+					"label": "Show X (Twitter)",
+					"default": true
+				},
+				{
+					"type": "checkbox",
+					"id": "show_pinterest",
+					"label": "Show Pinterest",
+					"default": true
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Benefits",
+			"type": "benefits",
+			"limit": 2,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "header",
+					"content": "Benefit 1"
+				},
+				{
+					"type": "image_picker",
+					"id": "icon_1",
+					"label": "Icon",
+					"info": "48 x 48px .svg recommended"
+				},
+				{
+					"type": "text",
+					"id": "title_1",
+					"label": "Heading",
+					"default": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "link_text_1",
+					"label": "Link label",
+					"default": "Learn more"
+				},
+				{
+					"type": "url",
+					"id": "link_url_1",
+					"label": "Link url"
+				},
+				{
+					"type": "header",
+					"content": "Benefit 2"
+				},
+				{
+					"type": "image_picker",
+					"id": "icon_2",
+					"label": "Icon",
+					"info": "48 x 48px .svg recommended"
+				},
+				{
+					"type": "text",
+					"id": "title_2",
+					"label": "Heading",
+					"default": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "link_text_2",
+					"label": "Link label",
+					"default": "Learn more"
+				},
+				{
+					"type": "url",
+					"id": "link_url_2",
+					"label": "Link url"
+				},
+				{
+					"type": "header",
+					"content": "Benefit 3"
+				},
+				{
+					"type": "image_picker",
+					"id": "icon_3",
+					"label": "Icon",
+					"info": "48 x 48px .svg recommended"
+				},
+				{
+					"type": "text",
+					"id": "title_3",
+					"label": "Heading",
+					"default": "Heading"
+				},
+				{
+					"type": "text",
+					"id": "link_text_3",
+					"label": "Link label",
+					"default": "Learn more"
+				},
+				{
+					"type": "url",
+					"id": "link_url_3",
+					"label": "Link url"
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Custom text box",
+			"type": "custom_field",
+			"limit": 5,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "first_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "text",
+					"id": "field_label",
+					"label": "Field label"
+				},
+				{
+					"type": "text",
+					"id": "required_text",
+					"label": "Required text"
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"type": "@app"
+		},
+		{
+			"name": "Custom liquid",
+			"type": "custom_liquid",
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "first_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "liquid",
+					"id": "custom_liquid",
+					"label": "Custom liquid",
+					"info": "Simple custom liquid"
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 25,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Featured product",
+			"blocks": [
+				{
+					"type": "badges"
+				},
+				{
+					"type": "title"
+				},
+				{
+					"type": "vendor"
+				},
+				{
+					"type": "options",
+					"settings": {}
+				},
+				{
+					"type": "price",
+					"settings": {}
+				},
+				{
+					"type": "quantity"
+				},
+				{
+					"type": "add_to_cart",
+					"settings": {}
+				},
+				{
+					"type": "badge_images",
+					"settings": {}
+				},
+				{
+					"type": "drawers",
+					"settings": {}
+				},
+				{
+					"type": "complementary",
+					"settings": {}
+				}
+			]
+		}
+	]
+}
+{% endschema %}

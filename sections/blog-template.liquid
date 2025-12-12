@@ -1,0 +1,463 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Blog template
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/blog.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign image_desktop        		  = section.settings.image_desktop -%}
+{%- assign image_mobile        		      = section.settings.image_mobile | default: image_desktop -%}
+{%- assign banner_overlay        		  = section.settings.banner_overlay -%}
+{%- assign banner_text_color        	  = section.settings.banner_text_color -%}
+{%- assign paginate_by        		      = section.settings.paginate_by -%}
+{%- assign pagination_type    		      = section.settings.pagination_type -%}
+{%- assign lazy_load_button_type          = section.settings.lazy_load_button_type -%}
+{%- assign show_filter_by_tag 		      = section.settings.show_filter_by_tag -%}
+{%- assign featured_post      		      = section.settings.featured_post -%}
+{%- assign featured_post_background_color = section.settings.featured_post_background_color -%}
+{%- assign featured_post_text_color       = section.settings.featured_post_text_color -%}
+{%- assign container 				      = section.settings.container_width -%}
+
+{% if container == 'inherit' %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+{%- capture styles -%}
+	--container-width: {{ container_width }}; {{-  -}}
+	--banner-overlay: {{ banner_overlay }}; {{-  -}}
+	--banner-text: {{ banner_text_color }}; {{-  -}}
+	--featured-blog-background-color: {{- featured_post_background_color -}}; {{-  -}}
+	--featured-blog-text-color: {{- featured_post_text_color -}};
+{%- endcapture -%}
+
+{%- if show_filter_by_tag and blog.all_tags.size > 0 -%}
+	{%- capture filter_items -%}
+		{%- for tag in blog.all_tags -%}
+			<li class="blog__filters-item">
+				{%- capture blog_filters_link_classes -%}
+					focus-visible-outline tab-button js-filter-link {{-  -}}
+					{% if current_tags contains tag %} is-active {%- endif -%}
+				{%- endcapture -%}
+
+				<a
+					class="{{- blog_filters_link_classes | strip_newlines -}}"
+					href="{{- blog.url -}}/tagged/{{- tag | handleize -}}"
+				>
+					{{- tag -}}
+				</a>
+			</li>
+		{%- endfor -%}
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- if filter_items != blank -%}
+	{%- capture blog_filters -%}
+		<div class="blog__filters js-filter">
+			<ul class="blog__filters-list">
+				<li class="blog__filters-item">
+					{%- capture blog_filters_link_reset_classes -%}
+						tab-button tab-button--reset js-filter-reset {{-  -}}
+						{% if current_tags == blank %} is-active {%- endif -%}
+					{%- endcapture -%}
+
+					<a class="{{- blog_filters_link_reset_classes | strip_newlines -}}"
+					   href="{{- blog.url -}}"
+					   {% unless current_tags %}
+						   tabindex="-1"
+					   {% endunless %}
+					>
+						{{- 'blogs.article.view_all' | t -}}
+					</a>
+				</li>
+
+				{{- filter_items -}}
+			</ul>
+		</div>
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- if featured_post != blank -%}
+	{%- capture featured_blog_post_block -%}
+		{%- assign tag = featured_post.tags[0] -%}
+
+		<div class="blog__featured-post blog__featured-post--desktop">
+			{%- render 'article-card',
+				article: featured_post,
+				is_vertical: true,
+				remove_lazy: true
+			-%}
+		</div>
+
+		<div class="blog__featured-post blog__featured-post--mobile">
+			{%-
+				render 'article-card',
+				article: featured_post,
+				is_vertical: true,
+				remove_lazy: true
+			-%}
+		</div>
+	{%- endcapture -%}
+{%- endif -%}
+
+<section class="blog js-blog" id="{{- section.id -}}" style="{{- styles -}}">
+	{%- if image_desktop != blank -%}
+		{%- capture img_focal -%}
+			--img-desktop-pos: {{- image_desktop.presentation.focal_point -}}; {{-  -}}
+			--img-mobile-pos: {{- image_mobile.presentation.focal_point -}};
+		{%- endcapture -%}
+
+		<div class="blog__banner{% if banner_overlay != blank %} blog__banner--overlay{% endif %}">
+			<picture>
+					<source
+						srcset="{{ image_mobile | img_url: '375x' }} 1x, {{ image_mobile | img_url: '750x' }} 2x"
+						media="(max-width: 375px)"
+						width="375"
+						height="240"
+					/>
+
+					<source
+						srcset="{{ image_mobile | img_url: '480x' }} 1x, {{ image_mobile | img_url: '960x' }} 2x"
+						media="(max-width: 480px)"
+						width="480"
+						height="310"
+					/>
+
+					<source
+						srcset="{{ image_mobile | img_url: '575x' }} 1x, {{ image_mobile | img_url: '1150x' }} 2x"
+						media="(max-width: 575px)"
+						width="575"
+						height="290"
+					/>
+
+					<source
+						srcset="{{ image_mobile | img_url: '767x' }} 1x, {{ image_mobile | img_url: '1534x' }} 2x"
+						media="(max-width: 767px)"
+						width="767"
+						height="350"
+					/>
+
+					<source
+						srcset="{{ image_desktop | img_url: '991x' }} 1x, {{ image_desktop | img_url: '1982x' }} 2x"
+						media="(max-width: 991px)"
+						width="991"
+						height="350"
+					/>
+
+					<source
+						srcset="{{ image_desktop | img_url: '1199x' }} 1x, {{ image_desktop | img_url: '2398x' }} 2x"
+						media="(max-width: 1199px)"
+						width="1199"
+						height="300"
+					/>
+
+					<img
+						class="blog__banner-image"
+						style="{{- img_focal -}}"
+						srcset="{{ image_desktop | img_url: '1920x' }} 1x, {{ image_desktop | img_url: '3840x' }} 2x"
+						src="{{- image_desktop | img_url: "1920x" -}}"
+						alt="{{- image_desktop.alt | default: blog.title -}}"
+						width="1920"
+						height="460"
+					/>
+				</picture>
+
+			<div class="blog__banner-content">
+				<h1 class="h1 blog__title blog__title--banner">
+					{{- blog.title -}}
+				</h1>
+			</div>
+		</div>
+	{%- endif -%}
+
+	<div class="blog__container">
+		{%- if image_desktop == blank -%}
+			<h1 class="h1 blog__title {% if blog_filters == blank %}blog__title--offset{%- endif -%}">
+				{{- blog.title -}}
+			</h1>
+		{%- endif -%}
+
+		{%- if blog.articles.size > 0 -%}
+			{%- paginate blog.articles by paginate_by, window_size: 1 -%}
+				{%- if blog_filters != blank -%}
+					{{- blog_filters -}}
+				{%- endif -%}
+
+				{%- if featured_blog_post_block != blank -%}
+					{{- featured_blog_post_block -}}
+				{%- endif -%}
+
+				<div class="blog__row js-blog-grid" aria-busy="false">
+					{%- for article in blog.articles -%}
+						<div class="blog__col">
+							{%- render 'article-card', article: article -%}
+						</div>
+					{%- endfor -%}
+				</div>
+
+				{%- if pagination_type == 'pagination' -%}
+					<div class="blog__pagination-wrapper js-pagination">
+						{%- if paginate.pages > 1 -%}
+							{%- render 'pagination', paginate: paginate -%}
+						{%- endif -%}
+					</div>
+				{%- elsif pagination_type == "infinite_scroll" -%}
+					{%- capture blog_infinite_scroll_classes -%}
+						blog__infinite-scroll no-js-hidden js-infinite-scroll {{-  -}}
+						{% unless paginate.next.url %} is-hidden {%- endunless -%}
+					{% endcapture %}
+
+					<div class="{{- blog_infinite_scroll_classes | strip_newlines -}}"
+						{%- if paginate.next.url -%}
+							data-next-url="{{- paginate.next.url -}}"
+						{%- else -%}
+							data-next-url=""
+						{%- endif -%}
+					></div>
+				{%- else -%}
+					{% capture blog_lazy_load_classes %}
+						button button--{{- lazy_load_button_type }} blog__lazy-load-button js-lazy-load {{-  -}}
+						{% unless paginate.next.url %} is-hidden {%- endunless -%}
+					{% endcapture %}
+
+					<div class="blog__lazy-load-button-wrapper no-js-hidden">
+						<button class="{{- blog_lazy_load_classes | strip_newlines -}}"
+							{%- if paginate.next.url -%}
+								data-next-url="{{- paginate.next.url -}}"
+							{%- else -%}
+								data-next-url=""
+							{%- endif -%}
+						>
+							{{- 'blogs.general.lazy_load_button' | t -}}
+						</button>
+					</div>
+				{%- endif -%}
+
+				{%- unless pagination_type == 'pagination' -%}
+					<noscript>
+						<div class="blog__pagination-wrapper">
+							{%- if paginate.pages > 1 -%}
+								{%- render 'pagination', paginate: paginate -%}
+							{%- endif -%}
+						</div>
+					</noscript>
+				{%- endunless -%}
+
+				{%- render 'adastra' with '/src/scripts/blog-template.js' -%}
+			{%- endpaginate -%}
+		{%- else -%}
+			{%- if featured_blog_post_block != blank -%}
+				{{- featured_blog_post_block -}}
+			{%- endif -%}
+
+			<h2 class="h2 blog__title blog__title--empty">
+				{{- 'blogs.general.empty_blog' | t -}}
+			</h2>
+		{%- endif -%}
+	</div>
+</section>
+
+{%- schema -%}
+{
+	"name": "Blog",
+	"settings": [
+		{
+			"type": "header",
+			"content": "Banner"
+		},
+		{
+			"type": "image_picker",
+			"id": "image_desktop",
+			"label": "Image desktop",
+			"info": "3840 x 920px recommended"
+		},
+		{
+			"type": "image_picker",
+			"id": "image_mobile",
+			"label": "Image mobile",
+			"info": "1534 x 700px recommended"
+		},
+		{
+			"type": "color_background",
+			"id": "banner_overlay",
+			"label": "Overlay",
+			"default": "rgba(0, 0, 0, 0.3)"
+		},
+		{
+			"type": "color",
+			"id": "banner_text_color",
+			"label": "Text",
+			"default": "#fff"
+		},
+		{
+			"type": "header",
+			"content": "General"
+		},
+		{
+			"type": "range",
+			"id": "paginate_by",
+			"min": 6,
+			"max": 24,
+			"step": 1,
+			"label": "Paginate by",
+			"default": 9
+		},
+		{
+			"type": "select",
+			"id": "pagination_type",
+			"label": "Pagination type",
+			"options": [
+				{
+					"value": "pagination",
+					"label": "Pagination"
+				},
+				{
+					"value": "lazy_load",
+					"label": "Load more"
+				},
+				{
+					"value": "infinite_scroll",
+					"label": "Infinite scroll"
+				}
+			],
+			"default": "pagination"
+		},
+		{
+			"type": "select",
+			"id": "lazy_load_button_type",
+			"label": "Load more button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "primary-border",
+					"label": "Primary with border"
+				},
+				{
+					"value": "secondary-border",
+					"label": "Secondary with border"
+				}
+			],
+			"default": "primary"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_filter_by_tag",
+			"label": "Show filter by tag",
+			"default": true
+		},
+		{
+			"type": "header",
+			"content": "Featured blog post"
+		},
+		{
+			"type": "article",
+			"id": "featured_post",
+			"label": "Blog post"
+		},
+		{
+			"type": "color",
+			"id": "featured_post_background_color",
+			"label": "Background color",
+			"default": "#050D2F"
+		},
+		{
+			"type": "color",
+			"id": "featured_post_text_color",
+			"label": "Text color",
+			"default": "#fff"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	]
+}
+{%- endschema -%}

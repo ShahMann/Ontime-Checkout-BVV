@@ -1,0 +1,90 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection-header": {
+      "type": "collection-header",
+      "custom_css": [],
+      "settings": {
+        "show_title": false,
+        "show_image": false,
+        "show_description": true,
+        "show_breadcrumbs_swatches": true,
+        "show_countdown_timer": false,
+        "hide_breadcrumbs": true,
+        "overlay_color": "linear-gradient(90deg, rgba(255, 255, 255, 1), rgba(249, 32, 32, 0) 68%)",
+        "banner_image_text": "#1f3d2b",
+        "timer_cell_background_color": "#4d71f9",
+        "timer_cell_color": "#000000",
+        "container_width": "1432px"
+      }
+    },
+    "collection-body": {
+      "type": "collection-body",
+      "blocks": {
+        "block-1": {
+          "type": "custom_liquid",
+          "disabled": true,
+          "settings": {
+            "heading": "Rose Gold Elegance",
+            "button_label": "Shop Now",
+            "button_link": "/",
+            "background": "#0a0a08",
+            "text_color": "#ffffff",
+            "button_label_color": "#ffffff",
+            "button_background": "rgba(0,0,0,0)",
+            "button_border": "#ffffff",
+            "button_label_hover": "#1f3d2b",
+            "button_background_hover": "#1f3d2b",
+            "button_border_hover": "#ffffff"
+          }
+        },
+        "block-2": {
+          "type": "custom_liquid",
+          "disabled": true,
+          "settings": {
+            "heading": "Minimalist Gold Bar Bracelet",
+            "button_label": "Shop Now",
+            "button_link": "/",
+            "background": "#1f3d2b",
+            "text_color": "#ffffff",
+            "button_label_color": "#ffffff",
+            "button_background": "rgba(0,0,0,0)",
+            "button_border": "#ffffff",
+            "button_label_hover": "#404c38",
+            "button_background_hover": "#ffffff",
+            "button_border_hover": "#ffffff"
+          }
+        }
+      },
+      "block_order": [
+        "block-1",
+        "block-2"
+      ],
+      "settings": {
+        "filters_type": "sidebar",
+        "show_grid_selector": true,
+        "show_color_swatch_in_filters": false,
+        "disable_lazy": false,
+        "paginate_by": 24,
+        "pagination_type": "pagination",
+        "container_width": "inherit",
+        "offset_top_desktop": 16,
+        "offset_bottom_desktop": 60,
+        "offset_top_mobile": 16,
+        "offset_bottom_mobile": 30
+      }
+    }
+  },
+  "order": [
+    "collection-header",
+    "collection-body"
+  ]
+}

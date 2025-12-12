@@ -1,0 +1,215 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Lookbook image
+	This snippet will output main image on lookbook section
+
+	- image: image object (optional, object)
+
+	{%- render "lookbook-image", image: image -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- if image -%}
+	{%- capture img_focal -%}
+		--img-desktop-pos: {{ image.presentation.focal_point }};
+	{%- endcapture -%}
+
+	{%- if is_lazy -%}
+		<picture class="lookbook__image-wrapper-inner lazy">
+			<source
+				data-srcset="{{ image | img_url: '348x348', crop: 'center' }} 1x, {{ image | img_url: '696x696', crop: 'center' }} 2x"
+				srcset="{{ image | img_url: '10x10', crop: 'center' }} 1x, {{ image | img_url: '10x10', crop: 'center' }} 2x"
+				media="(max-width: 380px)"
+				width="348"
+				height="348"
+			>
+
+			<source
+				data-srcset="{{ image | img_url: '388x388', crop: 'center' }} 1x, {{ image | img_url: '776x776', crop: 'center' }} 2x"
+				srcset="{{ image | img_url: '10x10', crop: 'center' }} 1x, {{ image | img_url: '10x10', crop: 'center' }} 2x"
+				media="(max-width: 420px)"
+				width="388"
+				height="388"
+			>
+
+			<source
+				data-srcset="{{ image | img_url: '448x448', crop: 'center' }} 1x, {{ image | img_url: '896x896', crop: 'center' }} 2x"
+				srcset="{{ image | img_url: '10x10', crop: 'center' }} 1x, {{ image | img_url: '10x10', crop: 'center' }} 2x"
+				media="(max-width: 480px)"
+				width="448"
+				height="448"
+			>
+
+			<source
+				data-srcset="{{- image | img_url: '735x735', crop: 'center' }} 1x, {{ image | img_url: '1470x1470', crop: 'center' }} 2x"
+				srcset="{{ image | img_url: '10x10', crop: 'center' }} 1x, {{ image | img_url: '10x10', crop: 'center' }} 2x"
+				media="(max-width: 767px)"
+				width="735"
+				height="735"
+			>
+
+			<source
+				data-srcset="{{- image | img_url: '472x472', crop: 'center' }} 1x, {{ image | img_url: '944x944', crop: 'center' }} 2x"
+				srcset="{{ image | img_url: '10x10', crop: 'center' }} 1x, {{ image | img_url: '10x10', crop: 'center' }} 2x"
+				media="(max-width: 991px)"
+				width="472"
+				height="472"
+			>
+
+			<source
+				data-srcset="{{- image | img_url: '576x576', crop: 'center' }} 1x, {{ image | img_url: '1152x1152', crop: 'center' }} 2x"
+				srcset="{{ image | img_url: '10x10', crop: 'center' }} 1x, {{ image | img_url: '10x10', crop: 'center' }} 2x"
+				media="(max-width: 1199px)"
+				width="576"
+				height="576"
+			>
+
+			<source
+				data-srcset="{{- image | img_url: '726x726', crop: 'center' }} 1x, {{ image | img_url: '1452x1452', crop: 'center' }} 2x"
+				srcset="{{ image | img_url: '10x10', crop: 'center' }} 1x, {{ image | img_url: '10x10', crop: 'center' }} 2x"
+				media="(max-width: 1500px)"
+				width="726"
+				height="726"
+			>
+
+			<img
+				class="lookbook__image"
+				data-srcset="{{- image | img_url: '936x936', crop: 'center' }} 1x, {{ image | img_url: '1872x1872', crop: 'center' }} 2x"
+				data-src="{{- image | img_url: '936x936', crop: 'center' -}}"
+				src="{{- image | img_url: '10x10', crop: 'center' -}}"
+				alt="{{- image.alt -}}"
+				width="936"
+				height="936"
+				style="{{ img_focal }}"
+			>
+		</picture>
+
+		<noscript>
+			<picture>
+				<source
+					srcset="{{- image | img_url: '348x348', crop: 'center' }} 1x, {{ image | img_url: '696x696', crop: 'center' }} 2x"
+					media="(max-width: 380px)"
+					width="348"
+					height="348"
+				>
+
+				<source
+					srcset="{{ image | img_url: '388x388', crop: 'center' }} 1x, {{ image | img_url: '776x776', crop: 'center' }} 2x"
+					media="(max-width: 420px)"
+					width="388"
+					height="388"
+				>
+
+				<source
+					srcset="{{- image | img_url: '448x448', crop: 'center' }} 1x, {{ image | img_url: '896x896', crop: 'center' }} 2x"
+					media="(max-width: 480px)"
+					width="448"
+					height="448"
+				>
+
+				<source
+					srcset="{{- image | img_url: '735x735', crop: 'center' }} 1x, {{ image | img_url: '1470x1470', crop: 'center' }} 2x"
+					media="(max-width: 767px)"
+					width="735"
+					height="735"
+				>
+
+				<source
+					srcset="{{- image | img_url: '472x472', crop: 'center' }} 1x, {{ image | img_url: '944x944', crop: 'center' }} 2x"
+					media="(max-width: 991px)"
+					width="472"
+					height="472"
+				>
+
+				<source
+					srcset="{{- image | img_url: '576x576', crop: 'center' }} 1x, {{ image | img_url: '1152x1152', crop: 'center' }} 2x"
+					media="(max-width: 1199px)"
+					width="576"
+					height="576"
+				>
+
+				<source
+					srcset="{{- image | img_url: '726x726', crop: 'center' }} 1x, {{ image | img_url: '1452x1452', crop: 'center' }} 2x"
+					media="(max-width: 1500px)"
+					width="726"
+					height="726"
+				>
+
+				<img
+					class="lookbook__image"
+					srcset="{{- image | img_url: '936x936', crop: 'center' }} 1x, {{ image | img_url: '1872x1872', crop: 'center' }} 2x"
+					src="{{- image | img_url: '936x936', crop: 'center' -}}"
+					alt="{{- image.alt -}}"
+					width="936"
+					height="936"
+					style="{{ img_focal }}"
+				>
+			</picture>
+		</noscript>
+	{%- else -%}
+		<picture class="lookbook__image-wrapper-inner">
+			<source
+				srcset="{{- image | img_url: '348x348', crop: 'center' }} 1x, {{ image | img_url: '696x696', crop: 'center' }} 2x"
+				media="(max-width: 380px)"
+				width="348"
+				height="348"
+			>
+
+			<source
+				srcset="{{ image | img_url: '388x388', crop: 'center' }} 1x, {{ image | img_url: '776x776', crop: 'center' }} 2x"
+				media="(max-width: 420px)"
+				width="388"
+				height="388"
+			>
+
+			<source
+				srcset="{{- image | img_url: '448x448', crop: 'center' }} 1x, {{ image | img_url: '896x896', crop: 'center' }} 2x"
+				media="(max-width: 480px)"
+				width="448"
+				height="448"
+			>
+
+			<source
+				srcset="{{- image | img_url: '735x735', crop: 'center' }} 1x, {{ image | img_url: '1470x1470', crop: 'center' }} 2x"
+				media="(max-width: 767px)"
+				width="735"
+				height="735"
+			>
+
+			<source
+				srcset="{{- image | img_url: '472x472', crop: 'center' }} 1x, {{ image | img_url: '944x944', crop: 'center' }} 2x"
+				media="(max-width: 991px)"
+				width="472"
+				height="472"
+			>
+
+			<source
+				srcset="{{- image | img_url: '576x576', crop: 'center' }} 1x, {{ image | img_url: '1152x1152', crop: 'center' }} 2x"
+				media="(max-width: 1199px)"
+				width="576"
+				height="576"
+			>
+
+			<source
+				srcset="{{- image | img_url: '726x726', crop: 'center' }} 1x, {{ image | img_url: '1452x1452', crop: 'center' }} 2x"
+				media="(max-width: 1500px)"
+				width="726"
+				height="726"
+			>
+
+			<img
+				class="lookbook__image"
+				srcset="{{- image | img_url: '936x936', crop: 'center' }} 1x, {{ image | img_url: '1872x1872', crop: 'center' }} 2x"
+				src="{{- image | img_url: '936x936', crop: 'center' -}}"
+				alt="{{- image.alt -}}"
+				width="936"
+				height="936"
+				style="{{ img_focal }}"
+			>
+		</picture>
+	{% endif %}
+{%- else -%}
+	<div class="lookbook__image-wrapper-inner">
+		{{- 'collection-1' | placeholder_svg_tag: 'lookbook__image' -}}
+	</div>
+{% endif %}

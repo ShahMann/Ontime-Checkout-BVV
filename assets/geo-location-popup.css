@@ -1,0 +1,97 @@
+.geo-location-popup {
+  z-index: 50;
+}
+.geo-location-popup .geo-location-popup__container {
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+}
+.geo-location-popup .geo-location-popup__col {
+  flex-basis: 50%;
+  flex-grow: 1;
+}
+.geo-location-popup .geo-location-popup__image-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding-top: 73.39%;
+  border-radius: calc(var(--global-border-radius) * 2);
+}
+.geo-location-popup .geo-location-popup__image {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--img-mob-pos);
+}
+.geo-location-popup .geo-location-popup__content {
+  width: 100%;
+  padding: 16px;
+  text-align: center;
+  word-break: break-word;
+}
+.geo-location-popup .geo-location-popup__title {
+  text-align: center;
+}
+.geo-location-popup .geo-location-popup__text {
+  margin-top: 16px;
+  text-align: center;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+.geo-location-popup .geo-location-popup__buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+  gap: 10px;
+}
+.geo-location-popup .geo-location-popup__close-button {
+  margin-top: 20px;
+}
+@media (min-width: 768px) {
+  .geo-location-popup .geo-location-popup__container {
+    max-width: 1040px;
+    flex-direction: row;
+    align-items: center;
+  }
+  .geo-location-popup .geo-location-popup__container.geo-location-popup__container--no-image {
+    max-width: 520px;
+  }
+  .geo-location-popup .geo-location-popup__image-wrapper {
+    padding-top: 100%;
+  }
+  .geo-location-popup .geo-location-popup__image {
+    object-position: var(--img-desktop-pos);
+  }
+  .geo-location-popup .geo-location-popup__content {
+    padding: 32px 24px;
+  }
+  .geo-location-popup .geo-location-popup__close-icon-button.geo-location-popup__close-icon-button--mobile {
+    display: none;
+  }
+}
+@media (max-width: 767.98px) {
+  .geo-location-popup .geo-location-popup__content.geo-location-popup__content--top-offset {
+    padding-top: 32px;
+  }
+  .geo-location-popup .geo-location-popup__col.geo-location-popup__col--hide-img-mob {
+    display: none;
+  }
+}
+@media (max-width: 1199.98px) {
+  .geo-location-popup .geo-location-popup__container {
+    padding: 8px;
+  }
+}
+@media (min-width: 1200px) {
+  .geo-location-popup .geo-location-popup__content {
+    padding: 32px;
+  }
+}

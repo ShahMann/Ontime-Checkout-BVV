@@ -1,0 +1,82 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Image slider slide card
+	- image: image object
+	- link: link url
+	- is_lazy: boolean, enable lazy-load
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{% if link != blank %}
+	{% assign link_class = "image-slider__item-image-wrapper--hover focus-visible-outline" %}
+{% endif %}
+
+<div class="image-slider__item swiper-slide">
+	<a
+		{% if link != blank %}
+			href="{{ link }}"
+		{% else %}
+			aria-disabled="true"
+			role="link"
+		{% endif %}
+		class="image-slider__item-image-wrapper {% if link != blank %}{{ link_class }}{% endif %}"
+	>
+		{%- if image != blank -%}
+			{%- capture img_focal -%}
+				--img-desktop-pos: {{ image.presentation.focal_point }};
+			{%- endcapture -%}
+
+			<picture>
+				<source
+					srcset="{{ image | img_url: '420x420', crop: 'center' }} 1x, {{ image | img_url: '840x840', crop: 'center' }} 2x"
+					media="(max-width: 420px)"
+					width="341"
+					height="341"
+				/>
+
+				<source
+					srcset="{{ image | img_url: '575x575', crop: 'center' }} 1x, {{ image | img_url: '1150x1150', crop: 'center' }} 2x"
+					media="(max-width: 575px)"
+					width="473"
+					height="473"
+				/>
+
+				<source
+					srcset="{{ image | img_url: '600x600', crop: 'center' }} 1x, {{ image | img_url: '1200x1200', crop: 'center' }} 2x"
+					media="(max-width: 991px)"
+					width="579"
+					height="579"
+				/>
+
+				<source
+					srcset="{{ image | img_url: '280x280', crop: 'center' }} 1x, {{ image | img_url: '560x560', crop: 'center' }} 2x"
+					media="(max-width: 1199px)"
+					width="267"
+					height="267"
+				/>
+
+				<source
+					srcset="{{ image | img_url: '380x380', crop: 'center' }} 1x, {{ image | img_url: '760x760', crop: 'center' }} 2x"
+					media="(max-width: 1600px)"
+					width="362"
+					height="362"
+				/>
+
+				<img
+					class="image-slider__item-image"
+					srcset="{{ image | img_url: "450x450", crop: 'center' }} 1x, {{ image | img_url: "900x900", crop: 'center' }} 2x"
+					src="{{ image | img_url: "450x450", crop: 'center' }}"
+					alt="{{ image.alt | escape }}"
+					width="437"
+					height="437"
+					{% if is_lazy %}
+						loading="lazy"
+					{% endif %}
+					style="{{ img_focal }}"
+				/>
+			</picture>
+		{%- else -%}
+			{{- "image" | placeholder_svg_tag: "image-slider__item-image image-slider__item-image--placeholder" -}}
+		{%- endif -%}
+	</a>
+</div>

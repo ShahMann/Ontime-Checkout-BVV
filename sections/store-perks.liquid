@@ -1,0 +1,97 @@
+<div class="store-perks-container page-width">
+    <div class="perk">
+        <div class="perk-icon">{% render 'icons', icon: 'shield' %}</div>
+        <div class="perk-text">{{ 'general.authorized_retailer' | t }}</div>
+    </div>
+    <div class="perk">
+        <div class="perk-icon">{% render 'icons', icon: 'return-parcel' %}</div>
+        <div class="perk-text">{{ 'general.easy_exchange' | t }}</div>
+    </div>
+    {% comment %} <div class="perk">
+        <div class="perk-icon">{% render 'icons', icon: 'free-delivery' %}</div>
+        <div class="perk-text">{{ 'general.free_shipping' | t }}</div>
+    </div> {% endcomment %}
+    <div class="perk tabby">
+        <div class="perk-icon">{% render 'icons', icon: 'tabby' %}</div>
+        <div class="perk-text">{{ 'general.pay_in_installments' | t }}</div>
+    </div>
+</div>
+
+<style>
+    .store-perks-container {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        padding: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .store-perks-container .perk {
+        width: 20%;
+        display: grid;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .store-perks-container .perk .perk-icon {
+        width: 100%;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .store-perks-container .perk .perk-icon svg {
+        width: 50px;
+        height: min-content;
+    }
+
+    .store-perks-container .perk.tabby .perk-icon svg {
+        width: 80px;
+    }
+
+    .store-perks-container .perk .perk-text {
+        text-transform: uppercase;
+        text-align: center;
+        width: 100%;
+        font-size: 14px;
+        font-weight: bold;
+        color: black;
+    }
+
+    /* ======================================================================= */
+    /* ============================= MOBILE VIEW ============================= */
+    /* ======================================================================= */
+
+    @media (max-width: 749px) {
+        .store-perks-container {
+            padding: 2rem 0;
+        }
+
+        .store-perks-container .perk {
+            width: 50%;
+            padding: 2rem;
+        }
+
+        .store-perks-container .perk.tabby {
+            padding-left: 1.3rem;
+        }
+    }
+</style>
+
+{% schema %}
+    {
+      "name": "store-perks",
+      "tag": "section",
+      "class": "section",
+      "disabled_on": {
+        "templates": ["page"],
+        "groups": ["header"]
+      },
+      "presets": [
+        {
+          "name": "Store Perks"
+        }
+      ]
+    }
+  {% endschema %}

@@ -1,0 +1,114 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header brands logos
+	Render header brands logos
+	- blocks: transfer logo block object;
+	- megamenu_object: mega menu object;
+	- modifier: block modifier;
+	- logo_size: logo size;
+	- link_type: link_type (primary / secondary);
+	- modifier: section modifier.
+
+	Usage:
+	{%- render 'header-brands-logos' -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+
+{%- assign link 			= megamenu_object.settings.link -%}
+{%- assign link_text 		= megamenu_object.settings.link_text -%}
+{%- assign link_type 		= link_type | default: 'primary' -%}
+{%- assign logo_size 		= logo_size | default: 120 -%}
+{%- assign logo_size_2x 	= logo_size | times: 2 -%}
+
+{%- assign show_link = false -%}
+
+{%- if link_text != blank and link != blank -%}
+	{%- assign show_link = true -%}
+{%- endif -%}
+
+{%- if modifier != blank -%}
+	{%- assign modifier = 'header-brands-logos--' | append: modifier -%}
+{%- endif -%}
+
+{%- capture brands_logos -%}
+	{%- if blocks.size > 0 -%}
+		{%- for block in blocks -%}
+			{%- assign brand_image 	= block.settings.image -%}
+			{%- assign brand_name 	= block.settings.name -%}
+			{%- assign brand_link 	= block.settings.link -%}
+
+			{% if brand_image != blank %}
+				<li class="header-brands-logos__item">
+					<div class="header-brands-logo-item">
+						{%- if brand_link != blank -%}
+							<a
+								class="header-brands-logo-item__wrapper header-brands-logo-item__wrapper--link"
+								href="{{- brand_link -}}"
+								aria-label="{{- brand_name | escape -}}"
+							>
+								<div class="header-brands-logo-item__container">
+									<img
+										src="{{- brand_image | image_url: width: logo_size -}}"
+										srcset="{{- brand_image | image_url: width: logo_size }} 1x, {{ brand_image | image_url: width: logo_size_2x }} 2x"
+										alt="{{- brand_image.alt -}}"
+										class="header-brands-logo-item__image"
+									>
+								</div>
+							</a>
+						{%- else -%}
+							<div class="header-brands-logo-item__wrapper">
+								<div class="header-brands-logo-item__container">
+									<img
+										src="{{- brand_image | image_url: width: logo_size -}}"
+										srcset="{{- brand_image | image_url: width: logo_size }} 1x, {{ brand_image | image_url: width: logo_size_2x }} 2x"
+										alt="{{- brand_image.alt -}}"
+										class="header-brands-logo-item__image"
+									>
+								</div>
+							</div>
+						{%- endif -%}
+					</div>
+				</li>
+			{%- endif -%}
+		{%- endfor -%}
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- if brands_logos != blank or show_link == true -%}
+	<div class="header-brands-logos {{ modifier -}}">
+		<div class="header-brands-logos__container">
+			<ul class="header-brands-logos__items">
+				{{- brands_logos -}}
+			</ul>
+
+			{%- if link_text != blank and link != blank -%}
+				<div>
+					{%- if link_type == 'primary' -%}
+						<a
+							href="{{- link -}}"
+							class="header-brands-logos__link"
+						>
+							{{- link_text -}}
+
+							{%- render 'icons', icon: 'arrow-right' -%}
+						</a>
+					{%- endif -%}
+
+					{%- if link_type == 'secondary' -%}
+						{%- if brands_logos != blank -%}
+							<span class="header-brands-logos__delimiter"></span>
+						{%- endif -%}
+
+						<a
+							href="{{- link -}}"
+							class="header-brands-logos__link-secondary"
+						>
+							{{- link_text -}}
+						</a>
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+		</div>
+	</div>
+{%- endif -%}

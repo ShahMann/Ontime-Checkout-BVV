@@ -1,0 +1,32 @@
+{%- render 'adastra' with '/src/styles/component-order-count.css' -%}
+
+<order-count 
+    class="order-count is-hidden"
+    data-message="{{ block.settings.order_count_message }}"
+>
+</order-count>
+
+
+<script type="text/javascript">
+    if (!customElements.get("order-count")) {
+        class OrderCount extends HTMLElement{
+            constructor(){
+                super()
+                this.message = this.dataset.message
+            }
+            connectedCallback(){
+                document.addEventListener("generateOrderCount",({detail})=>{
+                    const orderCount = detail
+                    if (orderCount == 0) {
+                        return
+                    }
+                    this.message = this.message.replace("{- order_count -}", orderCount);
+                    this.insertAdjacentHTML("beforeend", `<span class='order-message'>${this.message}<span>`);
+                    this.classList.remove("is-hidden")
+                })
+            }
+        }
+
+        customElements.define("order-count", OrderCount)
+    }
+</script>

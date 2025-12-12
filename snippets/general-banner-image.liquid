@@ -1,0 +1,355 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Banner image
+	This snippet will output banner image
+
+	- image_desktop: image to be shown on Desktop
+	- image_mobile: image to be shown on Mobile
+	- enable_lazy_load: condition that determines whether lazy loading will be applied
+	- is_full_width: condition that determines whether the image will be stretched to full width
+
+	{%- render
+		'general-banner-image',
+		image_desktop: image_desktop,
+		image_mobile: image_mobile,
+		enable_lazy_load: enable_lazy_load,
+		is_full_width: is_full_width
+	-%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- capture img_focal -%}
+	--img-desktop-pos: {{ image_desktop.presentation.focal_point }}; --img-mob-pos: {{ image_mobile.presentation.focal_point }};
+{%- endcapture -%}
+
+{%- if enable_lazy_load -%}
+	{%- if is_full_width == "two_columns" -%}
+		<picture class="lazy">
+			<source
+				data-srcset="{{ image_mobile | img_url: '380x' }} 1x, {{ image_mobile | img_url: '760x' }} 2x"
+				srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 380px)"
+				width="380"
+				height="254"
+			>
+
+			<source
+				data-srcset="{{ image_mobile | img_url: '390x' }} 1x, {{ image_mobile | img_url: '780x' }} 2x"
+				srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 420px)"
+				width="388"
+				height="500"
+			>
+
+			<source
+				data-srcset="{{ image_mobile | img_url: '480x' }} 1x, {{ image_mobile | img_url: '960x' }} 2x"
+				srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 480px)"
+				width="480"
+				height="320"
+			>
+
+			<source
+				data-srcset="{{ image_mobile | img_url: '575x' }} 1x, {{ image_mobile | img_url: '1150x' }} 2x"
+				srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 575px)"
+				width="575"
+				height="384"
+			>
+
+			<source
+				data-srcset="{{ image_mobile | img_url: '767x' }} 1x, {{ image_mobile | img_url: '1534x' }} 2x"
+				srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 767px)"
+				width="767"
+				height="512"
+			>
+
+			<source
+				data-srcset="{{ image_desktop | img_url: '496x' }} 1x, {{ image_desktop | img_url: '992x' }} 2x"
+				srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_desktop | img_url: '10x' }} 2x"
+				media="(max-width: 991px)"
+				width="496"
+				height="595"
+			>
+
+			<source
+				data-srcset="{{ image_desktop | img_url: '600x' }} 1x, {{ image_desktop | img_url: '1200x' }} 2x"
+				srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_desktop | img_url: '10x' }} 2x"
+				media="(max-width: 1199px)"
+				width="600"
+				height="400"
+			>
+
+			<source
+				data-srcset="{{ image_desktop | img_url: '750x' }} 1x, {{ image_desktop | img_url: '1500x' }} 2x"
+				srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_desktop | img_url: '10x' }} 2x"
+				media="(max-width: 1500px)"
+				width="750"
+				height="500"
+			>
+
+			<source
+				data-srcset="{{ image_desktop | img_url: '840x' }} 1x, {{ image_desktop | img_url: '1680x' }} 2x"
+				srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_desktop | img_url: '10x' }} 2x"
+				media="(max-width: 1680px)"
+				width="840"
+				height="560"
+			>
+
+			<img
+				class="general-banner__media"
+				src="{{- image_desktop | img_url: "10x" -}}"
+				data-src="{{ image_desktop | img_url: "960x" }}"
+				data-srcset="{{ image_desktop | img_url: "960x" }} 1x, {{ image_desktop | img_url: "1920x" }} 2x"
+				alt="{{- image_desktop.alt | escape -}}"
+				width="960"
+				height="640"
+				style="{{ img_focal }}"
+			>
+		</picture>
+	{% else %}
+		<picture class="lazy">
+			<source
+				data-srcset="{{ image_mobile | img_url: '380x' }} 1x, {{ image_mobile | img_url: '760x' }} 2x"
+				srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 380px)"
+				width="380"
+				height="570"
+			>
+
+			<source
+				data-srcset="{{ image_mobile | img_url: '390x' }} 1x, {{ image_mobile | img_url: '780x' }} 2x"
+				srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 420px)"
+				width="388"
+				height="500"
+			>
+
+			<source
+				data-srcset="{{ image_mobile | img_url: '480x' }} 1x, {{ image_mobile | img_url: '960x' }} 2x"
+				srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 480px)"
+				width="480"
+				height="768"
+			>
+
+			<source
+				data-srcset="{{ image_mobile | img_url: '575x' }} 1x, {{ image_mobile | img_url: '1150x' }} 2x"
+				srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 575px)"
+				width="575"
+				height="690"
+			>
+
+			<source
+				data-srcset="{{ image_mobile | img_url: '767x' }} 1x, {{ image_mobile | img_url: '1534x' }} 2x"
+				srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 767px)"
+				width="767"
+				height="345"
+			>
+
+			<source
+				data-srcset="{{ image_desktop | img_url: '991x' }} 1x, {{ image_desktop | img_url: '1982x' }} 2x"
+				srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_desktop | img_url: '10x' }} 2x"
+				media="(max-width: 991px)"
+				width="991"
+				height="595"
+			>
+
+			<source
+				data-srcset="{{ image_desktop | img_url: '1199x' }} 1x, {{ image_desktop | img_url: '2398x' }} 2x"
+				srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_desktop | img_url: '10x' }} 2x"
+				media="(max-width: 1199px)"
+				width="1199"
+				height="400"
+			>
+
+			<source
+				data-srcset="{{ image_desktop | img_url: '1500x' }} 1x, {{ image_desktop | img_url: '3000x' }} 2x"
+				srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 1500px)"
+				width="1500"
+				height="500"
+			>
+
+			<source
+				data-srcset="{{ image_desktop | img_url: '1680x' }} 1x, {{ image_desktop | img_url: '3360x' }} 2x"
+				srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+				media="(max-width: 1680px)"
+				width="1680"
+				height="560"
+			>
+
+			<img
+				class="general-banner__media"
+				src="{{- image_desktop | img_url: "10x" -}}"
+				data-src="{{ image_desktop | img_url: "1920x" }}"
+				data-srcset="{{ image_desktop | img_url: "1920x" }} 1x, {{ image_desktop | img_url: "3840x" }} 2x"
+				alt="{{- image_desktop.alt | escape -}}"
+				width="1920"
+				height="640"
+				style="{{ img_focal }}"
+			>
+		</picture>
+	{% endif %}
+{% else %}
+	{%- if is_full_width == "two_columns" -%}
+		<picture>
+			<source
+				srcset="{{ image_mobile | img_url: '380x' }} 1x, {{ image_mobile | img_url: '760x' }} 2x"
+				media="(max-width: 380px)"
+				width="380"
+				height="254"
+			>
+
+			<source
+				srcset="{{ image_mobile | img_url: '390x' }} 1x, {{ image_mobile | img_url: '780x' }} 2x"
+				media="(max-width: 420px)"
+				width="388"
+				height="500"
+			>
+
+			<source
+				srcset="{{ image_mobile | img_url: '480x' }} 1x, {{ image_mobile | img_url: '960x' }} 2x"
+				media="(max-width: 480px)"
+				width="480"
+				height="320"
+			>
+
+			<source
+				srcset="{{ image_mobile | img_url: '575x' }} 1x, {{ image_mobile | img_url: '1150x' }} 2x"
+				media="(max-width: 575px)"
+				width="575"
+				height="384"
+			>
+
+			<source
+				srcset="{{ image_mobile | img_url: '767x' }} 1x, {{ image_mobile | img_url: '1534x' }} 2x"
+				media="(max-width: 767px)"
+				width="767"
+				height="512"
+			>
+
+			<source
+				srcset="{{ image_desktop | img_url: '496x' }} 1x, {{ image_desktop | img_url: '992x' }} 2x"
+				media="(max-width: 991px)"
+				width="496"
+				height="595"
+			>
+
+			<source
+				srcset="{{ image_desktop | img_url: '600x' }} 1x, {{ image_desktop | img_url: '1200x' }} 2x"
+				media="(max-width: 1199px)"
+				width="600"
+				height="400"
+			>
+
+			<source
+				srcset="{{ image_desktop | img_url: '750x' }} 1x, {{ image_desktop | img_url: '1500x' }} 2x"
+				media="(max-width: 1500px)"
+				width="750"
+				height="500"
+			>
+
+			<source
+				srcset="{{ image_desktop | img_url: '840x' }} 1x, {{ image_desktop | img_url: '1680x' }} 2x"
+				media="(max-width: 1680px)"
+				width="840"
+				height="560"
+			>
+
+			<img
+				class="general-banner__media"
+				srcset="{{ image_desktop | img_url: "960x" }} 1x, {{ image_desktop | img_url: "1920x" }} 2x"
+				src="{{- image_desktop | img_url: "960x" -}}"
+				alt="{{- image_desktop.alt | escape -}}"
+				width="960"
+				height="640"
+				{% if section.index == 1 %}
+					fetchpriority="high"
+				{% endif %}
+				style="{{ img_focal }}"
+			>
+		</picture>
+	{% else %}
+		<picture>
+			<source
+				srcset="{{ image_mobile | img_url: '380x' }} 1x, {{ image_mobile | img_url: '760x' }} 2x"
+				media="(max-width: 380px)"
+				width="380"
+				height="570"
+			>
+
+			<source
+				srcset="{{ image_mobile | img_url: '390x' }} 1x, {{ image_mobile | img_url: '780x' }} 2x"
+				media="(max-width: 420px)"
+				width="388"
+				height="500"
+			>
+
+			<source
+				srcset="{{ image_mobile | img_url: '480x' }} 1x, {{ image_mobile | img_url: '960x' }} 2x"
+				media="(max-width: 480px)"
+				width="480"
+				height="768"
+			>
+
+			<source
+				srcset="{{ image_mobile | img_url: '575x' }} 1x, {{ image_mobile | img_url: '1150x' }} 2x"
+				media="(max-width: 575px)"
+				width="575"
+				height="690"
+			>
+
+			<source
+				srcset="{{ image_mobile | img_url: '767x' }} 1x, {{ image_mobile | img_url: '1534x' }} 2x"
+				media="(max-width: 767px)"
+				width="767"
+				height="345"
+			>
+
+			<source
+				srcset="{{ image_desktop | img_url: '991x' }} 1x, {{ image_desktop | img_url: '1982x' }} 2x"
+				media="(max-width: 991px)"
+				width="991"
+				height="595"
+			>
+
+			<source
+				srcset="{{ image_desktop | img_url: '1199x' }} 1x, {{ image_desktop | img_url: '2398x' }} 2x"
+				media="(max-width: 1199px)"
+				width="1199"
+				height="400"
+			>
+
+			<source
+				srcset="{{ image_desktop | img_url: '1500x' }} 1x, {{ image_desktop | img_url: '3000x' }} 2x"
+				media="(max-width: 1500px)"
+				width="1500"
+				height="500"
+			>
+
+			<source
+				srcset="{{ image_desktop | img_url: '1680x' }} 1x, {{ image_desktop | img_url: '3360x' }} 2x"
+				media="(max-width: 1680px)"
+				width="1680"
+				height="560"
+			>
+
+			<img
+				class="general-banner__media"
+				srcset="{{ image_desktop | img_url: "1920x" }} 1x, {{ image_desktop | img_url: "3840x" }} 2x"
+				src="{{- image_desktop | img_url: "1920x" -}}"
+				alt="{{- image_desktop.alt | escape -}}"
+				width="1920"
+				height="640"
+				{% if section.index == 1 %}
+					fetchpriority="high"
+				{% endif %}
+				style="{{ img_focal }}"
+			>
+		</picture>
+	{%- endif -%}
+{%- endif -%}

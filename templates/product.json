@@ -1,0 +1,339 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "pdp_header_ALeCtt": {
+      "type": "pdp-header",
+      "disabled": true,
+      "name": "PDP header",
+      "settings": {
+        "container_width": "inherit"
+      }
+    },
+    "product-template": {
+      "type": "product-template",
+      "blocks": {
+        "vendor": {
+          "type": "vendor",
+          "settings": {
+            "position": "first_column",
+            "show_sku": true,
+            "sku_text": "SKU: {SKU}",
+            "show_vendor": true,
+            "make_vendor_link": true,
+            "offset_top_desktop": 16,
+            "offset_bottom_desktop": 16,
+            "offset_top_mobile": 8,
+            "offset_bottom_mobile": 8
+          }
+        },
+        "badges": {
+          "type": "badges",
+          "settings": {
+            "position": "third_column",
+            "offset_top_desktop": 16,
+            "offset_bottom_desktop": 16,
+            "offset_top_mobile": 8,
+            "offset_bottom_mobile": 8
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "position": "first_column",
+            "offset_top_desktop": 16,
+            "offset_bottom_desktop": 16,
+            "offset_top_mobile": 8,
+            "offset_bottom_mobile": 8
+          }
+        },
+        "inventory_status_XPVjg3": {
+          "type": "inventory_status",
+          "settings": {
+            "position": "first_column",
+            "inv_low_stock_text": "Low stock",
+            "inv_high_stock_text": "In stock, ready to ship",
+            "low_stock_threshold": 5,
+            "show_stock_inventory": false,
+            "show_inventory_quantity": true,
+            "text_color": "#2c2a28",
+            "low_stock_color": "#c42026",
+            "show_background": true,
+            "background_color": "#c42026",
+            "background_opacity": 35,
+            "offset_top_desktop": 16,
+            "offset_bottom_desktop": 16,
+            "offset_top_mobile": 8,
+            "offset_bottom_mobile": 8
+          }
+        },
+        "options": {
+          "type": "options",
+          "settings": {
+            "variant_picker": "radio",
+            "position": "first_column",
+            "offset_top_desktop": 16,
+            "offset_bottom_desktop": 16,
+            "offset_top_mobile": 8,
+            "offset_bottom_mobile": 8
+          }
+        },
+        "quantity": {
+          "type": "quantity",
+          "disabled": true,
+          "settings": {
+            "position": "third_column",
+            "offset_top_desktop": 0,
+            "offset_bottom_desktop": 0,
+            "offset_top_mobile": 8,
+            "offset_bottom_mobile": 0
+          }
+        },
+        "order_count_qh78ed": {
+          "type": "order_count",
+          "settings": {
+            "order_count_message": "{- order_count -} people purchased this item in the last 24 hours!"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "position": "third_column",
+            "offset_top_desktop": 0,
+            "offset_bottom_desktop": 0,
+            "offset_top_mobile": 0,
+            "offset_bottom_mobile": 0
+          }
+        },
+        "gift_wrap_product_qAVGDi": {
+          "type": "gift_wrap_product",
+          "settings": {
+            "position": "third_column",
+            "offset_top_desktop": 16,
+            "offset_bottom_desktop": 16,
+            "offset_top_mobile": 8,
+            "offset_bottom_mobile": 8
+          }
+        },
+        "color_variant_swatches_AFhWK3": {
+          "type": "color_variant_swatches",
+          "settings": {
+            "position": "third_column"
+          }
+        },
+        "add_to_cart": {
+          "type": "add_to_cart",
+          "settings": {
+            "position": "third_column",
+            "button_type": "secondary",
+            "button_buy_it_type": "secondary-border",
+            "show_additional_buttons": false,
+            "show_gift_card_recipient": true,
+            "offset_top_desktop": 16,
+            "offset_bottom_desktop": 16,
+            "offset_top_mobile": 8,
+            "offset_bottom_mobile": 8,
+            "show_back_in_stock": true,
+            "show_price_drop": true
+          }
+        },
+        "notify_me_YqLcwq": {
+          "type": "notify_me",
+          "settings": {
+            "position": "third_column",
+            "notify_me_button_label": "Email me when available",
+            "notify_me_form_heading": "Notified by email when this product becomes available",
+            "notify_me_form_email_placeholder": "Your email",
+            "notify_me_form_submit_button_label": "Notify me when available",
+            "button_style": "secondary",
+            "notify_me_form_success_message": "Email has been successfully sent",
+            "offset_top_desktop": 16,
+            "offset_bottom_desktop": 16,
+            "offset_top_mobile": 8,
+            "offset_bottom_mobile": 8
+          }
+        },
+        "tabby_pay_later_pdp_final_iNBMAY": {
+          "type": "shopify://apps/tabby-pay-later/blocks/pdp-final/b31c2495-41fc-4b20-9fc7-8cb2e9dd9a95",
+          "settings": {
+            "no_price_display": false
+          }
+        },
+        "store_availability_Q6TDLX": {
+          "type": "store_availability",
+          "settings": {
+            "show_home_delivery": true,
+            "show_click_and_collect": true,
+            "show_stores_availability": true
+          }
+        },
+        "pickup_availability": {
+          "type": "pickup_availability",
+          "disabled": true,
+          "settings": {
+            "position": "third_column",
+            "offset_top_desktop": 16,
+            "offset_bottom_desktop": 16,
+            "offset_top_mobile": 8,
+            "offset_bottom_mobile": 8
+          }
+        },
+        "drawers": {
+          "type": "drawers",
+          "settings": {
+            "position": "third_column",
+            "show_highlight": true,
+            "show_description": true,
+            "description_toggle_text": "Description",
+            "description_drawer_title": "Description",
+            "drawer_page_1": "",
+            "drawer_toggle_text_1": "Drawer 1",
+            "drawer_title_1": "Drawer 1",
+            "drawer_page_2": "",
+            "drawer_toggle_text_2": "Drawer 2",
+            "drawer_title_2": "Drawer 2",
+            "offset_top_desktop": 16,
+            "offset_bottom_desktop": 16,
+            "offset_top_mobile": 8,
+            "offset_bottom_mobile": 8
+          }
+        },
+        "complementary": {
+          "type": "complementary",
+          "settings": {
+            "position": "first_column",
+            "heading": "You May Also Like",
+            "offset_top_desktop": 16,
+            "offset_bottom_desktop": 16,
+            "offset_top_mobile": 8,
+            "offset_bottom_mobile": 8
+          }
+        },
+        "socials_63NVJP": {
+          "type": "socials",
+          "settings": {
+            "position": "first_column",
+            "show_facebook": true,
+            "show_twitter": true,
+            "show_pinterest": true,
+            "offset_top_desktop": 16,
+            "offset_bottom_desktop": 16,
+            "offset_top_mobile": 8,
+            "offset_bottom_mobile": 8
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "badges",
+        "title",
+        "inventory_status_XPVjg3",
+        "options",
+        "quantity",
+        "order_count_qh78ed",
+        "price",
+        "gift_wrap_product_qAVGDi",
+        "color_variant_swatches_AFhWK3",
+        "add_to_cart",
+        "notify_me_YqLcwq",
+        "tabby_pay_later_pdp_final_iNBMAY",
+        "store_availability_Q6TDLX",
+        "pickup_availability",
+        "drawers",
+        "complementary",
+        "socials_63NVJP"
+      ],
+      "custom_css": [
+        "#TabbyPromo {margin-bottom: 15px;}"
+      ],
+      "settings": {
+        "is_zoom_enabled": true,
+        "show_arrows_mobile": true,
+        "media_layout": "carousel",
+        "thumbnails_position": "bottom",
+        "media_height": "fit_to_screen",
+        "stacked_smooth_scroll": true,
+        "is_enable_media_scroller": true,
+        "product_layout": "two_columns",
+        "show_taxes_included": false,
+        "show_pay_installments": true,
+        "show_sticky_add_to_cart": false,
+        "show_size_guide": true,
+        "size_guide_button_text": "Open a sizeguide",
+        "size_guide_drawer_title": "Size guide",
+        "size_guide_tab_general_name": "Dimensions",
+        "size_guide_tab_model_name": "Model parameters",
+        "ui_button_color": "#000000",
+        "ui_button_background_color": "#ffffff",
+        "ui_button_border_color": "#e9e9e9",
+        "container_width": "100%",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "heading": "Recommendations",
+        "products_to_show": 4,
+        "tab_label": "Related products",
+        "enable_shopify_recommendations": true,
+        "collection": "",
+        "show_recently_viewed": false,
+        "recently_viewed_label": "Recently viewed",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_GqXtQx": {
+      "type": "image-with-text",
+      "blocks": {
+        "logo_UwAwkR": {
+          "type": "logo",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "logo_UwAwkR"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image_position": "left",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/Image_24.jpg",
+        "image_background": "#ffffff",
+        "label": "Quality Excellence",
+        "heading": "Crafted to Perfection",
+        "text_content": "<p>Each piece in our collection is meticulously handcrafted by skilled artisans using only the finest materials. From brilliant diamonds to lustrous gold, every detail reflects our commitment to exceptional quality and timeless designs.</p>",
+        "button_label": "Show All",
+        "button_aria_label": "Show All",
+        "button_url": "shopify://collections/damante",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    }
+  },
+  "order": [
+    "pdp_header_ALeCtt",
+    "product-template",
+    "product-recommendations",
+    "image_with_text_GqXtQx"
+  ]
+}

@@ -1,0 +1,55 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Product card swatches
+	- option: option object (required, object)
+	- sault: crypto sault for making swatches unique (optional)
+
+	{%- render 'product-card-swatches', option: option -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign option_position  		= option.position -%}
+{%- assign option_name_downcased	= option.name | downcase -%}
+{%- assign option_name_handle		= option.name | handle -%}
+
+<p class="product-card__swatches-label">
+	{{- 'products.product.option_swatch_select' | t: name: option_name_downcased -}}
+</p>
+
+<div class="product-card__swatches-wrapper" data-option-index="option{{- option.position -}}">
+	{%- for value in option.values -%}
+		{%- capture swatch_styles -%}
+			{% assign image_name = value | handle | prepend: 'swatch-' | append: '.png' %}
+			{% assign swatch_color_fallback = value | split: ' ' | last | handle %}
+			{% assign swatch_image = value.swatch.image | default: images[image_name] %}
+			{% assign swatch_color = value.swatch.color | default: swatch_color_fallback %}
+
+			style="
+			{%- if swatch_image != blank -%}
+				--swatch-image: url({{- swatch_image | image_url: width: 24, height: 24 -}});
+			{%- else -%}
+				--swatch-color: {{ swatch_color }};
+			{%- endif -%}"
+		{%- endcapture -%}
+
+		<span class="product-card__swatch-wrapper">
+			<input
+				class="{% if option.selected_value == value and option.values.size == 1 %}is-active {% endif %}js-product-card-swatch"
+				id="{{- sault | append: "-" | append: forloop.index -}}"
+				type="radio"
+				data-option="option{{- option_position -}}"
+				name="option{{- option_position -}}"
+				value="{{- value | escape -}}"
+				aria-label="{{- 'products.product_card.swatch_color' | t: swatch: value | escape -}}"
+			>
+
+			<label
+				class="product-card__swatch-button"
+				{{ swatch_styles | strip_newlines }}
+				for="{{- sault | append: "-" | append: forloop.index -}}"
+			>
+				<span class="product-card__swatch {{ option_name_downcased }}"></span>
+			</label>
+		</span>
+	{%- endfor %}
+</div>

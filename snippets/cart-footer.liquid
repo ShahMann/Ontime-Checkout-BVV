@@ -1,0 +1,172 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Cart footer
+	Render shopping cart footer
+	- section: Section object (required)
+
+	Usage:
+	{%- render 'cart-footer' -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- assign enable_minimum_order_amount = settings.enable_minimum_order_amount -%}
+{%- assign minimum_order_amount_goal = settings.minimum_order_amount_goal -%}
+{%- assign minimum_order_amount_goal_message = settings.minimum_order_amount_goal_message -%}
+{%- assign minimum_order_amount_goal_reached_message = settings.minimum_order_amount_goal_reached_message -%}
+{%- assign minimum_order_amount_goal_message_color = settings.minimum_order_amount_goal_message_color | default: "#CC0000" -%}
+{%- assign minimum_order_amount_goal_reached_message_color = settings.minimum_order_amount_goal_reached_message_color | default: "#000000" -%}
+
+{%- assign cart_total   = cart.total_price -%}
+{%- assign amount_cents = minimum_order_amount_goal | abs | times: 100.0 -%}
+
+{%- capture style -%}
+	--minimum-order-amount-message: {{- minimum_order_amount_goal_message_color -}}; {{-  -}}
+	--minimum-order-amount-reached-message: {{- minimum_order_amount_goal_reached_message_color -}};
+{%- endcapture -%}
+
+{%- assign is_button_message = false -%}
+
+{%- if enable_minimum_order_amount and minimum_order_amount_goal_message != blank and minimum_order_amount_goal_reached_message != blank -%}
+	{%- assign is_button_message = true -%}
+{%- endif -%}
+
+{%- if section != blank -%}
+	<div class="cart-footer" style="{{- style -}}">
+		{%- if order_summary_heading != blank -%}
+			<h2 class="h4 cart-footer__order-summary-heading">
+				{{- order_summary_heading -}}
+			</h2>
+		{%- endif -%}
+
+		{%- if is_shipping_bar != blank -%}
+			<div class="cart-footer__shipping">
+				{%- render 'cart-shipping',
+					amount: amount,
+					message: message,
+					congratulatory_message: congratulatory_message,
+					congratulatory_image: congratulatory_image,
+					bar_color: bar_color,
+					fill_color: fill_color
+				-%}
+			</div>
+		{%- endif -%}
+
+		<div class="cart-footer__main">
+			<div class="cart-footer__subtotal-block js-cart-subtotal">
+				{%- if cart.cart_level_discount_applications.size > 0 -%}
+					<div class="cart-footer__savings">
+						<div class="cart-footer__subtotal">
+							<span class="cart-footer__subtotal-label">
+								{{- 'cart.general.savings' | t | append: ':' -}}
+							</span>
+
+							<ul class="discounts discounts--right cart-footer__discounts" role="list" aria-label="{{- 'customer.order.discount' | t | escape -}}">
+								{%- for discount in cart.cart_level_discount_applications -%}
+									<li class="discounts__item">
+										{% render 'icons', icon: 'discount' %}
+
+										{{ discount.title }}
+										(-{{ discount.total_allocated_amount | money }})
+									</li>
+								{%- endfor -%}
+							</ul>
+						</div>
+					</div>
+				{%- endif -%}
+
+				<p class="cart-footer__subtotal">
+					<span class="cart-footer__subtotal-label">
+						{{- 'cart.general.subtotal' | t | append: ':' -}}
+					</span>
+
+					<span class="cart-footer__subtotal-value">
+						{{- cart.total_price | money -}}
+					</span>
+				</p>
+			</div>
+
+			{%- if settings.show_tax_and_shipping -%}
+				<small class="rte cart-footer__tax">
+					{%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
+						{{ 'cart.general.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
+					{%- elsif cart.taxes_included -%}
+						{{ 'cart.general.taxes_included_but_shipping_at_checkout' | t }}
+					{%- elsif shop.shipping_policy.body != blank -%}
+						{{ 'cart.general.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
+					{%- else -%}
+						{{ 'cart.general.taxes_and_shipping_at_checkout' | t }}
+					{%- endif -%}
+				</small>
+			{%- endif -%}
+
+			<div class="cart-footer__ctas">
+				{%- capture default_checkout_button -%}
+					{{- 'cart.general.checkout' | t -}}
+				{%- endcapture -%}
+
+				{%- assign checkout_button = settings.cart_checkout_button | default: default_checkout_button -%}
+				{%- assign gift_product = settings.gift_wrap_product -%}
+
+				{% if show_gift_button and gift_product != blank and gift_product.available %}
+					{% assign gift_button_icon = settings.gift_wrap_button_icon %}
+
+					<div class="cart-gift-button-container">
+						<button
+							class="gift-button focus-visible-outline js-add-to-cart"
+							type="button"
+							data-product-handle="{{- gift_product.handle -}}"
+							data-min-quantity="{{- gift_product.selected_or_first_available_variant.quantity_rule.min -}}"
+							{% if gift_product.has_only_default_variant or gift_product.variants.size == 1 %}
+								data-variant-id="{{- gift_product.variants[0].id -}}"
+							{% endif %}
+						>
+							{% if gift_button_icon != blank %}
+								{%- capture img_focal -%}
+									--img-desktop-pos: {{ gift_button_icon.presentation.focal_point }};
+								{%- endcapture -%}
+
+								<img
+									class="gift-button__icon"
+									src="{{ gift_button_icon | image_url: width: 24, height: 24 }}"
+									srcset="
+									{{- gift_button_icon | image_url: width: 24, height: 24 }} 1x,
+									{{ gift_button_icon | image_url: width: 48, height: 48 }} 2x"
+									style="{{ img_focal }}"
+									alt="{{ gift_button_icon.alt | escape }}"
+								/>
+							{% endif %}
+
+							<span class="gift-button__text">{{ settings.gift_wrap_button_label }}</span>
+						</button>
+					</div>
+				{% endif %}
+
+				<div class="js-cart-footer-button">
+					<button
+						type="submit"
+						class="button button--secondary button--block js-cart-button"
+						name="checkout"
+						form="cart-{{- section.id -}}"
+					>
+						{{- checkout_button -}}
+					</button>
+				</div>
+			</div>
+
+			{%- if settings.show_additional_checkout_buttons and additional_checkout_buttons -%}
+				<div class="additional-checkout-buttons cart-footer__ctas cart-footer__ctas--additional js-cart-footer-additional-buttons">
+					{{ content_for_additional_checkout_buttons }}
+				</div>
+			{%- endif -%}
+
+			{%- if is_button_message -%}
+				<p class="cart-footer__button-message js-cart-footer-button-message"
+				   data-amount-cents="{{ amount_cents }}"
+				   data-cart-total="{{ cart_total }}"
+				   data-amount-message="{{ minimum_order_amount_goal_message | escape }}"
+				   data-success-message="{{ minimum_order_amount_goal_reached_message | escape }}"
+				></p>
+			{%- endif -%}
+		</div>
+	</div>
+{%- endif -%}

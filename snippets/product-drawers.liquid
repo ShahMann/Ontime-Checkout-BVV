@@ -1,0 +1,148 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product Drawers
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{% comment %}
+	Highlight variables
+{% endcomment %}
+{% assign highlight_show = block.settings.show_highlight %}
+{% assign show_highlight = false %}
+
+{% if highlight_show %}
+
+	{% if product.metafields.custom.material != blank
+		or product.metafields.custom.color != blank
+		or product.metafields.custom.dial_size != blank
+		or product.metafields.custom.dial_color != blank
+		or product.metafields.custom.warranty != blank
+%}
+	{% assign show_highlight = true %}
+	{% endif %}
+{% endif %}
+
+{% comment %}
+	Description variables
+{% endcomment %}
+{% assign description_show = block.settings.show_description %}
+{% assign description_toggle_text = block.settings.description_toggle_text %}
+{% assign description_drawer_title = block.settings.description_drawer_title %}
+{% assign show_description = false %}
+
+{% if description_show
+	and description_toggle_text != blank
+	and product.description != blank
+	and description_drawer_title != blank
+%}
+	{% assign show_description = true %}
+{% endif %}
+
+{% comment %}
+	Drawer 1 variables
+{% endcomment %}
+{% assign drawer_page_1 		= block.settings.drawer_page_1 %}
+{% assign drawer_toggle_text_1 	= block.settings.drawer_toggle_text_1 %}
+{% assign show_drawer_1 		= false %}
+
+{% if drawer_page_1 != blank and drawer_page_1.content != blank and drawer_toggle_text_1 != blank %}
+	{% assign show_drawer_1 = true %}
+{% endif %}
+
+{% comment %}
+	Drawer 2 variables
+{% endcomment %}
+{% assign drawer_page_2 		= block.settings.drawer_page_2 %}
+{% assign drawer_toggle_text_2 	= block.settings.drawer_toggle_text_2 %}
+{% assign show_drawer_2 		= false %}
+
+{% if drawer_page_2 != blank and drawer_page_2.content != blank and drawer_toggle_text_2 != blank %}
+	{% assign show_drawer_2 = true %}
+{% endif %}
+
+{%- capture highlight_button -%}
+	<div class="product-drawers__item product-drawers__highlight">
+		<button
+			type="button"
+			class="product-drawers__item-toggle product-drawers__highlight-toggle"
+			data-target="highlightDrawer-{{- section.id -}}"
+			data-js-toggle="highlightDrawer-{{- section.id -}}"
+		>
+			{{ 'products.product.highlights' | t }}
+
+			{% render 'icons', icon: 'slider-arrow-right' %}
+		</button>
+	</div>
+{%- endcapture -%}
+
+{%- capture description -%}
+	<div class="product-drawers__item product-drawers__description">
+		<button
+			type="button"
+			class="product-drawers__item-toggle product-drawers__description-toggle"
+			data-target="descriptionDrawer-{{- section.id -}}"
+			data-js-toggle="descriptionDrawer-{{- section.id -}}"
+		>
+			{{- description_toggle_text -}}
+
+			{% render 'icons', icon: 'slider-arrow-right' %}
+		</button>
+	</div>
+{%- endcapture -%}
+
+{%- capture drawer_button_1 -%}
+	<div class="product-drawers__item">
+		<button
+			type="button"
+			class="product-drawers__item-toggle"
+			data-target="productDrawer1-{{- section.id -}}"
+			data-js-toggle="productDrawer1-{{- section.id -}}"
+		>
+			{{- drawer_toggle_text_1 -}}
+
+			{% render 'icons', icon: 'slider-arrow-right' %}
+		</button>
+	</div>
+{%- endcapture -%}
+
+{%- capture drawer_button_2 -%}
+	<div class="product-drawers__item">
+		<button
+			type="button"
+			class="product-drawers__item-toggle"
+			data-target="productDrawer2-{{- section.id -}}"
+			data-js-toggle="productDrawer2-{{- section.id -}}"
+		>
+			{{- drawer_toggle_text_2 -}}
+
+			{% render 'icons', icon: 'slider-arrow-right' %}
+		</button>
+	</div>
+{%- endcapture -%}
+
+{% if show_highlight or show_description or show_drawer_1 != blank or show_drawer_2 %}
+	{%- capture styles -%}
+		--offset-top-desktop: {{ block.settings.offset_top_desktop }}px; {{-  -}}
+		--offset-bottom-desktop: {{ block.settings.offset_bottom_desktop }}px; {{-  -}}
+		--offset-top-mobile: {{ block.settings.offset_top_mobile }}px; {{-  -}}
+		--offset-bottom-mobile: {{ block.settings.offset_bottom_mobile }}px;
+	{%- endcapture -%}
+
+	<div class="product-drawers" style="{{ styles }}">
+		{% if show_highlight %}
+			{{- highlight_button -}}
+		{% endif %}
+
+		{% if show_description %}
+			{{- description -}}
+		{% endif %}
+
+		{% if show_drawer_1 %}
+			{{- drawer_button_1 -}}
+		{% endif %}
+
+		{% if show_drawer_2 %}
+			{{- drawer_button_2 -}}
+		{% endif %}
+	</div>
+{% endif %}

@@ -1,0 +1,312 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Products bundle
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+	padding-top: {{- section.settings.offset_top_mobile -}}px;
+	padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+	#shopify-section-{{- section.id -}} {
+	padding-top: {{- section.settings.offset_top_desktop -}}px;
+	padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+	}
+	}
+{%- endstyle -%}
+
+{%- assign default_button_text 		= 'products.label' | t -%}
+{%- assign heading 					= section.settings.heading -%}
+{%- assign subheading 				= section.settings.subheading -%}
+{%- assign product_list 			= section.settings.product_list -%}
+{%- assign button_label 			= section.settings.button_label | default: default_button_text -%}
+{%- assign button_disabled_label 	= section.settings.button_disabled_label | default: button_label -%}
+{%- assign button_style 			= section.settings.button_style -%}
+{%- assign show_total 				= section.settings.show_total -%}
+{%- assign container 				= section.settings.container_width -%}
+
+{%- if container == 'inherit' -%}
+	{%- assign container_width = settings.container_width -%}
+{%- else -%}
+	{% assign container_width = container %}
+{%- endif -%}
+
+{%- capture style -%}
+	--container-width: {{ container_width -}};
+{%- endcapture -%}
+
+{%- assign all_products_has_available_variant = true -%}
+{%- for product in product_list -%}
+	{%- unless product.selected_or_first_available_variant.available -%}
+		{%- assign all_products_has_available_variant = false -%}
+		{%- break -%}
+	{%- endunless -%}
+{%- endfor -%}
+
+{%- assign all_products_has_only_one_variant = true -%}
+{%- for product in product_list -%}
+	{%- unless product.has_only_default_variant -%}
+		{%- assign all_products_has_only_one_variant = false -%}
+		{%- break -%}
+	{%- endunless -%}
+{%- endfor -%}
+
+{%- if product_list == blank -%}
+	{%- assign all_products_has_available_variant = false -%}
+	{%- assign all_products_has_only_one_variant = false -%}
+{%- endif -%}
+
+<section class="products-bundle js-products-bundle js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}" style="{{- style -}}" data-section="{{- section.id -}}">
+	{%- render 'adastra' with '/src/styles/products-bundle.scss' -%}
+	{%- render 'adastra' with '/src/styles/product-card.scss' -%}
+
+	<div class="products-bundle__container">
+		{%- if heading != blank -%}
+			<h2 class="products-bundle__heading need-animate tr-dur-0-5">
+				{{- heading -}}
+			</h2>
+		{%- endif -%}
+
+		{%- if subheading != blank -%}
+			<div class="products-bundle__subheading rte need-animate tr-dur-0-5 tr-del-0-25">
+				{{- subheading -}}
+			</div>
+		{%- endif -%}
+
+		<div class="products-bundle__content">
+			<div class="products-bundle__row">
+				{%- if product_list != blank -%}
+					{% assign delay_step = 0.5 %}
+					{% assign delay_plus_step = 0.7 %}
+
+					{%- for product in product_list -%}
+						{%- assign sault = section.id | append: "-" | append: forloop.index -%}
+						{% assign delay_step = delay_step | plus: 0.25 %}
+						{% assign delay_plus_step = delay_plus_step | plus: 0.5 %}
+
+						<div class="products-bundle__col need-animate tr-dur-0-5" style="transition-delay: {{ delay_step }}s;">
+							{%- render
+								'product-card-with-form',
+								product: product,
+								size: 563,
+								mobile_size: 400,
+								sault: sault,
+								hide_buttons: true,
+								section_id: section.id
+							-%}
+
+							{%- unless forloop.last -%}
+								<div class="products-bundle__plus need-animate tr-dur-0-75" style="transition-delay: {{ delay_plus_step }}s;">
+									{% render 'icons', icon: 'plus' %}
+								</div>
+							{%- endunless -%}
+						</div>
+					{%- endfor -%}
+				{%- else -%}
+					{%- for i in (1..3) -%}
+						{%- assign sault = section.id | append: "-" | append: forloop.index -%}
+
+						<div class="products-bundle__col">
+							{%- render
+								'product-card-with-form',
+								sault: sault,
+								hide_buttons: true,
+								section_id: section.id
+							-%}
+
+							{%- unless forloop.last -%}
+								<div class="products-bundle__plus">
+									{% render 'icons', icon: 'plus' %}
+								</div>
+							{%- endunless -%}
+						</div>
+					{%- endfor -%}
+				{%- endif -%}
+			</div>
+
+			<div class="products-bundle__button-wrapper no-js-hidden need-animate tr-dur-0-5 tr-del-1-5">
+				<small class="products-bundle__error js-product-bundle-error"></small>
+
+				{%- if show_total -%}
+					<div class="products-bundle__total js-product-total">
+						{{ "sections.bundle.total" | t }} <span class="products-bundle__total-price js-product-total-price"></span>
+					</div>
+				{%- endif -%}
+
+				<button
+					class="button button--{{- button_style }} products-bundle__button js-products-bundle-button"
+					data-disabled-label="{{- button_disabled_label -}}"
+					data-enabled-label="{{- button_label -}}"
+					{% unless all_products_has_only_one_variant %}
+						disabled
+					{%- endunless -%}
+					{% unless all_products_has_available_variant %}
+						disabled
+					{%- endunless -%}
+				>
+					{% if all_products_has_only_one_variant %}
+						{%- if all_products_has_available_variant -%}
+							{{- "products.product.add_to_cart" | t -}}
+						{%- else -%}
+							{{- "products.product.sold_out" | t -}}
+						{%- endif -%}
+					{%- else -%}
+						{{- button_disabled_label -}}
+					{%- endif-%}
+				</button>
+			</div>
+		</div>
+	</div>
+
+	{%- render 'adastra' with '/src/scripts/section-products-bundle.js' -%}
+</section>
+
+
+{%- schema -%}
+{
+	"name": "Bundle",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Select and save"
+		},
+		{
+			"type": "richtext",
+			"id": "subheading",
+			"label": "Subheading",
+			"default": "<p>Select 3 products and get 25% discount</p>"
+		},
+		{
+			"type": "product_list",
+			"id": "product_list",
+			"label": "Products",
+			"limit": 3
+		},
+		{
+			"type": "text",
+			"id": "button_label",
+			"label": "Button label",
+			"default": "Add to cart"
+		},
+		{
+			"type": "text",
+			"id": "button_disabled_label",
+			"label": "Disabled button label",
+			"default": "Choose products",
+			"info": "If not set “Button label“ will be used"
+		},
+		{
+			"id": "button_style",
+			"type": "select",
+			"label": "Button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "primary-border",
+					"label": "Primary with border"
+				},
+				{
+					"value": "secondary-border",
+					"label": "Secondary with border"
+				}
+			],
+			"default": "secondary"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_total",
+			"label": "Show total price",
+			"default": true
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"presets": [
+	{
+	"name": "Bundle"
+	}
+	]
+}
+{%- endschema -%}

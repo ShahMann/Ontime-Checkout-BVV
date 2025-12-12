@@ -1,0 +1,82 @@
+.page-404 .page-404__container {
+  margin: 0 auto;
+  padding: 0 16px;
+  text-align: center;
+}
+.page-404 .page-404__heading {
+  font-size: calc(var(--heading-font-size) * 2.3125);
+  font-weight: 800;
+  line-height: 1.2;
+}
+.page-404 .page-404__heading.page-404__heading--background {
+  background-image: var(--background-image);
+  background-clip: text;
+  color: transparent;
+}
+.page-404 .page-404__text {
+  margin-top: 33px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 800px;
+  color: var(--color-text-primary);
+}
+.page-404 .page-404__text a {
+  color: currentColor;
+}
+.page-404 .page-404__button {
+  margin-top: 24px;
+}
+.page-404 .page-404__navigation-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 24px;
+  gap: 1.2rem;
+}
+.page-404 .page-404__navigation-list-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.page-404 .page-404__navigation-list-link:focus-visible {
+  outline: 2px solid var(--color-text-primary);
+}
+.page-404 .page-404__navigation-list-link-icon {
+  padding-inline-start: 11px;
+}
+.page-404 .page-404__navigation-list-link-icon svg {
+  display: block;
+  width: 16px;
+  height: 26px;
+}
+@media (min-width: 768px) {
+  .page-404 .page-404__container {
+    max-width: 950px;
+  }
+  .page-404 .page-404__navigation-list {
+    flex-direction: row;
+    gap: 2rem;
+  }
+  .page-404 .page-404__navigation-list-link {
+    transition-property: color;
+    transition-duration: var(--timing-base);
+    transition-timing-function: ease-in-out;
+  }
+}
+@media (min-width: 768px) and (-moz-touch-enabled: 0), (min-width: 768px) and (hover: hover), (min-width: 768px) and (pointer: fine) {
+  .page-404 .page-404__navigation-list-link:hover {
+    color: var(--link-color);
+  }
+}
+@media (min-width: 992px) {
+  .page-404 .page-404__heading {
+    font-size: calc(var(--heading-font-size) * 6.25);
+  }
+  .page-404 .page-404__navigation-list {
+    margin-top: 66px;
+  }
+}

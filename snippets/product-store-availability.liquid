@@ -1,0 +1,103 @@
+{% comment %}
+  ------------------------------------------------------------------------------
+    Snippet: Product Store's Availability
+
+    Params :
+      - product : product
+      - block: rendered section block
+      - section_id: id of the section
+  ------------------------------------------------------------------------------
+{% endcomment %}
+
+{% if product != blank and settings.show_delivery_indications %}
+   <store-availability 
+    data-productId="{{ product.id }}"
+    data-variantId="{{ product.selected_or_first_available_variant.id }}"
+    data-sku="{{ product.selected_or_first_available_variant.sku }}"
+    data-currency="{{ shop.currency }}"
+    data-title="{{ product.title }}"
+    data-tags="{{ product.tags | join: ', ' }}"
+    data-vendor="{{ product.vendor }}"
+    data-price="{{ product.price | money_without_currency }}"
+    data-compared-at-price="{% if product.compare_at_price > 0 %}{{ product.compare_at_price |  money_without_currency }}{% else %} {{ 0.00 }}{% endif %}"
+    data-discount-price="{%- capture discount -%}{% if product.compare_at_price > 0 %}{{ product.compare_at_price |  minus: product.price }}{% else %} {{ 0.00 }}{% endif %}{%- endcapture -%}{{ discount | money_without_currency }}"
+    data-variant-count= "{{ product.variants.size }}"
+    data-image="{{- "https:" -}}{{- product.featured_image | img_url: 'master' -}}"
+    data-size="{{ product.metafields.custom.size.value }}"
+    data-color="{{ product.metafields.custom.color.value }}"
+  >
+    <style>
+      .drawer__body li.-list__item .h4 {
+        margin-bottom: 0;
+      }
+      .drawer__body li.store-availability-list__item {
+        border-top: 1px solid lightgrey;
+        padding-top: 1rem;
+        line-height: 120%;
+        display: grid;
+        gap: 10px;
+      }
+
+      .drawer__body .store-availability-list__item .store-title {
+        margin-bottom: 5px;
+      }
+    </style>
+
+    <div class="product-store-availability" available>
+      {%- if block.settings.show_home_delivery -%}
+        <div class="home-delivery">
+          <div class="icon__tick">
+            {%- render 'icons', icon: 'shipping' -%}
+          </div>
+          <div class="content">
+            <h2 class="title h5">
+              {{- 'products.product.store_availability.home_delivery.label' | t -}}
+            </h2>
+            <p>
+              {% render 'icons', icon: 'green-circle' %}
+              <span>{{- 'products.product.store_availability.home_delivery.content' | t -}}</span>
+            </p>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {% if block.settings.show_click_and_collect or block.settings.show_stores_availability %}
+        {% render 'skeleton' %}
+      {% endif %}
+      
+      {% if block.settings.show_click_and_collect %}
+        <div class="click-and-collect is-hidden">
+          <div class="icon__tick">
+            {%- render 'icons', icon: 'click-and-collect' -%}
+          </div>
+          <div class="content">
+            <h2 class="title h5">
+              {{- 'products.product.store_availability.click_and_collect.label' | t -}}
+            </h2>
+            <p>
+              {% render 'icons', icon: 'green-circle' %}
+              <span>{{- 'products.product.store_availability.click_and_collect.content' | t -}}</span>
+            </p>
+
+            {% render 'click-and-collect-drawer' %}
+          </div>
+        </div>
+      {% endif %}
+
+      {%- if block.settings.show_stores_availability -%}
+        <div class="store-availability is-hidden">
+          <div class="icon__tick">
+            <img src="{{ 'shop.png' |  asset_url }}" alt="availability" height="28" width="28">
+          </div>
+          <div class="content">
+            <h2 class="title h5">
+              {{- 'products.product.store_availability.store_availability.label' | t -}}
+            </h2>
+
+            {% render 'store-list' %}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </store-availability>
+{% endif %}

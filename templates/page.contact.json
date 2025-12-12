@@ -1,0 +1,57 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "contact-page-template": {
+      "type": "contact-page-template",
+      "settings": {
+        "heading": "CONTACT INFORMATION",
+        "subheading": "<p>Let's chat! Contact us below, and we'll respond within 1 business day.</p>",
+        "address_heading": "Address:",
+        "address_text": "",
+        "phone_heading": "Phone:",
+        "phone_text": "<a href=\"tel:1820012\">+965 1820012</a>",
+        "email_heading": "Email:",
+        "email_text": "<a href=\"mailto:info@ultra5jewelry.com\" target=\"_blank\" title=\"help@cs.alyasra.com\">help@cs.alyasra.com</a>",
+        "schedule_heading": "Schedule:",
+        "schedule_text": "Tue-Sun: 10:00 AM - 6:00 PM",
+        "show_socials": true,
+        "social_text": "Follow Us",
+        "name_label": "Name",
+        "name_placeholder": "Your name...",
+        "is_name_required": false,
+        "email_label": "Email",
+        "email_placeholder": "Your email...",
+        "phone_label": "Phone",
+        "is_phone_required": false,
+        "phone_placeholder": "Enter your phone number",
+        "message_label": "Message",
+        "message_placeholder": "Your message...",
+        "is_message_required": false,
+        "submit_label": "Send a message",
+        "submit_style": "secondary",
+        "map_api_key": "",
+        "map_query": "Eiffel+Tower,Paris+France",
+        "map_url": "",
+        "banner_heading_color": "#ffffff",
+        "banner_overlay_color": "rgba(0, 0, 0, 0)",
+        "icon_background_color": "#f5f3f6",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 0,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 0
+      }
+    }
+  },
+  "order": [
+    "contact-page-template"
+  ]
+}

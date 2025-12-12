@@ -1,0 +1,303 @@
+{%- assign swatch_option				= settings.color_swatches_option | default: 'Color' | downcase -%}
+{%- assign is_color_swatches_enabled	= settings.is_color_swatches_enabled -%}
+{%- assign variants_type				= settings.quick_view_variant_picker -%}
+{%- assign button_type 					= settings.quick_view_button_type -%}
+{%- assign button_buy_it_type 			= settings.quick_view_button_buy_it_type -%}
+
+{%- capture button_buy_it_type_styles -%}
+	{%- case button_buy_it_type -%}
+		{%- when 'primary' -%}
+			--button-color: var(--button-text-color-primary); {{-  -}}
+			--button-background: var(--button-background-color-primary); {{-  -}}
+			--button-border-color: transparent; {{-  -}}
+			--button-color-hover: var(--button-text-color-primary-hover); {{-  -}}
+			--button-background-color-hover: var(--button-background-color-primary-hover); {{-  -}}
+			--button-border-color-hover: transparent; {{-  -}}
+		{%- when 'secondary' -%}
+			--button-color: var(--button-text-color-secondary); {{-  -}}
+			--button-background: var(--button-background-color-secondary); {{-  -}}
+			--button-border-color: transparent; {{-  -}}
+			--button-color-hover: var(--button-text-color-secondary-hover); {{-  -}}
+			--button-background-color-hover: var(--button-background-color-secondary-hover); {{-  -}}
+			--button-border-color-hover: transparent; {{-  -}}
+		{%- when 'primary-border' -%}
+			--button-color: var(--button-text-color-primary-with-border); {{-  -}}
+			--button-background: var(--button-background-color-primary-with-border); {{-  -}}
+			--button-border-color: var(--button-border-color-primary-with-border); {{-  -}}
+			--button-color-hover: var(--button-text-color-primary-with-border-hover); {{-  -}}
+			--button-background-color-hover: var(--button-background-color-primary-with-border-hover); {{-  -}}
+			--button-border-color-hover: var(--button-border-color-primary-with-border-hover); {{-  -}}
+		{%- when 'secondary-border' -%}
+			--button-color: var(--button-text-color-secondary-with-border); {{-  -}}
+			--button-background: var(--button-background-color-secondary-with-border); {{-  -}}
+			--button-border-color: var(--button-border-color-secondary-with-border); {{-  -}}
+			--button-color-hover: var(--button-text-color-secondary-with-border-hover); {{-  -}}
+			--button-background-color-hover: var(--button-background-color-secondary-with-border-hover); {{-  -}}
+			--button-border-color-hover: var(--button-border-color-secondary-with-border-hover); {{-  -}}
+	{%- endcase -%}
+{%- endcapture -%}
+
+{%- form 'product', product, class: 'quick-view__form quick-view-form js-quick-view-form', novalidate: 'novalidate' -%}
+	{% if product.template_suffix == 'pre-order' %}
+		<input type="hidden" name="properties[_Pre-order]" value="true">
+	{% endif %}
+
+	<div class="quick-view-form__options">
+		<div class="quick-view-form__options-wrapper">
+			{%- for option in product.options_with_values -%}
+				<fieldset class="fieldset quick-view-form__option focus-visible-outline">
+				{%- assign option_position       = option.position -%}
+				{%- assign option_name_downcased = option.name | downcase -%}
+				{%- assign option_name_handle    = option.name | handle -%}
+				{%- assign option_index          = "option" | append: option_position -%}
+				{%- assign swatch_count 			= option.values | map: 'swatch' | compact | size -%}
+
+				{% assign use_color_swatch = false %}
+
+				{% if swatch_count > 0 and is_color_swatches_enabled %}
+					{% assign use_color_swatch = true %}
+				{% endif %}
+
+				{% if is_color_swatches_enabled and option_name_downcased == swatch_option %}
+					{% assign use_color_swatch = true %}
+				{% endif %}
+
+				<legend class="fieldset__legend legend quick-view-form__name">
+					{{- option.name -}}:
+
+					{% if use_color_swatch %}
+						<span class="product-options__swatch-value js-swatch-label-name"
+							  data-swatch-name="{{ option.name }}"
+							  data-swatch-position="{{ option.position }}"
+						>
+						{{- option.selected_value -}}
+					</span>
+					{% endif %}
+				</legend>
+
+				{% if use_color_swatch %}
+					<div class="product-options__swatch-container">
+						{%- for value in option.values -%}
+							{%- assign handleized_value = value | handleize -%}
+
+							<div class="radio-container radio-option-swatch-circle">
+								{%- assign is_disabled = true -%}
+
+								{%- for variant in product.variants -%}
+									{%- if variant.options contains value and variant.available -%}
+										{%- assign is_disabled = false -%}
+										{%- break -%}
+									{%- endif -%}
+								{%- endfor -%}
+
+								{%- capture swatch_styles -%}
+									{% assign image_name = value | handle | prepend: 'swatch-' | append: '.png' %}
+									{% assign swatch_color_fallback = value | split: ' ' | last | handle %}
+									{% assign swatch_image = value.swatch.image | default: images[image_name] %}
+									{% assign swatch_color = value.swatch.color | default: swatch_color_fallback %}
+
+									style="
+									{%- if swatch_image != blank -%}
+										--swatch-image: url({{- swatch_image | image_url: width: 60, height: 60 -}});
+									{%- else -%}
+										--swatch-color: {{ swatch_color }};
+									{%- endif -%}"
+								{%- endcapture -%}
+
+								<input
+									id="quick-view-{{- value | handle -}}-{{ option_name_handle }}"
+									type="radio"
+									class="visually-hidden radio-input js-swatch"
+									value="{{- value -}}"
+									name="option{{- option.position -}}"
+									{% if value == option.selected_value %}
+										checked
+									{% endif %}
+									aria-checked="true"
+									data-option="option{{- option.position -}}"
+								/>
+
+								<label
+									for="quick-view-{{- value | handle -}}-{{ option_name_handle }}"
+									class="radio-option-swatch-circle__label {% if is_disabled %}is-disabled{% endif %}"
+									{{- swatch_styles -}}
+								>
+									<span class="visually-hidden">{{- value -}}</span>
+								</label>
+
+								<span class="radio-option-tooltip" aria-hidden="true">{{- value -}}</span>
+							</div>
+						{%- endfor -%}
+					</div>
+					</fieldset>
+					{%- continue -%}
+				{% endif %}
+
+				{% if variants_type == "radio" or use_color_swatch %}
+					{%- for value in option.values -%}
+						{%- if use_color_swatch and is_color_swatches_enabled -%}
+							{%- capture container_classes -%}
+								radio-container radio-option-swatch quick-view-form__radio-container
+							{%- endcapture -%}
+
+							{%- capture swatch_styles -%}
+								{% assign image_name = value | handle | prepend: 'swatch-' | append: '.png' %}
+								{% assign swatch_color_fallback = value | split: ' ' | last | handle %}
+								{% assign swatch_image = value.swatch.image | default: images[image_name] %}
+								{% assign swatch_color = value.swatch.color | default: swatch_color_fallback %}
+
+								style="
+								{%- if swatch_image != blank -%}
+									--swatch-image: url({{- swatch_image | image_url: width: 60, height: 60 -}});
+								{%- else -%}
+									--swatch-color: {{ swatch_color }};
+								{%- endif -%}"
+							{%- endcapture -%}
+						{%- else -%}
+							{%- capture container_classes -%}
+								radio-container radio-option  quick-view-form__radio-container
+							{%- endcapture -%}
+						{%- endif -%}
+						{%- assign current_variants = product.variants | where: option_index, value -%}
+
+						{%- if current_variants == blank and current_variants[0].available != true -%}
+							{%- assign option_value_available = false -%}
+						{%- endif -%}
+
+						<div class="{{- container_classes -}}">
+							<input
+								id="quick-view-{{- value | handle -}}-{{ option_name_handle }}"
+								type="radio"
+								class="visually-hidden radio-input"
+								value="{{- value | escape -}}"
+								name="option{{- option.position -}}"
+								data-option="option{{- option.position -}}"
+								{%- if option.selected_value == value -%}checked{%- endif -%}
+							>
+
+							<label
+								for="quick-view-{{- value | handle -}}-{{ option_name_handle }}"
+								class="radio-option__label"
+								{{- swatch_styles -}}
+							>
+								{{- value -}}
+							</label>
+						</div>
+					{%- endfor -%}
+				{% else %}
+					<select id="quick-view-option-{{ option_name_handle }}"
+							class="product-options__select"
+							name="option{{- option.position -}}"
+							data-option="option{{- option.position -}}"
+					>
+						{%- for value in option.values -%}
+							<option
+								value="{{- value | escape -}}"
+								{% if value == option.selected_value %}
+									selected
+								{% endif %}
+							>
+								{{- value -}}
+							</option>
+						{%- endfor -%}
+					</select>
+
+					<label
+						for="quick-view-option-{{ option_name_handle }}"
+						class="visually-hidden"
+					>
+						{{- value -}}
+					</label>
+				{% endif %}
+				</fieldset>
+			{%- endfor -%}
+		</div>
+
+		<div class="quick-view-form__price">
+			<div class="js-quick-view-price">
+				{%- render 'price',
+					product: product,
+					show_unit_price: show_unit_price,
+					currency_code_enabled: currency_code_enabled,
+					use_variant: true
+				-%}
+			</div>
+
+			{% if cart.taxes_included and show_taxes_included %}
+				<div class="quick-view-form__tax-included">
+					{{- 'products.product.price.taxes_included' | t -}}
+					{% if shop.shipping_policy.body != blank %}
+						{{- 'products.product.price.shipping_policy_html' | t: link: shop.shipping_policy.url -}}
+					{% endif %}
+				</div>
+			{% endif %}
+		</div>
+
+		{%- render 'product-quantity' -%}
+
+		<select
+			name="id"
+			id="quick-view-id"
+			class="is-hidden js-quick-view-hidden-select"
+		>
+			{%- for variant in product.variants -%}
+				<option
+					value="{{- variant.id -}}"
+					{%- if variant.option1 != nil -%} data-option1="{{- variant.option1 | escape -}}" {%- endif -%}
+					{%- if variant.option2 != nil -%} data-option2="{{- variant.option2 | escape -}}" {%- endif -%}
+					{%- if variant.option3 != nil -%} data-option3="{{- variant.option3 | escape -}}" {%- endif -%}
+					{%- if variant == product.selected_or_first_available_variant -%}selected="selected"{%- endif -%}
+				>
+					{{- variant.title -}}
+				</option>
+			{%- endfor -%}
+		</select>
+
+		<div class="quick-view-form__error" id="QuickViewError-{{- product.id -}}" role="alert">
+			<small class="quick-view-form__error js-quick-view-error"></small>
+		</div>
+	</div>
+
+	<div class="quick-view-form__buttons" style="{{- button_buy_it_type_styles -}}">
+		<button
+			class="button button--{{ button_type }} quick-view-form__button js-quick-submit-button"
+			data-add-to-card="{{- "products.product.add_to_cart" | t -}}"
+			data-sold-out="{{- "products.product.sold_out" | t -}}"
+			data-unavailable="{{- "products.product.unavailable" | t -}}"
+			{% if product.template_suffix == 'pre-order' %}
+				data-preorder
+			{% endif %}
+			type="submit"
+			{%- if product.selected_or_first_available_variant.available == false -%}
+				disabled
+			{%- endif -%}
+		>
+			{%- if product.selected_or_first_available_variant.available  -%}
+				{% if product.template_suffix == 'pre-order' %}
+					{{- 'products.product.pre_order' | t -}}
+				{% else %}
+					{{- 'products.product.add_to_cart' | t -}}
+				{% endif %}
+			{%- else -%}
+				{{- "products.product.sold_out" | t -}}
+			{%- endif -%}
+		</button>
+
+		{%- if quick_view_enable_buy_it_now -%}
+			<div class="additional-checkout-buttons">
+				{{- form | payment_button  -}}
+			</div>
+		{%- endif -%}
+
+		<a
+			class="quick-view-form__button quick-view-form__button--transparent js-quick-view-link"
+			href="{{- product.url -}}/?variant={{- product.selected_or_first_available_variant.id -}}"
+		>
+			<span>
+				{{- "products.quick_view.visit_product_page" | t -}}
+			</span>
+
+			{% render 'icons', icon: 'arrow-right' %}
+		</a>
+	</div>
+{%- endform -%}

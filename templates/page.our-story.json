@@ -1,0 +1,74 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+	"sections": {
+		"page-template": {
+			"type": "page-template",
+			"settings": {
+			}
+		},
+		"richtext": {
+			"type": "richtext",
+			"settings": {
+			}
+		},
+		"image-with-text-first": {
+			"type": "image-with-text",
+			"settings": {
+				"heading": "Text heading",
+				"text_content": "<p>Combine an image with text to highlight a specific product, collection, or blog post of your choice. Enhance the content by including information on its availability, style, or possibly a review.</p>",
+				"button_label": "Button label",
+				"button_aria_label": "Button label",
+				"button_url": "/"
+			}
+		},
+		"image-with-text-second": {
+			"type": "image-with-text",
+			"settings": {
+				"heading": "Text heading",
+				"text_content": "<p>Combine an image with text to highlight a specific product, collection, or blog post of your choice. Enhance the content by including information on its availability, style, or possibly a review.</p>",
+				"button_label": "Button label",
+				"button_aria_label": "Button label",
+				"button_url": "/",
+				"image_position": "right"
+			}
+		},
+		"image-with-text-third": {
+			"type": "image-with-text",
+			"settings": {
+				"heading": "Text heading",
+				"text_content": "<p>Combine an image with text to highlight a specific product, collection, or blog post of your choice. Enhance the content by including information on its availability, style, or possibly a review.</p>",
+				"button_label": "Button label",
+				"button_aria_label": "Button label",
+				"button_url": "/",
+				"text_alignment": "center"
+			}
+		},
+		"video": {
+			"type": "video",
+			"settings": {
+			}
+		},
+		"featured-collection": {
+			"type": "featured-collection",
+			"settings": {
+			}
+		}
+	},
+	"order": [
+		"page-template",
+		"richtext",
+		"image-with-text-first",
+		"image-with-text-second",
+		"image-with-text-third",
+		"video",
+		"featured-collection"
+	]
+}

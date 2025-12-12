@@ -1,0 +1,374 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Gift card
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign logo				= section.settings.logo -%}
+{%- assign logo_width		= section.settings.logo_width -%}
+{%- assign gift_card_image	= section.settings.gift_card_image -%}
+
+<div class="gift-card">
+	<div class="gift-card__header">
+		<div class="h2 gift-card__shop-name">
+			{%- if logo != blank -%}
+				{%- assign logo_alt = logo.alt | default: shop.name | escape -%}
+				{%- assign logo_height = logo_width | divided_by: logo.aspect_ratio | round: 0 -%}
+				{%- assign logo_width_x2 = logo_width | times: 2 -%}
+
+				{%- capture img_focal -%}
+					--img-desktop-pos: {{ logo.presentation.focal_point }};
+				{%- endcapture -%}
+
+				<img
+					class="gift-card__logo"
+					src="{{ logo | image_url: width: logo_width }}"
+					srcset="{{ logo | image_url: width: logo_width }} 1x, {{ logo | image_url: width: logo_width_x2 }} 2x"
+					width="{{ logo_width }}"
+					height="{{ logo_height }}"
+					style="{{ img_focal }}"
+					alt="{{ logo.alt | escape }}"
+				/>
+			{%- else -%}
+				{{ shop.name }}
+			{%- endif -%}
+		</div>
+
+		<h1 class="gift-card__title">
+			{{ 'gift_cards.issued.subtext' | t }}
+		</h1>
+
+		<p class="gift-card__value">
+			{% if settings.currency_code_enabled %}
+				{{ gift_card.initial_value | money_with_currency }}
+			{% else %}
+				{{ gift_card.initial_value | money }}
+			{% endif %}
+		</p>
+
+		{% unless gift_card.enabled %}
+			<p class="badge badge--sold-out">
+				{{ 'gift_cards.issued.disabled' | t }}
+			</p>
+		{% endunless %}
+
+		{% assign gift_card_expiry_date = gift_card.expires_on | date: "%d/%m/%y" %}
+
+		{% if gift_card.expired and gift_card.enabled %}
+			<p class="badge badge--sold-out">
+				{{ 'gift_cards.issued.expired' | t: expiry: gift_card_expiry_date }}
+			</p>
+		{% endif %}
+
+		{% if gift_card.expired != true
+			and gift_card.expires_on
+			and gift_card.enabled
+		%}
+			<p class="badge">
+				{{ 'gift_cards.issued.active' | t: expiry: gift_card_expiry_date }}
+			</p>
+		{% endif %}
+	</div>
+
+	<div class="gift-card__body">
+		{% assign currentVariant = nil %}
+
+		{% for variant in gift_card.product.variants  %}
+			{% if variant.price == gift_card.initial_value %}
+				{% assign currentVariant = variant %}
+				{% break %}
+			{% endif %}
+		{% endfor %}
+
+		{%- capture image_1x -%}
+			{%- if currentVariant != nil -%}
+				{{- currentVariant.featured_image.src | image_url: width: 472, height: 314 -}}
+			{%- elsif gift_card_image != blank -%}
+				{{- gift_card_image | image_url: width: 472, height: 314 -}}
+			{%- else -%}
+				{{- 'gift-card/card.jpg' | shopify_asset_url -}}
+			{%- endif -%}
+		{%- endcapture -%}
+
+		{%- capture image_2x -%}
+			{%- if currentVariant != nil -%}
+				{{- currentVariant.featured_image.src | image_url: width: 944, height: 628 -}}
+			{%- elsif gift_card_image != blank -%}
+				{{- gift_card_image | image_url: width: 944, height: 628 -}}
+			{%- else -%}
+				{{- 'gift-card/card.jpg' | shopify_asset_url -}}
+			{%- endif -%}
+		{%- endcapture -%}
+
+		<div class="gift-card__image-wrapper">
+			<img
+				class="gift-card__image"
+				src="{{- image_1x | strip_newlines -}}"
+				srcset="{{ image_1x | strip_newlines }} 1x, {{ image_2x | strip_newlines }} 2x"
+				alt=""
+				width="472"
+				height="314"
+			/>
+		</div>
+
+		<div class="gift-card__content">
+			<div
+				class="gift-card__qr-code gift-card-qr"
+				data-identifier="{{ gift_card.qr_identifier }}"
+			></div>
+
+			<input
+				type="text"
+				class="gift-card__number"
+				id="GiftCardDigits"
+				value="{{ gift_card.code | format_code }}"
+				aria-label="{{ 'gift_cards.issued.gift_card_code' | t | escape }}"
+				readonly
+			/>
+
+			<div class="gift-card__copy-code">
+				<button class="gift-card__copy-link">
+					{%- render 'icons', icon: 'copy-3' -%}
+
+					<span class="text">
+						{{- 'gift_cards.issued.copy_code' | t -}}
+					</span>
+				</button>
+
+				<span
+					class="gift-card__copy-success form__message"
+					role="status"
+				></span>
+
+				<template>
+					{% render "icons", icon: "check" %}{{ 'gift_cards.issued.copy_code_success' | t }}
+				</template>
+			</div>
+		</div>
+	</div>
+
+	<div class="gift-card__footer">
+		<p class="gift-card__redeem text-center">
+			{{ 'gift_cards.issued.redeem_html' | t: value: formatted_initial_value_stripped }}
+		</p>
+
+		<div class="gift-card__buttons-wrapper">
+			<a
+				href="{{ shop.url }}"
+				class="button button--{{- section.settings.start_shopping_button_type -}}"
+				target="_blank"
+				rel="noopener"
+				rel="nofollow"
+				aria-describedby="a11y-new-window-message"
+			>
+				{{ 'gift_cards.issued.shop_link' | t }}
+			</a>
+
+			<button
+				type="button"
+				class="button button--{{- section.settings.print_button_type -}}"
+				onclick="window.print();"
+			>
+				{{ 'gift_cards.issued.print' | t }}
+			</button>
+		</div>
+
+		{% if gift_card.pass_url %}
+			<a
+				class="gift-card__apple-wallet"
+				href="{{ gift_card.pass_url }}"
+			>
+				<img
+					id="apple-wallet-badge"
+					class="gift-card__apple-wallet-image"
+					src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}"
+					width="120"
+					height="40"
+					alt="{{ 'gift_cards.issued.add_to_apple_wallet' | t }}"
+				>
+			</a>
+		{% endif %}
+	</div>
+</div>
+
+<script>
+	let string = { qrImageAlt: {{ 'gift_cards.issued.qr_image_alt' | t | json }} };
+
+	document.addEventListener('DOMContentLoaded', function() {
+		let cssRoot = document.querySelector(":root");
+
+		function getCssVariable(variable) {
+			if(!cssRoot || !getComputedStyle) {
+				return null;
+			}
+
+			let style = getComputedStyle(cssRoot);
+			if(!style || !style.getPropertyValue) {
+				return null;
+			}
+
+			return style.getPropertyValue(variable) || null;
+		}
+
+		let qrCodeBackground = getCssVariable('--color-background-secondary') || "#ffffff";
+
+		new QRCode( document.querySelector('.gift-card__qr-code'), {
+			text: document.querySelector('.gift-card__qr-code').dataset.identifier,
+			width: 120,
+			height: 120,
+			imageAltText: string.qrImageAlt,
+			colorDark: '#000000',
+			colorLight: qrCodeBackground
+		});
+	});
+
+	let template = document.getElementsByTagName("template")[0];
+	let clonedTemplate = template.content.cloneNode(true);
+	let isMessageDisplayed = false;
+	let copyLink = document.querySelector('.gift-card__copy-link');
+
+	copyLink.addEventListener('click',function() {
+		navigator.clipboard.writeText(document.querySelector('.gift-card__number').value).then(function () {
+			if (!isMessageDisplayed) {
+				document.querySelector('.gift-card__copy-success')?.appendChild(clonedTemplate);
+				document.querySelector('.gift-card__copy-success')?.classList.add('show');
+				isMessageDisplayed = true
+			}
+		});
+	});
+</script>
+
+{% schema %}
+{
+	"name": "Gift card",
+	"settings": [
+		{
+			"type": "image_picker",
+			"id": "logo",
+			"label": "Logo"
+		},
+		{
+			"type": "range",
+			"id": "logo_width",
+			"min": 20,
+			"max": 250,
+			"step": 5,
+			"default": 125,
+			"unit": "px",
+			"label": "Logo width",
+			"info": "Height will be calculated with logo aspect ratio."
+		},
+		{
+			"type": "image_picker",
+			"id": "gift_card_image",
+			"label": "Gift card image"
+		},
+		{
+			"type": "select",
+			"id": "start_shopping_button_type",
+			"label": "Start shopping button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "primary-border",
+					"label": "Primary with border"
+				},
+				{
+					"value": "secondary-border",
+					"label": "Secondary with border"
+				}
+			],
+			"default": "secondary"
+		},
+		{
+			"type": "select",
+			"id": "print_button_type",
+			"label": "Print button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "primary-border",
+					"label": "Primary with border"
+				},
+				{
+					"value": "secondary-border",
+					"label": "Secondary with border"
+				}
+			],
+			"default": "secondary-border"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	]
+}
+{% endschema %}

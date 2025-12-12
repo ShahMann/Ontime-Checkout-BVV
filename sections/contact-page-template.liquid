@@ -1,0 +1,960 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Contact page template
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/contact.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign banner_image_desktop = section.settings.banner_image_desktop -%}
+{%- assign banner_image_mobile = section.settings.banner_image_mobile | default: banner_image_desktop -%}
+{%- assign banner_heading_color = section.settings.banner_heading_color -%}
+{%- assign banner_overlay_color = section.settings.banner_overlay_color -%}
+
+{%- assign map_api_key = section.settings.map_api_key -%}
+{%- assign map_query = section.settings.map_query -%}
+{%- assign map_url = section.settings.map_url -%}
+{%- assign image_desktop = section.settings.image_desktop -%}
+{%- assign image_mobile = section.settings.image_mobile | default: image_desktop -%}
+
+{%- assign address_heading = section.settings.address_heading -%}
+{%- assign address_icon = section.settings.address_icon -%}
+{%- assign address_text = section.settings.address_text -%}
+{%- assign phone_heading = section.settings.phone_heading -%}
+{%- assign phone_icon = section.settings.phone_icon -%}
+{%- assign phone_text = section.settings.phone_text -%}
+{%- assign email_heading = section.settings.email_heading -%}
+{%- assign email_icon = section.settings.email_icon -%}
+{%- assign email_text = section.settings.email_text -%}
+{%- assign schedule_heading = section.settings.schedule_heading -%}
+{%- assign schedule_icon = section.settings.schedule_icon -%}
+{%- assign schedule_text = section.settings.schedule_text -%}
+{%- assign is_shown_social = section.settings.show_socials -%}
+{%- assign social_text = section.settings.social_text -%}
+{%- assign icon_background_color = section.settings.icon_background_color -%}
+
+{%- assign heading = section.settings.heading | default: page.title -%}
+{%- assign subheading = section.settings.subheading -%}
+{%- assign name_label = section.settings.name_label -%}
+{%- assign name_placeholder = section.settings.name_placeholder -%}
+{%- assign email_label = section.settings.email_label -%}
+{%- assign email_placeholder = section.settings.email_placeholder -%}
+{%- assign phone_label = section.settings.phone_label -%}
+{%- assign phone_placeholder = section.settings.phone_placeholder -%}
+{%- assign message_label = section.settings.message_label -%}
+{%- assign message_placeholder = section.settings.message_placeholder -%}
+{%- assign submit_label = section.settings.submit_label -%}
+{%- assign submit_style = section.settings.submit_style -%}
+{%- assign is_name_required = section.settings.is_name_required -%}
+{%- assign is_phone_required = section.settings.is_phone_required -%}
+{%- assign is_message_required = section.settings.is_message_required -%}
+
+
+{%- assign container = section.settings.container_width -%}
+
+{% assign is_any_contact_item = false %}
+
+{% if address_heading != blank or address_text != blank
+or phone_heading != blank or phone_text != blank
+or email_heading != blank or email_text != blank
+or schedule_heading != blank or schedule_text != blank %}
+	{% assign is_any_contact_item = true %}
+{% endif %}
+
+{% if container == 'inherit' %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+{% capture section_styles %}
+	--container-width: {{ container_width }};
+	--banner-heading-color: {{ banner_heading_color }};
+	--banner-overlay-color: {{ banner_overlay_color }};
+	--icon-background-color: {{- icon_background_color -}};
+{% endcapture %}
+
+{%- if image_desktop != blank -%}
+	{%- assign section_has_images = true -%}
+{%- else -%}
+	{%- assign section_has_images = false -%}
+{%- endif -%}
+
+{%- capture banner_img_focal -%}
+	--banner-img-desktop-pos: {{ banner_image_desktop.presentation.focal_point }};
+	--banner-img-mob-pos: {{ banner_image_mobile.presentation.focal_point }};
+{%- endcapture -%}
+
+{%- capture map_image -%}
+	{%- capture img_focal -%}
+		--img-desktop-pos: {{ image_desktop.presentation.focal_point }};
+		--img-mob-pos: {{ image_mobile.presentation.focal_point }};
+	{%- endcapture -%}
+
+	<picture class="lazy">
+		<source
+			data-srcset="{{ image_mobile | img_url: '380x282', crop: "center" }} 1x, {{ image_mobile | img_url: '760x564', crop: "center" }} 2x"
+			srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+			media="(max-width: 380px)"
+			width="380"
+			height="282"
+		/>
+
+		<source
+			data-srcset="{{ image_mobile | img_url: '480x356', crop: "center" }} 1x, {{ image_mobile | img_url: '960x712', crop: "center" }} 2x"
+			srcset="{{ image_mobile | img_url: '10x' }} 1x, {{ image_mobile | img_url: '10x' }} 2x"
+			media="(max-width: 480px)"
+			width="480"
+			height="356"
+		/>
+
+		<source
+			data-srcset="{{ image_desktop | img_url: '575x345', crop: "center" }} 1x, {{ image_desktop | img_url: '1150x690', crop: "center" }} 2x"
+			srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_desktop | img_url: '10x' }} 2x"
+			media="(max-width: 575px)"
+			width="575"
+			height="345"
+		/>
+
+		<source
+			data-srcset="{{ image_desktop | img_url: '767x460', crop: "center" }} 1x, {{ image_desktop | img_url: '1534x920', crop: "center" }} 2x"
+			srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_desktop | img_url: '10x' }} 2x"
+			media="(max-width: 767px)"
+			width="767"
+			height="460"
+		/>
+
+		<source
+			data-srcset="{{ image_desktop | img_url: '991x445', crop: "center" }} 1x, {{ image_desktop | img_url: '1982x890', crop: "center" }} 2x"
+			srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_desktop | img_url: '10x' }} 2x"
+			media="(max-width: 991px)"
+			width="991"
+			height="445"
+		/>
+
+		<source
+			data-srcset="{{ image_desktop | img_url: '1199x342', crop: "center" }} 1x, {{ image_desktop | img_url: '2398x684', crop: "center" }} 2x"
+			srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_desktop | img_url: '10x' }} 2x"
+			media="(max-width: 1199px)"
+			width="1199"
+			height="342"
+		/>
+
+		<source
+			data-srcset="{{ image_desktop | img_url: '1500x427', crop: "center" }} 1x, {{ image_desktop | img_url: '3000x854', crop: "center" }} 2x"
+			srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_desktop | img_url: '10x' }} 2x"
+			media="(max-width: 1500px)"
+			width="1500"
+			height="427"
+		/>
+
+		<source
+			data-srcset="{{ image_desktop | img_url: '1680x479', crop: "center" }} 1x, {{ image_desktop | img_url: '3360x958', crop: "center" }} 2x"
+			srcset="{{ image_desktop | img_url: '10x' }} 1x, {{ image_desktop | img_url: '10x' }} 2x"
+			media="(max-width: 1680px)"
+			width="1680"
+			height="479"
+		/>
+
+		<img
+			class="contact__map-image"
+			srcset="{{ image_desktop | img_url: "10x" }}"
+			data-srcset="{{ image_desktop | img_url: "1920x547", crop: "center" }} 1x, {{ image_desktop | img_url: "3840x1094", crop: "center" }} 2x"
+			src="{{- image_desktop | img_url: "10x" -}}"
+			data-src="{{- image_desktop | img_url: "1920x547", crop: "center" -}}"
+			alt="{{- image_desktop.alt -}}"
+			width="1920"
+			height="547"
+			style="{{ img_focal }}"
+		/>
+	</picture>
+{%- endcapture -%}
+
+{%- capture contact_form -%}
+	<div class="contact__content-wrapper">
+		{% if page.content != blank %}
+			<div class="contact__form-rte rte">
+				{{ page.content }}
+			</div>
+		{% endif %}
+
+		{% if heading != blank or subheading != blank or is_shown_social or is_any_contact_item %}
+			<div class="contact__info-wrapper">
+				{% if heading != blank %}
+					<h2>
+						{{ heading }}
+					</h2>
+				{% endif %}
+
+				{% if subheading != blank %}
+					<div class="contact__info-subheading rte">{{ subheading }}</div>
+				{% endif %}
+
+				{% if is_any_contact_item %}
+					<div class="contact__info-items">
+						{% if address_heading != blank or address_text != blank %}
+							<div class="contact__info-item">
+								{% if address_icon != blank %}
+									<div class="contact-info-icon-wrapper">
+										<img
+											class="contact-info-icon"
+											srcset="{{ address_icon | image_url: width: 24, height: 24 }} 1x, {{ address_icon | image_url: width: 48, height: 48 }} 2x"
+											src="{{- address_icon | image_url: width: 24, height: 24 -}}"
+											alt="{{- address_icon.alt -}}"
+											height="24"
+											width="24"
+										/>
+									</div>
+								{% endif %}
+
+								<div class="contact__info-item-wrapper">
+									{% if address_heading != blank %}
+										<span class="contact__info-item-heading">{{ address_heading }}</span>
+									{% endif %}
+
+									{% if address_text != blank %}
+										<div class="contact__info-item-text rte">{{ address_text }}</div>
+									{% endif %}
+								</div>
+							</div>
+						{% endif %}
+
+						{% if phone_heading != blank or phone_text != blank %}
+							<div class="contact__info-item">
+								{% if phone_icon != blank %}
+									<div class="contact-info-icon-wrapper">
+										<img
+											class="contact-info-icon"
+											srcset="{{ phone_icon | image_url: width: 24, height: 24 }} 1x, {{ phone_icon | image_url: width: 48, height: 48 }} 2x"
+											src="{{- phone_icon | image_url: width: 24, height: 24 -}}"
+											alt="{{- phone_icon.alt -}}"
+											height="24"
+											width="24"
+										/>
+									</div>
+								{% endif %}
+
+								<div class="contact__info-item-wrapper">
+									{% if phone_heading != blank %}
+										<span class="contact__info-item-heading">{{ phone_heading }}</span>
+									{% endif %}
+
+									{% if phone_text != blank %}
+										<div class="contact__info-item-text rte">{{ phone_text }}</div>
+									{% endif %}
+								</div>
+							</div>
+						{% endif %}
+
+						{% if email_heading != blank or email_text != blank %}
+							<div class="contact__info-item">
+								{% if email_icon != blank %}
+									<div class="contact-info-icon-wrapper">
+										<img
+											class="contact-info-icon"
+											srcset="{{ email_icon | image_url: width: 24, height: 24 }} 1x, {{ email_icon | image_url: width: 48, height: 48 }} 2x"
+											src="{{- email_icon | image_url: width: 24, height: 24 -}}"
+											alt="{{- email_icon.alt -}}"
+											height="24"
+											width="24"
+										/>
+									</div>
+								{% endif %}
+
+								<div class="contact__info-item-wrapper">
+									{% if email_heading != blank %}
+										<span class="contact__info-item-heading">{{ email_heading }}</span>
+									{% endif %}
+
+									{% if email_text != blank %}
+										<div class="contact__info-item-text rte">{{ email_text }}</div>
+									{% endif %}
+								</div>
+							</div>
+						{% endif %}
+
+						{% if schedule_heading != blank or schedule_text != blank %}
+							<div class="contact__info-item">
+								{% if schedule_icon != blank %}
+									<div class="contact-info-icon-wrapper">
+										<img
+											class="contact-info-icon"
+											srcset="{{ schedule_icon | image_url: width: 24, height: 24 }} 1x, {{ schedule_icon | image_url: width: 48, height: 48 }} 2x"
+											src="{{- schedule_icon | image_url: width: 24, height: 24 -}}"
+											alt="{{- schedule_icon.alt -}}"
+											height="24"
+											width="24"
+										/>
+									</div>
+								{% endif %}
+
+								<div class="contact__info-item-wrapper">
+									{% if schedule_heading != blank %}
+										<span class="contact__info-item-heading">{{ schedule_heading }}</span>
+									{% endif %}
+
+									{% if schedule_text != blank %}
+										<div class="contact__info-item-text rte">{{ schedule_text }}</div>
+									{% endif %}
+								</div>
+							</div>
+						{% endif %}
+					</div>
+				{% endif %}
+
+				{% if is_shown_social %}
+					<div class="contact__info-socials-wrapper">
+						{% if social_text != blank %}
+							<p class="contact__info-social-text">{{ social_text }}</p>
+						{% endif %}
+						{% render "social-links" %}
+					</div>
+				{% endif %}
+			</div>
+		{% endif %}
+
+		{%- form "contact", class: "contact__form", id: "ContactForm" -%}
+			{% if form.posted_successfully? or form.errors %}
+				<div class="contact__form-header">
+					{%- if form.posted_successfully? -%}
+						<p class="contact__form-submitted-title success" tabindex="-1" autofocus>
+							{{- "contact.form.success_heading" | t -}}
+						</p>
+					{%- elsif form.errors -%}
+						<p
+							class="contact__form-submitted-title error"
+							autofocus
+							tabindex="-1"
+							role="alert"
+						>
+							{{- "contact.form.error_heading" | t -}}
+						</p>
+					{%- endif -%}
+				</div>
+			{% endif %}
+
+			<div class="contact__form-fields">
+				<div class="contact__form-fields-row">
+					<div class="input-wrapper contact__field contact__fields-col">
+						{% if name_label != blank %}
+							<label class="label-input {% if is_name_required %}label-input--required{% endif %}"
+								   for="ContactForm-name--{{- section.id -}}"
+							>
+								{{ name_label }}
+							</label>
+						{% endif %}
+
+						<input
+							id="ContactForm-name--{{- section.id -}}"
+							class="{% if form.errors contains "name" %} error{% endif %}"
+							type="text"
+							name="contact[name]"
+							placeholder="{{- name_placeholder -}}"
+							autocomplete="name"
+							autocapitalize="off"
+							{% if is_name_required %}
+								required
+								aria-required="true"
+							{% endif %}
+							{% if form.errors contains "name" %}
+								aria-invalid="true"
+								aria-describedby="ContactForm-name-error--{{- section.id -}}"
+							{% endif %}
+							{% if customer %}
+								value="{{- customer.name -}}"
+							{% endif %}
+						/>
+
+						{%- if form.errors contains "name" -%}
+							<small class="contact__input-error error" id="ContactForm-name-error--{{- section.id -}}">
+								<span class="visually-hidden">
+									{{- "contact.form.error" | t -}}
+								</span>
+
+								<span class="contact__input-error-message">
+									{{ form.errors.translated_fields['name'] | capitalize }} {{ form.errors.messages['name'] }}
+								</span>
+							</small>
+						{%- endif -%}
+					</div>
+
+					<div class="input-wrapper contact__field contact__fields-col">
+						{% if email_label != blank %}
+							<label class="label-input label-input--required"
+								   for="ContactForm-email--{{- section.id -}}">
+								{{ email_label }}
+							</label>
+						{% endif %}
+
+						<input
+							id="ContactForm-email--{{- section.id -}}"
+							class="{% if form.errors contains "email" %} error{% endif %}"
+							type="email"
+							name="contact[email]"
+							placeholder="{{- email_placeholder -}}"
+							autocomplete="email"
+							autocapitalize="off"
+							{% if form.errors contains "email" %}
+								aria-invalid="true"
+								aria-describedby="ContactForm-email-error--{{- section.id -}}"
+							{% endif %}
+							{% if customer %}
+								value="{{- customer.email -}}"
+							{% endif %}
+							aria-required="true"
+							required
+						/>
+
+						{%- if form.errors contains "email" -%}
+							<small class="contact__input-error error" id="ContactForm-email-error--{{- section.id -}}">
+								<span class="visually-hidden">
+									{{- "contact.form.error" | t -}}
+								</span>
+
+								<span class="contact__input-error-message">
+									{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+								</span>
+							</small>
+						{%- endif -%}
+					</div>
+				</div>
+
+				<div class="input-wrapper contact__field">
+					{% if phone_label != blank %}
+						<label class="label-input {% if is_phone_required %}label-input--required{% endif %}"
+							   for="ContactForm-phone--{{- section.id -}}"
+						>
+							{{ phone_label }}
+						</label>
+					{% endif %}
+
+					<input
+						id="ContactForm-phone--{{- section.id -}}"
+						type="tel"
+						name="contact[phone]"
+						placeholder="{{- phone_placeholder -}}"
+						pattern="[0-9\-]*"
+						autocomplete="name"
+						autocapitalize="off"
+						{% if is_phone_required %}
+							required
+							aria-required="true"
+						{% endif %}
+						value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+					/>
+				</div>
+
+				<div class="input-wrapper contact__field">
+					{% if message_label != blank %}
+						<label class="label-input {% if is_message_required %}label-input--required{% endif %}"
+							   for="ContactForm-message--{{- section.id -}}"
+						>
+							{{ message_label }}
+						</label>
+					{% endif %}
+
+					<textarea
+						id="ContactForm-message--{{- section.id -}}"
+						class="{% if form.errors contains "message" %} error{% endif %}"
+						name="contact[message]"
+						placeholder="{{- message_placeholder -}}"
+				{% if form.errors contains "message" %}
+					aria-invalid="true"
+					aria-describedby="ContactForm-message-error--{{- section.id -}}"
+				{% endif %}
+						{% if is_message_required %}
+							aria-required="true"
+							required
+						{% endif %}
+					></textarea>
+
+					{%- if form.errors contains "message" -%}
+						<small class="contact__input-error error" id="ContactForm-message-error--{{- section.id -}}">
+					<span class="visually-hidden">
+						{{- "contact.form.error" | t -}}
+					</span>
+
+							<span class="contact__input-error-message">
+						{{ form.errors.translated_fields['message'] | capitalize }} {{ form.errors.messages['message'] }}
+					</span>
+						</small>
+					{%- endif -%}
+				</div>
+
+				<button class="button button--{{ submit_style }} contact__submit" type="submit">
+					{{- submit_label -}}
+				</button>
+			</div>
+		{%- endform -%}
+	</div>
+{%- endcapture -%}
+
+<section class="contact" style="{{ section_styles }}">
+	{% if banner_image_desktop != blank %}
+		<div class="contact__aspect-ratio">
+			<picture class="lazy">
+				<source
+					data-srcset="{{ banner_image_mobile | img_url: '380x273', crop: "center" }} 1x, {{ banner_image_mobile | img_url: '760x546', crop: "center" }} 2x"
+					srcset="{{ banner_image_mobile | img_url: '10x' }} 1x, {{ banner_image_mobile | img_url: '10x' }} 2x"
+					media="(max-width: 380px)"
+				/>
+
+				<source
+					data-srcset="{{ banner_image_mobile | img_url: '480x345', crop: "center" }} 1x, {{ banner_image_mobile | img_url: '960x690', crop: "center" }} 2x"
+					srcset="{{ banner_image_mobile | img_url: '10x' }} 1x, {{ banner_image_mobile | img_url: '10x' }} 2x"
+					media="(max-width: 480px)"
+				/>
+
+				<source
+					data-srcset="{{ banner_image_mobile | img_url: '575x414', crop: "center" }} 1x, {{ banner_image_mobile | img_url: '1150x828', crop: "center" }} 2x"
+					srcset="{{ banner_image_mobile | img_url: '10x' }} 1x, {{ banner_image_mobile | img_url: '10x' }} 2x"
+					media="(max-width: 575px)"
+				/>
+
+				<source
+					data-srcset="{{ banner_image_desktop | img_url: '767x400', crop: "center" }} 1x, {{ banner_image_desktop | img_url: '1534x800', crop: "center" }} 2x"
+					srcset="{{ banner_image_desktop | img_url: '10x' }} 1x, {{ banner_image_desktop | img_url: '10x' }} 2x"
+					media="(max-width: 767px)"
+				/>
+
+				<source
+					data-srcset="{{ banner_image_desktop | img_url: '991x400', crop: "center" }} 1x, {{ banner_image_desktop | img_url: '1982x800', crop: "center" }} 2x"
+					srcset="{{ banner_image_desktop | img_url: '10x' }} 1x, {{ banner_image_desktop | img_url: '10x' }} 2x"
+					media="(max-width: 991px)"
+				/>
+
+				<source
+					data-srcset="{{ banner_image_desktop | img_url: '1199x400', crop: "center" }} 1x, {{ banner_image_desktop | img_url: '2398x800', crop: "center" }} 2x"
+					srcset="{{ banner_image_desktop | img_url: '10x' }} 1x, {{ banner_image_desktop | img_url: '10x' }} 2x"
+					media="(max-width: 1199px)"
+				/>
+
+				<source
+					data-srcset="{{ banner_image_desktop | img_url: '1500x400', crop: "center" }} 1x, {{ banner_image_desktop | img_url: '3000x800', crop: "center" }} 2x"
+					srcset="{{ banner_image_desktop | img_url: '10x' }} 1x, {{ banner_image_desktop | img_url: '10x' }} 2x"
+					media="(max-width: 1500px)"
+				/>
+
+				<source
+					data-srcset="{{ banner_image_desktop | img_url: '1680x400', crop: "center" }} 1x, {{ banner_image_desktop | img_url: '3360x800', crop: "center" }} 2x"
+					srcset="{{ banner_image_desktop | img_url: '10x' }} 1x, {{ banner_image_desktop | img_url: '10x' }} 2x"
+					media="(max-width: 1680px)"
+				/>
+
+				<img class="contact__banner-image"
+					 data-srcset="{{ banner_image_desktop | img_url: '1920x457', crop: "center" }} 1x, {{ banner_image_desktop | img_url: '3840x914', crop: "center" }} 2x"
+					 srcset="{{ banner_image_desktop | img_url: '10x' }} 1x, {{ banner_image_desktop | img_url: '10x' }} 2x"
+					 data-src="{{ banner_image_desktop | img_url: '1920x457' }}"
+					 src="{{ banner_image_desktop | img_url: '10x', crop: "center" }}"
+					 style="{{ banner_img_focal }}"
+					 alt="{{ banner_image_desktop.alt | escape }}">
+			</picture>
+
+			<h1 class="contact__banner-title">{{ page.title }}</h1>
+		</div>
+	{% else %}
+		<h1 class="contact__title">{{ page.title }}</h1>
+	{% endif %}
+
+	{{ contact_form }}
+
+	{%- if map_api_key != blank and map_query != blank -%}
+		<div class="contact__map-container">
+			<div class="contact__map-wrapper js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}">
+				<iframe
+					class="contact__map"
+					width="100%"
+					height="100%"
+					frameborder="0" style="border:0"
+					referrerpolicy="no-referrer-when-downgrade"
+					src="https://www.google.com/maps/embed/v1/place?key={{- map_api_key -}}&q={{- map_query -}}"
+					allowfullscreen>
+				</iframe>
+			</div>
+		</div>
+	{%- elsif map_url != blank and section_has_images == true -%}
+		<div class="contact__map-container">
+			<a
+				href="{{- map_url -}}"
+				class="contact__map-link-image-wrapper contact__map-link-image-wrapper-hover js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}"
+				target="_blank"
+				rel="nofollow"
+				aria-label="{{- 'contact.form.map_link_aria_label' | t | escape -}}"
+			>
+				{{- map_image -}}
+			</a>
+		</div>
+	{% elsif section_has_images == true and map_url == nil %}
+		<div class="contact__map-container">
+			<div
+				class="contact__map-link-image-wrapper js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}">
+				{{- map_image -}}
+			</div>
+		</div>
+	{% endif %}
+</section>
+
+{%- schema -%}
+{
+	"name": "Contact",
+	"settings": [
+		{
+			"type": "header",
+			"content": "Banner"
+		},
+		{
+			"type": "image_picker",
+			"id": "banner_image_desktop",
+			"label": "Image desktop",
+			"info": "3840 x 914px recommended"
+		},
+		{
+			"type": "image_picker",
+			"id": "banner_image_mobile",
+			"label": "Image mobile",
+			"info": "1150 x 828px recommended"
+		},
+		{
+			"type": "header",
+			"content": "General"
+		},
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Heading"
+		},
+		{
+			"type": "richtext",
+			"id": "subheading",
+			"label": "Subheading",
+			"default": "<p>Subheading</p>"
+		},
+		{
+			"type": "text",
+			"id": "address_heading",
+			"label": "Address heading",
+			"default": "Address:"
+		},
+		{
+			"type": "image_picker",
+			"id": "address_icon",
+			"label": "Address icon",
+			"info": "48 x 48px .svg recommended"
+		},
+		{
+			"type": "inline_richtext",
+			"id": "address_text",
+			"label": "Address text",
+			"default": "Address text"
+		},
+		{
+			"type": "text",
+			"id": "phone_heading",
+			"label": "Phone heading",
+			"default": "Phone:"
+		},
+		{
+			"type": "image_picker",
+			"id": "phone_icon",
+			"label": "Phone icon",
+			"info": "48 x 48px .svg recommended"
+		},
+		{
+			"type": "inline_richtext",
+			"id": "phone_text",
+			"label": "Phone text",
+			"default": "Phone text"
+		},
+		{
+			"type": "text",
+			"id": "email_heading",
+			"label": "Email heading",
+			"default": "Email:"
+		},
+		{
+			"type": "image_picker",
+			"id": "email_icon",
+			"label": "Email icon",
+			"info": "48 x 48px .svg recommended"
+		},
+		{
+			"type": "inline_richtext",
+			"id": "email_text",
+			"label": "Email text",
+			"default": "Email text"
+		},
+		{
+			"type": "text",
+			"id": "schedule_heading",
+			"label": "Schedule heading",
+			"default": "Schedule:"
+		},
+		{
+			"type": "image_picker",
+			"id": "schedule_icon",
+			"label": "Schedule icon",
+			"info": "48 x 48px .svg recommended"
+		},
+		{
+			"type": "inline_richtext",
+			"id": "schedule_text",
+			"label": "Schedule text",
+			"default": "Schedule"
+		},
+		{
+			"type": "checkbox",
+			"id": "show_socials",
+			"label": "Show socials",
+			"default": true
+		},
+		{
+			"type": "text",
+			"id": "social_text",
+			"label": "Social text",
+			"default": "Follow Us"
+		},
+		{
+			"type": "header",
+			"content": "Contact form"
+		},
+		{
+			"type": "text",
+			"id": "name_label",
+			"label": "Name label",
+			"default": "Name"
+		},
+		{
+			"type": "text",
+			"id": "name_placeholder",
+			"label": "Name placeholder",
+			"default": "Your name..."
+		},
+		{
+			"type": "checkbox",
+			"id": "is_name_required",
+			"label": "Name required",
+			"default": false
+		},
+		{
+			"type": "text",
+			"id": "email_label",
+			"label": "Email label",
+			"default": "Email"
+		},
+		{
+			"type": "text",
+			"id": "email_placeholder",
+			"label": "Email placeholder",
+			"default": "Your email..."
+		},
+		{
+			"type": "text",
+			"id": "phone_label",
+			"label": "Phone label",
+			"default": "Phone"
+		},
+		{
+			"type": "checkbox",
+			"id": "is_phone_required",
+			"label": "Phone required",
+			"default": false
+		},
+		{
+			"type": "text",
+			"id": "phone_placeholder",
+			"label": "Phone placeholder",
+			"default": "Enter your phone number"
+		},
+		{
+			"type": "text",
+			"id": "message_label",
+			"label": "Message label",
+			"default": "Message"
+		},
+		{
+			"type": "text",
+			"id": "message_placeholder",
+			"label": "Message placeholder",
+			"default": "Your message..."
+		},
+		{
+			"type": "checkbox",
+			"id": "is_message_required",
+			"label": "Message required",
+			"default": false
+		},
+		{
+			"type": "text",
+			"id": "submit_label",
+			"label": "Button label",
+			"default": "Send a message"
+		},
+		{
+			"type": "select",
+			"id": "submit_style",
+			"label": "Button style",
+			"options": [
+				{
+					"value": "primary",
+					"label": "Primary"
+				},
+				{
+					"value": "secondary",
+					"label": "Secondary"
+				},
+				{
+					"value": "primary-border",
+					"label": "Primary with border"
+				},
+				{
+					"value": "secondary-border",
+					"label": "Secondary with border"
+				}
+			],
+			"default": "secondary"
+		},
+		{
+			"type": "header",
+			"content": "Map"
+		},
+		{
+			"type": "text",
+			"id": "map_api_key",
+			"label": "Google maps API key",
+			"info": "You’ll need to [register a Google Maps API Key](https://ultra.arvest.digital/templates/contact-template#map) to display the map."
+		},
+		{
+			"type": "text",
+			"id": "map_query",
+			"label": "Map query",
+			"info": "Specify the query parameter [learn more](https://ultra.arvest.digital/templates/contact-template#map)",
+			"default": "Eiffel+Tower,Paris+France"
+		},
+		{
+			"type": "url",
+			"id": "map_url",
+			"label": "Image map link",
+			"info": "The link will open in a new window."
+		},
+		{
+			"type": "image_picker",
+			"id": "image_desktop",
+			"label": "Image desktop",
+			"info": "3840 x 1094px recommended"
+		},
+		{
+			"type": "image_picker",
+			"id": "image_mobile",
+			"label": "Image mobile",
+			"info": "960 x 712px recommended"
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "banner_heading_color",
+			"label": "Banner heading color",
+			"default": "#fff",
+			"info": "Works only when the banner image is set"
+		},
+		{
+			"type": "color_background",
+			"id": "banner_overlay_color",
+			"label": "Banner overlay",
+			"default": "rgba(0, 0, 0, 0)"
+		},
+		{
+			"type": "color",
+			"id": "icon_background_color",
+			"default": "#f5f3f6",
+			"label": "Icon background color"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	]
+}
+{%- endschema -%}

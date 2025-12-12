@@ -1,0 +1,46 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Share buttons
+  ----------------------
+  Used on PDP
+------------------------------------------------------------------------------
+{% endcomment %}
+{%- capture styles -%}
+	--offset-top-desktop: {{ block.settings.offset_top_desktop }}px; {{-  -}}
+	--offset-bottom-desktop: {{ block.settings.offset_bottom_desktop }}px; {{-  -}}
+	--offset-top-mobile: {{ block.settings.offset_top_mobile }}px; {{-  -}}
+	--offset-bottom-mobile: {{ block.settings.offset_bottom_mobile }}px;
+{%- endcapture -%}
+
+<div class="product-share-buttons" style="{{ styles }}">
+	<span class="product-share-buttons__label">
+		{{- 'products.product.share_label' | t -}}
+	</span>
+
+	<input id="share-input-{{ section_id }}" class="is-hidden" type="text" value="{{ shop.url | append: product.url }}">
+
+	<a href="#"
+	   class="button-social js-social-share"
+	   data-share-title="{{ product.title | escape }}"
+	   data-share-url="{{ shop.url | append: product.url }}"
+	   data-input-fallback="share-input-{{ section_id }}"
+	   aria-label="{{ 'general.social.share_button' | t }}"
+	>
+		<span class="tooltip js-share-tooltip">{{ 'general.social.share_success' | t }}</span>
+
+		{% render 'icons-social', icon: "share" %}
+	</a>
+
+	{% if block.settings.show_facebook %}
+		{% render 'share-button', social: "facebook", product: product %}
+	{% endif %}
+
+	{% if block.settings.show_twitter %}
+		{% render 'share-button', social: "twitter", product: product %}
+	{% endif %}
+
+	{% if block.settings.show_pinterest %}
+		{% render 'share-button', social: "pinterest", product: product %}
+	{% endif %}
+</div>
+

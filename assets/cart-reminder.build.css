@@ -1,0 +1,129 @@
+/**
+	Timings
+ */
+:root {
+  --timing-micro: 0.1s;
+  --timing-short: 0.2s;
+  --timing-base: 0.4s;
+  --timing-long: 0.7s;
+  --timing-second: 1s;
+  --animate-time: 0.7s;
+  --animate-delay: 0.3s;
+  --animate-img-scale: 0.5s;
+  /**
+  * Easing.
+  */
+  --easing-linear: cubic-bezier(0, 0, 1, 1);
+  --easing-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --easing-ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+  --easing-ease-in: cubic-bezier(0.42, 0, 1, 1);
+  --easing-ease-out: cubic-bezier(0, 0, 0.09, 1);
+  /**
+  * Config: Layers
+  * -----------------------------------------------------------------------------
+  * Visual motif used to create groupings, content associations and focus through depth.
+  */
+  --layer-negative: -1;
+  --layer-base: 0;
+  --layer-flat: 1;
+  --layer-raised: 2;
+  --layer-sticky-btn: 7;
+  --layer-sticky: 11;
+  --layer-overlay: 14;
+  --layer-temporary: 16;
+  --layer-pop-out: 24;
+  --layer-pop-out-overlay: 25;
+  --layer-pop-out-overlay-loader: 26;
+}
+.cart-reminder {
+  position: fixed;
+  animation-name: fadeInTopReminderMobile;
+  animation-duration: 0.5s;
+  animation-delay: 0s;
+  animation-fill-mode: forwards;
+  right: 16px;
+  left: 16px;
+  z-index: 14;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 16px;
+  width: auto;
+  padding: 16px;
+  border-radius: calc(var(--global-border-radius) * 2);
+  background-color: var(--cart-reminder-color-bg, #161E13);
+  color: var(--cart-reminder-color-text, var(--color-white));
+}
+.cart-reminder .cart-reminder__close-button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  transition-property: opacity;
+  transition-timing-function: ease;
+  transition-duration: 0.3s;
+}
+.cart-reminder .cart-reminder__close-button:focus-visible {
+  outline-color: var(--cart-reminder-color-button-close, var(--color-white));
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+  .cart-reminder .cart-reminder__close-button:hover {
+    opacity: 0.5;
+  }
+}
+.cart-reminder .cart-reminder__close-button svg path {
+  stroke: var(--cart-reminder-color-button-close, var(--color-white));
+}
+.cart-reminder .cart-reminder__content {
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+  padding: 0;
+  color: currentColor;
+  text-decoration: none;
+  transition-property: opacity;
+  transition-timing-function: ease;
+  transition-duration: 0.3s;
+}
+.cart-reminder .cart-reminder__content:focus-visible {
+  outline-color: currentColor;
+}
+@media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
+  .cart-reminder .cart-reminder__content:hover {
+    opacity: 0.5;
+  }
+}
+.cart-reminder .cart-reminder__content svg {
+  max-width: 24px;
+  width: 100%;
+  height: auto;
+}
+.cart-reminder .cart-reminder__content svg path {
+  stroke: var(--cart-reminder-color-icon, var(--color-accent));
+}
+.cart-reminder .cart-reminder__content svg .custom-icon--fill {
+  fill: var(--cart-reminder-color-icon, var(--color-accent));
+}
+.cart-reminder .cart-reminder__content svg .custom-icon--stroke {
+  stroke: var(--cart-reminder-color-bg);
+}
+.cart-reminder .cart-reminder__text {
+  font-size: calc(var(--body-font-size) * 1.125);
+  font-weight: 600;
+  line-height: 1.33;
+}
+@media (min-width: 1200px) {
+  .cart-reminder {
+    animation-name: fadeInTopReminder;
+  }
+}
+@media (min-width: 576px) {
+  .cart-reminder {
+    right: 36px;
+    left: auto;
+    max-width: min(342px, calc(100vw - 32px));
+    width: 100%;
+  }
+}
+body.is-drawer-active .cart-reminder {
+  display: none;
+}

@@ -1,0 +1,66 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "cart-template": {
+      "type": "cart-template",
+      "settings": {
+        "heading": "Shopping cart",
+        "order_summary_heading": "Order Summary",
+        "show_gift_wrap_button": false,
+        "show_shipping_bar": false,
+        "amount": 25,
+        "message": "You are only {amount} away from free shipping",
+        "congratulatory_message": "You have free shipping",
+        "bar_color": "#e9e9e9",
+        "fill_color": "#4d71f9",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {
+        "heading": "Featured products",
+        "product_list": [
+          "tor009",
+          "tor124",
+          "alu046",
+          "alu024"
+        ],
+        "products_in_row": "4",
+        "banner_image": "shopify://shop_images/Jewelry_69669961-7ae4-4285-a4c6-42ea564a474f.jpg",
+        "banner_heading": "Shop",
+        "banner_subheading": "Our Favorites",
+        "button_label": "Shop Now",
+        "button_url": "shopify://collections/best-sellers-watches",
+        "text_color": "#ffffff",
+        "overlay_color": "rgba(0, 0, 0, 0.4)",
+        "button_color": "#ffffff",
+        "button_background_color": "rgba(0,0,0,0)",
+        "button_border_color": "#ffffff",
+        "button_hover_color": "#000000",
+        "button_hover_background": "#ffffff",
+        "button_hover_border": "#ffffff",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 30
+      }
+    }
+  },
+  "order": [
+    "cart-template",
+    "featured-products"
+  ]
+}

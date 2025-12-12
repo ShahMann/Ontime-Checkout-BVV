@@ -1,0 +1,345 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Product gallery image
+	This snippet will output main image on product page
+
+	- image: image object (optional, object),
+	- is_lazy: is lazy load enable (optional, default: true, boolean)
+	- container
+	- square_image: if media height is set to 'square' then make images size square
+	- additional_class: additional class for image
+
+	{%- render "product-gallery-image", image: image, is_lazy: is_lazy, container: container -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- if image -%}
+	{% if image == settings.product_default_image %}
+		{%- capture img_focal -%}
+			--img-desktop-pos: {{ settings.product_default_image.presentation.focal_point }};
+		{%- endcapture -%}
+	{% endif %}
+
+	{% if container == "1952px" %}
+		{% assign w_1920 = 940 %}
+		{% assign w_1600 = 780 %}
+
+		{% if square_image %}
+			{% assign h_1920 = w_1920 %}
+			{% assign h_1600 = w_1600 %}
+		{% else %}
+			{% assign h_1920 = w_1920 | divided_by: image.aspect_ratio | round %}
+			{% assign h_1600 = w_1600 | divided_by: image.aspect_ratio | round %}
+		{% endif %}
+
+		{% assign w_1920_x2 = w_1920 | times: 2 %}
+		{% assign w_1600_x2 = w_1600 | times: 2 %}
+
+		{% assign h_1920_x2 = h_1920 | times: 2 %}
+		{% assign h_1600_x2 = h_1600 | times: 2 %}
+	{% elsif container == "1432px" %}
+		{% assign w_1920 = 695 %}
+		{% assign w_1600 = 695 %}
+
+		{% if square_image %}
+			{% assign h_1920 = w_1920 %}
+			{% assign h_1600 = w_1600 %}
+		{% else %}
+			{% assign h_1920 = w_1920 | divided_by: image.aspect_ratio | round %}
+			{% assign h_1600 = w_1600 | divided_by: image.aspect_ratio | round %}
+		{% endif %}
+
+		{% assign w_1920_x2 = w_1920 | times: 2 %}
+		{% assign w_1600_x2 = w_1600 | times: 2 %}
+
+		{% assign h_1920_x2 = h_1920 | times: 2 %}
+		{% assign h_1600_x2 = h_1600 | times: 2 %}
+	{% elsif container == "inherit" and settings.container_width == "1952px" %}
+		{% assign w_1920 = 940 %}
+		{% assign w_1600 = 780 %}
+
+		{% if square_image %}
+			{% assign h_1920 = w_1920 %}
+			{% assign h_1600 = w_1600 %}
+		{% else %}
+			{% assign h_1920 = w_1920 | divided_by: image.aspect_ratio | round %}
+			{% assign h_1600 = w_1600 | divided_by: image.aspect_ratio | round %}
+		{% endif %}
+
+		{% assign w_1920_x2 = w_1920 | times: 2 %}
+		{% assign w_1600_x2 = w_1600 | times: 2 %}
+
+		{% assign h_1920_x2 = h_1920 | times: 2 %}
+		{% assign h_1600_x2 = h_1600 | times: 2 %}
+	{% elsif container == "inherit" and settings.container_width == "1432px" %}
+		{% assign w_1920 = 695 %}
+		{% assign w_1600 = 695 %}
+
+		{% if square_image %}
+			{% assign h_1920 = w_1920 %}
+			{% assign h_1600 = w_1600 %}
+		{% else %}
+			{% assign h_1920 = w_1920 | divided_by: image.aspect_ratio | round %}
+			{% assign h_1600 = w_1600 | divided_by: image.aspect_ratio | round %}
+		{% endif %}
+
+		{% assign w_1920_x2 = w_1920 | times: 2 %}
+		{% assign w_1600_x2 = w_1600 | times: 2 %}
+
+		{% assign h_1920_x2 = h_1920 | times: 2 %}
+		{% assign h_1600_x2 = h_1600 | times: 2 %}
+	{% else %}
+		{% assign w_1920 = 940 %}
+		{% assign w_1600 = 780 %}
+
+		{% if square_image %}
+			{% assign h_1920 = w_1920 %}
+			{% assign h_1600 = w_1600 %}
+		{% else %}
+			{% assign h_1920 = w_1920 | divided_by: image.aspect_ratio | round %}
+			{% assign h_1600 = w_1600 | divided_by: image.aspect_ratio | round %}
+		{% endif %}
+
+		{% assign w_1920_x2 = w_1920 | times: 2 %}
+		{% assign w_1600_x2 = w_1600 | times: 2 %}
+
+		{% assign h_1920_x2 = h_1920 | times: 2 %}
+		{% assign h_1600_x2 = h_1600 | times: 2 %}
+	{% endif %}
+
+	{% assign w_1199 = 800 %}
+	{% assign w_1199_x2 = w_1199 | times: 2 %}
+
+	{% if square_image %}
+		{% assign h_1199 = w_1199 %}
+	{% else %}
+		{% assign h_1199 = w_1199 | divided_by: image.aspect_ratio | round %}
+	{% endif %}
+
+	{% assign h_1199_x2 = h_1199 | times: 2 %}
+
+	{% assign w_767 = 735 %}
+	{% assign w_767_x2 = w_767 | times: 2 %}
+
+	{% if square_image %}
+		{% assign h_767 = w_767 %}
+	{% else %}
+		{% assign h_767 = w_767 | divided_by: image.aspect_ratio | round %}
+	{% endif %}
+
+	{% assign h_767_x2 = h_767 | times: 2 %}
+
+	{% assign w_480 = 448 %}
+	{% assign w_480_x2 = w_480 | times: 2 %}
+
+	{% if square_image %}
+		{% assign h_480 = w_480 %}
+	{% else %}
+		{% assign h_480 = w_480 | divided_by: image.aspect_ratio | round %}
+	{% endif %}
+
+	{% assign h_480_x2 = h_480 | times: 2 %}
+
+	{% assign w_420 = 388 %}
+	{% assign w_420_x2 = w_420 | times: 2 %}
+
+	{% if square_image %}
+		{% assign h_420 = w_420 %}
+	{% else %}
+		{% assign h_420 = w_420 | divided_by: image.aspect_ratio | round %}
+	{% endif %}
+
+	{% assign h_420_x2 = h_420 | times: 2 %}
+
+	{% assign w_380 = 348 %}
+	{% assign w_380_x2 = w_380 | times: 2 %}
+
+	{% if square_image %}
+		{% assign h_380 = w_380 %}
+	{% else %}
+		{% assign h_380 = w_380 | divided_by: image.aspect_ratio | round %}
+	{% endif %}
+
+	{% assign h_380_x2 = h_380 | times: 2 %}
+
+	{%- if is_lazy -%}
+		<picture class="{{- additional_class }} lazy">
+			<source
+				data-srcset="{{ image | image_url: width: w_380, height: h_380 }} 1x, {{ image | image_url: width: w_380_x2, height: h_380_x2 }} 2x"
+				srcset="{{ image | image_url: width: 10 }}"
+				media="(max-width: 380px)"
+				width="380"
+				height="380"
+			>
+
+			<source
+				data-srcset="{{ image | image_url: width: w_420, height: h_420 }} 1x, {{ image | image_url: width: w_420_x2, height: h_420_x2 }} 2x"
+				srcset="{{ image | image_url: width: 10 }}"
+				media="(max-width: 420px)"
+				width="420"
+				height="420"
+			>
+
+			<source
+				data-srcset="{{ image | image_url: width: w_480, height: h_480 }} 1x, {{ image | image_url: width: w_480_x2, height: h_480_x2 }} 2x"
+				srcset="{{ image | image_url: width: 10 }}"
+				media="(max-width: 480px)"
+				width="480"
+				height="480"
+			>
+
+			<source
+				data-srcset="{{- image | image_url: width: w_767, height: h_767 }} 1x, {{ image | image_url: width: w_767_x2, height: h_767_x2 }} 2x"
+				srcset="{{ image | image_url: width: 10 }}"
+				media="(max-width: 767px)"
+				width="767"
+				height="767"
+			>
+
+			<source
+				data-srcset="{{- image | image_url: width: w_1199, height: h_1199 }} 1x, {{ image | image_url: width: w_1199_x2, height: h_1199_x2 }} 2x"
+				srcset="{{ image | image_url: width: 10 }}"
+				media="(max-width: 1199px)"
+				width="840"
+				height="840"
+			>
+
+			<source
+				data-srcset="{{- image | image_url: width: w_1600, height: h_1600 }} 1x, {{ image | image_url: width: w_1600_x2, height: h_1600_x2 }} 2x"
+				srcset="{{ image | image_url: width: 10 }}"
+				media="(max-width: 1600px)"
+				width="741"
+				height="741"
+			>
+
+			<img
+				class="product-media__image"
+				data-srcset="{{- image | image_url: width: w_1920, height: h_1920 }} 1x, {{ image | image_url: width: w_1920_x2, height: h_1920_x2 }} 2x"
+				data-src="{{- image | image_url: width: w_1920 }}"
+				srcset="{{- image | image_url: width: 10 -}}"
+				src="{{- image | image_url: width: 10 -}}"
+				alt="{{- image.alt -}}"
+				width="840"
+				height="840"
+				{% if img_focal != blank %}
+					style="{{ img_focal }}"
+				{% endif %}
+			>
+		</picture>
+
+		<noscript>
+			<picture>
+				<source
+					srcset="{{ image | image_url: width: w_380 }} 1x, {{ image | image_url: width: w_380_x2 }} 2x"
+					media="(max-width: 380px)"
+					width="380"
+					height="380"
+				>
+
+				<source
+					srcset="{{ image | image_url: width: w_420 }} 1x, {{ image | image_url: width: w_420_x2 }} 2x"
+					media="(max-width: 420px)"
+					width="420"
+					height="420"
+				>
+
+				<source
+					srcset="{{ image | image_url: width: w_480 }} 1x, {{ image | image_url: width: w_480_x2 }} 2x"
+					media="(max-width: 480px)"
+					width="480"
+					height="480"
+				>
+
+				<source
+					srcset="{{- image | image_url: width: w_767 }} 1x, {{ image | image_url: width: w_767_x2 }} 2x"
+					media="(max-width: 767px)"
+					width="767"
+					height="767"
+				>
+
+				<source
+					srcset="{{- image | image_url: width: w_1199 }} 1x, {{ image | image_url: width: w_1199_x2 }} 2x"
+					media="(max-width: 1199px)"
+					width="840"
+					height="840"
+				>
+
+				<source
+					srcset="{{- image | image_url: width: w_1600 }} 1x, {{ image | image_url: width: w_1600_x2 }} 2x"
+					media="(max-width: 1600px)"
+					width="741"
+					height="741"
+				>
+
+				<img
+					class="product-media__image"
+					srcset="{{- image | image_url: width: w_1920 }} 1x, {{ image | image_url: width: w_1920_x2 }} 2x"
+					src="{{- image | image_url: width: w_1920 -}}"
+					alt="{{- image.alt | escape -}}"
+					width="840"
+					height="840"
+					{% if img_focal != blank %}
+						style="{{ img_focal }}"
+					{% endif %}
+				>
+			</picture>
+		</noscript>
+	{%- else -%}
+		<picture class="{{- additional_class -}}">
+			<source
+				srcset="{{ image | image_url: width: w_380, height: h_380 }} 1x, {{ image | image_url: width: w_380_x2, height: h_380_x2 }} 2x"
+				media="(max-width: 380px)"
+				width="380"
+				height="380"
+			>
+
+			<source
+				srcset="{{ image | image_url: width: w_420, height: h_420 }} 1x, {{ image | image_url: width: w_420_x2, height: h_420_x2 }} 2x"
+				media="(max-width: 420px)"
+				width="420"
+				height="420"
+			>
+
+			<source
+				srcset="{{ image | image_url: width: w_480, height: h_480 }} 1x, {{ image | image_url: width: w_480_x2, height: h_480_x2 }} 2x"
+				media="(max-width: 480px)"
+				width="480"
+				height="480"
+			>
+
+			<source
+				srcset="{{- image | image_url: width: w_767, height: h_767 }} 1x, {{ image | image_url: width: w_767_x2, height: h_767_x2 }} 2x"
+				media="(max-width: 767px)"
+				width="767"
+				height="767"
+			>
+
+			<source
+				srcset="{{- image | image_url: width: w_1199, height: h_1199 }} 1x, {{ image | image_url: width: w_1199_x2, height: h_1199_x2 }} 2x"
+				media="(max-width: 1199px)"
+				width="840"
+				height="840"
+			>
+
+			<source
+				srcset="{{- image | image_url: width: w_1600, height: h_1600 }} 1x, {{ image | image_url: width: w_1600_x2, height: h_1600_x2 }} 2x"
+				media="(max-width: 1600px)"
+				width="741"
+				height="741"
+			>
+
+			<img
+				class="product-media__image"
+				srcset="{{- image | image_url: width: w_1920, height: h_1920 }} 1x, {{ image | image_url: width: w_1920_x2, height: h_1920_x2 }} 2x"
+				src="{{- image | image_url: width: w_1920 -}}"
+				alt="{{- image.alt | escape -}}"
+				width="840"
+				height="840"
+				{% if img_focal != blank %}
+					style="{{ img_focal }}"
+				{% endif %}
+				fetchpriority="high"
+			>
+		</picture>
+	{%- endif -%}
+{% endif %}

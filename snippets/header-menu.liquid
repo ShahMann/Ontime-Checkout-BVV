@@ -1,0 +1,375 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+Snippet: Header menu
+Render header menu
+- menu: menu object;
+- menu_type_desktop: type of rendered menu, dropdown menu or mega menu;
+- blocks: transfer block object;
+- menu_style_type: type of rendered menu (secondary);
+- menu_position: position of rendered menu (center);
+- enable_rounded_header: enable rounded header;
+- menu_highlighted_link_name: menu highlighted link name;
+- enable_burger_menu: enable burger menu (true/false).
+- enable_rounded_header: enable rounded header (true/false).
+Usage:
+{%- render 'header-menu' -%}
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign burger_menu_button_class = "" -%}
+{%- assign item_text_class = "" -%}
+{%- assign item_class = "" -%}
+{%- assign list_class = "" -%}
+
+{%- if menu_style_type == 'secondary' %}
+    {%- assign burger_menu_button_class = "header-burger-menu-button--secondary" -%}
+    {%- assign item_text_class = "header-menu__item-text--secondary" -%}
+    {%- assign item_class = "header-menu__item--secondary" -%}
+{%- endif -%}
+
+{%- if menu_position == 'middle' -%}
+    {%- assign list_class = "header-menu__list--middle" -%}
+{%- endif -%}
+
+<nav
+  class="header-menu"
+  aria-label="{{- "layout.navigation.main_menu" | t | escape -}}"
+>
+    <ul class="header-menu__list header-menu__list--main {{ list_class -}}">
+        {%- if enable_burger_menu == true -%}
+            <li>
+                <button
+                    class="header-burger-menu-button {{ burger_menu_button_class -}}"
+                    aria-label="{{ "layout.navigation.open_drawer_menu" | t | escape }}"
+                    data-multi-drawer-toggle="HeaderBurgerMenu"
+                    data-drawer-level="1"
+                    aria-expanded="false"
+                    aria-controls="HeaderBurgerMenuMain"
+                >
+                    {%- render 'icons', icon: 'burger-menu-main' -%}
+
+                    <span class="header-burger-menu-button__label">
+                        {{ "layout.navigation.main_drawer_menu_button_label" | t }}
+                    </span>
+                </button>
+            </li>
+        {%- endif -%}
+
+        {%- for first_level_link in menu.links -%}
+            {% liquid
+                assign sale_navigation_item = false
+                assign link_color = "black"
+                
+                if first_level_link.object.metafields.custom.sale_collection == true
+                    assign sale_navigation_item = true
+                endif
+                
+                if first_level_link.object.metafields.custom.navigation_color != blank
+                    assign link_color = first_level_link.object.metafields.custom.navigation_color
+                endif
+            %}
+            
+            {% if first_level_link.type == "collection_link" %}
+                {% assign active_products = first_level_link.object.products | where: "available", true %}
+                {% if active_products.size <= 0 %}
+                    {% continue %}
+                {% endif %}
+            {% endif %}
+
+            {%- assign has_megamenu                 = false -%}
+            {%- assign megamenu_object              = "" -%}
+            {%- assign item_class_highlighted       = "" -%}
+            {%- assign item_text_class_highlighted  = "" -%}
+            {%- assign first_level_link_title       = first_level_link.title | handleize -%}
+            {%- assign menu_highlighted_link_name   = menu_highlighted_link_name | handleize -%}
+
+
+            {%- if first_level_link_title == menu_highlighted_link_name -%}
+                {%- assign item_class_highlighted       = "header-menu__item--highlighted" -%}
+                {%- assign item_text_class_highlighted  = "header-menu__item-text--highlighted" -%}
+            {%- endif -%}
+
+
+            {%- for block in blocks -%}
+                {%- if block.type != "megamenu-brands-logo" -%}
+                    {%- assign menu_handle = block.settings.menu_handle | handleize -%}
+
+
+                    {%- if first_level_link.handle == menu_handle -%}
+                        {% if block.type == 'megamenu' or block.type == 'megamenu-row-menus' or block.type == 'megamenu-brands' %}
+                            {%- if first_level_link.links != blank -%}
+                                {%- assign has_megamenu = true -%}
+                                {%- assign megamenu_object = block -%}
+
+
+                                {%- break -%}
+                            {%- endif -%}
+                        {%- else -%}
+                            {%- assign has_megamenu = true -%}
+                            {%- assign megamenu_object = block -%}
+
+
+                            {%- break -%}
+                        {%- endif -%}
+                    {%- endif -%}
+                {%- endif -%}
+            {%- endfor -%}
+
+
+            <li {% if has_megamenu == true or first_level_link.links != blank %}class="js-header-dropdown-menu-element"{% endif %}>
+                {%- capture megamenu -%}
+
+
+                    {%- if megamenu_object.type == 'megamenu' and has_megamenu == true -%}
+                        {%- render 'header-mega-menu', menu: first_level_link, megamenu_object: megamenu_object, enable_rounded_header: enable_rounded_header -%}
+                    {%- endif -%}
+
+
+                    {%- if megamenu_object.type == 'megamenu-images' and has_megamenu == true -%}
+                        {%- render 'header-mega-menu-images', menu: first_level_link, megamenu_object: megamenu_object, enable_rounded_header: enable_rounded_header -%}
+                    {%- endif -%}
+
+
+                    {%- if megamenu_object.type == 'megamenu-row-menus' and has_megamenu == true -%}
+                        {%- render 'header-mega-menu-row-menus', menu: first_level_link, megamenu_object: megamenu_object, enable_rounded_header: enable_rounded_header -%}
+                    {%- endif -%}
+
+
+                    {%- if megamenu_object.type == 'megamenu-brands' and has_megamenu == true -%}
+                        {%- assign brands_logos_blocks = section.blocks | where: 'type', 'megamenu-brands-logo' -%}
+
+
+                        {%- render 'header-mega-menu-brands', menu: first_level_link, megamenu_object: megamenu_object, blocks: brands_logos_blocks, enable_rounded_header: enable_rounded_header -%}
+                    {%- endif -%}
+
+
+                    {%- if megamenu_object.type == 'megamenu-half-to-half' and has_megamenu == true -%}
+                        {%- if megamenu_object.settings.heading == blank and megamenu_object.settings.subheading == blank and megamenu_object.settings.image == blank -%}
+                            {%- assign has_megamenu = false -%}
+                        {%- else -%}
+                            {%- render 'header-mega-menu-half-to-half', menu: first_level_link, megamenu_object: megamenu_object, enable_rounded_header: enable_rounded_header -%}
+                        {%- endif -%}
+                    {%- endif -%}
+                {%- endcapture -%}
+
+
+                {%- if megamenu != blank and menu_type_desktop == "megamenu" or menu_type_desktop == "both" -%}
+                    <a
+                        class="header-menu__item {{ item_class }} {{ item_class_highlighted }} {%- if first_level_link.active %} header-menu__item--active{% endif %}{% if sale_navigation_item %} sale-menu-item{% endif %} no-js"
+                        href="{{- first_level_link.url -}}"
+                       {% if link_color != "black" %} style="color: {{link_color}}; font-weight: bold;" {% endif %}
+                        {% if first_level_link.current %}
+                            aria-current="page"
+                        {% endif %}
+                    >
+                        <span class="header-menu__item-text {{ item_text_class }} {{ item_text_class_highlighted }}"  {% if link_color != "black" %} style="color: {{link_color}}; font-weight: bold;" {% endif %}>
+                            {{ first_level_link.title | escape }}
+                        </span>
+                    </a>
+
+
+                    {% if display_link_on_first_lvl and first_level_link.url != '#' %}
+                        <a
+                            href="{{- first_level_link.url -}}"
+                            class="header-menu__item {{ item_class }} {{ item_class_highlighted }} {% if first_level_link.child_active %} header-menu__item--active{% endif %}{% if sale_navigation_item %} sale-menu-item{% endif %} js-header-mega-menu-toggler"
+                            data-target="headerMegaMenu:{{- first_level_link.title | handleize -}}"
+                            aria-controls="headerMegaMenu:{{- first_level_link.title | handleize -}}"
+                            aria-expanded="false"
+                           {% if link_color != "black" %} style="color: {{link_color}}; font-weight: bold;" {% endif %}
+                            {% if megamenu_object.type == 'megamenu-brands' %}data-brands-drawer{%- endif -%}
+                        >
+                            <span class="header-menu__item-text  {{ item_text_class }} {{ item_text_class_highlighted }}"  {% if link_color != "black" %} style="color: {{link_color}}; font-weight: bold;" {% endif %}>
+                                {{ first_level_link.title | escape }}
+                            </span>
+
+
+                            {% assign badge_text                = megamenu_object.settings.badge_text %}
+                            {% assign badge_text_color          = megamenu_object.settings.badge_text_color %}
+                            {% assign badge_background_color    = megamenu_object.settings.badge_background_color %}
+
+
+                            {%- if badge_text != blank -%}
+                                <span
+                                    class="header-menu__item-badge"
+                                    style="--header-background: {{ header_bg -}}; --badge-text-color: {{ badge_text_color }}; --badge-background-color: {{ badge_background_color }};"
+                                >
+                                {{- badge_text -}}
+                            </span>
+                            {%- endif -%}
+
+
+                            <span class="header-menu__item-toggle-icon">
+                                {%- render 'icons', icon: 'arrow-down' -%}
+                            </span>
+                        </a>
+                    {% else %}
+                        <button
+                            class="header-menu__item {{ item_class }} {{ item_class_highlighted }} {% if first_level_link.child_active %} header-menu__item--active{% endif %}{% if sale_navigation_item %} sale-menu-item{% endif %} js-header-mega-menu-toggler"
+                            type="button"
+                            data-target="headerMegaMenu:{{- first_level_link.title | handleize -}}"
+                            aria-controls="headerMegaMenu:{{- first_level_link.title | handleize -}}"
+                            aria-expanded="false"
+                           {% if link_color != "black" %} style="color: {{link_color}}; font-weight: bold;" {% endif %}
+                            {% if megamenu_object.type == 'megamenu-brands' %}data-brands-drawer{%- endif -%}
+                        >
+                            <span class="header-menu__item-text  {{ item_text_class }} {{ item_text_class_highlighted }}"  {% if link_color != "black" %} style="color: {{link_color}}; font-weight: bold;" {% endif %}>
+                                {{ first_level_link.title | escape }}
+                            </span>
+
+
+                            {% assign badge_text                = megamenu_object.settings.badge_text %}
+                            {% assign badge_text_color          = megamenu_object.settings.badge_text_color %}
+                            {% assign badge_background_color    = megamenu_object.settings.badge_background_color %}
+
+
+                            {%- if badge_text != blank -%}
+                                <span
+                                    class="header-menu__item-badge"
+                                    style="--header-background: {{ header_bg -}}; --badge-text-color: {{ badge_text_color }}; --badge-background-color: {{ badge_background_color }};"
+                                >
+                                    {{- badge_text -}}
+                                </span>
+                            {%- endif -%}
+
+
+                            <span class="header-menu__item-toggle-icon">
+                                {%- render 'icons', icon: 'arrow-down' -%}
+                            </span>
+                        </button>
+                    {% endif %}
+
+
+                    {{- megamenu -}}
+                {%- elsif first_level_link.links != blank and menu_type_desktop == "dropdown" or menu_type_desktop == "both" -%}
+                    <a
+                        class="header-menu__item {{ item_class }} {{ item_class_highlighted }} {%- if first_level_link.active %} header-menu__item--active{% endif %}{% if sale_navigation_item %} sale-menu-item{% endif %} no-js"
+                        href="{{- first_level_link.url -}}"
+                      {% if link_color != "black" %} style="color: {{link_color}}; font-weight: bold;" {% endif %}
+                        {% if first_level_link.current %}
+                            aria-current="page"
+                        {% endif %}
+                    >
+                        <span class="header-menu__item-text  {{ item_text_class }} {{ item_text_class_highlighted }}"   {% if link_color != "black" %} style="color: {{link_color}}; font-weight: bold;" {% endif %}>
+                            {{ first_level_link.title | escape }}
+                        </span>
+                    </a>
+
+
+                    {% if display_link_on_first_lvl and first_level_link.url != '#' %}
+                        <a
+                            href="{{- first_level_link.url -}}"
+                            class="header-menu__item {{ item_class }} {{ item_class_highlighted }} {% if first_level_link.child_active %} header-menu__item--active{% endif %}{% if sale_navigation_item %} sale-menu-item{% endif %} js-header-dropdown-menu-toggler"
+                            data-target="headerDesktopMenu:{{- first_level_link.title | handleize -}}"
+                            aria-controls="headerDesktopMenu:{{- first_level_link.title | handleize -}}"
+                            aria-expanded="false"
+                           {% if link_color != "black" %} style="color: {{link_color}}; font-weight: bold;" {% endif %}
+                        >
+                            <span class="header-menu__item-text  {{ item_text_class }} {{ item_text_class_highlighted }}"  {% if link_color != "black" %} style="color: {{link_color}}; font-weight: bold;" {% endif %}>
+                                {{ first_level_link.title | escape }}
+                            </span>
+
+
+                            <span class="header-menu__item-toggle-icon">
+                                {%- render 'icons', icon: 'arrow-down' -%}
+                            </span>
+                        </a>
+                    {% else %}
+                        <button
+                            class="header-menu__item {{ item_class }} {{ item_class_highlighted }} {% if first_level_link.child_active %} header-menu__item--active{% endif %}{% if sale_navigation_item %} sale-menu-item{% endif %} js-header-dropdown-menu-toggler"
+                            type="button"
+                            data-target="headerDesktopMenu:{{- first_level_link.title | handleize -}}"
+                            aria-controls="headerDesktopMenu:{{- first_level_link.title | handleize -}}"
+                            aria-expanded="false"
+                           {% if link_color != "black" %} style="color: {{link_color}}; font-weight: bold;" {% endif %}
+                        >
+                            <span class="header-menu__item-text  {{ item_text_class }} {{ item_text_class_highlighted }}"  {% if link_color != "black" %} style="color: {{link_color}}; font-weight: bold;" {% endif %}>
+                                {{ first_level_link.title | escape }}
+                            </span>
+
+
+                            <span class="header-menu__item-toggle-icon">
+                                {%- render 'icons', icon: 'arrow-down' -%}
+                            </span>
+                        </button>
+                    {% endif %}
+
+
+                    <ul
+                        id="headerDesktopMenu:{{- first_level_link.title | handleize -}}"
+                        class="header-menu__list header-menu__list--nested js-header-dropdown-menu {% if first_level_link.levels == 2 %}js-accordion-container{% endif %}"
+                    >
+                        {%- for second_level_link in first_level_link.links -%}
+                            {% if second_level_link.type == "collection_link" %}
+                                {% assign active_products = second_level_link.object.products | where: "available", true %}
+                                {% if active_products.size <= 0 %}
+                                    {% continue %}
+                                {% endif %}
+                            {% endif %}
+
+                            <li class="accordion__item {% if second_level_link.links != blank %}js-accordion-item{%- endif -%}">
+                                {%- if second_level_link.links != blank -%}
+                                    <button class="header-menu__item js-accordion-control {%- if second_level_link.child_active %} header-menu__item--active{%- endif -%}">
+                                        {{- second_level_link.title | escape -}}
+
+
+                                        <span class="header-menu__item-toggle-icon">
+                                            {%- render 'icons', icon: 'arrow-down' -%}
+                                        </span>
+                                    </button>
+
+
+                                    <div class="accordion__content accordion__content--animate js-accordion-content">
+                                        <ul class="header-menu__list header-menu__list--collapsible js-accordion-inner">
+                                            {%- for third_level_link in second_level_link.links -%}
+                                                {% if third_level_link.type == "collection_link" %}
+                                                    {% assign active_products = third_level_link.object.products | where: "available", true %}
+                                                    {% if active_products.size <= 0 %}
+                                                        {% continue %}
+                                                    {% endif %}
+                                                {% endif %}
+
+                                                <li>
+                                                    <a class="header-menu__item"
+                                                       href="{{- third_level_link.url -}}"
+                                                       {% if third_level_link.current %}
+                                                            aria-current="page"
+                                                        {% endif %}
+                                                    >
+                                                        {{- third_level_link.title -}}
+                                                    </a>
+                                                </li>
+                                            {%- endfor -%}
+                                        </ul>
+                                    </div>
+                                {%- else -%}
+                                    <a
+                                        class="header-menu__item"
+                                        href="{{- second_level_link.url -}}"
+                                        {% if second_level_link.current %}
+                                            aria-current="page"
+                                        {% endif %}
+                                    >
+                                        {{- second_level_link.title -}}
+                                    </a>
+                                {%- endif -%}
+                            </li>
+                        {%- endfor -%}
+                    </ul>
+                {%- else -%}
+                    <a
+                        class="header-menu__item {{ item_class }} {{ item_class_highlighted }} {%- if first_level_link.active %} header-menu__item--active{% endif %}{% if sale_navigation_item %} sale-menu-item{% endif %}"
+                        href="{{- first_level_link.url -}}"
+                   {% if link_color != "black" %} style="color: {{link_color}}; font-weight: bold;" {% endif %}
+                        {% if first_level_link.current %}
+                            aria-current="page"
+                        {% endif %}
+                    >
+                        <span class="header-menu__item-text  {{ item_text_class }} {{ item_text_class_highlighted }}"      {% if link_color != "black" %} style="color: {{link_color}}; font-weight: bold;" {% endif %}>
+                            {{ first_level_link.title | escape }}
+                        </span>
+                    </a>
+                {%- endif -%}
+            </li>
+        {%- endfor -%}
+    </ul>
+</nav>

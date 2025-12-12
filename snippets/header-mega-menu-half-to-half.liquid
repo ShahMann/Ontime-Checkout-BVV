@@ -1,0 +1,118 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header mega menu half to half
+	Render header mega menu half to half
+	- menu: menu object;
+	- megamenu_object: mega menu object;
+	- enable_rounded_header: enable rounded header (true/false).
+
+	Usage:
+	{%- render 'header-mega-menu-half-to-half' -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign heading          	= megamenu_object.settings.heading -%}
+{%- assign subheading       	= megamenu_object.settings.subheading -%}
+{%- assign button_text1			= megamenu_object.settings.button_label1 -%}
+{%- assign button_text2			= megamenu_object.settings.button_label2 -%}
+{%- assign button_link1			= megamenu_object.settings.button_link1 -%}
+{%- assign button_link2			= megamenu_object.settings.button_link2 -%}
+{%- assign button1_style		= megamenu_object.settings.button1_style -%}
+{%- assign button2_style		= megamenu_object.settings.button2_style -%}
+{%- assign button2_style		= megamenu_object.settings.button2_style -%}
+{%- assign megamenu_background	= megamenu_object.settings.megamenu_background -%}
+{%- assign image				= megamenu_object.settings.image -%}
+{%- assign image_link			= megamenu_object.settings.image_link -%}
+{%- assign mega_menu_class 		= "" -%}
+
+{%- if enable_rounded_header == true -%}
+	{%- assign mega_menu_class = "header-mega-menu--rounded" -%}
+{%- endif -%}
+
+<div
+	id="headerMegaMenu:{{- menu.title | handleize -}}"
+	class="header-mega-menu header-mega-menu--half-to-half is-hidden js-header-mega-menu {{ mega_menu_class -}}"
+>
+	<div
+		class="header-mega-menu__container js-header-mega-menu-content"
+		style="--megamenu-background: {{ megamenu_background -}};"
+	>
+		<div class="header-mega-menu__content-container">
+			<div class="header-mega-menu__block header-mega-menu__block--text">
+				{%- if heading != blank -%}
+					<h2 class="header-mega-menu__heading">
+						{{- heading -}}
+					</h2>
+				{%- endif %}
+
+				{%- if subheading != blank -%}
+					<p class="header-mega-menu__subheading">
+						{{- subheading -}}
+					</p>
+				{%- endif -%}
+
+				{%- if button_link1 != blank and button_text1 != blank or button_link2 != blank and button_text2 != blank -%}
+					<div class="header-mega-menu__buttons">
+						{%- if button_link1 != blank and button_text1 != blank -%}
+							<a
+								class="button button--{{- button1_style -}}"
+								href="{{- button_link1 -}}"
+							>
+								{{- button_text1 -}}
+							</a>
+						{%- endif -%}
+
+						{%- if button_link2 != blank and button_text2 != blank -%}
+							<a
+								class="button button--{{- button2_style -}}"
+								href="{{- button_link2 -}}"
+							>
+								{{- button_text2 -}}
+							</a>
+						{%- endif -%}
+					</div>
+				{%- endif -%}
+			</div>
+
+			{%- if image != blank -%}
+				<div class="header-mega-menu__block header-mega-menu__block--image">
+					{%- capture img_focal -%}
+						--img-desktop-pos: {{ image.presentation.focal_point }};
+					{%- endcapture -%}
+
+					{%- capture image_capture -%}
+						<picture>
+							<source
+								srcset="{{ image.image | img_url: '750x' }} 1x, {{ image.image | img_url: '1500x' }} 2x"
+								media="(max-width: 1500px)"
+							/>
+
+							<img
+								class="header-mega-menu__image"
+								src="{{- image | img_url: "960x" -}}"
+								srcset="{{- image | img_url: "960x" }} 1x, {{ image | img_url: "1920x" }} 2x"
+								alt="{{- image.alt -}}"
+								style="{{ img_focal }}"
+								loading="lazy"
+							>
+						</picture>
+					{%- endcapture -%}
+
+					{%- if image_link != blank -%}
+						<a
+							href="{{- image_link -}}"
+							class="header-mega-menu__image-wrapper header-mega-menu__image-wrapper--hover"
+						>
+							{{- image_capture -}}
+						</a>
+					{%- else -%}
+						<div class="header-mega-menu__image-wrapper">
+							{{- image_capture -}}
+						</div>
+					{%- endif -%}
+
+				</div>
+			{%- endif -%}
+		</div>
+	</div>
+</div>

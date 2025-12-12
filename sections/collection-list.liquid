@@ -1,0 +1,310 @@
+{% if section.index == 1 %}
+	{%- render 'adastra' with '/src/styles/carousel.scss' -%}
+{% endif %}
+
+{%- render 'adastra' with '/src/styles/collection-list.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign min = 1 -%}
+{%- assign max = 6 -%}
+{%- assign diff = max | minus: min -%}
+
+{% if section.settings.aspect_ratio == "square" %}
+	{% assign image_class = "collection-card__image-wrapper--square" %}
+{% elsif section.settings.aspect_ratio == "landscape" %}
+	{% assign image_class = "collection-card__image-wrapper--landscape" %}
+{% else %}
+	{% assign image_class = "collection-card__image-wrapper--portrait" %}
+{% endif %}
+
+{%- assign title 				= section.settings.heading -%}
+{%- assign text_alignment		= section.settings.text_alignment -%}
+{%- assign cards_per_row		= section.settings.cards_per_row -%}
+{%- assign rounded_cards 		= section.settings.enable_rounded_cards -%}
+{%- assign overlay_color 		= section.settings.overlay_color -%}
+{%- assign image_text 			= section.settings.image_text | default: '#fff' -%}
+{%- assign container 			= section.settings.container_width -%}
+
+{% if container == 'inherit' %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+{% assign pagination_dynamic = false %}
+
+{% if section.blocks.size > 6 %}
+	{% assign pagination_dynamic = true %}
+{% endif %}
+
+{%- capture styles -%}
+	--container-width: {{- container_width -}}; {{-  -}}
+	--text-alignment: {{- text_alignment | replace: "left", "start" -}}; {{-  -}}
+	--overlay-color: {{ overlay_color }}; {{-  -}}
+	--overlay-text-color: {{ image_text }}; {{-  -}}
+{%- endcapture -%}
+
+<section class="collection-list js-collection-list" style="{{- styles -}}">
+	{% if title != blank %}
+		<h2 class="collection-list__title h2">{{ title }}</h2>
+	{% endif %}
+
+	<div
+		class="collection-list__slider {% if rounded_cards %}collection-list-slider--rounded{% endif %} swiper js-animate {% if section.blocks.size > 1 %}js-collection-list-slider{% endif %} {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}"
+		data-column="{{- cards_per_row -}}"
+		data-dynamic-pagination="{{ pagination_dynamic }}"
+	>
+		<div class="collection-list__row swiper-wrapper">
+			{% if section.blocks.size > 0 %}
+				{% for block in section.blocks %}
+					{% assign collection 	= block.settings.collection %}
+					{% assign image 		= block.settings.image | default: collection.featured_image %}
+
+					{% if section.index > 1 %}
+						{% assign is_lazy = true %}
+					{% elsif section.index == 1 and forloop.index > 2 %}
+						{% assign is_lazy = true %}
+					{% endif %}
+
+					<div class="collection-list__col collection-list__col--{{ cards_per_row }} swiper-slide">
+						{% render 'collection-card',
+							collection: collection,
+							image: image,
+							cards_per_row: cards_per_row,
+							aspect_ratio: image_class,
+							is_lazy: is_lazy,
+							rounded_cards: rounded_cards
+						%}
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+
+		{%- if section.blocks.size > 1 -%}
+			<div class="collection-list__pagination-wrapper">
+				<div class="collection-list__pagination js-collection-list-slider-pagination"></div>
+			</div>
+		{%- endif -%}
+	</div>
+</section>
+
+{%- if section.blocks.size > 1 -%}
+	{%- render 'adastra' with '/src/scripts/component-swiper-modules.js' -%}
+	{%- render 'adastra' with '/src/scripts/section-collection-list.js' -%}
+{%- endif -%}
+
+{% schema %}
+{
+	"name": "Collection list",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Collection list"
+		},
+		{
+			"type": "select",
+			"id": "text_alignment",
+			"label": "Text alignment",
+			"options": [
+				{
+					"value": "left",
+					"label": "Left"
+				},
+				{
+					"value": "center",
+					"label": "Center"
+				}
+			],
+			"default": "center"
+		},
+		{
+			"type": "select",
+			"id": "aspect_ratio",
+			"label": "Image aspect ratio",
+			"options": [
+				{
+					"value": "square",
+					"label": "Square"
+				},
+				{
+					"value": "portrait",
+					"label": "Portrait"
+				},
+				{
+					"value": "landscape",
+					"label": "Landscape"
+				}
+			],
+			"default": "portrait"
+		},
+		{
+			"type": "select",
+			"id": "cards_per_row",
+			"label": "Card per row",
+			"options": [
+				{
+					"value": "2",
+					"label": "2"
+				},
+				{
+					"value": "3",
+					"label": "3"
+				},
+				{
+					"value": "4",
+					"label": "4"
+				}
+			],
+			"default": "4",
+			"info": "Desktop only"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_rounded_cards",
+			"label": "Enable rounded cards",
+			"default": false
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color_background",
+			"id": "overlay_color",
+			"label": "Overlay color",
+			"default": "linear-gradient(180deg, rgba(255, 140, 140, 0) 5%, rgba(255, 140, 140, 0) 52%, rgba(0, 0, 0, 1) 100%)"
+		},
+		{
+			"type": "color",
+			"id": "image_text",
+			"label": "Image text",
+			"default": "#fff"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"blocks": [
+		{
+			"type": "collection",
+			"name": "Collection",
+			"settings": [
+				{
+					"type": "collection",
+					"id": "collection",
+					"label": "Collection"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image",
+					"info": "Choose another image instead of the Collection Image. 1920 x 1920px for square, 1920 x 2832px for portrait, 1920 x 1554px for landscape recommended"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Collection list",
+			"blocks": [
+				{
+					"type": "collection"
+				},
+				{
+					"type": "collection"
+				},
+				{
+					"type": "collection"
+				},
+				{
+					"type": "collection"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

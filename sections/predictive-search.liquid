@@ -1,0 +1,241 @@
+{%- assign has_predictive_results = false -%}
+{%- assign result_types = 0 -%}
+
+{%- if predictive_search.resources.products.size > 0 or predictive_search.resources.articles.size > 0 or predictive_search.resources.pages.size > 0 -%}
+    {%- assign has_predictive_results = true -%}
+{%- endif -%}
+
+{%- if predictive_search.resources.products.size > 0 -%}
+	{%- assign result_types = result_types | plus: 1 -%}
+{%- endif -%}
+
+{%- if predictive_search.resources.articles.size > 0 -%}
+	{%- assign result_types = result_types | plus: 1 -%}
+{%- endif -%}
+
+{%- if predictive_search.resources.pages.size > 0 -%}
+	{%- assign result_types = result_types | plus: 1 -%}
+{%- endif -%}
+
+{%- if predictive_search.performed and has_predictive_results -%}
+    {%- assign product_placeholder = settings.product_default_image  -%}
+    {%- assign article_placeholder = settings.article_default_image  -%}
+
+    <div class="js-predictive-search-results">
+		<div class="predictive-search__tabs {% if result_types < 2 %}is-hidden{% endif %}">
+			<ul class="predictive-search__tabs-list">
+				{%- if predictive_search.resources.products -%}
+					{%- assign is_active = false -%}
+					{%- if predictive_search.resources.products.size > 0 -%}
+						{%- assign is_active = true  -%}
+					{%- endif -%}
+
+					<li class="predictive-search__tabs-item js-predictive-search-tabs-item">
+						<button
+							class="focus-visible-outline tab-button {% if is_active %} is-active {% endif %} js-predictive-search-tabs-button"
+							type="button"
+							aria-controls="search-products"
+							aria-expanded="{%- if is_active -%}true{%- else -%}false{%- endif -%}"
+							aria-label="{{- 'general.predictive_search.products_aria_label' | t -}}"
+							data-id="product"
+							{% if is_active %}tabindex="-1"{% endif %}
+							{% if predictive_search.resources.products.size == 0 %}
+								disabled
+							{%- endif -%}
+						>
+							{{- "general.predictive_search.products" | t -}}
+						</button>
+					</li>
+				{%- endif -%}
+
+				{%- if predictive_search.resources.articles -%}
+					{%- assign is_active = false -%}
+					{%- if predictive_search.resources.products.size == 0 and predictive_search.resources.articles.size > 0 -%}
+						{%- assign is_active = true  -%}
+					{%- endif -%}
+
+					<li class="predictive-search__tabs-item js-predictive-search-tabs-item">
+						<button
+							class="focus-visible-outline tab-button{% if is_active %} is-active {% endif %} js-predictive-search-tabs-button"
+							type="button"
+							aria-controls="search-articles"
+							aria-expanded="{%- if is_active -%}true{%- else -%}false{%- endif -%}"
+							aria-label="{{- 'general.predictive_search.articles_aria_label' | t -}}"
+							data-id="article"
+							{% if is_active %}tabindex="-1"{% endif %}
+							{% if predictive_search.resources.articles.size == 0 %}
+								disabled
+							{%- endif -%}
+						>
+							{{- "general.predictive_search.articles" | t -}}
+						</button>
+					</li>
+				{%- endif -%}
+
+				{%- if predictive_search.resources.pages -%}
+					{%- assign is_active = false -%}
+					{%- if predictive_search.resources.products.size == 0 and predictive_search.resources.articles.size == 0 and predictive_search.resources.pages.size > 0 -%}
+						{%- assign is_active = true  -%}
+					{%- endif -%}
+
+					<li class="predictive-search__tabs-item js-predictive-search-tabs-item">
+						<button
+							class="focus-visible-outline tab-button {% if is_active %} is-active {% endif %} js-predictive-search-tabs-button"
+							type="button"
+							aria-controls="search-pages"
+							aria-expanded="{%- if is_active -%}true{%- else -%}false{%- endif -%}"
+							aria-label="{{- 'general.predictive_search.pages_aria_label' | t -}}"
+							data-id="page"
+							{% if is_active %}tabindex="-1"{% endif %}
+							{% if predictive_search.resources.pages.size == 0 %}
+								disabled
+							{%- endif -%}
+						>
+							{{- "general.predictive_search.pages" | t -}}
+						</button>
+					</li>
+				{%- endif -%}
+			</ul>
+		</div>
+
+        {%- if predictive_search.resources.products.size > 0 -%}
+            <ul
+				class="predictive-search__result-row predictive-search__result-row--products is-active js-predictive-search-result-row"
+				data-id="product"
+				id="search-products"
+            >
+                {%- for product in predictive_search.resources.products -%}
+					{% if product.price <= 0 or product.featured_image == blank or product.available == false %}
+						{% continue %}
+					{% endif %}
+                    <li class="predictive-search__result-col">
+						{%- render 'product-card',
+							product: product,
+							size: 410,
+							tablet_size: 340,
+							mobile_size: 309,
+							is_lazy: false,
+						-%}
+                    </li>
+                {%- endfor -%}
+            </ul>
+        {%- endif -%}
+
+        {%- if predictive_search.resources.articles.size > 0 -%}
+            <ul
+				class="predictive-search__result-row predictive-search__result-row--articles {% if predictive_search.resources.products.size == 0 %} is-active {% else %} visually-hidden {% endif %} js-predictive-search-result-row"
+				data-id="article"
+				id="search-articles"
+            >
+                {%- for article in predictive_search.resources.articles -%}
+                    {%- assign image 		           = article.image | default: article_placeholder -%}
+                    {%- assign img_focal 	           = nil -%}
+					{%- assign article_read_more_label = settings.article_read_more_label -%}
+					{%- assign show_author 		   	   = settings.show_author -%}
+					{%- assign show_date 		   	   = settings.show_date -%}
+					{%- assign show_comments_count 	   = settings.show_comments_count -%}
+					{%- assign is_strip_title      	   = settings.is_strip_title -%}
+                    {%- unless article.image -%}
+                        {%- capture img_focal -%}
+                            --img-pos: {{ image.presentation.focal_point }};
+                        {%- endcapture -%}
+                    {%- endunless -%}
+
+                    <li class="predictive-search__result-col">
+                        <div class="focus-visible-outline predictive-search__article-card">
+                            <a
+								class="predictive-search__article-card-image-container focus-visible-outline"
+								href="{{- article.url -}}"
+								aria-label="{{- article.title -}}"
+							>
+                                {%- if image -%}
+                                    <picture>
+                                        <img
+											class="predictive-search__article-card-image"
+											src="{{ image | img_url: '132x', crop: 'center' }}"
+											srcset="{{ image | img_url: '132x', crop: 'center'  }} 1x, {{ image | img_url: '264x', crop: 'center' }} 2x"
+											width="132"
+											height="88"
+											alt="{{- image.alt | escape -}}"
+											{% if img_focal != blank %}
+												style="{{ img_focal }}"
+											{% endif %}
+                                        />
+                                    </picture>
+                                {%- endif -%}
+                            </a>
+
+                            <div class="predictive-search__article-card-content">
+								{%- if show_author or show_date or show_comments_count -%}
+									<ul class="predictive-search__article-card-info">
+										{%- if show_date -%}
+											<li class="predictive-search__article-card-info-item">
+												{{- article.created_at | date: '%B %d, %Y' -}}
+											</li>
+										{%- endif -%}
+
+										{%- if show_author and article.author != blank -%}
+											<li class="predictive-search__article-card-info-item">
+												{{- article.author -}}
+											</li>
+										{%- endif -%}
+
+										{%- if show_comments_count and article.comments_enabled? -%}
+											<li class="predictive-search__article-card-info-item">
+												{{ "general.predictive_search.comments" | t: count: article.comments_count }}
+											</li>
+										{%- endif -%}
+									</ul>
+								{%- endif -%}
+
+								<p class="predictive-search__article-card-heading{% if is_strip_title %} predictive-search__article-card-heading--clipped{% endif %}">
+									<a
+										class="predictive-search__article-card-heading-link focus-visible-outline"
+										href="{{- article.url -}}"
+										aria-label="{{- article.title -}}"
+									>
+										{{- article.title -}}
+									</a>
+								</p>
+
+								{%- if article_read_more_label != blank -%}
+									<a
+										class="predictive-search__article-card-details-button button-link-chevron"
+										href="{{- article.url -}}"
+										aria-label="{{- 'blogs.article.learn_more_link_aria' | t: title: article.title | escape -}}"
+									>
+										{{- article_read_more_label -}}
+
+										{%- render 'icons', icon: 'arrow-right' -%}
+									</a>
+								{%- endif -%}
+                            </div>
+                        </div>
+                    </li>
+                {%- endfor -%}
+            </ul>
+        {%- endif -%}
+
+        {%- if predictive_search.resources.pages.size > 0 -%}
+            <ul
+				class="predictive-search__result-row predictive-search__result-row--pages {% if predictive_search.resources.products.size == 0 and predictive_search.resources.articles.size == 0 %} is-active {% else %} visually-hidden {% endif %} js-predictive-search-result-row"
+				data-id="page"
+				id="search-pages"
+            >
+                {%- for page in predictive_search.resources.pages -%}
+                    <li class="predictive-search__result-col">
+                        <a
+							class="predictive-search__page-card button-link-chevron focus-visible-outline"
+							href="{{- page.url -}}"
+							aria-label="{{- page.title -}}"
+                        >
+							{{- page.title -}}
+
+                            {%- render 'icons', icon: 'slider-arrow-right' -%}
+                        </a>
+                    </li>
+                {%- endfor -%}
+            </ul>
+        {%- endif -%}
+    </div>
+{%- endif -%}

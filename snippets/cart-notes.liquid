@@ -1,0 +1,60 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Cart notes
+	Render notes block for cart
+	- id: HTML id attribute (required)
+
+	Usage:
+	{%- render 'cart-notes' -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- if settings.show_cart_note and id != blank -%}
+	<div class="cart-block cart-block--accordion-container js-accordion-container">
+		<div class="cart-block__accordion js-accordion-item">
+			<button
+				class="cart-block__header focus-visible-outline js-accordion-control"
+				aria-controls="cart-note"
+				aria-expanded="false"
+			>
+				<span class="cart-block__icon cart-block__icon-plus">
+					{% render 'icons', icon: 'plus' %}
+				</span>
+
+				<span class="cart-block__icon cart-block__icon-minus">
+					{% render 'icons', icon: 'minus' %}
+				</span>
+
+				<span class="cart-block__text js-cart-note-control-text">
+					{%- if cart.note != blank -%}
+						{{- 'cart.general.edit_note' | t -}}
+					{%- else -%}
+						{{- 'cart.general.note' | t -}}
+					{%- endif -%}
+				</span>
+			</button>
+
+			<div
+				id="cart-note"
+				class="cart-block__content js-accordion-content"
+				style="height: 0;"
+			>
+				<div class="cart-block__wrapper js-accordion-inner">
+					<label for="note" class="visually-hidden">{{- 'cart.general.note' | t -}}</label>
+
+					<textarea
+						id="note"
+						name="note"
+						form="cart-{{- section.id -}}"
+						class="textarea cart-block__field js-cart-notes-field"
+						aria-label="{{- 'cart.general.note' | t | escape -}}"
+						placeholder="{{- 'cart.general.note_placeholder' | t | escape -}}"
+					>
+						{{- cart.note -}}
+					</textarea>
+				</div>
+			</div>
+
+		</div>
+	</div>
+{%- endif -%}

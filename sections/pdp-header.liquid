@@ -1,0 +1,145 @@
+{% liquid
+  if collection
+    assign deepest_collection = collection
+  else
+    assign deepest_collection_level = 0
+    for col in product.collections
+      assign collection_handle = col.handle
+      assign collection_level = collection_handle | split: '_' | size
+      if collection_level > deepest_collection_level
+        assign deepest_collection = col
+        assign deepest_collection_level = collection_level
+      endif
+    endfor
+  endif
+
+  assign collection_tree = deepest_collection.title | replace: '-', ' ' | replace: '\ ', '-' | upcase | split: '_'
+
+  assign collection_link = ''
+  assign collection_string = deepest_collection.handle
+  assign collection_links = ''
+  for collection_item in collection_tree
+    assign collection_link = '/collections/' | append: collection_string | replace: '\', '' | append: '@'
+    assign collection_links = collection_links | prepend: collection_link
+
+    comment
+      the following 5 lines are just removing the last part of collection_string :)
+      extremely stupid i know
+    endcomment
+    assign collection_string = collection_string | split: '_'
+    assign collection_string = collection_string | remove: collection_string[-1]
+    assign collection_string = collection_string | remove: '[' | remove: ']' | remove: '"' | split: ',' | join: '_' | remove: ' '
+    assign tmp = collection_string.size | minus: 1
+    assign collection_string = collection_string | slice: 0, tmp
+  endfor
+
+  assign collection_links = collection_links | split: '@'
+  assign collection_title = deepest_collection.title | split: '_' | last
+
+  assign container = section.settings.container_width
+  if container == 'inherit'
+    assign container_width = settings.container_width
+  else
+    assign container_width = container
+  endif
+%}
+
+{%- capture section_styles -%}
+	--container-width: {{ container_width }};
+{%- endcapture -%}
+
+<div
+  class="pdp-header-container"
+  {% if shop.locale == 'ar' %}
+    dir="rtl"
+  {% endif %}
+  style="{{ section_styles }}"
+>
+  <a href="javascript:history.back()" class="back-button">{{ 'products.product.back_to_results' | t }}</a>
+  <div class="collection-tree">
+    {% for collection_item in collection_tree %}
+      {% liquid
+        assign collection_link = collection_links[forloop.index0]
+        if shop.locale != 'en'
+          assign collection_link = '/' | append: shop.locale | append: collection_link
+        endif
+      %}
+      <a href="{{ collection_link }}" class="collection-link">{{ collection_item }}</a>
+      {% unless forloop.last %}
+        /
+      {% endunless %}
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .breadcrumb {
+    display: none;
+  }
+
+  .pdp-header-container {
+    margin-bottom: 20px;
+    max-width: var(--container-width);
+    margin: 0 auto;
+  }
+
+  .pdp-header-container .back-button {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+    margin: 10px auto;
+    display: block;
+  }
+
+  .pdp-header-container .collection-tree {
+    line-height: 1;
+  }
+
+  .pdp-header-container .collection-link {
+    text-decoration: underline;
+    color: black;
+    line-height: 1;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PDP header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "container_width",
+      "label": "Container width",
+      "options": [
+        {
+          "value": "1432px",
+          "label": "Default - 1400px"
+        },
+        {
+          "value": "1952px",
+          "label": "Large - 1920px"
+        },
+        {
+          "value": "100%",
+          "label": "Full width"
+        },
+        {
+          "value": "inherit",
+          "label": "Inherit of general setting"
+        }
+      ],
+      "default": "100%",
+      "info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP header"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,292 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Product card image
+	This snippet will output product card images
+
+	- product: Product object (required, object)
+	- image: image object (required, object),
+	- size: desktop image size (required, number)
+	- tablet_size: tablet image size (optional, default: size, number)
+	- mobile_size: mobile image size (optional, default: tablet_size, number)
+	- is_lazy: is lazy load enable (optional, default: true, boolean)
+	- is_hover_image: is it image on hover (optional, default: false, boolean)
+
+	{%- render 'product-card-image',
+		product: product,
+		is_lazy: is_lazy,
+		image: image,
+		is_hover_image: false,
+		size: size,
+		tablet_size: tablet_size,
+		mobile_size: mobile_size
+	-%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign aspect_ratio	= settings.product_card_img_aspect_ratio -%}
+{%- assign object_fit	= settings.image_object_fit -%}
+{%- assign class		= class | default: "product-card__image" -%}
+
+{%- assign size_2x				= size | times: 2 -%}
+{%- assign large_size			= size | times: 1.5 | round -%}
+{%- assign large_size_2x		= size | times: 3 -%}
+{%- assign tablet_size_2x		= tablet_size | times: 2 -%}
+{%- assign mobile_size_2x		= mobile_size | times: 2 -%}
+{%- assign small_mobile_size	= mobile_size | divided_by: 1.2 | round -%}
+{%- assign small_mobile_size_2x	= small_mobile_size | times: 2 -%}
+
+{% if aspect_ratio == "square" %}
+	{%- assign image_height 		= size %}
+	{%- assign image_large_height 	= large_size %}
+	{%- assign image_tablet_height 	= tablet_size %}
+	{%- assign image_mobile_height 	= mobile_size %}
+	{%- assign image_small_mobile_height 	= small_mobile_size %}
+
+	{%- if object_fit == "cover" -%}
+		{%- assign image_size 		= size | append: 'x' | append: size -%}
+		{%- assign image_size_2x	= size_2x | append: 'x' | append: size_2x -%}
+
+		{%- assign image_large_size		= large_size | append: 'x' | append: large_size -%}
+		{%- assign image_large_size_2x	= large_size_2x | append: 'x' | append: large_size_2x -%}
+
+		{%- assign image_tablet_size	= tablet_size | append: 'x' | append: tablet_size | default: image_size -%}
+		{%- assign image_tablet_size_2x	= tablet_size_2x | append: 'x' | append: tablet_size_2x | default: image_size_2x -%}
+
+		{%- assign image_mobile_size	= mobile_size | append: 'x' | append: mobile_size | default: image_tablet_size -%}
+		{%- assign image_mobile_size_2x	= mobile_size_2x | append: 'x' | append: mobile_size_2x | default: image_tablet_size_2x -%}
+
+		{%- assign image_small_mobile_size		= small_mobile_size | append: 'x' | append: small_mobile_size | default: image_mobile_size -%}
+		{%- assign image_small_mobile_size_2x	= small_mobile_size_2x | append: 'x' | append: small_mobile_size_2x | default: image_mobile_size_2x -%}
+	{%- else -%}
+		{%- assign image_size 		= size | append: 'x' -%}
+		{%- assign image_size_2x	= size_2x | append: 'x' -%}
+
+		{%- assign image_large_size		= large_size | append: 'x' -%}
+		{%- assign image_large_size_2x	= large_size_2x | append: 'x' -%}
+
+		{%- assign image_tablet_size	= tablet_size | append: 'x' | default: image_size -%}
+		{%- assign image_tablet_size_2x	= tablet_size_2x | append: 'x' | default: image_size_2x -%}
+
+		{%- assign image_mobile_size	= mobile_size | append: 'x' | default: image_tablet_size -%}
+		{%- assign image_mobile_size_2x	= mobile_size_2x | append: 'x' | default: image_tablet_size_2x -%}
+
+		{%- assign image_small_mobile_size		= small_mobile_size | append: 'x' | default: image_mobile_size -%}
+		{%- assign image_small_mobile_size_2x	= small_mobile_size_2x | append: 'x' | default: image_mobile_size_2x -%}
+	{%- endif -%}
+{% else %}
+	{%- assign image_height 	= size | times: 1.25 | round %}
+	{%- assign image_height_2x 	= size_2x | times: 1.25 | round %}
+	{%- assign image_size		= size | append: 'x' -%}
+	{%- assign image_size_2x	= size_2x | append: 'x' -%}
+
+	{%- assign image_large_height 		= large_size | times: 1.25 | round %}
+	{%- assign image_large_size			= large_size | append: 'x' -%}
+	{%- assign image_large_size_2x		= large_size_2x | append: 'x' -%}
+
+	{%- assign image_tablet_height 		= tablet_size | times: 1.25 | round %}
+	{%- assign image_tablet_size		= tablet_size | append: 'x' | default: image_size -%}
+	{%- assign image_tablet_size_2x		= tablet_size_2x | append: 'x' | default: image_size_2x -%}
+
+	{%- assign image_mobile_height 		= mobile_size | times: 1.25 | round %}
+	{%- assign image_mobile_size		= mobile_size | append: 'x' | default: image_tablet_size -%}
+	{%- assign image_mobile_size_2x		= mobile_size_2x | append: 'x' | default: image_tablet_size_2x -%}
+
+	{%- assign image_small_mobile_height 	= small_mobile_size | times: 1.25 | round %}
+	{%- assign image_small_mobile_size		= small_mobile_size | append: 'x' | default: image_mobile_size -%}
+	{%- assign image_small_mobile_size_2x	= small_mobile_size_2x | append: 'x' | default: image_mobile_size_2x -%}
+{% endif %}
+
+{%- assign is_hover_image = is_hover_image | default: false -%}
+
+{%- if is_lazy == nil -%}
+	{%- assign is_lazy = true -%}
+{%- endif -%}
+
+{%- capture img_classes -%}
+	{%- if is_hover_image == false -%}
+		{{- class -}}
+	{%- else -%}
+		{{- class }} {{ class -}}--hover
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- if image == settings.product_default_image and settings.product_default_image != blank -%}
+	{%- capture img_focal -%}
+		--img-desktop-pos: {{ settings.product_default_image.presentation.focal_point }};
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- if is_lazy -%}
+	<picture class="{% unless is_hover_image %}lazy{% endunless %} {{ class -}}-picture {% if is_hover_image %} {{ class -}}-picture--hover {%- endif -%}">
+		{% if is_hover_image %}
+			<source
+				srcset="{{ image | img_url: image_small_mobile_size, crop: 'center' }} 1x, {{ image | img_url: image_small_mobile_size_2x, crop: 'center' }} 2x"
+				media="(max-width: 360px)"
+				width="{{- small_mobile_size -}}"
+				height="{{- image_small_mobile_height -}}"
+			>
+
+			<source
+				srcset="{{ image | img_url: image_mobile_size, crop: 'center' }} 1x, {{ image | img_url: image_mobile_size_2x, crop: 'center' }} 2x"
+				media="(max-width: 420px)"
+				width="{{- mobile_size -}}"
+				height="{{- image_mobile_height -}}"
+			>
+
+			<source
+				srcset="{{ image | img_url: image_tablet_size, crop: 'center' }} 1x, {{ image | img_url: image_tablet_size_2x, crop: 'center' }} 2x"
+				media="(max-width: 767px)"
+				width="{{- tablet_size -}}"
+				height="{{- image_tablet_height -}}"
+			>
+
+			<source
+				srcset="{{ image | img_url: image_large_size, crop: 'center' }} 1x, {{ image | img_url: image_large_size_2x, crop: 'center' }} 2x"
+				media="(min-width: 2500px)"
+				width="{{- large_size -}}"
+				height="{{- image_large_height -}}"
+			>
+
+			<img
+				class="{{- img_classes -}}"
+				srcset="{{ image | img_url: image_size, crop: 'center' }} 1x, {{ image | img_url: image_size_2x, crop: 'center' }} 2x"
+				src="{{ image | img_url: image_size, crop: 'center' }}"
+				alt="{{- image.alt | default: product.title | escape -}}"
+				width="{{- size -}}"
+				height="{{- image_height -}}"
+				{% if is_hover_image %}
+				loading="lazy"
+				{% endif %}
+			>
+		{% else %}
+			<source
+				data-srcset="{{ image | img_url: image_small_mobile_size, crop: 'center' }} 1x, {{ image | img_url: image_small_mobile_size_2x, crop: 'center' }} 2x"
+				srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+				media="(max-width: 360px)"
+				width="{{- small_mobile_size -}}"
+				height="{{- image_small_mobile_height -}}"
+			>
+
+			<source
+				data-srcset="{{ image | img_url: image_mobile_size, crop: 'center' }} 1x, {{ image | img_url: image_mobile_size_2x, crop: 'center' }} 2x"
+				srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+				media="(max-width: 420px)"
+				width="{{- mobile_size -}}"
+				height="{{- image_mobile_height -}}"
+			>
+
+			<source
+				data-srcset="{{ image | img_url: image_tablet_size, crop: 'center' }} 1x, {{ image | img_url: image_tablet_size_2x, crop: 'center' }} 2x"
+				srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+				media="(max-width: 767px)"
+				width="{{- tablet_size -}}"
+				height="{{- image_tablet_height -}}"
+			>
+
+			<source
+				data-srcset="{{ image | img_url: image_large_size, crop: 'center' }} 1x, {{ image | img_url: image_large_size_2x, crop: 'center' }} 2x"
+				srcset="{{ image | img_url: '10x' }} 1x, {{ image | img_url: '10x' }} 2x"
+				media="(min-width: 2500px)"
+				width="{{- large_size -}}"
+				height="{{- image_large_height -}}"
+			>
+
+			<img
+				class="{{- img_classes -}}"
+				src="{{ image | img_url: '10x' }}"
+				srcset="{{ image | img_url: '10x' }}"
+				data-src="{{ image | img_url: image_size, crop: 'center' }}"
+				data-srcset="{{ image | img_url: image_size, crop: 'center' }} 1x, {{ image | img_url: image_size_2x, crop: 'center' }} 2x"
+				alt="{{- image.alt | default: product.title | escape -}}"
+				width="{{- size -}}"
+				height="{{- image_height -}}"
+				{% if img_focal != blank %}
+					style="{{ img_focal }}"
+				{% endif %}
+			>
+		{% endif %}
+	</picture>
+
+	<noscript>
+		<picture class="{{ class -}}-picture {% if is_hover_image %} {{ class -}}-picture--hover {%- endif -%}">
+			<source
+				srcset="{{ image | img_url: image_small_mobile_size, crop: 'center' }} 1x, {{ image | img_url: image_small_mobile_size_2x, crop: 'center' }} 2x"
+				media="(max-width: 360px)"
+				width="{{- small_mobile_size -}}"
+				height="{{- image_small_mobile_height -}}"
+			>
+
+			<source
+				srcset="{{ image | img_url: image_mobile_size, crop: 'center' }} 1x, {{ image | img_url: image_mobile_size_2x, crop: 'center' }} 2x"
+				media="(max-width: 420px)"
+				width="{{- mobile_size -}}"
+				height="{{- image_mobile_height -}}"
+			>
+
+			<source
+				srcset="{{ image | img_url: image_tablet_size, crop: 'center' }} 1x, {{ image | img_url: image_tablet_size, crop: 'center' }} 2x"
+				media="(max-width: 767px)"
+				width="{{- tablet_size -}}"
+				height="{{- image_tablet_height -}}"
+			>
+
+			<source
+				srcset="{{ image | img_url: image_large_size, crop: 'center' }} 1x, {{ image | img_url: image_large_size_2x, crop: 'center' }} 2x"
+				media="(min-width: 2500px)"
+				width="{{- large_size -}}"
+				height="{{- image_large_height -}}"
+			>
+
+			<img
+				class="{{- img_classes -}}"
+				srcset="{{ image | img_url: image_size, crop: 'center' }} 1x, {{ image | img_url: image_size_2x, crop: 'center' }} 2x"
+				src="{{ image | img_url: image_size  }}"
+				alt="{{- image.alt | default: product.title | escape -}}"
+				width="{{- size -}}"
+				height="{{- image_height -}}"
+			>
+		</picture>
+	</noscript>
+{%- else -%}
+	<picture class="{{- class -}}-picture {% if is_hover_image %} {{ class -}}-picture--hover {%- endif -%}">
+		<source
+			srcset="{{ image | img_url: image_small_mobile_size, crop: 'center' }} 1x, {{ image | img_url: image_small_mobile_size_2x, crop: 'center' }} 2x"
+			media="(max-width: 360px)"
+			width="{{- small_mobile_size -}}"
+			height="{{- image_small_mobile_height -}}"
+		>
+
+		<source
+			srcset="{{ image | img_url: image_mobile_size, crop: 'center' }} 1x, {{ image | img_url: image_mobile_size_2x, crop: 'center' }} 2x"
+			media="(max-width: 420px)"
+			width="{{- mobile_size -}}"
+			height="{{- image_mobile_height -}}"
+		>
+
+		<source
+			srcset="{{ image | img_url: image_tablet_size, crop: 'center' }} 1x, {{ image | img_url: image_tablet_size, crop: 'center' }} 2x"
+			media="(max-width: 767px)"
+			width="{{- tablet_size -}}"
+			height="{{- image_tablet_height -}}"
+		>
+
+		<source
+			srcset="{{ image | img_url: image_large_size, crop: 'center' }} 1x, {{ image | img_url: image_large_size_2x, crop: 'center' }} 2x"
+			media="(min-width: 2500px)"
+			width="{{- large_size -}}"
+			height="{{- image_large_height -}}"
+		>
+
+		<img
+			class="{{- img_classes -}}"
+			srcset="{{ image | img_url: image_size, crop: 'center' }} 1x, {{ image | img_url: image_size_2x, crop: 'center' }} 2x"
+			src="{{ image | img_url: image_size, crop: 'center' }}"
+			alt="{{- image.alt | default: product.title | escape -}}"
+			width="{{- size -}}"
+			height="{{- image_height -}}"
+			{% if img_focal != blank and is_hover_image == false %}
+				style="{{ img_focal }}"
+			{% endif %}
+		>
+	</picture>
+{%- endif -%}

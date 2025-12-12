@@ -1,0 +1,825 @@
+{%- comment -%}
+  ------------------------------------------------------------------------------
+  Snippet: Product card
+  - product: Product object (required, object)
+  - size: desktop image size (optional, default: 300, number)
+  - tablet_size: tablet image size (optional, default: size, number)
+  - mobile_size: mobile image size (optional, default: tablet_size, number)
+  - is_lazy: is lazy load enable (optional, default: true, boolean)
+  - big_card: (optional, default: false, boolean)
+
+  {%- render 'product-card', product: product, size: 705, tablet_size: 387, mobile_size: 165, is_lazy: false -%}
+  ------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render 'adastra' with '/src/styles/product-card.scss' -%}
+
+{%- assign quick_view_image_fit = settings.quick_view_image_fit -%}
+{%- assign aspect_ratio = settings.product_card_img_aspect_ratio -%}
+{%- assign swatches_enabled = settings.is_color_swatches_enabled -%}
+{%- assign swatch_option = settings.color_swatches_option | default: 'Color' | downcase -%}
+{%- assign quick_view_image_fit = settings.quick_view_image_fit -%}
+{%- assign labels_enabled = settings.is_labels_enabled -%}
+{%- assign sale_label_enabled = settings.is_sale_label_enabled -%}
+{%- assign show_vendor = settings.is_show_vendor -%}
+{%- assign sku = product.selected_or_first_available_variant.sku | strip -%}
+{%- assign sku_text = settings.product_card_sku_text | replace: '{SKU}', sku | replace: '{sku}', sku -%}
+{%- assign currency_code_enabled = settings.is_currency_code_enabled -%}
+{%- assign show_unit_price = settings.is_show_unit_price -%}
+{%- assign quick_view_enabled = settings.is_quick_view_enabled -%}
+{%- assign image_on_hover_enabled = settings.is_image_on_hover_enabled -%}
+{%- assign swatch_option = settings.color_swatches_option | default: 'Color' | downcase -%}
+{%- assign swatches = product.options_by_name[swatch_option].values -%}
+{%- assign extra_properties = product.metafields.custom.extra_properties -%}
+
+{%- if show_vendor and product.vendor != blank -%}
+  {%- assign show_vendor_block = true -%}
+{%- endif -%}
+
+{%- if sku != blank and sku_text != blank -%}
+  {%- assign show_sku_block = true -%}
+{%- endif -%}
+
+{%- assign show_vendor_and_sku = false -%}
+
+{%- if show_vendor_block or show_sku_block -%}
+  {% assign show_vendor_and_sku = true -%}
+{%- endif -%}
+
+{% assign show_hover_content = false %}
+
+{% if swatches != blank and swatches_enabled and simplified_view == null %}
+  {% assign show_hover_content = true %}
+{% endif %}
+
+{% if extra_properties.value.size > 0 and simplified_view == null %}
+  {% assign show_hover_content = true %}
+{% endif %}
+
+{%- if is_lazy == null -%}
+  {%- assign is_lazy = true -%}
+{%- endif -%}
+
+{%- assign size = size | default: 300 -%}
+{%- assign tablet_size = tablet_size | default: size -%}
+{%- assign mobile_size = mobile_size | default: tablet_size -%}
+{%- assign big_card = big_card | default: false -%}
+
+{%- assign has_swatch = false -%}
+
+{%- assign min = 1 -%}
+{%- assign max = 6 -%}
+{%- assign diff = max | minus: min -%}
+
+{%- for option in product.options_with_values -%}
+  {%- assign swatch_count = option.values | map: 'swatch' | compact | size -%}
+  {%- assign option_name = option.name | downcase -%}
+
+  {%- if swatch_count > 0 and swatches_enabled -%}
+    {%- assign swatch_pos = option.position | minus: 1 -%}
+    {%- assign swatches = product.options_by_name[option_name].values -%}
+    {%- assign has_swatch = true -%}
+
+    {%- break -%}
+  {%- endif -%}
+
+  {%- if swatches_enabled and option_name == swatch_option -%}
+    {%- assign swatch_pos = option.position | minus: 1 -%}
+    {%- assign swatches = product.options_by_name[swatch_option].values -%}
+    {%- assign has_swatch = true -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- capture labels -%}
+	{%- unless product.available -%}
+		<li	class="product-card__label product-card__label--sold-out">
+			<span class="visually-hidden">
+				{{- 'products.product_card.product_label' | t -}}:
+			</span>
+
+			{{- "products.product.sold_out" | t -}}
+		</li>
+	{%- endunless -%}
+
+	{% if sale_label_enabled %}
+		{% assign discount_value = product.price | times: 100 | divided_by: product.compare_at_price %}
+
+		{% if discount_value < 100 %}
+			<li class="product-card__label product-card__label--sale">
+			<span class="visually-hidden">
+				{{- 'products.product_card.product_label' | t -}}:
+			</span>
+
+				-{{ 100 | minus: discount_value | json }}% {{- "products.product.sale" | t | prepend: ' ' -}}
+			</li>
+		{% endif %}
+	{% endif %}
+
+	{% if labels_enabled %}
+		{%- assign tag_index = 1 -%}
+
+		{%- for tag in product.tags -%}
+			{%- if tag contains 'label__' -%}
+				{%- assign class = 'product-card__label' -%}
+
+				{%- if tag contains ':primary' -%}
+					{%- assign class = class | append: " product-card__label--primary" | strip -%}
+				{%- elsif tag contains ':secondary' -%}
+					{%- assign class = class | append: " product-card__label--secondary" | strip -%}
+				{%- endif -%}
+
+				{%- assign clipped_tag = tag | remove: 'label__' | remove: ':primary' | remove: ':secondary' -%}
+
+				<li class="{{- class -}}">
+				<span class="visually-hidden">
+					{{- 'products.product_card.product_label' | t -}}:
+				</span>
+
+					{{- clipped_tag -}}
+				</li>
+
+				{%- assign tag_index = tag_index | plus: 1 -%}
+
+				{%- if tag_index > 3 -%}
+					{%- break -%}
+				{%- endif -%}
+			{%- endif -%}
+		{%- endfor -%}
+	{% endif %}
+{%- endcapture -%}
+
+{%- capture images -%}
+	{%- assign colors				= '' -%}
+	{%- assign colors_array			= '' -%}
+	{%- assign index				= 1 -%}
+	{%- assign colors_without_image = "" %}
+	{%- assign colors_without_hover_image = "" %}
+
+	{%- assign all_colors 		= '' -%}
+	{%- assign all_colors_array = '' -%}
+
+	{%- for variant in product.variants -%}
+		{%- assign already_show = false -%}
+
+		{%- for color in all_colors_array -%}
+			{%- if color == variant.options[swatch_pos] -%}
+				{%- assign already_show = true -%}
+			{%- endif %}
+		{%- endfor -%}
+
+		{%- unless already_show -%}
+			{%- assign all_colors   	= all_colors | append: '||' | append: variant.options[swatch_pos] -%}
+			{%- assign all_colors_array	= all_colors | split: '||' -%}
+		{%- endunless -%}
+	{%- endfor-%}
+
+	{% if product.selected_variant %}
+		{% assign swatches_selected = product.options_by_name[swatch_option].values | where: 'selected', true %}
+		{% assign swatches = swatches_selected | concat: swatches | uniq %}
+	{% endif %}
+
+	{%- for color in all_colors_array -%}
+		{%- assign has_hover_image = false -%}
+		{%- assign has_image = false -%}
+
+		{%- for variant in product.variants -%}
+			{%- if color == variant.options[swatch_pos] and variant.featured_image != blank -%}
+				{%- assign has_image = true -%}
+			{%- endif -%}
+
+			{%- if color == variant.options[swatch_pos] and variant.metafields.product_card.hover_image != blank -%}
+				{%- assign has_hover_image = true -%}
+			{%- endif -%}
+		{%- endfor-%}
+
+		{% unless has_hover_image %}
+			{% assign colors_without_hover_image = colors_without_hover_image | append: color | append: "||" %}
+		{% endunless %}
+
+		{% unless has_image %}
+			{% assign colors_without_image = colors_without_image | append: color | append: "||" %}
+		{% endunless %}
+	{%- endfor -%}
+
+	{% assign colors_without_hover_image = colors_without_hover_image |  split: "||"  %}
+	{% assign colors_without_image = colors_without_image |  split: "||" %}
+
+	<a
+		href="{{- product.url -}}"
+		class="product-card__image-wrapper-link"
+		aria-label="{{- product.title | default: "Product preset title" | escape -}}"
+	>
+		{%- for color in swatches limit: 5 -%}
+			{% comment %}
+				Make selected variant first in the variant array - to show correct image, when use filters
+			{% endcomment %}
+			{% assign array_with_current_variant = product.variants | where: 'title', product.selected_or_first_available_variant.title  %}
+			{% assign variants = array_with_current_variant | concat: product.variants | uniq  %}
+
+			{%- for variant in variants -%}
+				{% if variant.options[swatch_pos] == product.selected_or_first_available_variant.options[swatch_pos] and variant != product.selected_or_first_available_variant  %}
+					{% continue %}
+				{% endif %}
+
+				{%- assign already_show = false -%}
+
+				{%- for color in colors_array -%}
+					{%- if color == variant.options[swatch_pos] -%}
+						{%- assign already_show = true -%}
+					{%- endif %}
+				{%- endfor -%}
+
+				{%- unless already_show -%}
+					{%- assign image        	= variant.featured_image | default: product.featured_image | default: settings.product_default_image -%}
+					{%- assign hover_image		= variant.metafields.product_card.hover_image | default: product.metafields.product_card.hover_image | default: product.images[1] -%}
+					{%- assign no_hover_image = false -%}
+					{%- assign no_image = false -%}
+
+					{% if image == hover_image %}
+						{% assign hover_image = product.images[2] %}
+					{% endif %}
+
+					{%- if colors_without_image contains variant.options[swatch_pos] -%}
+						{%- assign no_image = true -%}
+					{%-endif -%}
+
+					{%- if colors_without_hover_image contains variant.options[swatch_pos] -%}
+						{%- assign no_hover_image = true -%}
+					{%-endif -%}
+
+					{%- assign show = false -%}
+
+					{%- if variant.featured_image != blank or no_image or variant == product.selected_or_first_available_variant -%}
+						{%- assign show = true -%}
+					{%- endif -%}
+
+					{%- if variant.metafields.product_card.hover_image == blank and no_hover_image == false and variant != product.selected_or_first_available_variant  -%}
+						{%- assign show = false -%}
+					{%- endif -%}
+
+					{% if show and index <= 5 %}
+						{%- capture wrapper_classes -%}
+							product-card__image-wrapper product-card__image-wrapper--{{ aspect_ratio }} {% if hover_image != blank and image_on_hover_enabled == true %} product-card__image-wrapper--with-hover{% endif %} {% unless product.has_only_default_variant -%}js-product-card-images-wrapper{% endunless %}{% if variant.options[swatch_pos] == product.selected_or_first_available_variant.options[swatch_pos] %} is-active{%- endif -%}
+						{%- endcapture -%}
+
+						<div
+							class="{{- wrapper_classes | strip_newlines -}}"
+							data-image="{{- variant.options[swatch_pos] | escape -}}"
+							data-variant="{{- variant.id -}}"
+						>
+							{%- if product == blank -%}
+								{%- assign random_number       = "now" | date: "%N" | modulo: diff | plus: min -%}
+								{%- assign placeholer_svg_name = 'product-' | append: random_number -%}
+
+								<div class="product-card__image-picture">
+									{{- placeholer_svg_name | placeholder_svg_tag: 'product-card__image product-card__image--placeholder' -}}
+								</div>
+
+								{%- if image_on_hover_enabled == true -%}
+									{%- if random_number != 6 -%}
+										{%- assign random_number2 = random_number | plus: 1 -%}
+									{%- else -%}
+										{%- assign random_number2 = 1 -%}
+									{%- endif -%}
+
+									{%- assign placeholer_svg_name = 'product-' | append: random_number2 -%}
+
+									<div class="product-card__image-picture product-card__image-picture--hover">
+										{{- placeholer_svg_name | placeholder_svg_tag: 'product-card__image product-card__image--placeholder product-card__image--hover' -}}
+									</div>
+								{%- endif -%}
+							{%- else -%}
+								{% assign is_swatch_img_lazy = false %}
+
+								{% if is_lazy == false and variant.options[swatch_pos] != product.selected_or_first_available_variant.options[swatch_pos] %}
+									{% assign is_swatch_img_lazy = true %}
+								{% endif %}
+
+								{% if is_lazy == true %}
+									{% assign is_swatch_img_lazy = true %}
+								{% endif %}
+
+								{%- render 'product-card-image',
+									product: product,
+									is_lazy: is_swatch_img_lazy,
+									image: image,
+									is_hover_image: false,
+									size: size,
+									tablet_size: tablet_size,
+									mobile_size: mobile_size -%}
+
+								{%- if hover_image != blank and image_on_hover_enabled == true and simplified_view != true -%}
+									{%- if hover_image.value.media_type == 'video' -%}
+										<div class="product-card__image-picture product-card__image-picture--hover">
+											<video
+												class="product-card__image js-product-card-video"
+												loop
+												muted
+												playsinline
+												preload="none"
+												tabindex="-1"
+												aria-hidden="true"
+											>
+												{%- for source in hover_image.value.sources -%}
+													{%- if source.mime_type == 'video/mp4' -%}
+														<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+													{%- endif -%}
+												{%- endfor -%}
+											</video>
+										</div>
+									{%- else -%}
+										{%- render 'product-card-image',
+											product: product,
+											is_lazy: true,
+											image: hover_image,
+											is_hover_image: true,
+											size: size,
+											tablet_size: tablet_size,
+											mobile_size: mobile_size -%}
+									{%- endif -%}
+								{%- endif -%}
+							{%- endif -%}
+						</div>
+
+						{%- assign colors   	= colors | append: '||' | append: variant.options[swatch_pos] -%}
+						{%- assign colors_array	= colors | split: '||' -%}
+						{%- assign index   		= index | plus: 1 -%}
+					{% endif %}
+				{%- endunless -%}
+			{%- endfor -%}
+		{%- else -%}
+			{%- assign variant 			= product.selected_or_first_available_variant -%}
+			{%- assign image        	= variant.featured_image | default: product.featured_image | default: settings.product_default_image -%}
+			{%- assign hover_image		= variant.metafields.product_card.hover_image | default: product.metafields.product_card.hover_image | default: product.images[1] -%}
+
+			{%- capture wrapper_classes -%}
+				product-card__image-wrapper product-card__image-wrapper--{{ aspect_ratio }} {% if hover_image != blank and image_on_hover_enabled == true %} product-card__image-wrapper--with-hover{% endif %} {% unless product.has_only_default_variant -%}js-product-card-images-wrapper{% endunless %} is-active
+			{%- endcapture -%}
+
+			<div
+				class="{{- wrapper_classes | strip_newlines }} is-active"
+				data-image="{{- variant.options[swatch_pos] | escape -}}"
+				data-variant="{{- variant.id -}}"
+			>
+				{%- if product == blank -%}
+					{%- assign random_number       = "now" | date: "%N" | modulo: diff | plus: min -%}
+					{%- assign placeholer_svg_name = 'product-' | append: random_number -%}
+
+					<div class="product-card__image-picture">
+						{{- placeholer_svg_name | placeholder_svg_tag: 'product-card__image product-card__image--placeholder' -}}
+					</div>
+
+					{%- if image_on_hover_enabled == true -%}
+						{%- if random_number != 6 -%}
+							{%- assign random_number2 = random_number | plus: 1 -%}
+						{%- else -%}
+							{%- assign random_number2 = 1 -%}
+						{%- endif -%}
+
+						{%- assign placeholer_svg_name = 'product-' | append: random_number2 -%}
+
+						<div class="product-card__image-picture product-card__image-picture--hover">
+							{{- placeholer_svg_name | placeholder_svg_tag: 'product-card__image product-card__image--placeholder product-card__image--hover' -}}
+						</div>
+					{%- endif -%}
+				{%- else -%}
+					{%- render 'product-card-image',
+						product: product,
+						is_lazy: is_lazy,
+						image: image,
+						is_hover_image: false,
+						size: size,
+						tablet_size: tablet_size,
+						mobile_size: mobile_size -%}
+
+					{%- if hover_image != blank and image_on_hover_enabled == true and simplified_view != true -%}
+						{%- if hover_image.value.media_type == 'video' -%}
+							<div class="product-card__image-picture product-card__image-picture--hover">
+								<video
+									class="product-card__image js-product-card-video"
+									loop
+									muted
+									playsinline
+									preload="none"
+									tabindex="-1"
+									aria-hidden="true"
+								>
+									{%- for source in hover_image.value.sources -%}
+										{%- if source.mime_type == 'video/mp4' -%}
+											<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+										{%- endif -%}
+									{%- endfor -%}
+								</video>
+							</div>
+						{%- else -%}
+							{%- render 'product-card-image',
+								product: product,
+								is_lazy: true,
+								image: hover_image,
+								is_hover_image: true,
+								size: size,
+								tablet_size: tablet_size,
+								mobile_size: mobile_size -%}
+						{%- endif -%}
+					{%- endif -%}
+				{%- endif -%}
+			</div>
+		{%- endfor -%}
+	</a>
+{%- endcapture -%}
+
+{%- capture classes -%}
+	product-card{% if big_card == true %} product-card--big{% endif %} {% if show_hover_content == false %}product-card--without-hover-content{% endif %} js-product-card
+{%- endcapture -%}
+
+  {% liquid
+      assign image_badge = false
+      assign promotional_tag = false
+      assign promotional_tag_color = 'black'
+      assign current_template_collection_id = null
+      
+      # Get current collection ID if on collection template
+      if template.name == 'collection'
+        assign current_template_collection_id = collection.id
+      endif
+      
+      for collection_item in product.collections
+        if collection_item.metafields.custom.image_badge
+          assign image_badge = collection_item.metafields.custom.image_badge
+        endif
+
+        # Skip promotional_tag check if this is the current template collection
+        unless collection_item.id == current_template_collection_id
+          if collection_item.metafields.custom.promotional_tag
+            assign promotional_tag = collection_item.metafields.custom.promotional_tag
+            if collection_item.metafields.custom.promotional_tag_color
+              assign promotional_tag_color = collection_item.metafields.custom.promotional_tag_color
+            endif
+          endif
+        endunless
+
+        if promotional_tag and image_badge
+          break
+        endif
+      endfor
+        assign current_collection_promotional_tag_color = 'black'
+
+      # Check current template collection for promotional_tag separately
+      if template.name == 'collection'
+        assign current_collection_promotional_tag = collection.metafields.custom.promotional_tag
+        if collection.metafields.custom.promotional_tag_color
+          assign current_collection_promotional_tag_color = collection.metafields.custom.promotional_tag_color
+        endif
+      endif
+
+    %}
+
+<div
+  class="{{- classes -}}"
+  {%- if product != blank %}
+    data-existing-product
+  {% endif %}
+>
+  <div class="product-card__main">
+    <div class="product-card__badges">
+      {% if promotional_tag %}
+      <span class="promotional-badge" style="background-color: {{promotional_tag_color}};">{{ promotional_tag }}</span>
+    {% endif %}
+    {% if current_collection_promotional_tag %}
+      <span class=" current-collection-promotional-badge " style="background-color: {{current_collection_promotional_tag_color}};">{{ current_collection_promotional_tag }}</span>
+    {% endif %}
+    </div>
+    {% assign badge_labels = product.metafields.custom.badge_images %}
+    {% assign is_product_have_labels = false %}
+
+    {% if badge_labels.count > 0 or labels != blank %}
+      {% assign is_product_have_labels = true %}
+    {% endif %}
+
+    {%- if is_product_have_labels -%}
+      <ul
+        class="product-card__labels"
+        aria-label="{{- 'products.product_card.product_labels' | t | escape -}}"
+      >
+        {{- labels -}}
+
+        {% for badge_label in badge_labels.value limit: 3 %}
+          <li>
+            <span class="visually-hidden">
+              {{- 'products.product_card.product_label' | t -}}
+              :
+            </span>
+
+            <img
+              class="product-card__label-logo"
+              src="{{ badge_label | image_url: width: 48, height: 48 }}"
+              srcset="{{ badge_label | image_url: width: 48, height: 48 }} 1x, {{ badge_label | image_url: width: 96, height: 96 }} 2x"
+              alt="{{ badge_label.alt | escape }}"
+              width="48"
+              height="48"
+            >
+          </li>
+        {% endfor %}
+      </ul>
+    {%- endif -%}
+
+    {%- if product.variants.size > 1 and has_swatch == true and simplified_view == null -%}
+      {{- images -}}
+    {%- else -%}
+      {%- assign image = product.featured_image
+        | default: product.featured_image
+        | default: settings.product_default_image
+      -%}
+      {%- assign hover_image = product.metafields.product_card.hover_image | default: product.images[1] -%}
+
+      {% if image == hover_image %}
+        {%- assign hover_image = product.metafields.product_card.hover_image | default: product.images[2] -%}
+      {% endif %}
+
+      <a
+        href="{{- product.url -}}"
+        class="product-card__image-wrapper-link"
+        aria-label="{{- product.title | default: "Product preset title" | escape -}}"
+      >
+        <div
+          class="product-card__image-wrapper product-card__image-wrapper--{{ aspect_ratio }} {% if hover_image != blank and image_on_hover_enabled == true and simplified_view != true %} product-card__image-wrapper--with-hover{% endif %} is-active  {% unless product.has_only_default_variant or product.variants.size == 1 -%} js-product-card-images-wrapper {% endunless -%}"
+          {%- unless product.has_only_default_variant -%}
+            data-variant="{{- product.selected_or_first_available_variant.id -}}"
+          {%- endunless -%}
+        >
+          {%- if product == blank -%}
+            {%- assign random_number = 'now' | date: '%N' | modulo: diff | plus: min -%}
+            {%- assign placeholer_svg_name = 'product-' | append: random_number -%}
+
+            <div class="product-card__image-picture">
+              {{- placeholer_svg_name | placeholder_svg_tag: 'product-card__image product-card__image--placeholder' -}}
+            </div>
+
+            {%- if image_on_hover_enabled == true -%}
+              {%- if random_number != 6 -%}
+                {%- assign random_number2 = random_number | plus: 1 -%}
+              {%- else -%}
+                {%- assign random_number2 = 1 -%}
+              {%- endif -%}
+
+              {%- assign placeholer_svg_name = 'product-' | append: random_number2 -%}
+
+              <div class="product-card__image-picture product-card__image-picture--hover">
+                {{-
+                  placeholer_svg_name
+                  | placeholder_svg_tag: 'product-card__image product-card__image--placeholder product-card__image--hover'
+                -}}
+              </div>
+            {%- endif -%}
+          {%- else -%}
+            {%- render 'product-card-image',
+              product: product,
+              is_lazy: is_lazy,
+              image: image,
+              is_hover_image: false,
+              size: size,
+              tablet_size: tablet_size,
+              mobile_size: mobile_size
+            -%}
+
+            {%- if hover_image != blank and image_on_hover_enabled == true and simplified_view != true -%}
+              {%- if hover_image.value.media_type == 'video' -%}
+                <div class="product-card__image-picture product-card__image-picture--hover">
+                  <video
+                    class="product-card__image js-product-card-video"
+                    loop
+                    muted
+                    playsinline
+                    preload="none"
+                    tabindex="-1"
+                    tabindex="-1"
+                    aria-hidden="true"
+                  >
+                    {%- for source in hover_image.value.sources -%}
+                      {%- if source.mime_type == 'video/mp4' -%}
+                        <source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </video>
+                </div>
+              {%- else -%}
+                {%- render 'product-card-image',
+                  product: product,
+                  is_lazy: is_lazy,
+                  image: hover_image,
+                  is_hover_image: true,
+                  size: size,
+                  tablet_size: tablet_size,
+                  mobile_size: mobile_size
+                -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      </a>
+    {%- endif -%}
+
+{% if image_badge.value != blank %}
+  <img
+    src="{{ image_badge.value | image_url: width: 100 }}"
+    class="image-badge"
+    width="100"
+    height="{{ image_badge.value.height }}"
+    alt="Product badge"
+  />
+{% endif %}
+
+
+
+    <div class="product-card__additional-buttons">
+      {% if settings.enable_wishlist %}
+        {% render 'wishlist', product: product %}
+      {% endif %}
+
+      <div class="cta-additional-buttons">
+        {%- if quick_view_enabled == true -%}
+          {%- if product.available -%}
+            {%- if settings.product_card_buttons_type == 'icon' -%}
+              <button
+                class="product-card__quick-view-button js-product-card-quick-view-button"
+                data-product-card-handle="{{- product.handle -}}"
+                {%- if product.has_only_default_variant == false -%}
+                  aria-label="{{- 'products.product_card.open_quick_view' | t | escape -}}"
+                {%- else -%}
+                  aria-label="{{- 'products.product_card.add_to_cart' | t | escape -}}"
+                {%- endif -%}
+                {%- if product.has_only_default_variant or product.variants.size == 1 -%}
+                  data-variant="{{- product.selected_or_first_available_variant.id -}}"
+                {%- endif -%}
+                type="button"
+                {%- if settings.hide_store_credit_for_web -%}
+                  hide-store-credit="true"
+                {%- endif -%}
+              >
+                {%- if product.has_only_default_variant or product.variants.size == 1 -%}
+                  {%- render 'icons', icon: 'cart' -%}
+                {%- else -%}
+                  {%- render 'icons', icon: 'quick-view' -%}
+                {%- endif -%}
+              </button>
+            {%- endif -%}
+          {%- endif -%}
+
+          {%- if settings.product_card_buttons_type == 'icon' -%}
+            <noscript>
+              <a
+                class="product-card__quick-view-button product-card__quick-view-button--no-js"
+                href="{{- product.url -}}"
+                aria-label="{{- 'products.product_card.quick_view_no_js' | t | escape -}}"
+              >
+                {%- render 'icons', icon: 'cart' -%}
+              </a>
+            </noscript>
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- if settings.enable_compare_products -%}
+          {%- render 'compare-products-button',
+            product: product,
+            additional_classes: 'product-card__compare-products-button'
+          -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <div class="product-card__footer">
+    {% if show_vendor_block %}
+      <div class="product-card__vendor-sku">
+        <span class="product-card__vendor">
+          <span class="visually-hidden">
+            {{- 'products.product_card.product_vendor' | t -}}
+          </span>
+          {{- product.vendor -}}
+        </span>
+        {% if settings.is_show_click_and_collect %}
+          <span
+            class="click-collect-badge is-hidden"
+            data-collect-sku="{{ product.selected_or_first_available_variant.sku }}"
+          >
+          {% comment %} Click & Collect {% endcomment %}
+        {{ 'products.product.click_and_collect' | t }}
+          </span>
+        {% endif %}
+      </div>
+    {% endif %}
+    <a class="focus-visible-outline product-card__title" href="{{ product.url }}">
+      {%- if product != blank -%}
+        {{- product.title -}}
+      {%- else -%}
+        {{- 'products.product_card.product_title' | t -}}
+      {%- endif -%}
+    </a>
+
+    {%- if simplified_view == null -%}
+      <div class="product-card__vendor-sku">
+        {% if show_sku_block %}
+          <span class="product-card__sku">{{ sku_text }}</span>
+        {% endif %}
+      </div>
+    {%- endif -%}
+
+    <div class="product-card__price">
+      {%- render 'price',
+        product: product,
+        show_unit_price: show_unit_price,
+        currency_code_enabled: currency_code_enabled,
+        simplified_view: simplified_view
+      -%}
+
+      {%- if quick_view_enabled == true and product.available and settings.product_card_buttons_type == 'text' -%}
+        <button
+          class="product-card__quick-view-text-button js-product-card-quick-view-button"
+          data-product-card-handle="{{- product.handle -}}"
+          {%- if product.has_only_default_variant or product.variants.size == 1 -%}
+            data-variant="{{- product.selected_or_first_available_variant.id -}}"
+          {%- endif -%}
+          type="button"
+        >
+          {% render 'icons', icon: 'cart' %}
+        </button>
+      {%- endif -%}
+
+      {%- if quick_view_enabled == true and settings.product_card_buttons_type == 'text' -%}
+        <noscript>
+          <a
+            class="button button--secondary product-card__quick-view-text-button product-card__quick-view-button--no-js"
+            href="{{- product.url -}}"
+          >
+            {%- if product.has_only_default_variant -%}
+              {{- 'products.product_card.add_to_cart' | t -}}
+            {%- else -%}
+              {{- 'products.product_card.open_quick_view' | t -}}
+            {%- endif -%}
+          </a>
+        </noscript>
+      {%- endif -%}
+    </div>
+
+    {% if product.quantity_price_breaks_configured? %}
+      <div class="product-card__volume-pricing-note">
+        <span>{{ 'products.product.volume_pricing.note' | t }}</span>
+      </div>
+    {% endif %}
+
+    <input
+      type="hidden"
+      class="js-product-card-min-value"
+      value="{{- product.selected_or_first_available_variant.quantity_rule.min -}}"
+    >
+
+    {%- if show_hover_content -%}
+      <div class="product-card__hover-content">
+        {% if extra_properties.value.size > 0 %}
+          <ul>
+            {% for extra_propertie in extra_properties.value %}
+              {% if extra_propertie != blank %}
+                <li class="product-cards__extra-info">{{ extra_propertie }}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {% if swatches != blank and swatches_enabled %}
+          {%- render 'product-card-swatches',
+            swatches: swatches,
+            product: product,
+            swatch_name: product.options_by_name[swatch_option].name,
+            swatch_pos: swatch_pos
+          -%}
+
+          {% for option in product.options_with_values %}
+            {% assign option_position = option.position | minus: 1 %}
+            {% assign base_swatch_to_show = 3 %}
+
+            {% if option_position == swatch_pos %}
+              {% continue %}
+            {% endif %}
+
+            <div class="product-card__swatches-wrapper">
+              <span class="product-card__swatches-label-name">{{ option.name }}:</span>
+
+              <div class="product-card__swatches product-card__swatches--base js-product-card-swatch-base-container">
+                {% for value in option.values limit: base_swatch_to_show %}
+                  <button class="product-card__swatch-button-base js-product-card-swatch-base {% if option.selected_value == value %}is-active{% endif %}">
+                    {{ value }}
+                  </button>
+                {% endfor %}
+
+                {% if option.values.size > base_swatch_to_show %}
+                  {% assign overlimit = option.values.size | minus: base_swatch_to_show %}
+                  <span class="product-card__overlimit">+ {{ overlimit }}</span>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    {%- endif -%}
+  </div>
+</div>

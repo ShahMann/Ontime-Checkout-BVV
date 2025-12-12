@@ -1,0 +1,197 @@
+/**
+	Timings
+ */
+:root {
+  --timing-micro: 0.1s;
+  --timing-short: 0.2s;
+  --timing-base: 0.4s;
+  --timing-long: 0.7s;
+  --timing-second: 1s;
+  --animate-time: 0.7s;
+  --animate-delay: 0.3s;
+  --animate-img-scale: 0.5s;
+  /**
+  * Easing.
+  */
+  --easing-linear: cubic-bezier(0, 0, 1, 1);
+  --easing-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --easing-ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+  --easing-ease-in: cubic-bezier(0.42, 0, 1, 1);
+  --easing-ease-out: cubic-bezier(0, 0, 0.09, 1);
+  /**
+  * Config: Layers
+  * -----------------------------------------------------------------------------
+  * Visual motif used to create groupings, content associations and focus through depth.
+  */
+  --layer-negative: -1;
+  --layer-base: 0;
+  --layer-flat: 1;
+  --layer-raised: 2;
+  --layer-sticky-btn: 7;
+  --layer-sticky: 11;
+  --layer-overlay: 14;
+  --layer-temporary: 16;
+  --layer-pop-out: 24;
+  --layer-pop-out-overlay: 25;
+  --layer-pop-out-overlay-loader: 26;
+}
+.image-with-text-animations {
+  opacity: 0;
+  max-width: var(--container-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 16px;
+  text-align: center;
+}
+.image-with-text-animations .image-with-text-animations__main {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+.image-with-text-animations .image-with-text-animations__heading-wrapper {
+  position: relative;
+  padding: 15px 12px;
+  background-color: var(--heading-background);
+  border-radius: var(--global-border-radius);
+  transform: translateY(35px);
+}
+.image-with-text-animations .image-with-text-animations__heading-wrapper.image-with-text-animations__heading-wrapper--top-layer {
+  z-index: var(--layer-raised);
+}
+.image-with-text-animations .image-with-text-animations__heading {
+  opacity: 0;
+  color: var(--heading-color);
+  font-size: 40px;
+}
+.image-with-text-animations .image-with-text-animations__heading.image-with-text-animations__heading--background-image {
+  background-image: var(--heading-background-image);
+  background-clip: text;
+  color: transparent;
+}
+.image-with-text-animations .image-with-text-animations__heading.image-with-text-animations__heading--outline {
+  text-shadow: -3px -3px 0 var(--heading-outline), 3px -3px 0 var(--heading-outline), -3px 3px 0 var(--heading-outline), 3px 3px 0 var(--heading-outline);
+}
+.image-with-text-animations .image-with-text-animations__image-container {
+  position: relative;
+  opacity: 0;
+  padding-top: 52%;
+  max-width: 200px;
+  width: 100%;
+  margin: 0 auto;
+  scale: 0.8;
+  translate: 0 -35px;
+}
+.image-with-text-animations .image-with-text-animations__image-container.image-with-text-animations__image-container--absolute {
+  position: absolute;
+}
+.image-with-text-animations .image-with-text-animations__image-container.image-with-text-animations__image-container--top-layer {
+  z-index: var(--layer-raised);
+}
+.image-with-text-animations .image-with-text-animations__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: var(--img-pos);
+}
+.image-with-text-animations .image-with-text-animations__content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.image-with-text-animations .image-with-text-animations__subheading {
+  color: var(--subheading-color);
+}
+.image-with-text-animations .image-with-text-animations__text {
+  margin-top: 16px;
+  color: var(--text-color);
+}
+.image-with-text-animations .image-with-text-animations__button {
+  margin-top: 32px;
+}
+.image-with-text-animations.animated {
+  opacity: 1;
+  transition-property: opacity;
+  transition-duration: var(--timing-base);
+}
+.image-with-text-animations.animated .image-with-text-animations__heading-wrapper {
+  transform: translateY(0);
+  transition-property: transform;
+  transition-duration: var(--timing-long);
+}
+.image-with-text-animations.animated .image-with-text-animations__image-container {
+  opacity: 1;
+  scale: 1;
+  translate: 0;
+  transition-property: scale, translate;
+  transition-duration: var(--timing-long);
+}
+.image-with-text-animations.animated .image-with-text-animations__heading {
+  opacity: 1;
+  transition-property: opacity;
+  transition-delay: 0.75s;
+  transition-duration: var(--timing-long);
+}
+.image-with-text-animations.image-with-text-animations--delay {
+  transition-delay: 0.4s;
+}
+.image-with-text-animations.image-with-text-animations--delay .image-with-text-animations__heading-wrapper {
+  transition-delay: 0.4s;
+}
+.image-with-text-animations.image-with-text-animations--delay .image-with-text-animations__image-container {
+  transition-delay: 1s, 0.5s;
+}
+html.no-js .image-with-text-animations {
+  opacity: 1;
+}
+html.no-js .image-with-text-animations .image-with-text-animations__heading-wrapper,
+html.no-js .image-with-text-animations .image-with-text-animations__image-container {
+  transform: translateY(0);
+}
+@media (min-width: 374px) {
+  .image-with-text-animations .image-with-text-animations__image-container {
+    padding-top: 41%;
+  }
+}
+@media (min-width: 481px) {
+  .image-with-text-animations .image-with-text-animations__heading {
+    font-size: 65px;
+  }
+  .image-with-text-animations .image-with-text-animations__image-container {
+    padding-top: 39%;
+  }
+}
+@media (min-width: 576px) {
+  .image-with-text-animations .image-with-text-animations__heading {
+    font-size: 85px;
+  }
+  .image-with-text-animations .image-with-text-animations__image-container {
+    padding-top: 33%;
+    max-width: 300px;
+  }
+}
+@media (min-width: 768px) {
+  .image-with-text-animations .image-with-text-animations__heading {
+    font-size: 115px;
+  }
+  .image-with-text-animations .image-with-text-animations__image-container {
+    max-width: 580px;
+    padding-top: 44%;
+  }
+}
+@media (min-width: 992px) {
+  .image-with-text-animations .image-with-text-animations__image-container {
+    padding-top: 37%;
+  }
+}
+@media (min-width: 1200px) {
+  .image-with-text-animations .image-with-text-animations__heading {
+    font-size: var(--heading-desktop-font-size);
+  }
+  .image-with-text-animations .image-with-text-animations__image-container {
+    padding-top: 34%;
+  }
+}

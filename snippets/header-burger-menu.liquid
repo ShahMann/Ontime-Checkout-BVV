@@ -1,0 +1,136 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header burger menu
+	Render header burger menu
+	- blocks: transfer block object;
+	- menu_id: menu id;
+	- burger_menu_primary: burger menu primary;
+	- burger_menu_secondary: burger menu secondary;
+	- burger_menu_image: burger menuimage;
+	- burger_menu_heading: burger menu heading;
+	- burger_menu_subheading: burger menu subheading,
+	- burger_menu_link: burger menu link;
+
+	Usage:
+	{%- render 'header-burger-menu' -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+<div class="header-burger-menu"
+	 id="HeaderBurgerMenu"
+>
+	<div
+		class="header-burger-menu__menu header-burger-menu__menu--main js-multi-drawer"
+		id="HeaderBurgerMenuMain"
+		data-drawer-level="1"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="headerBurgerMenuTitle"
+	>
+		<p
+			class="visually-hidden"
+			id="headerBurgerMenuTitle"
+		>
+			{{- "layout.navigation.drawer_menu" | t | escape -}}
+		</p>
+
+		<div class="header-burger-menu__menu-close-button-wrapper">
+			<button
+				class="header-burger-menu-close-button"
+				type="button"
+				aria-label="{{- "layout.navigation.close_drawer_menu" | t | escape -}}"
+				data-multi-drawer-toggle="HeaderBurgerMenu"
+				data-drawer-level="1"
+				aria-expanded="false"
+				aria-controls="HeaderBurgerMenuMain"
+			>
+				{%- render 'icons', icon: 'menu-close' -%}
+			</button>
+		</div>
+
+		{%- if burger_menu_primary != blank -%}
+			{%- render 'header-burger-menu-content',
+				menu: burger_menu_primary,
+				blocks: blocks,
+				menu_id: 'burger-menu-primary',
+				level: 1
+			-%}
+		{%- endif -%}
+
+		{%- if burger_menu_secondary != blank -%}
+			<span class="header-burger-menu__delimiter"></span>
+		{%- endif -%}
+
+		{%- if burger_menu_secondary != blank -%}
+			{%- render 'header-burger-menu-content',
+				menu: burger_menu_secondary,
+				blocks: blocks,
+				menu_id: 'burger-menu-secondary',
+				level: 1
+			-%}
+		{%- endif -%}
+
+		{%- if burger_menu_image != blank -%}
+			<div class="header-burger-menu__image">
+				{%- render 'header-burger-menu-image',
+					image: burger_menu_image,
+					heading: burger_menu_heading,
+					subheading: burger_menu_subheading,
+					link: burger_menu_link
+				-%}
+			</div>
+		{%- endif -%}
+	</div>
+
+	{%- if burger_menu_primary.levels > 1 or burger_menu_secondary.levels > 1 -%}
+		<div
+			class="header-burger-menu__menu header-burger-menu__menu--nested js-multi-drawer"
+			id="headerBurgerMenuNested"
+			data-drawer-level="2"
+		>
+			{%- if burger_menu_primary.levels > 1 -%}
+				{%- render 'header-burger-menu-content',
+					menu: burger_menu_primary,
+					blocks: blocks,
+					menu_id: 'burger-menu-primary',
+					level: 2
+				-%}
+			{%- endif -%}
+
+			{%- if burger_menu_secondary.levels > 1 -%}
+				{%- render 'header-burger-menu-content',
+					menu: burger_menu_secondary,
+					blocks: blocks,
+					menu_id: 'burger-menu-secondary',
+					level: 2
+				-%}
+			{%- endif -%}
+		</div>
+	{%- endif -%}
+
+	{%- if burger_menu_primary.levels > 2 or burger_menu_secondary.levels > 2 -%}
+		<div
+			class="header-burger-menu__menu header-burger-menu__menu--deep-nested js-multi-drawer"
+			id="headerBurgerMenuDeepNested"
+			data-drawer-level="3"
+		>
+			{%- if burger_menu_primary.levels > 2 -%}
+				{%- render 'header-burger-menu-content',
+					menu: burger_menu_primary,
+					blocks: blocks,
+					menu_id: 'burger-menu-primary',
+					level: 3
+				-%}
+			{%- endif -%}
+
+			{%- if burger_menu_secondary.levels > 2 -%}
+				{%- render 'header-burger-menu-content',
+					menu: burger_menu_secondary,
+					blocks: blocks,
+					menu_id: 'burger-menu-secondary',
+					level: 3
+				-%}
+			{%- endif -%}
+		</div>
+	{%- endif -%}
+</div>

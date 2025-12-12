@@ -1,0 +1,155 @@
+.banner-with-tabs {
+  opacity: 0;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  transition-property: opacity;
+  transition-duration: var(--animate-time);
+}
+.banner-with-tabs .banner-with-tabs__content {
+  padding: 32px 16px;
+  background-color: var(--background-color);
+}
+.banner-with-tabs .banner-with-tabs__container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 16px;
+  max-width: 960px;
+  margin: auto;
+}
+.banner-with-tabs .banner-with-tabs__container.need-animate {
+  opacity: 0;
+  transition-property: opacity;
+}
+.banner-with-tabs .banner-with-tabs__label {
+  font-size: var(--body-font-size);
+  line-height: 1.5;
+  color: var(--label-color);
+}
+.banner-with-tabs .banner-with-tabs__heading,
+.banner-with-tabs .banner-with-tabs__text * {
+  color: var(--text-color);
+}
+.banner-with-tabs .banner-with-tabs__text {
+  line-height: 1.5;
+}
+.banner-with-tabs .banner-with-tabs__buttons {
+  display: flex;
+  gap: 16px;
+  margin: 32px -16px 0;
+  padding: 8px 16px;
+  overflow: auto;
+  white-space: nowrap;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.banner-with-tabs .banner-with-tabs__buttons::-webkit-scrollbar {
+  display: none;
+}
+.banner-with-tabs .banner-with-tabs__buttons li:first-child {
+  margin-inline-start: auto;
+}
+.banner-with-tabs .banner-with-tabs__buttons li:last-child {
+  margin-inline-end: auto;
+}
+.banner-with-tabs .banner-with-tabs__button {
+  padding: 8px 16px;
+  border-radius: 82px;
+  font-weight: 600;
+  line-height: 1.5;
+  background-color: var(--tab-background-color);
+  color: var(--tab-color);
+}
+.banner-with-tabs .banner-with-tabs__button:focus-visible {
+  outline: 2px solid var(--text-color);
+  outline-offset: 2px;
+}
+.banner-with-tabs .banner-with-tabs__button.need-animate {
+  opacity: 0;
+  transition-property: opacity;
+}
+.banner-with-tabs .banner-with-tabs__button--active {
+  background-color: var(--tab-active-background-color);
+  color: var(--tab-active-color);
+}
+.banner-with-tabs .banner-with-tabs__aspect-ratio {
+  position: relative;
+  padding-top: 56.25%;
+  background-color: var(--background-color);
+}
+.banner-with-tabs .banner-with-tabs__aspect-ratio .banner-with-tabs__image,
+.banner-with-tabs .banner-with-tabs__aspect-ratio .banner-with-tabs__media,
+.banner-with-tabs .banner-with-tabs__aspect-ratio .banner-with-tabs__media iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.banner-with-tabs .banner-with-tabs__aspect-ratio .banner-with-tabs__image {
+  object-fit: cover;
+  object-position: var(--img-mob-pos);
+}
+.banner-with-tabs .banner-with-tabs__aspect-ratio .banner-with-tabs__image.banner-with-tabs__placeholder-background {
+  background-color: var(--color-background);
+}
+.banner-with-tabs .banner-with-tabs__media--desktop {
+  display: none;
+}
+.banner-with-tabs .banner-with-tabs__media--mobile {
+  display: flex;
+}
+.banner-with-tabs.animated {
+  opacity: 1;
+}
+.banner-with-tabs.animated .banner-with-tabs__container.need-animate,
+.banner-with-tabs.animated .banner-with-tabs__button.need-animate {
+  opacity: 1;
+}
+@media (min-width: 768px) {
+  .banner-with-tabs .banner-with-tabs__buttons {
+    flex-wrap: wrap;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    overflow: hidden;
+    justify-content: center;
+  }
+  .banner-with-tabs .banner-with-tabs__buttons li:first-child {
+    margin-inline-start: 0;
+  }
+  .banner-with-tabs .banner-with-tabs__buttons li:last-child {
+    margin-inline-end: 0;
+  }
+  .banner-with-tabs .banner-with-tabs__media--desktop {
+    display: flex;
+  }
+  .banner-with-tabs .banner-with-tabs__media--mobile {
+    display: none;
+  }
+  .banner-with-tabs .banner-with-tabs__aspect-ratio .banner-with-tabs__image {
+    object-position: var(--img-desktop-pos);
+  }
+}
+@media (min-width: 992px) {
+  .banner-with-tabs .banner-with-tabs__content {
+    padding: 64px;
+  }
+  .banner-with-tabs .banner-with-tabs__text {
+    font-size: calc(var(--body-font-size) * 1.125);
+    line-height: 1.33;
+  }
+  .banner-with-tabs .banner-with-tabs__container {
+    gap: 24px;
+  }
+  .banner-with-tabs .banner-with-tabs__aspect-ratio {
+    padding-top: 43%;
+  }
+}
+@media (min-width: 1200px) {
+  .banner-with-tabs {
+    padding: 0 16px;
+  }
+  .banner-with-tabs.banner-with-tabs--full-width {
+    padding: 0;
+  }
+}

@@ -1,0 +1,445 @@
+{%- render 'adastra' with '/src/styles/carousel.scss' -%}
+{%- render "adastra" with "/src/styles/products-carousel.scss" -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		margin-top: {{- section.settings.offset_top_mobile -}}px;
+		margin-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 767px) {
+		#shopify-section-{{- section.id -}} {
+			margin-top: {{- section.settings.offset_top_desktop -}}px;
+			margin-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign container = section.settings.container_width -%}
+{%- assign min	= 1 -%}
+{%- assign max	= 6 -%}
+{%- assign diff	= max | minus: min -%}
+
+{%- if container == 'inherit' -%}
+	{%- assign container_width = settings.container_width -%}
+{%- else -%}
+	{%- assign container_width = container -%}
+{%- endif -%}
+
+{% assign pagination_dynamic = false %}
+
+{% if section.blocks.size > 5 %}
+	{% assign pagination_dynamic = true %}
+{% endif %}
+
+{% capture section_style %}
+	--container-width: {{- container_width -}}; {{- -}}
+{% endcapture %}
+
+<section class="products-carousel js-products-carousel js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}" style="{{- section_style -}}">
+	<div class="products-carousel__container">
+		<div class="products-carousel__wrapper">
+			<div class="products-carousel__slider-box swiper js-products-carousel-big-image-slider">
+				<div class="products-carousel__slider-wrapper swiper-wrapper">
+					{%- for block in section.blocks -%}
+						{%- assign video_desktop = block.settings.video_desktop -%}
+						{%- assign video_mobile = block.settings.video_mobile | default: video_desktop -%}
+						{%- assign image_desktop = block.settings.image_desktop -%}
+						{%- assign image_mobile = block.settings.image_mobile | default: image_desktop -%}
+
+						<div class="products-carousel__slide swiper-slide">
+							{%- if video_desktop != blank -%}
+								<video
+									class="products-carousel__slide-media{% if video_desktop != blank %} products-carousel__slide-media--desktop{% endif %} js-products-carousel-video"
+									muted
+									loop
+									autoplay
+									playsinline
+								>
+									{%- for source in video_desktop.sources -%}
+										<source type="{{- source.mime_type -}}" src="{{ source.url }}" >
+									{%- endfor -%}
+								</video>
+
+								<video
+									class="products-carousel__slide-media products-carousel__slide-media--mobile js-products-carousel-video"
+									muted
+									loop
+									autoplay
+									playsinline
+								>
+									{%- for source in video_mobile.sources -%}
+										<source type="{{- source.mime_type -}}" src="{{ source.url }}" >
+									{%- endfor -%}
+								</video>
+							{%- elsif image_desktop != blank -%}
+								{% if section.index == 1 and forloop.index == 1 %}
+									<picture>
+										<source media="(max-width: 420px)"
+												srcset="{{ image_mobile | image_url: width: 420 }} 1x,
+														{{ image_mobile | image_url: width: 840 }} 2x"
+										>
+										<source media="(max-width: 767px)"
+												srcset="{{ image_mobile | image_url: width: 767 }} 1x,
+														{{ image_mobile | image_url: width: 1534 }} 2x"
+										>
+										<source media="(max-width: 991px)"
+												srcset="{{ image_mobile | image_url: width: 991 }} 1x,
+														{{ image_mobile | image_url: width: 1982 }} 2x"
+										>
+										<img class="products-carousel__slide-media"
+											 src="{{ image_desktop | image_url: width: 960 }}"
+											 srcset="{{ image_desktop | image_url: width: 960 }} 1x,
+														 {{ image_desktop | image_url: width: 1920 }} 2x"
+											 fetchpriority="high"
+											 alt="{{- image_desktop.alt | escape -}}"
+										>
+									</picture>
+								{% else %}
+									<picture class="lazy">
+										<source media="(max-width: 420px)"
+												srcset="{{ image_mobile | image_url: width: 10 }}"
+												data-srcset="{{ image_mobile | image_url: width: 420 }} 1x,
+														{{ image_mobile | image_url: width: 840 }} 2x"
+										>
+										<source media="(max-width: 767px)"
+												srcset="{{ image_mobile | image_url: width: 10 }}"
+												data-srcset="{{ image_mobile | image_url: width: 767 }} 1x,
+														{{ image_mobile | image_url: width: 1534 }} 2x"
+										>
+										<source media="(max-width: 991px)"
+												srcset="{{ image_mobile | image_url: width: 10 }}"
+												data-srcset="{{ image_mobile | image_url: width: 991 }} 1x,
+														{{ image_mobile | image_url: width: 1982 }} 2x"
+										>
+										<img class="products-carousel__slide-media"
+											 src="{{ image_desktop | image_url: width: 10 }}"
+											 srcset="{{ image_desktop | image_url: width: 10 }}"
+											 data-src="{{ image_desktop | image_url: width: 960 }}"
+											 data-srcset="{{ image_desktop | image_url: width: 960 }} 1x,
+														 {{ image_desktop | image_url: width: 1920 }} 2x"
+											 alt="{{- image_desktop.alt | escape -}}"
+										>
+									</picture>
+								{% endif %}
+							{%- else -%}
+								{{ "image" | placeholder_svg_tag: "products-carousel__slide-media products-carousel__slide-media--placeholder" }}
+							{%- endif -%}
+						</div>
+					{%- endfor -%}
+				</div>
+			</div>
+
+			<div class="products-carousel__products-box">
+				<div class="products-carousel__products-slider swiper js-products-carousel-product-slider"
+					 data-dynamic-pagination="{{ pagination_dynamic }}"
+				>
+					<div class="products-carousel__products-wrap swiper-wrapper">
+						{%- for block in section.blocks -%}
+							{%- assign product = block.settings.product -%}
+							{%- assign image = product.featured_image | default: settings.product_default_image -%}
+							{%- assign show_variant = block.settings.show_variant -%}
+							{%- assign random_number = "now" | date: "%N" | modulo: diff | plus: min -%}
+
+							{%- if random_number != 6 -%}
+								{%- assign random_number2 = random_number | plus: 1 -%}
+							{%- else -%}
+								{%- assign random_number2 = 1 -%}
+							{%- endif -%}
+
+							{%- assign placeholder_svg_name = 'product-' | append: random_number2 -%}
+
+							<div class="products-carousel__product swiper-slide">
+								<div class="products-carousel__product-title-box">
+									<a class="focus-visible-outline products-carousel__product-title" href="{{- product.url -}}">
+										{%- if product != blank -%}
+											{{- product.title -}}
+										{%- else -%}
+											{{- 'products.product_card.product_title' | t -}}
+										{%- endif -%}
+									</a>
+								</div>
+								<div class="products-carousel__product-image-box">
+									<a href="{{- product.url -}}" class="products-carousel__product-link">
+										{%- if image != blank -%}
+											{% if section.index == 1 and forloop.index == 1 %}
+												<picture>
+													<source media="(max-width: 420px)"
+															srcset="{{ image | image_url: width: 388 }} 1x,
+															{{ image | image_url: width: 776 }} 2x"
+													>
+													<source media="(max-width: 991px)"
+															srcset="{{ image | image_url: width: 416 }} 1x,
+															{{ image | image_url: width: 832 }} 2x"
+													>
+													<img
+														class="products-carousel__product-image"
+														src="{{ image | image_url: width: 566 }}"
+														srcset="{{ image | image_url: width: 566 }} 1x,
+															{{ image | image_url: width: 1132 }} 2x"
+														alt="{{- image.alt | escape -}}"
+													>
+												</picture>
+											{% else %}
+													<picture class="lazy">
+														<source media="(max-width: 420px)"
+																data-srcset="{{ image | image_url: width: 388 }} 1x,
+																{{ image | image_url: width: 776 }} 2x"
+																srcset="{{ image | image_url: width: 10 }}"
+														>
+														<source media="(max-width: 991px)"
+																data-srcset="{{ image | image_url: width: 416 }} 1x,
+																{{ image | image_url: width: 832 }} 2x"
+																srcset="{{ image | image_url: width: 10 }}"
+														>
+														<img
+															class="products-carousel__product-image"
+															src="{{ image | image_url: width: 10 }}"
+															srcset="{{ image | image_url: width: 10 }}"
+															data-src="{{ image | image_url: width: 566 }}"
+															data-srcset="{{ image | image_url: width: 566 }} 1x,
+																{{ image | image_url: width: 1132 }} 2x"
+															alt="{{- image.alt | escape -}}"
+														>
+													</picture>
+												{% endif %}
+										{% else %}
+											{{- placeholder_svg_name | placeholder_svg_tag: 'products-carousel__product-image products-carousel__product-image--placeholder' -}}
+										{%- endif -%}
+									</a>
+								</div>
+								<div class="products-carousel__product-bottom">
+									<div class="products-carousel__product-bottom-wrap">
+										{%- if show_variant -%}
+											<div class="products-carousel__product-variant">
+												<div class="products-carousel__variant-box">
+													{%- for variant in product.options_with_values limit: 3 -%}
+														<div class="products-carousel__variant-item">
+															<div class="products-carousel__variant-label">
+																{{ variant.name }}
+															</div>
+															<div class="products-carousel__variant-values">
+																{{ variant.selected_value }}
+															</div>
+														</div>
+													{%- endfor -%}
+												</div>
+											</div>
+										{%- endif -%}
+
+										<div class="products-carousel__btns-box">
+											{% render 'price', product: product %}
+
+											<button
+												class="products-carousel__btn focus-visible-outline js-add-to-cart button button--{{- section.settings.button_style -}}"
+												type="button"
+												data-product-handle="{{- product.handle -}}"
+												{% if product.has_only_default_variant or product.variants.size == 1 %}
+													data-variant-id="{{- product.variants[0].id -}}"
+												{% endif %}
+												{% unless product.available %}
+													disabled
+												{% endunless %}
+											>
+												{%- if product.available -%}
+													{{- 'products.product.add_to_cart' | t -}}
+												{%- else -%}
+													{{- 'products.product.sold_out' | t -}}
+												{%- endif -%}
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						{%- endfor -%}
+					</div>
+
+					{%- if section.blocks.size > 1 -%}
+						<div class="products-carousel__swiper-pagination swiper-pagination js-products-carousel-pagination-bullets"></div>
+						<div class="products-carousel__swiper-button-wrap">
+							<button
+								class="products-carousel__swiper-button-prev swiper-button swiper-button--prev js-products-carousel-slider-button-prev"
+								type="button"
+								aria-label="{{ "general.accessibility.slider.prev_slide_message" | t | escape -}}"
+							>
+								{% render "icons", icon: "arrow-left" %}
+							</button>
+						</div>
+						<div class="products-carousel__swiper-button-wrap">
+							<button
+								class="products-carousel__swiper-button-next swiper-button swiper-button--next js-products-carousel-slider-button-next"
+								type="button"
+								aria-label="{{ "general.accessibility.slider.next_slide_message" | t | escape -}}"
+							>
+								{% render "icons", icon: "arrow-right" %}
+							</button>
+						</div>
+					{%- endif -%}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+{%- render 'adastra' with '/src/scripts/component-swiper-modules.js' -%}
+{% render "adastra" with "/src/scripts/section-products-carousel.js" %}
+
+{% schema %}
+	{
+		"name": "Products carousel",
+		"disabled_on": {
+			"groups": ["header", "footer"]
+		},
+		"settings": [
+			{
+				"type": "select",
+				"id": "button_style",
+				"label": "Button style",
+				"options": [
+					{
+						"value": "primary",
+						"label": "Primary"
+					},
+					{
+						"value": "secondary",
+						"label": "Secondary"
+					},
+					{
+						"value": "primary-border",
+						"label": "Primary with border"
+					},
+					{
+						"value": "secondary-border",
+						"label": "Secondary with border"
+					}
+				],
+				"default": "secondary-border"
+			},
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "select",
+				"id": "container_width",
+				"label": "Container width",
+				"options": [
+					{
+						"value": "1432px",
+						"label": "Default - 1400px"
+					},
+					{
+						"value": "1952px",
+						"label": "Large - 1920px"
+					},
+					{
+						"value": "100%",
+						"label": "Full width"
+					},
+					{
+						"value": "inherit",
+						"label": "Inherit of general setting"
+					}
+				],
+				"default": "inherit",
+				"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 25
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 25
+			}
+		],
+		"blocks": [
+			{
+				"type": "product",
+				"name": "Product",
+				"settings": [
+					{
+						"type": "product",
+						"id": "product",
+						"label": "Product"
+					},
+					{
+						"type": "checkbox",
+						"id": "show_variant",
+						"label": "Show first available variant",
+						"default": false
+					},
+					{
+						"type": "video",
+						"id": "video_desktop",
+						"label": "Banner HTML5 desktop video",
+						"info": "Has priority before image. 1920 x 1828px recommended"
+					},
+					{
+						"type": "video",
+						"id": "video_mobile",
+						"label": "Banner HTML5 mobile video",
+						"info": "Has priority before image. 1982 x 1982px recommended"
+					},
+					{
+						"type": "image_picker",
+						"id": "image_desktop",
+						"label": "Banner image desktop",
+						"info": "1920 x 1828px recommended"
+					},
+					{
+						"type": "image_picker",
+						"id": "image_mobile",
+						"label": "Banner image mobile",
+						"info": "1982 x 1982px recommended"
+					}
+				]
+			}
+		],
+		"presets": [
+			{
+				"name": "Products carousel",
+				"blocks": [
+					{
+						"type": "product"
+					},
+					{
+						"type": "product"
+					}
+				]
+			}
+		]
+	}
+{% endschema %}

@@ -1,0 +1,239 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "default-page": {
+      "type": "page-template",
+      "disabled": true,
+      "settings": {
+        "enable_heading": false,
+        "enable_content": true,
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_iCxHLf": {
+      "type": "image-with-text",
+      "name": "Image with text",
+      "settings": {
+        "image_position": "left",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/Banner_Sizes_Desktop_-_W1750_x_H500_pixels1.jpg",
+        "image_background": "#ffffff",
+        "label": "",
+        "heading": "New York’s pulse never stops",
+        "text_content": "<h4><br/>DKNY embodies the energy and attitude of New York – bold, dynamic, and ever-evolving.</h4><h4>Born from denim and the drive of sport, DKNY stands for utility, purpose, and modern style – just like our timepieces. Stay in sync with the city.</h4><h4>Gift moments that matter with DKNY Watches</h4>",
+        "button_label": "SHOW ALL WATCHES",
+        "button_aria_label": "Button label",
+        "button_url": "shopify://collections/dkny",
+        "button_type": "secondary",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "collection_products_AdqExb": {
+      "type": "collection-products",
+      "name": "Collection products",
+      "settings": {
+        "heading": "Shop the most popular DKNY watches",
+        "collection": "dkny-best-sellers",
+        "max_product_fetch": 20,
+        "products_in_row": "5",
+        "banner_heading": "",
+        "banner_subheading": "",
+        "button_label": "",
+        "button_url": "",
+        "text_color": "#ffffff",
+        "overlay_color": "rgba(0, 0, 0, 0.4)",
+        "button_color": "#ffffff",
+        "button_background_color": "rgba(0,0,0,0)",
+        "button_border_color": "#ffffff",
+        "button_hover_color": "#000000",
+        "button_hover_background": "#ffffff",
+        "button_hover_border": "#ffffff",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "collection_products_DEEk4A": {
+      "type": "collection-products",
+      "name": "Collection products",
+      "settings": {
+        "heading": "Find the perfect gift, for him & for her",
+        "collection": "dkny",
+        "max_product_fetch": 20,
+        "products_in_row": "4",
+        "banner_image": "shopify://shop_images/DKNY_BrandPage_390x500px.jpg",
+        "banner_heading": "",
+        "banner_subheading": "",
+        "button_label": "View",
+        "button_url": "shopify://collections/dkny",
+        "text_color": "#ffffff",
+        "overlay_color": "rgba(0, 0, 0, 0.4)",
+        "button_color": "#ffffff",
+        "button_background_color": "rgba(0,0,0,0)",
+        "button_border_color": "#ffffff",
+        "button_hover_color": "#000000",
+        "button_hover_background": "#ffffff",
+        "button_hover_border": "#ffffff",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_zEYfLE": {
+      "type": "image-with-text",
+      "name": "Image with text",
+      "settings": {
+        "image_position": "right",
+        "text_alignment": "left",
+        "enable_animation": false,
+        "image": "shopify://shop_images/Banner_Sizes_Desktop_-_W1750_x_H500_pixels2_b339e5e0-455d-459a-82f5-dede71fcce6a.jpg",
+        "image_background": "#ffffff",
+        "label": "",
+        "heading": "Precision and style, all in one",
+        "text_content": "<p>Designed for the modern woman on the go, DKNY watches blend effortless style with versatility.</p><p>With clean, contemporary<br/>designs, they offer understated sophistication with a feminine touch – perfect for any occasion.</p><p>Whether at work, out with friends, or on the move, these timepieces feature precision Japanese movement and water resistance up to 5ATM, ensuring reliability, comfort, and timeless appeal in every moment.</p><p>Plus, they’re very accessible for all, offering premium quality at an affordable price.</p>",
+        "button_label": "",
+        "button_aria_label": "",
+        "button_url": "/",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "products_carousel_iJFxAJ": {
+      "type": "products-carousel",
+      "blocks": {
+        "product_FqBxf7": {
+          "type": "product",
+          "settings": {
+            "product": "r51ayj22c8k",
+            "show_variant": false,
+            "image_desktop": "shopify://shop_images/dkny_8.22__hp_desktop_hero_3840x1650_cc459455-6166-4d7e-a2f4-e5ce462e6284.png"
+          }
+        },
+        "product_pQcLDt": {
+          "type": "product",
+          "settings": {
+            "product": "r42bae48bgd",
+            "show_variant": false,
+            "image_desktop": "shopify://shop_images/dkny-brand-promotional-image.png"
+          }
+        }
+      },
+      "block_order": [
+        "product_FqBxf7",
+        "product_pQcLDt"
+      ],
+      "name": "Products carousel",
+      "settings": {
+        "button_style": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "featured_collection_XiFAXc": {
+      "type": "featured-collection",
+      "name": "Featured collection",
+      "settings": {
+        "collection": "dkny-men",
+        "image": "shopify://shop_images/dkny-watch-promotional-image-with-1918-1918-size.png",
+        "image_size": "height",
+        "products_per_row": "2",
+        "products_to_show": 6,
+        "image_overlay": "linear-gradient(180deg, rgba(255, 140, 140, 0) 5%, rgba(255, 140, 140, 0) 52%, rgba(0, 0, 0, 1) 100%)",
+        "image_text": "#ffffff",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "collection_list_tQxQQV": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_g9KBWL": {
+          "type": "collection",
+          "settings": {
+            "collection": "dkny",
+            "image": "shopify://shop_images/dkny-promotional-collection-image-with-1920-x-1554px-size-for-landscape-only.png"
+          }
+        },
+        "collection_FEktzR": {
+          "type": "collection",
+          "settings": {
+            "collection": "dkny-best-sellers"
+          }
+        },
+        "collection_cHJdKW": {
+          "type": "collection",
+          "settings": {
+            "collection": "dkny-men"
+          }
+        },
+        "collection_dE7eUB": {
+          "type": "collection",
+          "settings": {
+            "collection": "dkny-women"
+          }
+        }
+      },
+      "block_order": [
+        "collection_g9KBWL",
+        "collection_FEktzR",
+        "collection_cHJdKW",
+        "collection_dE7eUB"
+      ],
+      "name": "Collection list",
+      "settings": {
+        "heading": "Your Favorite Choices from DKNY",
+        "text_alignment": "center",
+        "aspect_ratio": "portrait",
+        "cards_per_row": "4",
+        "enable_rounded_cards": false,
+        "overlay_color": "linear-gradient(343deg, rgba(163, 98, 70, 1) 5%, rgba(255, 140, 140, 0) 100%, rgba(255, 255, 255, 1) 100%)",
+        "image_text": "#ffffff",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    }
+  },
+  "order": [
+    "default-page",
+    "image_with_text_iCxHLf",
+    "collection_products_AdqExb",
+    "collection_products_DEEk4A",
+    "image_with_text_zEYfLE",
+    "products_carousel_iJFxAJ",
+    "featured_collection_XiFAXc",
+    "collection_list_tQxQQV"
+  ]
+}

@@ -1,0 +1,36 @@
+.brands-container {
+    display: grid;
+    margin-top: 5rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.brand-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    border: 1px solid lightgrey;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.brand-item img {
+    max-width: 100%;
+    max-height: 100%;
+    /* filter: grayscale(50%); */
+    /* opacity: .8; */
+}
+
+/* ======================================================================= */
+/* ============================= MOBILE VIEW ============================= */
+/* ======================================================================= */
+
+@media (max-width: 749px) {
+    .brands-container {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .brand-item {
+        height: 100px;
+    }
+}

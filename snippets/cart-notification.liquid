@@ -1,0 +1,61 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Cart notification
+	Render shopping cart notification
+
+	Usage:
+	{%- render 'cart-notification' -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- render 'adastra' with '/src/styles/cart-notification.scss' -%}
+{% comment %}{{ 'cart-notification.build.css' | asset_url | stylesheet_tag }}{% endcomment %}
+{%- render 'adastra' with '/src/scripts/cart-notification.js' -%}
+
+<div class="cart-notification js-cart-notification">
+	<div class="cart-notification__container js-cart-notification-modal" aria-modal="true" role="dialog" tabindex="-1">
+		<div class="cart-notification__header">
+			<span class="cart-notification__heading h2">
+				{{- 'cart.notifications.added_heading' | t -}}:
+			</span>
+
+			<button
+				type="button"
+				class="focus-visible-outline cart-notification__close"
+				data-notification-close
+				aria-label="{{- 'general.accessibility.close_modal' | t | escape -}}"
+			>
+				{% render 'icons', icon: 'close' %}
+			</button>
+		</div>
+
+		<div class="cart-notification__body js-cart-notification-content"></div>
+
+		<div class="cart-notification__footer">
+			<a
+				href="{{- routes.cart_url -}}"
+				class="button button--third cart-notification__cta"
+				{% if settings.cart_type == 'drawer' %}
+					data-target="CartDrawer"
+					data-js-toggle="CartDrawer"
+					aria-expanded="false"
+					aria-controls="CartDrawer"
+					data-notification-close
+				{% endif %}
+			>
+				{{- 'cart.notifications.view_cart' | t -}}
+			</a>
+
+			<form
+				action="{{- routes.cart_url -}}"
+				method="post"
+				id="cart-notification-form"
+				class="cart-notification__form"
+			>
+				<button class="button button--secondary cart-notification__cta" name="checkout" type="submit">
+					{{- 'cart.general.checkout' | t -}}
+				</button>
+			</form>
+		</div>
+	</div>
+</div>

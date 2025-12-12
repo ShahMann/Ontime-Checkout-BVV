@@ -1,0 +1,153 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Header mobile menu
+	Render header mobile menu
+	- menu: menu object;
+	- is_show_language_selector: condition for render localization snippet (true/false);
+	- is_show_country_selector: condition for render country snippet (true/false);
+	- show_country_full_name: condition to show full country name in the country selector (true/false)
+	- blocks: transfer block object;
+	- enable_rounded_header: enable rounded header (true/false);
+	- enable_burger_menu: enable burger menu (true/false).
+	- burger_menu_primary: burger menu primary;
+	- burger_menu_secondary: burger menu secondary;
+	- burger_menu_image: burger menuimage;
+	- burger_menu_heading: burger menu heading;
+	- burger_menu_subheading: burger menu subheading,
+	- burger_menu_link: burger menu link;
+	- menu_highlighted_link_name: menu highlighted link name.
+
+	Usage:
+	{%- render 'header-mobile-menu' -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign header_mobile_class = "" -%}
+
+{%- if enable_rounded_header == true -%}
+	{%- assign header_mobile_class = "header-mobile--rounded" -%}
+{%- endif -%}
+
+<div
+	id="headerDrawerMenu"
+	class="drawer drawer--left header-mobile {{ header_mobile_class -}}"
+	data-menu-type="main"
+	role="dialog"
+	aria-labelledby="headerDrawerMenuTitle"
+>
+	<p class="visually-hidden" id="headerDrawerMenuTitle">
+		{{- "layout.navigation.drawer_menu" | t | escape -}}
+	</p>
+
+	<nav
+		class="drawer__body header-mobile__menu js-mobile-header-main-menu"
+		aria-label="{{ "layout.navigation.drawer_menu" | t | escape }}"
+	>
+		<div class="header-mobile__menu-close-button-wrapper">
+			<button
+				class="header-burger-menu-close-button js-header-drawer-close-button"
+				type="button"
+				aria-expanded="false"
+				aria-controls="headerDrawerMenu"
+				aria-label="{{- "layout.navigation.close_drawer_menu" | t | escape -}}"
+			>
+				{%- render 'icons', icon: 'menu-close' -%}
+			</button>
+		</div>
+
+		{%- if enable_burger_menu == true and burger_menu_primary != blank -%}
+			{%- render 'header-mobile-menu-list',
+				menu: burger_menu_primary,
+				blocks: blocks,
+				menu_id: 'burger-menu-primary',
+				type: 'burger-menu'
+			-%}
+
+			<span class="header-mobile__delimiter"></span>
+		{%- endif -%}
+
+		{%- if enable_burger_menu == true and burger_menu_secondary != blank -%}
+			{%- render 'header-mobile-menu-list',
+				menu: burger_menu_secondary,
+				blocks: blocks,
+				menu_id: 'burger-menu-secondary',
+				type: 'burger-menu'
+			-%}
+
+			<span class="header-mobile__delimiter"></span>
+		{%- endif -%}
+
+		{%- render 'header-mobile-menu-list',
+			menu: menu,
+			blocks: blocks,
+			menu_id: 'main-menu',
+			menu_highlighted_link_name: menu_highlighted_link_name
+		-%}
+
+		{%- if enable_burger_menu == true and menu != blank -%}
+			<span class="header-mobile__delimiter"></span>
+		{%- endif -%}
+
+		<ul class="header-mobile__additional-menu">
+			{%- if shop.customer_accounts_enabled -%}
+				<li>
+					<a
+						href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+						class="header-mobile__menu-item header-mobile__menu-item-link"
+					>
+						{%- render 'icons', icon: 'account' -%}
+
+						<span class="header-mobile__menu-item-text">
+							{%- if customer -%}
+								{{ 'customer.account.title' | t }}
+							{% else %}
+								{{ 'customer.login.title' | t }}
+							{%- endif -%}
+						</span>
+					</a>
+				</li>
+			{%- endif -%}
+
+			{%- if is_show_language_selector == true and localization.available_languages.size > 1 -%}
+				{% assign language_selector = true %}
+			{%- endif -%}
+
+			{%- if is_show_country_selector == true -%}
+				{% assign country_selector = true %}
+			{%- endif -%}
+
+			{%- if language_selector == true or country_selector -%}
+				<div class="header-mobile__localization">
+					{%- if language_selector == true -%}
+						<li>
+							<div class="header-mobile__localization">
+								{%- render 'language-localization-form', class: 'header-mobile', id_prefix: 'header-mobile', form_id: 'header-mobile-localization-form' -%}
+							</div>
+						</li>
+					{%- endif -%}
+
+					{%- if country_selector == true -%}
+						<li>
+							<div class="header-mobile__localization">
+								{%- render 'country-localization-form', class: 'header-mobile', id_prefix: 'header-mobile', form_id: 'header-mobile-county-form', show_full_name: show_country_full_name -%}
+							</div>
+						</li>
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+		</ul>
+
+		{%- if enable_burger_menu == true -%}
+			{%- if burger_menu_image != blank -%}
+				<div class="header-mobile__burger-image">
+					{%- render 'header-burger-menu-image',
+						image: burger_menu_image,
+						heading: burger_menu_heading,
+						subheading: burger_menu_subheading,
+						link: burger_menu_link
+					-%}
+				</div>
+			{%- endif -%}
+		{%- endif -%}
+	</nav>
+</div>

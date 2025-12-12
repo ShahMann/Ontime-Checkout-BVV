@@ -1,0 +1,91 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Article main
+	------------------------
+	Used on Article template
+	------------------------------------------------------------------------------
+{% endcomment %}
+{%- render 'adastra' with '/src/styles/article-main.scss' -%}
+
+<section class="article-main">
+	{% if article.content != blank %}
+		<div class="article-main__rte">
+			<div class="rte">
+				{{ article.content }}
+			</div>
+		</div>
+	{% endif %}
+
+	<div class="article-main__socials">
+			<span class="article-main__socials-title">
+				{{ 'blogs.article.share' | t }}
+			</span>
+
+		<div class="article-main__socials-buttons">
+			<input id="share-input-{{ section.id }}" class="is-hidden" type="text" value="{{ shop.url | append: article.url }}">
+
+			<button
+				class="button-social js-social-share"
+				data-share-title="{{ article.title | escape }}"
+				data-share-url="{{ shop.url | append: article.url }}"
+				data-input-fallback="share-input-{{ section.id }}"
+				aria-label="{{ 'general.social.share_button' | t }}"
+			>
+				<span class="tooltip js-share-tooltip">{{ 'general.social.share_success' | t }}</span>
+
+				{% render 'icons-social', icon: "share" %}
+			</button>
+
+			{% assign url = 'https://www.facebook.com/sharer/sharer.php?u='
+				| append: request.host
+				| append: article.url
+				| append: '&amp;src=sdkpreparse'
+			%}
+
+			<a
+				class="button-social"
+				target="_blank"
+				rel="nofollow"
+				href="{{- url | escape -}}"
+				aria-label="{{ 'general.social.alt_text.share_on_facebook' | t | escape }}"
+			>
+				{% render 'icons-social', icon: "facebook" %}
+			</a>
+
+			{% assign url = 'https://pinterest.com/pin/create/button/?url='
+				| append: request.origin
+				| append: article.url
+				| append: "&description="
+				| append: article.title
+			%}
+
+			<a
+				class="button-social"
+				target="_blank"
+				rel="nofollow"
+				href="{{- url | escape -}}"
+				aria-label="{{ 'general.social.alt_text.share_on_pinterest' | t | escape }}"
+			>
+				{% render 'icons-social', icon: "pinterest" %}
+			</a>
+
+
+			{% assign url = 'https://twitter.com/intent/tweet?text='
+				| append: article.title
+				| append: '&url='
+				| append: request.host
+				| append: article.url
+			%}
+
+			<a
+				class="button-social"
+				target="_blank"
+				rel="nofollow"
+				href="{{- url | escape -}}"
+				aria-label="{{ 'general.social.alt_text.share_on_twitter' | t | escape }}"
+			>
+				{% render 'icons-social', icon: "x-twitter" %}
+			</a>
+		</div>
+	</div>
+</section>

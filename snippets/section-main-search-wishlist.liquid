@@ -1,0 +1,29 @@
+{% comment %}
+  Template used to generated wishlist product section
+{% endcomment %}
+
+{%- if search.performed -%}
+  {%- assign image_size = 480 -%}
+  {%- assign image_size_tablet = 382 -%}
+  {%- assign image_size_mobile = 240 -%}
+
+ 
+  {%- for item in search.results -%}
+    {%- if item.object_type == 'product' -%}
+      {% if item.price <= 0 or item.featured_image == blank or item.available == false %}
+        {% continue %}
+      {% endif %}
+      <li class="grid__item">
+        {% comment %} {% render 'wishlist-product-card', product: item, fixed_width: true %} {% endcomment %}
+        {%- render
+          'wishlist-product-card',
+          product: item,
+          size: image_size,
+          tablet_size: image_size_tablet,
+          mobile_size: image_size_mobile,
+          is_lazy: false
+        -%}
+      </li>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}

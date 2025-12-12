@@ -1,0 +1,22 @@
+<wishlist-header>
+  <a href="/pages/wishlist" class="header__icon header__icon--wishlist" id="wishlist-icon">
+    <span class="header__icon-wrapper">
+      {%- render 'icons', icon: 'heart-header' -%}
+
+      <span
+        class="header__wishlist-count"
+        data-wishlist-count="0"
+      >
+        <span></span>
+      </span>
+      <span class="visually-hidden"> {{ 'layout.header.labels.wishlist_item_count' | t }} </span>
+    </span>
+
+    <span
+      class="header__icon-label"
+      aria-hidden="true"
+    >
+      {{- 'layout.header.labels.wishlist' | t -}}
+    </span>
+  </a>
+</wishlist-header>

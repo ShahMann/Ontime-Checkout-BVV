@@ -1,0 +1,100 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Language localization form
+	Render language localization form
+	- class: General class for selectors (required)
+	- id_prefix: Add unuqie prefix to prevent duplicate id
+	- form_id: Add unuqie form id to prevent duplicate id
+
+	Usage:
+	{%- render 'language-localization-form', class: class -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{% comment %}{{- 'localization-form.build.css' | asset_url | stylesheet_tag -}}{% endcomment %}
+{%- render 'adastra' with '/src/styles/localization-form.scss' -%}
+
+{% assign form_id = form_id | default: 'localization_form' %}
+{% assign form_id_noscript = form_id | append: 'NoScript' %}
+
+<div class="{{- class -}}__language-selector">
+	<noscript>
+		{%-
+			form 'localization',
+			id: form_id_noscript
+		-%}
+			<div class="disclosure localization-form__select">
+				<select
+					class="localization-select"
+					name="locale_code"
+				>
+					{%- for language in localization.available_languages -%}
+						<option
+							class="localization-option"
+							value="{{- language.iso_code -}}"
+							lang="{{- language.iso_code -}}"
+							{%- if language.iso_code == localization.language.iso_code %} selected{% endif %}
+						>
+							{{- language.endonym_name | capitalize -}}
+						</option>
+					{%- endfor -%}
+				</select>
+
+				{%- render 'icons', icon: 'arrow-down' -%}
+			</div>
+
+			<button class="localization-button">
+				{{- 'general.localization.update_language' | t -}}
+			</button>
+		{%- endform -%}
+	</noscript>
+
+	<localization-form>
+		{%- form 'localization', class: 'no-js-hidden js-localization-form', id: form_id -%}
+			<div class="disclosure">
+				<button
+					type="button"
+					class="disclosure__button {{ class -}}__language-button js-disclosure__button"
+					aria-expanded="false"
+					aria-controls="LanguageList-{{- id_prefix -}}"
+				>
+					{{- localization.language.endonym_name | capitalize -}}
+
+					{%- render 'icons', icon: 'arrow-down' -%}
+				</button>
+
+				<ul
+					id="LanguageList-{{- id_prefix -}}"
+					role="list"
+					class="disclosure__list {{ class -}}__language-list js-disclosure-list"
+					hidden
+				>
+					{% for language in localization.available_languages %}
+						<li class="disclosure__item {{ class -}}__language-item">
+							<a
+								class="disclosure__link js-disclosure__link"
+								href="#"
+								{% if language.iso_code == localization.language.iso_code %}
+									aria-current="true"
+								{% endif %}
+								aria-label="{{- language.iso_code -}}"
+								hreflang="{{- language.iso_code -}}"
+								lang="{{- language.iso_code -}}"
+								data-value="{{- language.iso_code -}}"
+								tabindex="-1"
+							>
+								<span class="disclosure__item-text {{ class -}}__language-item-text">
+									{{- language.endonym_name | capitalize -}}
+
+									<span class="disclosure__item-underline {{ class -}}__language-item-underline"></span>
+								</span>
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+
+				<input type="hidden" name="language_code" value="{{- localization.language.iso_code -}}">
+			</div>
+		{% endform %}
+	</localization-form>
+</div>

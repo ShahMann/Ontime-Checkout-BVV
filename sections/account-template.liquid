@@ -1,0 +1,577 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+	Section: Account template
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- render "adastra" with "/src/styles/account.scss" -%}
+
+{%- assign desktop_image			= section.settings.desktop_image -%}
+{%- assign mobile_image				= section.settings.mobile_image | default: desktop_image -%}
+{%- assign page_heading_color	= section.settings.page_heading_color -%}
+
+{%- capture img_focal -%}
+	--img-desktop-pos: {{- desktop_image.presentation.focal_point -}};
+	--img-mob-pos: {{- mobile_image.presentation.focal_point -}};
+{%- endcapture -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		--page-heading-color: {{ page_heading_color }};
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+
+
+{%- endstyle -%}
+
+<section class="account">
+	{%- if desktop_image != blank -%}
+		<div class="account__banner-image-wrapper">
+			<h1 class="account__heading">
+				{{- "customer.account.title" | t -}}
+			</h1>
+
+			<picture>
+				<source
+					srcset="{{ mobile_image | image_url: width: 375 }} 1x, {{ mobile_image | image_url: width: 750 }} 2x"
+					media="(max-width: 375px)"
+				/>
+
+				<source
+					srcset="{{ mobile_image | image_url: width: 575 }} 1x, {{ mobile_image | image_url: width: 1150 }} 2x"
+					media="(max-width: 575px)"
+				/>
+
+				<source
+					srcset="{{ mobile_image | image_url: width: 767 }} 1x, {{ mobile_image | image_url: width: 1534 }} 2x"
+					media="(max-width: 767px)"
+				/>
+
+				<source
+					srcset="{{ desktop_image | image_url: width: 991 }} 1x, {{ desktop_image | image_url: width: 1928 }} 2x"
+					media="(max-width: 991px)"
+				/>
+
+				<source
+					srcset="{{ desktop_image | image_url: width: 1199 }} 1x, {{ desktop_image | image_url: width: 2398 }} 2x"
+					media="(max-width: 1199px)"
+				/>
+
+				<source
+					srcset="{{ desktop_image | image_url: width: 1500 }} 1x, {{ desktop_image | image_url: width: 3000 }} 2x"
+					media="(max-width: 1500px)"
+				/>
+
+				<source
+					srcset="{{ desktop_image | image_url: width: 1600 }} 1x, {{ desktop_image | image_url: width: 3200 }} 2x"
+					media="(max-width: 1600px)"
+				/>
+
+				<source
+					srcset="{{ desktop_image | image_url: width: 1920 }} 1x, {{ desktop_image | image_url: width: 3840 }} 2x"
+					media="(max-width: 1920px)"
+				/>
+
+				<img
+					class="account__banner-image"
+					srcset="{{ desktop_image | image_url: width: 2048 }} 1x, {{ desktop_image | image_url: width: 4096 }} 2x"
+					src="{{- desktop_image | image_url: width: 2048 -}}"
+					alt="{{- desktop_image.alt -}}"
+					style="{{- img_focal -}}"
+				/>
+			</picture>
+		</div>
+	{%- endif -%}
+
+	<div class="account__container">
+		{%- if desktop_image == blank -%}
+			<h1 class="account__heading">
+				{{- "customer.account.title" | t -}}
+			</h1>
+		{%- endif -%}
+
+		<div class="account__row">
+			<div class="account__col account__col--details">
+				<div class="account__user-icon" aria-hidden="true">
+					{%- render 'icons', icon: 'account' -%}
+				</div>
+
+				<div class="account__user-info">
+					<div class="account__full-name">
+						<span>
+							{{- customer.default_address.first_name -}}
+						</span>
+
+						<span>
+							{{- customer.default_address.last_name -}}
+						</span>
+					</div>
+
+					<div class="account__mail">
+						{{- customer.email -}}
+					</div>
+
+					<div class="account__address">
+						{{- customer.default_address.country -}}
+					</div>
+				</div>
+
+				<div class="account__user-buttons">
+					<a class="button button--primary account__addresses-link" href="{{- routes.account_addresses_url -}}">
+						{{ "customer.account.view_addresses" | t }} ({{ customer.addresses_count }}) {%- render 'icons', icon: 'arrow-right' -%}
+					</a>
+
+					<a class="button button--primary account__logout-link" href="{{- routes.account_logout_url -}}">
+						{{- "layout.customer.log_out" | t -}} {%- render 'icons', icon: 'arrow-right' -%}
+					</a>
+				</div>
+			</div>
+
+			<div class="account__col account__col--orders">
+				<h2 class="h4 account__subheading">
+					{{- "customer.orders.title" | t -}}
+				</h2>
+
+				{%- paginate customer.orders by 20 -%}
+					{%- if customer.orders.size != 0 -%}
+						<ul class="account__orders js-accordion-container">
+							<div class="account__header" aria-hidden="true">
+								<span class="account__header-col account__header-col--number">
+									{{- "customer.orders.order_number" | t -}}
+								</span>
+
+								<span class="account__header-col">
+									{{- "customer.orders.date" | t -}}
+								</span>
+
+								<span class="account__header-col account__header-col--status">
+									{{- "customer.orders.payment_status" | t -}}
+								</span>
+
+								<span class="account__header-col account__header-col--quantity">
+									{{- "customer.orders.quantity" | t -}}
+								</span>
+
+								<span class="account__header-col account__header-col--total">
+									{{- "customer.orders.total" | t -}}
+								</span>
+							</div>
+
+							{%- for order in customer.orders -%}
+								<li class="account__accordion">
+									<div class="accordion__item account__content-wrapper js-accordion-item">
+										<button
+											class="accordion__control account__content js-accordion-control"
+											type="button"
+											aria-expanded="false"
+											aria-controls="{{- order.id -}}"
+											aria-label="{{ 'customer.orders.show_order' | t | escape }} {{- order.name -}}"
+										>
+											<span class="account__content-col account__content-col--number" aria-hidden="true">
+												<span class="account__content-col-heading account__content-col-heading--mobile">
+													{{- "customer.orders.order_number" | t -}}
+												</span>
+
+												{{- order.name -}}
+											</span>
+
+											<span class="account__content-col account__content-col--date" aria-hidden="true">
+												<span class="account__content-col-heading account__content-col-heading--mobile">
+													{{- "customer.orders.date" | t -}}
+												</span>
+
+												{{- order.created_at | date: '%d.%m.%Y' -}}
+											</span>
+
+											<span class="account__content-col account__content-col--status" aria-hidden="true">
+												<span class="account__content-col-heading account__content-col-heading--mobile">
+													{{- "customer.orders.payment_status" | t -}}
+												</span>
+
+												{% capture order_status %}
+													{% if order.financial_status_label == 'Paid' or order.financial_status_label == 'Payée' or order.financial_status_label == 'Bezahlt' or order.financial_status_label == 'Pagada' or order.financial_status_label == 'Pagato' %}
+														account__order-status--paid
+													{% elsif order.financial_status_label == 'Fulfilled' or order.financial_status_label == 'Confirmée' or order.financial_status_label == 'Erfüllt' or order.financial_status_label == 'Concluida' or order.financial_status_label == 'Evaso' %}
+														account__order-status--fulfilled
+													{% endif %}
+												{% endcapture %}
+
+												<span class="account__order-status {{ order_status | strip_newlines }}">
+													{{- order.financial_status_label -}}
+												</span>
+											</span>
+
+											<span class="account__content-col account__content-col--quantity" aria-hidden="true">
+												<span class="account__content-col-heading account__content-col-heading--mobile">
+													{{- "customer.orders.quantity" | t -}}
+												</span>
+
+												{{- order.item_count -}}
+											</span>
+
+											<span class="account__content-col account__content-col--total" aria-hidden="true">
+												<span class="account__content-col-heading account__content-col-heading--mobile">
+													{{- "customer.orders.total" | t -}}
+												</span>
+
+												{{- order.total_net_amount | money -}}
+											</span>
+
+											<span class="account__icon" aria-hidden="true">
+												{%- render "icons", icon: "arrow-down" -%}
+											</span>
+										</button>
+
+										<div
+											class="accordion__content accordion__content--animate js-accordion-content"
+											id="{{- order.id -}}"
+											style="height: 0"
+										>
+											<div class="account__accordion-content js-accordion-inner">
+												<div class="visually-hidden">
+													<p>
+														{{ "customer.orders.order_number" | t }}
+														{{ order.name | split: "#" }}
+													</p>
+
+													<p>
+														{{ "customer.orders.date" | t }}
+														{{ order.created_at | date: '%d.%m.%Y' }}
+													</p>
+
+													<p>
+														{{ "customer.orders.payment_status" | t }}
+														{{ order.financial_status_label }}
+													</p>
+
+													<p>
+														{{ "customer.orders.quantity" | t }}
+														{{ order.item_count }}
+													</p>
+
+													<p>
+														{{ "customer.orders.total" | t }}
+														{{ order.total_price | money }}
+													</p>
+												</div>
+
+												<div class="account__accordion-info account__accordion-info--mobile" aria-hidden="true">
+													<span class="account__content-col">
+														<p class="account__content-col-heading account__content-col-heading--mobile">
+															{{- "customer.orders.date" | t -}}
+														</p>
+
+														{{- order.created_at | date: '%d.%m.%Y' -}}
+													</span>
+
+													<span class="account__content-col">
+														<p class="account__content-col-heading account__content-col-heading--mobile">
+															{{- "customer.orders.quantity" | t -}}
+														</p>
+
+														{{- order.item_count -}}
+													</span>
+
+													<span class="account__content-col">
+														<p class="account__content-col-heading account__content-col-heading--mobile">
+															{{- "customer.orders.total" | t -}}
+														</p>
+
+														{{- order.total_price | money -}}
+													</span>
+												</div>
+
+												{%- for line_item in order.line_items -%}
+													<div class="account__order-detail">
+														<div class="account__order-detail-col account__order-detail-col--image">
+															{%- if line_item.image != blank -%}
+																{%- assign item_image = line_item.image -%}
+															{%- else -%}
+																{%- assign item_image = settings.product_default_image -%}
+															{%- endif -%}
+
+															<picture>
+																<img
+																	class="account__image"
+																	src="{{- item_image | image_url: width: 80, height: 80 -}}"
+																	srcset="{{ item_image | image_url: width: 80, height: 80 }} 1x, {{ item_image | image_url: width: 160, height: 160 }} 2x"
+																	alt="{{- item_image.alt -}}"
+																	width="80"
+																	height="80"
+																/>
+															</picture>
+														</div>
+
+														<div class="account__order-detail-col account__order-detail-col--info">
+															<div class="account__order-detail-headings">
+																<p class="account__order-detail-headings-title">
+																	{{- line_item.product.title -}}
+																</p>
+
+																{%- unless line_item.product.has_only_default_variant -%}
+																	<p>{{- line_item.variant.title -}}</p>
+																{%- endunless -%}
+
+																{%- assign property_size = line_item.properties | size -%}
+
+																{%- unless line_item.selling_plan_allocation == nil and property_size == 0 -%}
+																	<ul class="account__order-detail-properties">
+																		{%- unless line_item.selling_plan_allocation == nil -%}
+																			<li>
+																				{{- line_item.selling_plan_allocation.selling_plan.name -}}
+																			</li>
+																		{%- endunless -%}
+
+																		{%- if property_size != 0 -%}
+																			{%- for property in line_item.properties -%}
+																				{% assign property_first_char = property.first | slice: 0 %}
+
+																				{%- if property.last != blank and property_first_char != '_' -%}
+																					<li>
+																						{{- property.first -}}:&nbsp;
+
+																						{%- if property.last contains '/uploads/' -%}
+																							<a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
+																						{%- else -%}
+																							{{- property.last -}}
+																						{%- endif -%}
+																					</li>
+																				{%- endif -%}
+																			{%- endfor -%}
+																		{%- endif -%}
+																	</ul>
+																{%- endunless -%}
+
+																{%- if line_item.line_level_discount_allocations != blank -%}
+																	<ul class="account__order-detail-properties" role="list" aria-label="{{ 'customer.order.discount' | t | escape }}">
+																		{%- for discount_allocation in line_item.line_level_discount_allocations -%}
+																			<li>
+																				{% render 'icons', icon: 'discount' %} {{- discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money -}})
+																			</li>
+																		{%- endfor -%}
+																	</ul>
+																{%- endif -%}
+															</div>
+
+															<div class="account__order-detail-prices">
+																<div class="account__order-detail-col account__order-detail-col--prices">
+																	<p class="account__order-detail-label">
+																		{{- "customer.order.price" | t -}}
+																	</p>
+
+																	<div class="account__order-detail-value">
+																		{%- if line_item.original_price != line_item.final_price or line_item.unit_price_measurement -%}
+																			<dl>
+																				{%- if line_item.original_price != line_item.final_price -%}
+																					<dt>
+																						<span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+																					</dt>
+																					<dd class="regular-price">
+																						<s>{{ line_item.original_price | money }}</s>
+																					</dd>
+																					<dt>
+																						<span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
+																					</dt>
+																					<dd>
+																						<span class="account__order-price-new">{{ line_item.final_price | money }}</span>
+																					</dd>
+																				{%- else -%}
+																					<dt>
+																						<span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+																					</dt>
+																					<dd>
+																						{{ line_item.original_price | money }}
+																					</dd>
+																				{%- endif -%}
+																				{% if line_item.unit_price_measurement %}
+																					<dt>
+																						<span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+																					</dt>
+																					<dd>
+																						<small>
+																							{{ line_item.unit_price | money }}
+
+																							<span aria-hidden="true">/</span>
+
+																							{%- if line_item.unit_price_measurement.reference_value != 1 -%}
+																								{{- line_item.unit_price_measurement.reference_value -}}
+																							{%- endif -%}
+
+																							{{ line_item.unit_price_measurement.reference_unit }}
+																						</small>
+																					</dd>
+																				{% endif %}
+																			</dl>
+																		{%- else -%}
+																			<span>{{ line_item.final_price | money }}</span>
+																		{%- endif -%}
+																	</div>
+																</div>
+
+																<div class="account__order-detail-col account__order-detail-col--prices">
+																	<p class="account__order-detail-label">
+																		{{- "customer.order.quantity" | t -}}
+																	</p>
+
+																	<p class="account__order-detail-value">
+																		{{- line_item.quantity -}}
+																	</p>
+																</div>
+
+																<div class="account__order-detail-col account__order-detail-col--prices">
+																	<p class="account__order-detail-label">
+																		{{- "customer.order.total" | t -}}
+																	</p>
+
+																	<div class="account__order-detail-value">
+																		{%- if line_item.original_line_price != line_item.final_line_price -%}
+
+																			<dl>
+																				<dt>
+																					<span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+																				</dt>
+																				<dd class="regular-price">
+																					<s>{{ line_item.original_line_price | money }}</s>
+																				</dd>
+																				<dt>
+																					<span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
+																				</dt>
+																				<dd>
+																					<span class="account__order-price-new">{{ line_item.final_line_price | money }}</span>
+																				</dd>
+																			</dl>
+																		{%- else -%}
+																			{{ line_item.original_line_price | money }}
+																		{%- endif -%}
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												{%- endfor -%}
+
+												<div class="account__accordion-footer">
+													{%- if order.shipping_address.summary != blank -%}
+														<div class="account__order-address">
+														<span class="account__order-address-heading">
+															{{- "customer.account.shipping_address" | t -}}
+														</span>
+
+															<span class="account__order-address-value">
+															{{- order.shipping_address.summary -}}
+														</span>
+														</div>
+													{%- endif -%}
+
+													<div class="account__order-subtotal">
+													<span class="account__order-subtotal-heading">
+														{{- "customer.account.subtotal" | t -}}
+													</span>
+
+														<span class="account__order-subtotal-value">
+														{{- order.total_net_amount | money -}}
+													</span>
+													</div>
+
+													<div class="account__order-view">
+														<a href="{{ order.customer_url }}" class="button button--secondary button--secondary-border button--small account__order-view-button">
+															{{- "customer.order.view_order" | t -}}
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+							{%- endfor -%}
+						</ul>
+					{%- else -%}
+						<p class="account__orders-none">
+							{{- "customer.orders.none" | t -}}
+						</p>
+					{%- endif -%}
+
+					{%- if paginate.pages > 1 -%}
+						{%- render "pagination", paginate: paginate -%}
+					{%- endif -%}
+				{%- endpaginate -%}
+			</div>
+		</div>
+	</div>
+</section>
+
+{% schema %}
+{
+	"name": "Account template",
+	"settings": [
+		{
+			"type": "image_picker",
+			"id": "desktop_image",
+			"label": "Image desktop"
+		},
+		{
+			"type": "image_picker",
+			"id": "mobile_image",
+			"label": "Image mobile"
+		},
+		{
+			"type": "color",
+			"id": "page_heading_color",
+			"label": "Page heading color",
+			"default": "#000"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	]
+}
+{%- endschema -%}

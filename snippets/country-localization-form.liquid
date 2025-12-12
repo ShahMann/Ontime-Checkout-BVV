@@ -1,0 +1,175 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Country localization form
+	Render country localization form
+	- class: General class for selectors (required)
+	- id_prefix: Add unuqie prefix to prevent duplicate id
+	- form_id: Add unuqie form id to prevent duplicate id
+
+	Usage:
+	{%- render 'country-localization-form', class: class -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{% comment %}{{- 'localization-form.build.css' | asset_url | stylesheet_tag -}}{% endcomment %}
+{%- render 'adastra' with '/src/styles/localization-form.scss' -%}
+
+{% assign form_id = form_id | default: 'country_form' %}
+{% assign form_id_noscript = form_id | append: 'NoScript' %}
+
+<div class="{{- class -}}__country-selector">
+	{% comment %} <noscript>
+		{%-
+			form 'localization',
+			id: form_id_noscript
+		-%}
+			<div class="disclosure localization-form__select">
+				<select
+					class="localization-select"
+					name="country_code"
+				>
+					{%- for country in localization.available_countries -%}
+						<option
+							class="localization-option"
+							value="{{- country.iso_code -}}"
+							{%- if country.iso_code == localization.country.iso_code %} selected{% endif %}
+						>
+							{{ country.currency.iso_code }} {{ country.currency.symbol }}
+						</option>
+					{%- endfor -%}
+				</select>
+
+				{%- render 'icons', icon: 'arrow-down' -%}
+			</div>
+
+			<button class="localization-button">
+				{{- 'general.localization.update_country' | t -}}
+			</button>
+		{%- endform -%}
+	</noscript> {% endcomment %}
+
+	<localization-form class="js-country-selection-form">
+		{% comment %} {%-
+			form 'localization',
+			id: form_id,
+			class: "no-js-hidden js-localization-form"
+		-%}
+	{%- endform -%} {% endcomment %}
+		<div class="disclosure">
+			<button
+				type="button"
+				class="disclosure__button {{ class -}}__country-button js-disclosure__button"
+				aria-expanded="false"
+				aria-controls="CountryList-{{- id_prefix -}}"
+			>
+				{%- if id_prefix == "header-top" or id_prefix == "header" or id_prefix == "header-mobile" -%}
+					{% if show_full_name %}
+						{{ localization.country.name }}
+					{% else %}
+						{{- localization.country.currency.iso_code }}&nbsp;{{ localization.country.currency.symbol -}}
+					{% endif %}
+				{%- else -%}
+					{{ localization.country.name }}
+				{%- endif -%}
+
+				{%- render 'icons', icon: 'arrow-down' -%}
+			</button>
+
+			<ul
+				id="CountryList-{{- id_prefix -}}"
+				role="list"
+				class="disclosure__list {{ class -}}__country-list js-disclosure-list"
+				hidden
+			>
+				{% comment %} {%- for country in localization.available_countries -%}
+					<li class="disclosure__item {{ class -}}__country-item" tabindex="-1">
+						<a
+							class="disclosure__link js-disclosure__link"
+							href="#"
+							{% if country.iso_code == localization.country.iso_code %}
+								aria-current="true"
+							{% endif %}
+							data-value="{{- country.iso_code -}}"
+							aria-label="{{- language.iso_code -}}"
+						>
+							<span class="disclosure__item-text {{ class -}}__country-item-text">
+								{{- country.name }} ({{ country.currency.iso_code }}&nbsp;{{ country.currency.symbol -}})
+
+								<span class="disclosure__item-underline {{ class -}}__country-item-underline"></span>
+							</span>
+						</a>
+					</li>
+				{%- endfor -%} {% endcomment %}
+
+				{% if localization.country.name != 'Kuwait' and localization.country.name != 'الكويت' %}
+					{%- liquid 
+						assign url = 'https://ontime.com?country=kuwait'
+
+						if request.locale.iso_code == "ar"
+							assign url = url | replace: "ontime.com", "ontime.com/ar" 
+						endif
+					-%}
+					<li class="disclosure__item {{ class -}}__country-item" tabindex="-1">
+						<a
+							class="disclosure__link"
+							href="{{ url }}"
+						>
+						<span class="disclosure__item-text {{ class -}}__country-item-text">
+							<img src="https://cdn.shopify.com/s/files/1/0755/0671/2868/files/kw.svg?v=1687261162" alt="Kuwait" height="25" width="25">
+							<span>{{ 'general.countries.kuwait' | t }}</span>
+						</span>	
+						</a>
+					</li>
+				{% endif %}
+
+				{% if localization.country.name != 'Saudi Arabia' and localization.country.name != 'المملكة العربية السعودية' %}
+
+					{%- liquid 
+						assign url = 'https://sa.ontime.com/?country=saudi'
+
+						if request.locale.iso_code == "ar"
+							assign url = url | replace: "sa.ontime.com", "sa.ontime.com/ar" 
+						endif
+					-%}
+
+					<li class="disclosure__item {{ class -}}__country-item" tabindex="-1">
+						<a
+							class="disclosure__link"
+							href="{{ url }}"
+						>
+						<span class="disclosure__item-text {{ class -}}__country-item-text">
+							<img src="https://cdn.shopify.com/s/files/1/0755/0671/2868/files/sa.svg?v=1687261162" alt="Saudi Arabia" height="25" width="25">
+							<span>{{ 'general.countries.saudi_arabia' | t }}</span>
+						</span>	
+						</a>
+					</li>
+				{% endif %}
+
+				{% if localization.country.name != 'United Arab Emirates' and  localization.country.name != 'الإمارات العربية المتحدة' %}
+
+					{%- liquid 
+						assign url = 'https://ae.ontime.com?country=ae'
+
+						if request.locale.iso_code == "ar"
+							assign url = url | replace: "ae.ontime.com", "ae.ontime.com/ar" 
+						endif
+					-%}
+
+					<li class="disclosure__item {{ class -}}__country-item" tabindex="-1">
+						<a
+							class="disclosure__link"
+							href="{{ url }}"
+						>
+						<span class="disclosure__item-text {{ class -}}__country-item-text">
+							<img src="https://cdn.shopify.com/s/files/1/0755/0671/2868/files/ae.svg?v=1687261162" alt="United Arab Emirates" height="25" width="25">
+							<span>{{ 'general.countries.uae' | t }}</span>
+						</span>	
+						</a>
+					</li>
+				{% endif %}
+			</ul>
+
+			<input type="hidden" name="country_code" value="{{- localization.country.iso_code -}}">
+		</div>
+	</localization-form>
+</div>

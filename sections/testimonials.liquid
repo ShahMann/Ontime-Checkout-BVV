@@ -1,0 +1,319 @@
+{%- if section.blocks.size > 0 -%}
+	{%- render 'adastra' with '/src/styles/testimonials.scss' -%}
+
+	{%- assign layout			= section.settings.layout -%}
+	{%- assign heading			= section.settings.heading -%}
+	{%- assign enable_autoplay	= section.settings.enable_autoplay -%}
+	{%- assign autoplay_speed	= section.settings.autoplay_speed -%}
+	{%- assign container 		= section.settings.container_width -%}
+
+	{% if container == 'inherit' %}
+		{% assign container_width = settings.container_width %}
+	{% else %}
+		{% assign container_width = container %}
+	{% endif %}
+
+	{% assign pagination_dynamic = false %}
+
+	{% if section.blocks.size > 5 %}
+		{% assign pagination_dynamic = true %}
+	{% endif %}
+
+	{% if layout == 'big-product' %}
+		{% assign slidesPerView = 2 %}
+	{% else %}
+		{% assign slidesPerView = 3 %}
+	{% endif %}
+
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_mobile -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+			}
+		}
+	{%- endstyle -%}
+
+	<section class="testimonials {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %} {% if layout == "base" %}testimonials--{{ layout }}{% endif %} js-animate" style="--container-width: {{ container_width }};">
+		{%- if heading != blank -%}
+			<h2 class="testimonials__heading h2">
+				{{- heading -}}
+			</h2>
+		{%- endif -%}
+
+		<div
+			class="testimonials__items-container swiper js-testimonials-container"
+			data-layout="{{ layout }}"
+			data-slides-per-view="{{ slidesPerView }}"
+			data-dynamic-pagination="{{ pagination_dynamic }}"
+			{%- if enable_autoplay == true -%}
+				data-autoplay-speed="{{ autoplay_speed | times: 1000 }}"
+			{%- endif -%}
+		>
+			<div class="testimonials__items-wrapper swiper-wrapper">
+				{%- for block in section.blocks -%}
+					{%- assign review_heading			= block.settings.review_heading -%}
+					{%- assign review_text				= block.settings.review_text -%}
+					{%- assign review_author_image 		= block.settings.review_author_image -%}
+					{%- assign review_author_name		= block.settings.review_author_name -%}
+					{%- assign product					= block.settings.product -%}
+					{%- assign custom_image				= block.settings.custom_image -%}
+					{%- assign big_image_content_text                = block.settings.big_image_content_text -%}
+
+					{% render 'testimonials-slide',
+						review_heading: review_heading,
+						review_text: review_text,
+						review_author_name: review_author_name,
+						review_author_image: review_author_image,
+						product: product,
+						custom_image: custom_image,
+						layout: layout
+					%}
+				{%- endfor -%}
+
+				{% if section.blocks.size == 1 %}
+					{%- assign review_heading			= section.blocks[0].settings.review_heading -%}
+					{%- assign review_text				= section.blocks[0].settings.review_text -%}
+					{%- assign review_author_name		= section.blocks[0].settings.review_author_name -%}
+					{%- assign product					= section.blocks[0].settings.product -%}
+					{%- assign custom_image				= section.blocks[0].settings.custom_image -%}
+
+					{% render 'testimonials-slide',
+						review_heading: review_heading,
+						review_text: review_text,
+						review_author_name: review_author_name,
+						product: product,
+						custom_image: custom_image,
+						layout: layout
+					%}
+
+					{% if layout == 'base' %}
+						{% comment %} Need add additional slide that loop work properly {% endcomment %}
+						{% render 'testimonials-slide',
+							review_text: review_text,
+							review_author_name: review_author_name,
+							product: product,
+							custom_image: custom_image,
+							layout: layout
+						%}
+					{% endif %}
+				{% endif %}
+			</div>
+
+			<div class="swiper-pagination"></div>
+		</div>
+	</section>
+
+	{%- render 'adastra' with '/src/scripts/component-swiper-modules.js' -%}
+	{%- render 'adastra' with '/src/scripts/section-testimonials.js' -%}
+{%- endif -%}
+
+{%- schema -%}
+{
+	"name": "Overview",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"type": "select",
+			"id": "layout",
+			"label": "Layout",
+			"options": [
+				{
+					"value": "base",
+					"label": "Base"
+				},
+				{
+					"value": "big-product",
+					"label": "Big product"
+				}
+			],
+			"default": "base"
+		},
+		{
+			"id": "heading",
+			"type": "text",
+			"label": "Heading",
+			"default": "Reviews"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_autoplay",
+			"label": "Autoplay",
+			"default": false
+		},
+		{
+			"type": "range",
+			"id": "autoplay_speed",
+			"min": 3,
+			"max": 10,
+			"step": 1,
+			"unit": "s",
+			"label": "Autoplay speed",
+			"default": 5
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"type": "select",
+			"id": "container_width",
+			"label": "Container width",
+			"options": [
+				{
+				"value": "1432px",
+				"label": "Default - 1400px"
+				},
+				{
+				"value": "1952px",
+				"label": "Large - 1920px"
+				},
+				{
+				"value": "100%",
+				"label": "Full width"
+				},
+				{
+				"value": "inherit",
+				"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"blocks": [
+		{
+			"name": "Review",
+			"type": "review",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "review_author_image",
+					"label": "Author image",
+					"info": "112 x 112px recommended"
+				},
+				{
+					"type": "text",
+					"id": "review_author_name",
+					"label": "Author name",
+					"default": "Author name"
+				},
+				{
+					"type": "text",
+					"id": "review_heading",
+					"label": "Heading",
+					"default": "Review"
+				},
+
+				{
+					"type": "richtext",
+					"id": "review_text",
+					"label": "Text",
+					"default": "<p>Review text about the product</p>"
+				},
+				{
+					"type": "product",
+					"id": "product",
+					"label": "Product"
+				},
+				{
+					"type": "image_picker",
+					"id": "custom_image",
+					"label": "Additional image",
+					"info": "In the 'Big product' layout, this image will substitute the product image."
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Overview",
+			"settings": {},
+			"blocks": [
+				{
+					"type": "review",
+					"settings": {
+						"review_text": "<p>Review text of 1st author</p>",
+						"review_author_name": "Name of 1st author"
+					}
+				},
+				{
+					"type": "review",
+					"settings": {
+						"review_text": "<p>Review text of 2nd author</p>",
+						"review_author_name": "Name of 2nd author"
+					}
+				},
+				{
+					"type": "review",
+					"settings": {
+						"review_text": "<p>Review text of 3rd author</p>",
+						"review_author_name": "Name of 3rd author"
+					}
+				},
+				{
+					"type": "review",
+					"settings": {
+						"review_text": "<p>Review text of 4th author</p>",
+						"review_author_name": "Name of 4th author"
+					}
+				},
+				{
+					"type": "review",
+					"settings": {
+						"review_text": "<p>Review text of 5th author</p>",
+						"review_author_name": "Name of 5th author"
+					}
+				}
+			]
+		}
+	]
+}
+{%- endschema -%}

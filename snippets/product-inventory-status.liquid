@@ -1,0 +1,88 @@
+{% assign show_inventory_quantity 	= block.settings.show_inventory_quantity %}
+{% assign show_background		 	= block.settings.show_background %}
+{% assign background_opacity		= block.settings.background_opacity | divided_by: 100.0 %}
+
+{%- capture styles -%}
+	--text-color: {{ block.settings.text_color }};
+	--low-stock-color: {{ block.settings.low_stock_color }};
+	--background-color: {{ block.settings.background_color | color_modify: 'alpha', background_opacity }};
+	--offset-top-desktop: {{ block.settings.offset_top_desktop }}px; {{-  -}}
+	--offset-bottom-desktop: {{ block.settings.offset_bottom_desktop }}px; {{-  -}}
+	--offset-top-mobile: {{ block.settings.offset_top_mobile }}px; {{-  -}}
+	--offset-bottom-mobile: {{ block.settings.offset_bottom_mobile }}px;
+{%- endcapture -%}
+
+<div class="product-inventory-status" style="{{ styles }}">
+	{% assign current_variant 		= product.selected_or_first_available_variant %}
+	{% assign low_stock_icon 		= block.settings.inv_low_stock_icon %}
+	{% assign high_stock_icon 		= block.settings.inv_high_stock_icon %}
+	{% assign low_stock_threshold 	= block.settings.low_stock_threshold %}
+	{% assign can_sell_after_zero 	= false %}
+
+	{% if current_variant.inventory_policy == "continue" or current_variant.inventory_management == nil %}
+		{% assign can_sell_after_zero = true %}
+	{% endif %}
+
+	{% capture low_stock_class %}
+		{% if low_stock_icon == blank %}product-inventory-status__text--low{% endif %}
+	{% endcapture %}
+
+	<p class="product-inventory-status__text {% if show_background %}product-inventory-status__text--bg{% endif %} {{ low_stock_class }} js-product-low-stock-msg {% if current_variant.inventory_quantity > low_stock_threshold or current_variant.available == false or can_sell_after_zero %}is-hidden{% endif %}">
+		{% if low_stock_icon != blank %}
+			<img class="product-inventory-status__icon"
+				 src="{{ low_stock_icon | image_url: width: 24, height: 24 }}"
+				 srcset="{{ low_stock_icon | image_url: width: 24, height: 24 }} 1, {{ low_stock_icon | image_url: width: 48, height: 48 }}"
+				 alt=""
+			>
+		{% endif %}
+
+		{%- if show_inventory_quantity -%}
+			<span class="product-inventory-status__quantity js-product-inventory-status-quantity{% if current_variant.inventory_quantity <= 0 %} is-hidden{% endif %}">
+				{{- current_variant.inventory_quantity -}}
+			</span>
+		{%- endif -%}
+
+		{{- block.settings.inv_low_stock_text -}}
+	</p>
+
+	
+		{% capture high_stock_class %}
+			{% if high_stock_icon == blank %}product-inventory-status__text--high{% endif %}
+		{% endcapture %}
+	
+		<p class="product-inventory-status__text {% unless block.settings.show_stock_inventory %} hidden {% endunless %} {% if show_background %}product-inventory-status__text--bg{% endif %} {{ high_stock_class }} js-product-high-stock-msg {% if current_variant.inventory_quantity <= low_stock_threshold and can_sell_after_zero == false or current_variant.available == false %}is-hidden{% endif %}">
+			{% if high_stock_icon != blank %}
+				<img class="product-inventory-status__icon"
+					 src="{{ high_stock_icon | image_url: width: 24, height: 24 }}"
+					 srcset="{{ high_stock_icon | image_url: width: 24, height: 24 }} 1, {{ high_stock_icon | image_url: width: 48, height: 48 }}"
+					 alt=""
+				>
+			{% endif %}
+	
+			{%- if show_inventory_quantity -%}
+				<span class="product-inventory-status__quantity js-product-inventory-status-quantity{% if current_variant.inventory_quantity <= 0 %} is-hidden{% endif %}">
+					{{- current_variant.inventory_quantity -}}
+				</span>
+			{%- endif -%}
+	
+			{{- block.settings.inv_high_stock_text -}}
+		</p>
+
+	<script type="application/ld+json"
+			data-product-inventory
+			data-low-stock-threshold="{{ block.settings.low_stock_threshold }}"
+	>
+		[
+		{%- for variant in product.variants -%}
+			{
+				"id": {{ variant.id | json }},
+				"available": {{ variant.available | json }},
+				"inventory_policy": {{ variant.inventory_policy | json }},
+				"inventory_quantity": {{ variant.inventory_quantity | json }},
+				"inventory_management": {{ variant.inventory_management | json }}
+			}{% unless forloop.last %},{% endunless %}
+		{%- endfor -%}
+		]
+	</script>
+</div>
+

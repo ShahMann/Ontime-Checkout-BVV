@@ -1,0 +1,230 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Section: Article template
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{%- render 'adastra' with '/src/styles/article.scss' -%}
+
+{%- style -%}
+	#shopify-section-{{- section.id -}} {
+		padding-top: {{- section.settings.offset_top_mobile -}}px;
+		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+	}
+
+	@media screen and (min-width: 768px) {
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_desktop -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+		}
+	}
+{%- endstyle -%}
+
+{%- assign show_author 				= section.settings.show_author -%}
+{%- assign show_date 				= section.settings.show_date -%}
+{%- assign show_comments_count 		= section.settings.show_comments_count -%}
+{%- assign show_tags 				= section.settings.show_tags -%}
+{%- assign latest_articles_heading  = section.settings.latest_articles_heading -%}
+{%- assign banner_image 			= section.settings.banner_image -%}
+{%- assign banner_heading 			= section.settings.banner_heading -%}
+{%- assign banner_link 				= section.settings.banner_link -%}
+
+{%- if blog.articles.size > 1 -%}
+	{%- assign show_article_latest_posts = true -%}
+{%- endif -%}
+
+{%- if banner_image != blank -%}
+	{%- assign show_article_banner = true -%}
+{%- endif -%}
+
+{%- if show_article_latest_posts or show_article_banner -%}
+	{%- assign show_sidebar = true -%}
+{%- endif -%}
+
+{% assign is_lazy = false %}
+
+{% if section.index > 1 %}
+	{% assign is_lazy = true %}
+{% endif %}
+
+<div class="article js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}">
+	<div class="article__container">
+		<div class="article__column article__column--main">
+			{%- if settings.show_breadcrumbs -%}
+				<div class="article__breadcrumbs">
+					{%- render "breadcrumbs" -%}
+				</div>
+			{%- endif -%}
+
+			{%- render 'article-banner',
+				show_author: show_author,
+				show_date: show_date,
+				show_comments_count: show_comments_count,
+				show_tags: show_tags,
+				is_lazy: is_lazy,
+				show_sidebar: show_sidebar
+			-%}
+
+			{%- render 'article-main' -%}
+
+			{%- render 'article-comment-form' -%}
+
+		</div>
+
+		{%- if show_sidebar -%}
+			<div class="article__column article__column--sidebar">
+				<div class="article__sidebar">
+					{%- if show_article_latest_posts -%}
+						{%- render 'article-latest-posts',
+							latest_articles_heading: latest_articles_heading,
+							is_lazy: is_lazy
+						-%}
+					{%- endif -%}
+
+					{%- if show_article_banner -%}
+						{%- render 'article-banner-small',
+							latest_articles_heading: latest_articles_heading,
+							is_lazy: is_lazy,
+							banner_image: banner_image,
+							banner_heading: banner_heading,
+							banner_link: banner_link
+						-%}
+					{%- endif -%}
+				</div>
+			</div>
+		{%- endif -%}
+	</div>
+</div>
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "articleBody": {{ article.content | strip_html | json }},
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": {{ request.origin | append: page.url | json }}
+    },
+    "headline": {{ article.title | json }},
+    {% if article.excerpt != blank %}
+      "description": {{ article.excerpt | strip_html | json }},
+    {% endif %}
+    {% if article.image %}
+      "image": [
+        {{ article | image_url: width: article.image.width | prepend: "https:" | json }}
+      ],
+    {% endif %}
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "dateCreated": {{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "author": {
+      "@type": "Person",
+      "name": {{ article.author | json }}
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": {{ shop.name | json }}
+    }
+  }
+</script>
+
+{% schema %}
+	{
+		"name": "Article main",
+		"settings": [
+			{
+				"type": "checkbox",
+				"id": "show_author",
+				"default": true,
+				"label": "Show author"
+			},
+			{
+				"type": "checkbox",
+				"id": "show_date",
+				"default": true,
+				"label": "Show date"
+			},
+			{
+				"type": "checkbox",
+				"id": "show_comments_count",
+				"default": true,
+				"label": "Show comments count"
+			},
+			{
+				"type": "checkbox",
+				"id": "show_tags",
+				"default": true,
+				"label": "Show tags"
+			},
+			{
+				"type": "text",
+				"id": "latest_articles_heading",
+				"label": "Latest articles heading",
+				"default": "Latest posts"
+			},
+			{
+				"type": "header",
+				"content": "Banner"
+			},
+			{
+				"type": "image_picker",
+				"id": "banner_image",
+				"label": "Image",
+				"info": "760 x 1116px recommended"
+			},
+			{
+				"type": "text",
+				"id": "banner_heading",
+				"label": "Heading"
+			},
+			{
+				"type": "url",
+				"id": "banner_link",
+				"label": "Link"
+			},
+			{
+				"type": "header",
+				"content": "Layout"
+			},
+			{
+				"type": "range",
+				"id": "offset_top_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset top",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_desktop",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Desktop offset bottom",
+				"default": 40
+			},
+			{
+				"type": "range",
+				"id": "offset_top_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset top",
+				"default": 25
+			},
+			{
+				"type": "range",
+				"id": "offset_bottom_mobile",
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"unit": "px",
+				"label": "Mobile offset bottom",
+				"default": 25
+			}
+		]
+	}
+{% endschema %}

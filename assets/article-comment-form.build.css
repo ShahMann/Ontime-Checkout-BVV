@@ -1,0 +1,94 @@
+.article-comments {
+  margin-top: 32px;
+}
+.article-comments .article-comments__heading {
+  margin-bottom: 32px;
+}
+.article-comments .article-comments__comment {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  padding: 16px 24px;
+  background-color: var(--color-background-secondary);
+  border-radius: calc(var(--global-border-radius) * 2);
+}
+.article-comments .article-comments__comment + .article-comments__comment {
+  margin-top: 16px;
+}
+.article-comments .article-comments__header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 8px;
+  column-gap: 16px;
+}
+.article-comments .article-comments__comment-author {
+  line-height: 1.5;
+  font-weight: 600;
+}
+.article-comments .article-comments__comment-date {
+  font-size: calc(var(--body-font-size) * 0.875);
+  line-height: 1.28;
+  color: var(--color-text-thirdly);
+}
+.article-comments .article-comments__comment-text {
+  line-height: 1.5;
+}
+.article-comments .pagination {
+  margin-top: 32px;
+  margin-bottom: 64px;
+}
+.article-comments .pagination .pagination__list {
+  justify-content: center;
+}
+.article-comments .article-comments__form .input {
+  background-color: var(--color-background, #fff);
+}
+.article-comments .article-comments__form svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+.article-comments .article-comments__wrapper {
+  margin-bottom: 48px;
+}
+.article-comments .article-comments__form__header {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  margin-bottom: 32px;
+}
+.article-comments .article-comments__comment-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  margin-bottom: 16px;
+}
+.article-comments .article-comments__comment-form-fields {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.article-comments .article-comments__comment-form-field {
+  flex-basis: 100%;
+  width: 100%;
+}
+.article-comments .form-status {
+  margin-bottom: 0;
+  justify-content: center;
+}
+@media (min-width: 768px) {
+  .article-comments {
+    margin-top: 64px;
+  }
+  .article-comments .article-comments__comment-form-fields {
+    flex-direction: row;
+  }
+  .article-comments .article-comments__comment-form-field {
+    flex-basis: 50%;
+  }
+  .article-comments .form-status {
+    justify-content: flex-start;
+  }
+}

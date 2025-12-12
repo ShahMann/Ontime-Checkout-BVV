@@ -1,0 +1,162 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Product Form
+  ---------------------------
+  Use blocks:
+  	- "Vendor and SKU"
+	- "Title"
+	- "Options"
+	- "Quantity"
+	- "Price"
+	- "Add to cart"
+	- "Pickup availability"
+	- "Sales point"
+	- "Notify me"
+	- "Custom liquid"
+------------------------------------------------------------------------------
+{% endcomment %}
+{% assign is_preset = false %}
+
+{% if product == blank %}
+	{% assign is_preset = true %}
+{% endif %}
+
+{%- assign show_sticky_add_to_cart = section.settings.show_sticky_add_to_cart -%}
+
+{% assign use_variant = false %}
+
+{% if product.variants.size > 1 %}
+	{% assign use_variant = true %}
+{% endif %}
+
+{% if blocks.size > 0 %}
+	<div class="shopify-product-form product-form js-product-sticky-container"{% if product_template %} data-template="{{ product_template }}"{% endif %}>
+		{% for block in blocks  %}
+			{% case block.type %}
+				{% when 'badges' %}
+					{% render 'product-badges', block: block, product: product, is_preset: is_preset %}
+				{%- when 'badge_images' -%}
+					{%- render 'product-badge-image', block: block, product: product -%}
+				{% when 'vendor' %}
+					{% render 'product-vendor-sku', block: block, product: product, is_preset: is_preset %}
+				{% when 'title' %}
+					{% if settings.enable_wishlist %}
+						<div class="product-title-and-wishlist">
+							{% render 'product-title', block: block, product: product, is_preset: is_preset %}
+							{% render 'wishlist' %}
+						</div>
+					{%  else %}
+						{% render 'product-title', block: block, product: product, is_preset: is_preset %}
+					{% endif %}
+				{% when 'description' %}
+					{% render 'product-description', block: block, product: product, is_preset: is_preset %}
+				{% when 'product_combination' %}
+					{% render 'product-combination', block: block, product: product %}
+				{% when 'options' %}
+					{% render 'product-options', section: section, block: block, product: product %}
+				{% when 'quantity' %}
+					{% render 'product-quantity', block: block, product: product, show_label: false %}
+				{%- when 'color_variant_swatches'  -%}
+					{% comment %} 
+						In the code snippet below, related_products.size is not working for some reason, 
+						so i'm forced to use a forloop to check the number of related products.
+					{% endcomment %}
+					{% liquid
+						assign related_products = product.metafields.shopify--discovery--product_recommendation.related_products.value
+						assign count = 0
+						for prod in related_products
+						assign count = count | plus: 1
+						endfor
+					%}
+					{% if related_products != blank and count > 1 %}
+						<h2 class="form__label h3">{{ 'products.product.color_variants_title' | t }}</h2>
+						<div class="related-products-selector">
+						{% for prod in related_products %}
+							<a href="{{ prod.url }}" {% if product == prod %} class="current-product" {% endif %}>
+								<img src="{{ prod.featured_media | image_url: width: 100 }}" alt="{{ prod.title }}" width="100" height="100"/>
+							</a>
+						{% endfor %}
+						</div>
+					{% endif %}
+				{% when 'price' %}
+					{%- render 'price',
+						product: product,
+						use_variant: use_variant,
+						show_unit_price: settings.is_show_unit_price,
+						currency_code_enabled: settings.is_currency_code_enabled,
+						price_class: 'product-price h3',
+						hide_from_price: true,
+						show_taxes_included: section.settings.show_taxes_included,
+						show_pay_installments: section.settings.show_pay_installments,
+						form: form,
+						block: block,
+						show_volume_pricing_info: true
+					-%}
+				{% when 'add_to_cart' %}
+					{% render 'product-add-to-cart',
+						form: form,
+						section: section,
+						blocks: blocks,
+						block: block,
+						use_variant: use_variant,
+						show_sticky_add_to_cart: show_sticky_add_to_cart,
+						product: product,
+						enable_history_state: enable_history_state
+					%}
+				{%- when 'order_count' -%}
+              		{%- render 'product-order-count', block: block -%}
+				{% when 'store_availability' %}
+					{% render 'product-store-availability' , product: product, block:block, section_id: section.id %}
+				{% when 'pickup_availability' %}
+					{% render 'product-pickup-availability', product: product, block: block, section_id: section.id %}
+				{% when 'drawers' %}
+					{% render 'product-drawers', product: product, block: block, section: section %}
+				{% when 'complementary' %}
+					{% render 'product-complementary', product: product, block: block, section: section %}
+				{% when 'sales_point' %}
+					{% render 'product-sales-point', block: block %}
+				{% when 'inventory_status' %}
+					{% render 'product-inventory-status', block: block, product: product %}
+				{% when 'custom_liquid' %}
+					{% render 'product-custom-liquid', block: block %}
+				{% when 'notify_me' %}
+					{% render 'product-notify-me-button', block: block, section_id: section.id, product: product %}
+				{% when 'ask_question' %}
+					{% render 'product-ask-question-button', block: block, section_id: section.id %}
+				{% when 'gift_wrap_product' %}
+					{% render 'product-gift-box', product: product, block: block %}
+				{% when 'countdown_timer' %}
+					{%- assign text 						= block.settings.text -%}
+					{%- assign icon 						= block.settings.icon -%}
+					{%- assign text_color 					= block.settings.text_color | default: "#000000" -%}
+					{%- assign timer_text_color 			= block.settings.timer_text_color  | default: "#ffffff" -%}
+					{%- assign timer_background_color 		= block.settings.timer_background_color  | default: "#000000" -%}
+					{%- assign offset_top_desktop 			= block.settings.offset_top_desktop -%}
+					{%- assign offset_bottom_desktop 		= block.settings.offset_bottom_desktop -%}
+					{%- assign offset_top_mobile 			= block.settings.offset_top_mobile -%}
+					{%- assign offset_bottom_mobile 		= block.settings.offset_bottom_mobile -%}
+
+					{% render 'product-countdown-timer',
+						product: product,
+						text: text,
+						icon: icon,
+						text_color: text_color,
+						timer_text_color: timer_text_color,
+						timer_background_color: timer_background_color,
+						offset_top_desktop: offset_top_desktop,
+						offset_bottom_desktop: offset_bottom_desktop,
+						offset_top_mobile: offset_top_mobile,
+						offset_bottom_mobile: offset_bottom_mobile
+					%}
+				{% when 'custom_field' %}
+					{% render 'product-custom-field', block: block %}
+				{% when 'socials' %}
+					{% render 'product-share-buttons', block: block, product: product, section_id: section.id %}
+				{% when 'benefits' %}
+					{% render 'product-benefits', block: block %}
+				{% else %}
+					{% render block %}
+			{% endcase %}
+		{% endfor %}
+	</div>
+{% endif %}

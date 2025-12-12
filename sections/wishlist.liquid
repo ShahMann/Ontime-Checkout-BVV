@@ -1,0 +1,114 @@
+{% if settings.enable_wishlist %}
+  {%- render 'adastra' with '/src/styles/wishlist-page.css' -%}
+  
+  {% assign container_width = settings.container_width %}
+  
+  {% capture section_styles %}
+    --container-width: {{ container_width }};
+  {% endcapture %}
+  
+  <wishlist-page>
+    <div style="{{ section_styles }}">
+      <div class="wishlist-page-wrapper">
+        {% if customer %}
+          <div class="wishlist-container"></div>
+          <div id="paginationControls"></div>
+          <div class="empty-wishlist-container is-hidden">
+            <div class="empty-wishlist-content">
+              <h2 class="heading">{{ section.settings.empty_wishlist_title }}</h2>
+              <div class="empty-wishlist-subcontent">
+                {{ section.settings.empty_wishlist_content }}
+              </div>
+              <div class="redirection-button">
+                <a class="button button--secondary" type="button" href="{{ section.settings.empty_wishlist_button_url }}">
+                  {{- section.settings.empty_wishlist_button_text -}}
+                </a>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <div class="login-content-wrapper is-hidden">
+            <h2 class="heading">{{ section.settings.not_logged_in_title }}</h2>
+            <div class="empty-wishlist-subcontent">
+              {{ section.settings.content }}
+            </div>
+            <div class="redirection-button">
+              <a class="button button--secondary" type="button" href="{{ routes.account_login_url }}">
+                {{- section.settings.button_text -}}
+              </a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </wishlist-page>
+  
+  {%- render 'adastra' with '/src/scripts/wishlist-page.js' -%}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Wishlist",
+  "tag": "section",
+  "class": "wishlist",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Non logged in customer",
+      "info": "This details will show when customer are not logged in"
+    },
+    {
+      "type": "text",
+      "id": "not_logged_in_title",
+      "label": "Title",
+      "default": "Logged in ?"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Logged in your self to view your wishlisted items</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Login"
+    },
+    {
+      "type": "header",
+      "content": "Blank wishlist",
+      "info": "When user has no wishlisted data then below details will displayed"
+    },
+    {
+      "type": "text",
+      "id": "empty_wishlist_title",
+      "label": "Empty wishlist title",
+      "default": "No wishlist found"
+    },
+    {
+      "type": "richtext",
+      "id": "empty_wishlist_content",
+      "label": "Empty wishlist content",
+      "default": "<p>We have not found any wishlist for you</p>"
+    },
+    {
+      "type": "text",
+      "id": "empty_wishlist_button_text",
+      "label": "Button text",
+      "default": "Continue to shopping"
+    },
+    {
+      "type": "url",
+      "id": "empty_wishlist_button_url",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wishlist",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

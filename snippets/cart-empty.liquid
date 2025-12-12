@@ -1,0 +1,36 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: Cart empty
+	Render empty cart state
+
+	Usage:
+	{%- render 'cart-empty' -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+<div class="cart-empty">
+	<form id="cart-{{- section.id -}}" class="is-hidden"></form>
+
+	{%- capture default_heading -%}
+		{{- 'cart.general.empty' | t -}}
+	{%- endcapture -%}
+
+	{%- assign heading = settings.empty_cart_heading | default: default_heading -%}
+
+	<div class="h1 cart-empty__heading">
+		{{- heading -}}
+	</div>
+
+	{%- if settings.show_empty_cart_link -%}
+		{%- capture default_link_text -%}
+			{{ 'cart.general.continue_shopping' | t }}
+		{%- endcapture -%}
+
+		{%- assign link_text = settings.empty_cart_link_text | default: default_link_text -%}
+		{%- assign link_url  = settings.empty_cart_link_url | default: routes.all_products_collection_url -%}
+
+		<a class="button button--secondary cart-empty__link" href="{{- link_url -}}">
+			{{- link_text -}}
+		</a>
+	{%- endif -%}
+</div>

@@ -1,0 +1,300 @@
+<style>
+	shopify-accelerated-checkout {
+		--shopify-accelerated-checkout-button-block-size: 48px;
+		--shopify-accelerated-checkout-button-border-radius: 32px;
+		--shopify-accelerated-checkout-button-box-shadow: none;
+		--shopify-accelerated-checkout-skeleton-background-color: #dedede;
+		--shopify-accelerated-checkout-skeleton-animation-opacity-start: 1;
+		--shopify-accelerated-checkout-skeleton-animation-opacity-end: 0.5;
+		--shopify-accelerated-checkout-skeleton-animation-duration: 4s;
+		--shopify-accelerated-checkout-skeleton-animation-timing-function: ease;
+	}
+	shopify-accelerated-checkout-cart {
+		--shopify-accelerated-checkout-button-block-size: 56px;
+		--shopify-accelerated-checkout-button-inline-size: 56px;
+		--shopify-accelerated-checkout-button-border-radius: 32px;
+		--shopify-accelerated-checkout-button-box-shadow: none;
+		--shopify-accelerated-checkout-inline-alignment: flex-start;
+		--shopify-accelerated-checkout-row-gap: 16px;
+		--shopify-accelerated-checkout-skeleton-background-color: #dedede;
+		--shopify-accelerated-checkout-skeleton-animation-opacity-start: 1;
+		--shopify-accelerated-checkout-skeleton-animation-opacity-end: 0.5;
+		--shopify-accelerated-checkout-skeleton-animation-duration: 4s;
+		--shopify-accelerated-checkout-skeleton-animation-timing-function: ease;
+	}
+
+	:root {
+		{% comment  %}
+			-----------------------------------------------
+			Container
+			-----------------------------------------------
+		{% endcomment %}
+		--global-container-width: {{ settings.container_width }};
+		--global-border-radius: 8px;
+		--global-gap: 16px;
+		--global-gap-small: 8px;
+		{% comment %}
+			-----------------------------------------------
+			Images
+			-----------------------------------------------
+		{% endcomment %}
+
+		--loading-image: url({{- "loading.svg" | asset_url -}});
+
+		{% comment %}
+			-----------------------------------------------
+			Colors
+			-----------------------------------------------
+		{% endcomment %}
+		--color-black: #000;
+		--color-black-light: rgba(0, 0, 0, 0.7);
+		--color-white: #fff;
+		--color-gray: #757575;
+		--color-light-gray: #E9E9E9;
+		--color-dark-gray: #999999;
+		--color-valencia: #D33636;
+		--color-silver: #C4C4C4;
+		--color-snow: #F8F8F8;
+		--color-whisper: #E6E6E6;
+		--color-chelsea-cucumber: #81B154;
+		--color-fire-bush: #E49D49;
+		--color-green-success: #198754;
+		--color-red-error: #B00020;
+		--color-ghost-white: #F9F9F9;
+
+{% comment %}
+	Slider
+{% endcomment %}
+	--color-slider-arrow-background: {{- settings.color_slider_arrow_background -}};
+	--color-slider-arrow-icon: {{- settings.color_slider_arrow_icon -}};
+	--color-slider-arrow-border: {{- settings.color_slider_arrow_border -}};
+
+
+	--color-slider-arrow-background-hover: {{- settings.color_slider_arrow_background_hover -}};
+	--color-slider-arrow-icon-hover: {{- settings.color_slider_arrow_icon_hover -}};
+	--color-slider-arrow-border-hover: {{- settings.color_slider_arrow_border_hover -}};
+
+	--color-cart-notification-background: {{- settings.cart_notification_background_color -}};
+	--color-cart-notification-heading: {{- settings.cart_notification_heading_color -}};
+	--color-cart-notification-text: {{- settings.cart_notification_text_color -}};
+	--color-cart-notification-cross: {{- settings.cart_notification_cross_color -}};
+
+{% comment %}
+	Overlay
+{% endcomment %}
+	--color-overlay: {{- settings.color_overlay -}};
+
+{% comment %}
+	Primary colors
+{% endcomment %}
+	--color-background: {{- settings.color_background | default: '#fff' -}};
+	--color-background-darken: {{ settings.color_background | color_darken: 2.8 }};
+	--color-background-secondary: {{ settings.color_background_secondary }};
+	--color-img-placeholder-bg: {{ settings.color_background | color_darken: 7 }};
+	--color-background-popup-drawer: {{ settings.color_background_popup_drawer }};
+
+		{% comment %}
+			Text colors
+		{% endcomment %}
+		--color-text-primary: {{- settings.color_text_primary | default: '#000' -}};
+		--color-text-secondary: {{- settings.color_text_secondary | default: '#535353' -}};
+		--color-text-thirdly: {{- settings.color_text_thirdly | default: '#757575' -}};
+		--color-heading: {{- settings.color_text_heading | default: '#000' -}};
+		--link-color: {{- settings.color_link -}};
+		--color-accent: {{- settings.color_accent | default: '#CF1D5D' -}};
+		--color-accent-lighten: {{- settings.color_accent | default: '#CF1D5D' | color_lighten: 32 -}};
+		--color-text-attention: {{ settings.color_support_attention | default: '#CF1D5D' }};
+		--color-text-success: {{ settings.color_support_success | default: '#22A200' }};
+		--color-sale-label: {{ settings.color_sale_label }};
+		--color-label-base: {{- settings.color_label_base -}};
+		--color-label-primary: {{- settings.color_label_primary -}};
+		--color-label-secondary: {{- settings.color_label_secondary -}};
+		--color-label-sold-out: {{- settings.color_label_sold_out -}};
+
+		{% comment %}
+			Border colors
+		{% endcomment %}
+		--color-border-primary: {{- settings.color_border_primary -}};
+		--color-border-secondary: {{- settings.color_border_secondary -}};
+		--color-border-thirdly: {{- settings.color_border_thirdly -}};
+
+		{% comment %}
+			Buttons
+		{% endcomment %}
+
+		{% comment %}Button primary{% endcomment %}
+			--button-text-color-primary: {{- settings.button_text_color_primary -}};
+			--button-background-color-primary: {{- settings.button_background_color_primary -}};
+
+			--button-text-color-primary-hover: {{- settings.button_text_color_primary_hover -}};
+			--button-background-color-primary-hover: {{- settings.button_background_color_primary_hover -}};
+
+		{% comment %}Button secondary{% endcomment %}
+			--button-text-color-secondary: {{- settings.button_text_color_secondary -}};
+			--button-background-color-secondary: {{- settings.button_background_color_secondary -}};
+
+			--button-text-color-secondary-hover: {{- settings.button_text_color_secondary_hover -}};
+			--button-background-color-secondary-hover: {{- settings.button_background_color_secondary_hover -}};
+
+		{% comment %}Button primary with border{% endcomment %}
+			--button-text-color-primary-with-border: {{- settings.button_text_color_primary_with_border -}};
+			--button-background-color-primary-with-border: {{- settings.button_background_color_primary_with_border -}};
+			--button-border-color-primary-with-border: {{- settings.button_border_color_primary_with_border -}};
+
+			--button-text-color-primary-with-border-hover: {{- settings.button_text_color_primary_with_border_hover -}};
+			--button-background-color-primary-with-border-hover: {{- settings.button_background_color_primary_with_border_hover -}};
+			--button-border-color-primary-with-border-hover: {{- settings.button_border_color_primary_with_border_hover -}};
+
+		{% comment %}Button secondary with border{% endcomment %}
+			--button-text-color-secondary-with-border: {{- settings.button_text_color_secondary_with_border -}};
+			--button-background-color-secondary-with-border: {{- settings.button_background_color_secondary_with_border -}};
+			--button-border-color-secondary-with-border: {{- settings.button_border_color_secondary_with_border -}};
+
+			--button-text-color-secondary-with-border-hover: {{- settings.button_text_color_secondary_with_border_hover -}};
+			--button-background-color-secondary-with-border-hover: {{- settings.button_background_color_secondary_with_border_hover -}};
+			--button-border-color-secondary-with-border-hover: {{- settings.button_border_color_secondary_with_border_hover -}};
+
+		{% comment %}Button play{% endcomment %}
+			--button-icon-color-play: {{- settings.button_icon_color_play -}};
+			--button-background-color-play: {{- settings.button_background_color_play -}};
+			--button-border-color-play: {{- settings.button_border_color_play -}};
+
+
+		{% comment %}Button play hover{% endcomment %}
+			--button-icon-color-play-hover: {{- settings.button_icon_color_play_hover -}};
+			--button-background-color-play-hover: {{- settings.button_background_color_play_hover -}};
+			--button-border-color-play-hover: {{- settings.button_border_color_play_hover -}};
+
+		{% comment %}Button media{% endcomment %}
+			--button-icon-color-social: {{- settings.button_icon_color_social -}};
+
+		{% comment %}Button media hover{% endcomment %}
+			--button-icon-color-social-hover: {{- settings.button_icon_color_social_hover -}};
+
+		{% comment %}Product card button{% endcomment %}
+			--product-card-button-text-color: {{- settings.product_card_button_text_color -}};
+			--product-card-button-background-color: {{- settings.product_card_button_background_color -}};
+
+		{% comment %}Button secondary hover{% endcomment %}
+			--product-card-button-text-color-hover: {{- settings.product_card_button_text_color_hover -}};
+			--product-card-button-background-color-hover: {{- settings.product_card_button_background_color_hover -}};
+
+		{% comment %}Button secondary border{% endcomment %}
+			--product-card-button-border-color: {{- settings.product_card_button_border_color -}};
+			--product-card-button-border-color-hover: {{- settings.product_card_button_border_color_hover -}};
+
+		{% comment %}
+			Preloader colors
+		{% endcomment %}
+		--color-preloader-primary: {{- settings.color_loader_circle | default: '#E6E6E6' -}};
+		--color-preloader-secondary: {{- settings.color_loader_item | default: '#000' -}};
+		--background-color-preloader: {{- settings.color_loader_overlay | color_modify: 'alpha', 0.35 -}};
+
+		{% comment %}
+			Backgrounds
+		{% endcomment %}
+		{%- assign color_label_base_opacity			= settings.color_label_base_opacity | divided_by: 100.0 -%}
+		{%- assign color_label_primary_opacity		= settings.color_label_primary_opacity | divided_by: 100.0 -%}
+		{%- assign color_label_secondary_opacity	= settings.color_label_secondary_opacity | divided_by: 100.0 -%}
+		{%- assign color_label_sold_out_opacity		= settings.color_label_sold_out_opacity | divided_by: 100.0 -%}
+		{%- assign color_label_sale_opacity		    = settings.color_label_sale_opacity | divided_by: 100.0 -%}
+
+	--color-background-label-base: {{- settings.color_label_base_background | color_modify: 'alpha', color_label_base_opacity -}};
+	--color-background-label-primary: {{- settings.color_label_primary_background | color_modify: 'alpha', color_label_primary_opacity -}};
+	--color-background-label-secondary: {{- settings.color_label_secondary_background | color_modify: 'alpha', color_label_secondary_opacity -}};
+		--color-background-label-sale: {{- settings.color_sale_label_background | color_modify: 'alpha', color_label_sale_opacity -}};
+	--color-background-label-sold-out: {{- settings.color_label_sold_out_background | color_modify: 'alpha', color_label_sold_out_opacity -}};
+
+	--color-border-label-base: {{- settings.color_label_base_border -}};
+	--color-border-label-primary: {{- settings.color_label_primary_border -}};
+	--color-border-label-secondary: {{- settings.color_label_secondary_border -}};
+		--color-border-label-sale: {{- settings.color_label_sale_border -}};
+	--color-border-label-sold-out: {{- settings.color_label_sold_out_border -}};
+
+	--color-background-quick-buttons: {{ settings.bg_quick_buttons }};
+	--color-background-quick-active-buttons: {{ settings.bg_quick_active_buttons }};
+	--color-border-quick-buttons: {{ settings.border_color_quick_buttons }};
+	--color-border-quick-active-buttons: {{ settings.border_color_quick_active_buttons }};
+	--color-text-quick-buttons: {{ settings.color_quick_buttons }};
+	--color-text-quick-active-buttons: {{ settings.color_quick_buttons_active }};
+	--color-compare-sticky-button-bg: {{ settings.compare_sticky_button_bg }};
+	--color-compare-sticky-button-color: {{ settings.compare_sticky_button_color }};
+	--color-background-compare-icon-available: {{- settings.compare_color_icon_available | color_modify: 'alpha', 0.2 -}};
+	--color-background-compare-icon-out-of-stock: {{- settings.compare_color_icon_out_of_stock | color_modify: 'alpha', 0.2 -}};
+	--color-compare-icon-available: {{- settings.compare_color_icon_available -}};
+	--color-compare-icon-out-of-stock: {{- settings.compare_color_icon_out_of_stock -}};
+	--color-pdp-compare-button-bg: {{ settings.compare_button_bg }};
+	--color-pdp-compare-button-active-bg: {{ settings.compare_button_active_bg }};
+	--color-pdp-compare-button-color: {{ settings.compare_button_color }};
+	--color-pdp-compare-button-active-color: {{ settings.compare_button_active_color }};
+	--color-pdp-compare-button-border-color: {{ settings.compare_button_border }};
+	--color-pdp-compare-button-active-border-color: {{ settings.compare_button_active_border }};
+}
+
+		{% comment %}
+			-----------------------------------------------
+			Fonts
+			-----------------------------------------------
+		{% endcomment %}
+		{% assign base_regular_font = settings.base_font | font_modify: 'weight', 'normal' %}
+		{% assign base_semi_bold = settings.base_font | font_modify: 'weight', '600' %}
+		{% assign base_bold_font = settings.base_font | font_modify: 'weight', 'bold' %}
+		{% assign base_italic_font = settings.base_font | font_modify: 'style', 'italic' %}
+		{% assign base_bold_italic_font = settings.base_font
+			| font_modify: 'weight', 'bold'
+			| font_modify: 'style', 'italic'
+		%}
+
+		{{- settings.base_font | font_face: font_display: 'swap' -}}
+		{{- settings.heading_font | font_face: font_display: 'swap' -}}
+
+		{{ base_regular_font | font_face: font_display: 'swap' }}
+		{{ base_semi_bold | font_face: font_display: 'swap' }}
+		{{ base_bold_font | font_face: font_display: 'swap' }}
+		{{ base_italic_font | font_face: font_display: 'swap' }}
+		{{ base_bold_italic_font| font_face: font_display: 'swap' }}
+
+		:root {
+			--body-font-size: {{- settings.base_font_size | times: 0.1391 | round -}}px;
+			--body-font-size-without-unit: {{- settings.base_font_size | times: 0.1391 | round -}};
+			--heading-font-size: {{- settings.heading_font_size | times: 0.1391 | round -}}px;
+			--base-font-family: {{ settings.base_font.family }}, {{ settings.base_font.fallback_families }};
+			--heading-font-family: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
+			--heading-font-weight: {{- settings.heading_font.weight -}};
+		}
+
+		{% comment %}
+			-----------------------------------------------
+			Product_Card
+			-----------------------------------------------
+		{% endcomment %}
+
+			:root {
+				--product-card-object-fit: {{- settings.image_object_fit -}};
+			}
+
+		{% comment %}
+			Sizes
+		{% endcomment %}
+
+			:root {
+				--sticky-sidebar-offset-top: 40px;
+			}
+
+		{%- assign color_scroll_thumb_opacity	= settings.color_scroll_thumb_opacity | divided_by: 100.0 | default: 0.2 -%}
+		{%- assign color_scroll_track_opacity	= settings.color_scroll_track_opacity | divided_by: 100.0 | default: 0.0 -%}
+
+		@media (-moz-touch-enabled: 0), (hover: hover) {
+			body * {
+				scrollbar-color: {{- settings.color_scroll_thumb | color_modify: 'alpha', color_scroll_thumb_opacity }} {{ settings.color_scroll_track | color_modify: 'alpha', color_scroll_track_opacity -}};
+			}
+
+			body *::-webkit-scrollbar-track {
+				background-color: {{- settings.color_scroll_track | color_modify: 'alpha', color_scroll_track_opacity -}};
+			}
+
+			body *::-webkit-scrollbar-thumb {
+				background-color: {{- settings.color_scroll_thumb | color_modify: 'alpha', color_scroll_thumb_opacity -}};
+			}
+		}
+</style>

@@ -1,0 +1,14 @@
+{% comment %}
+	------------------------------------------------------------------------------
+	Snippet: preloader
+
+	Usage:
+	{%- render 'preloader' -%}
+	------------------------------------------------------------------------------
+{% endcomment %}
+
+{{- "preloader.build.css" | asset_url | stylesheet_tag -}}
+
+<div class="preloader-wrapper js-preloader">
+	<div class="preloader"></div>
+</div>

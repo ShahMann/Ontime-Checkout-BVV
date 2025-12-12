@@ -1,0 +1,279 @@
+{% render "adastra" with "/src/styles/text-with-features.scss" %}
+
+{%- style -%}
+    #shopify-section-{{- section.id -}} {
+        padding-top: {{- section.settings.offset_top_mobile -}}px;
+        padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+    }
+
+    @media screen and (min-width: 768px) {
+        #shopify-section-{{- section.id -}} {
+            padding-top: {{- section.settings.offset_top_desktop -}}px;
+            padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+        }
+    }
+{%- endstyle -%}
+
+{%- assign label                      = section.settings.label -%}
+{%- assign title                      = section.settings.heading -%}
+{%- assign text                       = section.settings.text -%}
+{%- assign background                 = section.settings.background -%}
+{%- assign color_label                = section.settings.color_label -%}
+{%- assign color_text                 = section.settings.color_text -%}
+{%- assign color_feature_heading      = section.settings.color_feature_heading -%}
+{%- assign color_feature_text         = section.settings.color_feature_text -%}
+{%- assign container                  = section.settings.container_width -%}
+
+{% if section.blocks.size > 0 %}
+	{% assign text_delay = "tr-del-0-75" %}
+{% endif %}
+
+{% if container == "inherit" %}
+	{% assign container_width = settings.container_width %}
+{% else %}
+	{% assign container_width = container %}
+{% endif %}
+
+{%- capture style -%}
+	--background: {{- background -}}; {{- -}}
+	--color-label: {{- color_label -}}; {{- -}}
+	--color-text: {{- color_text -}}; {{- -}}
+	--color-feature-heading: {{- color_feature_heading -}}; {{- -}}
+	--color-feature-text: {{- color_feature_text -}}; {{- -}}
+	--container-width: {{- container_width -}}; {{- -}}
+{%- endcapture -%}
+
+<section class="text-with-features{% if container_width == "100%" %} text-with-features--full-width{% endif %} js-animate {% if request.visual_preview_mode or section.index == 1 %}animated{% endif %}" style="{{- style -}}">
+	<div class="text-with-features__container">
+		<div class="text-with-features__wrapper">
+			{% if label != blank %}
+				<div class="text-with-features__label need-animate tr-dur-0-5 {{ text_delay }}">
+					{{- label -}}
+				</div>
+			{% endif %}
+
+			{% if title != black %}
+				<h2 class="text-with-features__title h2 need-animate tr-dur-0-5 {{ text_delay }}">
+					{{- title -}}
+				</h2>
+			{% endif %}
+
+			{% if text != blank %}
+				<div class="text-with-features__text rte need-animate tr-dur-0-5 {{ text_delay }}">
+					{{- text -}}
+				</div>
+			{% endif %}
+
+			{% if section.blocks.size > 0 %}
+				{% assign delay_step = 0 %}
+
+				<div class="text-with-features__box-feature">
+					{% for block in section.blocks %}
+						{% assign heading_big = block.settings.heading_big %}
+						{% assign heading_small = block.settings.heading_small %}
+						{% assign feature_text = block.settings.text %}
+						{% assign delay_step = delay_step | plus: 0.25 %}
+
+						<div
+							class="text-with-features__item need-animate tr-dur-0-5 {% if section.blocks.size == 1 %} text-with-features-item--one{% endif %}"
+							style="transition-delay: {{ delay_step | append: 's' }}"
+						>
+							{% if heading_big != blank or heading_small != blank %}
+								<div class="text-with-features__item-box-heading">
+									{% if heading_big != blank %}
+										<span class="text-with-features__item-heading-big">{{- heading_big -}}</span>
+									{% endif %}
+
+									{% if heading_small != blank %}
+										<span
+											class="text-with-features__item-heading-small">{{- heading_small -}}</span>
+									{% endif %}
+								</div>
+							{% endif %}
+
+							{% if feature_text != blank %}
+								<div class="text-with-features__item-text">
+									{{- feature_text -}}
+								</div>
+							{% endif %}
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{% schema %}
+    {
+      "name": "Text with features",
+	  "disabled_on": {
+		"groups": ["header", "footer"]
+	  },
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Label"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Text with features"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "color_background",
+          "id": "background",
+          "label": "Background",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "color_label",
+          "label": "Label",
+          "default": "#4D71F9"
+        },
+        {
+          "type": "color",
+          "id": "color_text",
+          "label": "Text",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "color_feature_heading",
+          "label": "Feature heading",
+          "default": "#4D71F9"
+        },
+        {
+          "type": "color",
+          "id": "color_feature_text",
+          "label": "Feature text",
+          "default": "#ffffff"
+        },
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "type": "select",
+          "id": "container_width",
+          "label": "Container width",
+          "options": [
+            {
+              "value": "1432px",
+              "label": "Default - 1400px"
+            },
+            {
+              "value": "1952px",
+              "label": "Large - 1920px"
+            },
+            {
+              "value": "100%",
+              "label": "Full width"
+            },
+            {
+              "value": "inherit",
+              "label": "Inherit of general setting"
+            }
+          ],
+          "default": "inherit",
+          "info": "if you select 'Inherit of general setting', then container width will be used from the Theme settings/Layout"
+        },
+        {
+          "type": "range",
+          "id": "offset_top_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop offset top",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "offset_bottom_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Desktop offset bottom",
+          "default": 40
+        },
+        {
+          "type": "range",
+          "id": "offset_top_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile offset top",
+          "default": 25
+        },
+        {
+          "type": "range",
+          "id": "offset_bottom_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Mobile offset bottom",
+          "default": 25
+        }
+      ],
+      "blocks": [
+        {
+          "type": "feature",
+          "name": "Feature",
+          "settings": [
+            {
+              "type": "text",
+              "id": "heading_big",
+              "label": "Heading big",
+              "default": "Big"
+            },
+            {
+              "type": "text",
+              "id": "heading_small",
+              "label": "Heading small",
+              "default": "Small"
+            },
+            {
+              "type": "text",
+              "id": "text",
+              "label": "Text",
+              "default": "Some information about features..."
+            }
+          ],
+          "limit": 6
+        }
+      ],
+      "presets": [
+        {
+          "name": "Text with features",
+          "blocks": [
+            {
+              "type": "feature"
+            },
+            {
+              "type": "feature"
+            },
+            {
+              "type": "feature"
+            }
+          ]
+        }
+      ]
+    }
+{% endschema %}

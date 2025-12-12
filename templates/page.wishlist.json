@@ -1,0 +1,28 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "wishlist": {
+      "type": "wishlist",
+      "settings": {
+        "not_logged_in_title": "Logged in ?",
+        "content": "<p>Log in to view your wishlisted items</p>",
+        "button_text": "Login",
+        "empty_wishlist_title": "No wishlist found",
+        "empty_wishlist_content": "<p>We have not found any wishlist for you</p>",
+        "empty_wishlist_button_text": "Continue to shopping",
+        "empty_wishlist_button_url": "/collections/watches"
+      }
+    }
+  },
+  "order": [
+    "wishlist"
+  ]
+}

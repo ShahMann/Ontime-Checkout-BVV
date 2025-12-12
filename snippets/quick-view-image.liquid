@@ -1,0 +1,71 @@
+{% comment %}
+{%- assign image = product.selected_or_first_available_variant.image | default: product.featured_image | default: default_image -%}
+{% endcomment %}
+
+{% if image == settings.product_default_image %}
+	{%- capture img_focal -%}
+		--img-desktop-pos: {{ settings.product_default_image.presentation.focal_point }};
+	{%- endcapture -%}
+{% endif %}
+
+{% if thumbnails %}
+	<picture>
+		<source
+			srcset="{{ image | img_url: '61x61', crop: 'center' }} 1x, {{ image | img_url: '122x122', crop: 'center' }} 2x"
+			media="(max-width: 380px)"
+			width="61"
+			height="61"
+		>
+
+		<source
+			srcset="{{ image | img_url: '88x88', crop: 'center' }} 1x, {{ image | img_url: '176x176', crop: 'center' }} 2x"
+			media="(max-width: 767px)"
+			width="88" height="88">
+
+		<img
+			class="quick-view__image"
+			srcset="{{ image | img_url: '56x56', crop: 'center' }} 1x, {{ image | img_url: '112x112', crop: 'center' }} 2x"
+			src="{{ image | img_url: '56x56', crop: 'center' }}"
+			alt="{{- image.alt -}}"
+			data-img-id="{{ image.id }}"
+			width="56"
+			height="56"
+			{% if img_focal != blank %}
+				style="{{ img_focal }}"
+			{% endif %}
+		>
+	</picture>
+{% else %}
+	<picture class="js-quick-view-image">
+		<source
+			srcset="{{ image | img_url: '312x' }} 1x, {{ image | img_url: '624x' }} 2x"
+			media="(max-width: 360px)"
+		>
+
+		<source
+			srcset="{{ image | img_url: '332x' }} 1x, {{ image | img_url: '664x' }} 2x"
+			media="(max-width: 380px)"
+		>
+
+		<source
+			srcset="{{ image | img_url: '432x' }} 1x, {{ image | img_url: '864x' }} 2x"
+			media="(max-width: 480px)"
+		>
+
+		<source
+			srcset="{{ image | img_url: '468x' }} 1x, {{ image | img_url: '936x' }} 2x"
+			media="(max-width: 767px)"
+		>
+
+		<img
+			class="quick-view__image"
+			srcset="{{ image | img_url: '479x' }} 1x, {{ image | img_url: '958x' }} 2x"
+			src="{{ image | img_url: '479x' }}"
+			alt="{{- image.alt -}}"
+			data-img-id="{{ image.id }}"
+			{% if img_focal != blank %}
+				style="{{ img_focal }}"
+			{% endif %}
+		>
+	</picture>
+{% endif %}

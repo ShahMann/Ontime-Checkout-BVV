@@ -1,0 +1,400 @@
+{%- assign media_type 				   = block.settings.media_type -%}
+{%- assign label 					   = block.settings.label -%}
+{%- assign heading					   = block.settings.heading -%}
+{%- assign text 					   = block.settings.text -%}
+{%- assign button_text 				   = block.settings.button_text -%}
+{%- assign button_url 				   = block.settings.button_url -%}
+{%- assign button_aria 				   = block.settings.button_aria -%}
+{%- assign image_desktop 			   = block.settings.image_desktop -%}
+{%- assign image_mobile 			   = block.settings.image_mobile | default: image_desktop -%}
+{%- assign html_video_desktop 		   = block.settings.html_video_desktop -%}
+{%- assign html_video_mobile 		   = block.settings.html_video_mobile | default: html_video_desktop -%}
+{%- assign external_video_url_desktop  = block.settings.external_video_url_desktop -%}
+{%- assign external_video_url_mobile   = block.settings.external_video_url_mobile | default: external_video_url_desktop -%}
+{%- assign content_alignment 	       = block.settings.content_alignment -%}
+{%- assign content_alignment_mobile    = block.settings.content_alignment_mobile -%}
+{%- assign block_alignment_horizontal  = block.settings.block_alignment_horizontal -%}
+{%- assign block_alignment_vertical    = block.settings.block_alignment_vertical -%}
+{%- assign overlay_color 			   = block.settings.overlay_color -%}
+{%- assign timer_year 				   = block.settings.timer_year -%}
+{%- assign timer_month 				   = block.settings.timer_month -%}
+{%- assign timer_day 				   = block.settings.timer_day -%}
+{%- assign timer_hour 				   = block.settings.timer_hour -%}
+{%- assign timer_timezone 			   = block.settings.timer_timezone -%}
+{%- assign timer_cell_background_color = block.settings.timer_cell_background_color -%}
+{%- assign timer_cell_color 		   = block.settings.timer_cell_color -%}
+{%- assign image_border_width          = block.settings.image_border_width -%}
+{%- assign image_border_indent         = block.settings.image_border_indent -%}
+
+{%- assign enable_lazy_load = true -%}
+
+{% if section.index == 1 %}
+	{%- assign enable_lazy_load = false -%}
+{% endif %}
+
+{%- if block.type == 'two_columns' -%}
+	{%- assign is_full_width = 'two_columns' -%}
+{%- else -%}
+	{%- assign is_full_width = 'full_width' -%}
+{%- endif -%}
+
+{%- capture image -%}
+	{%- if image_desktop != blank -%}
+		{%- render
+			'general-banner-image',
+			image_desktop: image_desktop,
+			image_mobile: image_mobile,
+			enable_lazy_load: enable_lazy_load,
+			is_full_width: is_full_width
+		-%}
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- capture html_video -%}
+	{%- if html_video_desktop != blank -%}
+		<video
+			class="general-banner__media general-banner__video js-video"
+			data-device="desktop"
+			data-type="html"
+			loop
+			muted
+			playsinline
+			tabindex="-1"
+			aria-hidden="true"
+		>
+			{%- for source in html_video_desktop.sources -%}
+				{%- if source.mime_type == 'video/mp4' -%}
+					<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+				{%- endif -%}
+			{%- endfor -%}
+		</video>
+
+		<video
+			class="general-banner__media general-banner__video general-banner__video--mobile js-video"
+			data-device="mobile"
+			data-type="html"
+			loop
+			muted
+			playsinline
+			tabindex="-1"
+			aria-hidden="true"
+		>
+			{%- for source in html_video_mobile.sources -%}
+				{%- if source.mime_type == 'video/mp4' -%}
+					<source src="{{- source.url -}}" type="{{- source.mime_type -}}">
+				{%- endif -%}
+			{%- endfor -%}
+		</video>
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- if external_video_url_desktop != nil -%}
+	{%- capture external_video -%}
+		{%- if external_video_url_desktop != nil -%}
+			{%- if external_video_url_desktop.type == 'youtube' -%}
+				<div
+					class="general-banner__media general-banner__video js-video"
+					data-device="desktop"
+					data-type="{{- external_video_url_desktop.type -}}"
+				>
+					<div
+						class="js-video-youtube"
+						data-video-id="{{- external_video_url_desktop.id -}}"
+						tabindex="-1"
+						aria-hidden="true"
+					></div>
+				</div>
+			{%- else -%}
+				<div
+					class="general-banner__media general-banner__video js-video"
+					data-device="desktop"
+					data-video-id="{{- external_video_url_desktop.id -}}"
+					data-type="{{- external_video_url_desktop.type -}}"
+					aria-hidden="true"
+				></div>
+			{%- endif -%}
+		{%- endif -%}
+
+		{%- if external_video_url_mobile != nil -%}
+			{%- if external_video_url_mobile.type == 'youtube' -%}
+				<div
+					class="general-banner__media general-banner__video general-banner__video--mobile js-video"
+					data-device="mobile"
+					data-type="{{- external_video_url_mobile.type -}}"
+				>
+					<div
+						class="js-video-youtube"
+						data-video-id="{{- external_video_url_mobile.id -}}"
+						tabindex="-1"
+						aria-hidden="true"
+					></div>
+				</div>
+			{%- else -%}
+				<div
+					class="general-banner__media general-banner__video general-banner__video--mobile js-video"
+					data-device="mobile"
+					data-video-id="{{- external_video_url_mobile.id -}}"
+					data-type="{{- external_video_url_mobile.type -}}"
+					aria-hidden="true"
+				></div>
+			{%- endif -%}
+		{%- endif -%}
+	{%- endcapture -%}
+{%- endif -%}
+
+{%- capture general_banner_media -%}
+	{%- case media_type -%}
+		{%- when 'image' -%}
+			{{- image -}}
+		{%- when 'html_video' -%}
+			{{- html_video -}}
+		{%- when 'iframe_video' -%}
+			{{- external_video -}}
+	{%- endcase -%}
+{%- endcapture -%}
+
+{%- capture timer -%}
+	{%- if timer_year != blank and timer_month != blank and timer_day != blank and timer_hour != blank -%}
+		<div class="general-banner__timer js-timer" role="timer" aria-live="off">
+			<script class="js-timer-settings" type="application/json">
+				{
+					"year": {{- timer_year | json -}},
+					"month": {{- timer_month | json -}},
+					"day": {{- timer_day | json -}},
+					"hour": {{- timer_hour | json -}},
+					"timezone": {{- timer_timezone | json -}}
+				}
+			</script>
+
+			<div class="general-banner__timer-col">
+				<div class="general-banner__timer-values">
+					<p class="is-hidden general-banner__timer-value js-timer-days-hundreds">
+						0
+					</p>
+
+					<p class="general-banner__timer-value js-timer-days-dozens">
+						0
+					</p>
+
+					<p class="general-banner__timer-value js-timer-days-units">
+						0
+					</p>
+				</div>
+
+				<p class="general-banner__timer-label">
+					{{- 'sections.banner.timer_days_label' | t -}}
+				</p>
+			</div>
+
+			<div class="general-banner__timer-col">
+				<div class="general-banner__timer-values">
+					<p class="general-banner__timer-value js-timer-hours-dozens">
+						0
+					</p>
+
+					<p class="general-banner__timer-value js-timer-hours-units">
+						0
+					</p>
+				</div>
+
+				<p class="general-banner__timer-label">
+					{{- 'sections.banner.timer_hours_label' | t -}}
+				</p>
+			</div>
+
+			<div class="general-banner__timer-col">
+				<div class="general-banner__timer-values">
+					<p class="general-banner__timer-value js-timer-minutes-dozens">
+						0
+					</p>
+
+					<p class="general-banner__timer-value js-timer-minutes-units">
+						0
+					</p>
+				</div>
+
+				<p class="general-banner__timer-label">
+					{{- 'sections.banner.timer_minutes_label' | t -}}
+				</p>
+			</div>
+
+			<div class="general-banner__timer-col">
+				<div class="general-banner__timer-values">
+					<p class="general-banner__timer-value js-timer-seconds-dozens">
+						0
+					</p>
+
+					<p class="general-banner__timer-value js-timer-seconds-units">
+						0
+					</p>
+				</div>
+
+				<p class="general-banner__timer-label">
+					{{- 'sections.banner.timer_seconds_label' | t -}}
+				</p>
+			</div>
+		</div>
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- capture banner_content -%}
+	{%- if label != blank or heading != blank or text != blank or button_url != blank or timer != blank -%}
+		<div class="general-banner__content {% if is_classic_banner %}need-animate{% endif %} {% if block.type == "countdown_timer" %} general-banner__content--countdown-timer{% endif %}{% if is_text_content_background_blur %} general-banner__content--blur{% endif %}{% if is_animation_text %} js-general-banner-animation-content{% else %}{% if request.visual_preview_mode %} animated{% endif %} js-animate{% endif %}">
+			{%- if label != blank -%}
+				<p class="general-banner__label">
+					{{- label -}}
+				</p>
+			{%- endif -%}
+
+			{%- if heading != blank -%}
+				<h2 class="h2 general-banner__heading">
+					{{- heading -}}
+				</h2>
+			{%- endif -%}
+
+			{%- if text != blank -%}
+				<div class="general-banner__text rte">
+					{{- text -}}
+				</div>
+			{%- endif -%}
+
+			{%- if timer != blank -%}
+				{{- timer -}}
+			{%- endif -%}
+
+			{%- if button_text != blank and button_url != blank -%}
+				<a
+					class="button button--secondary general-banner__button"
+					href="{{- button_url -}}"
+					aria-label="{{- button_aria | escape -}}"
+				>
+					{{- button_text -}}
+				</a>
+			{%- endif -%}
+		</div>
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- case content_alignment -%}
+	{%- when 'center' -%}
+		{%- assign timer_content_alignment = 'center' -%}
+	{%- when 'right' -%}
+		{%- assign timer_content_alignment = 'flex-end' -%}
+	{%- else -%}
+		{%- assign timer_content_alignment = 'flex-start' -%}
+{%- endcase -%}
+
+{%- case content_alignment_mobile -%}
+	{%- when 'center' -%}
+		{%- assign timer_content_alignment_mobile = 'center' -%}
+	{%- when 'right' -%}
+		{%- assign timer_content_alignment_mobile = 'flex-end' -%}
+	{%- else -%}
+		{%- assign timer_content_alignment_mobile = 'flex-start' -%}
+{%- endcase -%}
+
+{%- capture banner_wrapper_classes -%}
+	general-banner__wrapper {{-  -}}
+	{% if overlay %} general-banner__wrapper--overlayed {{-  -}} {%- endif -%}
+	{% if block.type == 'two_columns' %}
+		general-banner__wrapper--two-cols {{-  -}}
+	{% else %}
+		general-banner__wrapper--one-col {{-  -}}
+		{% if content_background != blank and is_classic_banner %} general-banner__wrapper--content-bg{% endif %}
+	{%- endif -%}
+	{% if request.visual_preview_mode or section.index == 1 %}
+		animated {{-  -}}
+	{% endif %} js-animate
+{%- endcapture -%}
+
+{%- capture banner_wrapper_styles -%}
+	{% if block.type == 'countdown_timer' or block.type == 'full_width' or block.type == 'two_columns' %}
+		--banner-min-height-desktop: {{ block.settings.desktop_image_height }}; {{-  -}}
+		--banner-min-height-mobile: {{ block.settings.mobile_image_height }}; {{-  -}}
+	{% endif %}
+	--banner-inner-content-alignment: {{- content_alignment | replace: "left", "start" | replace: "right", "end" -}}; {{-  -}}
+	--banner-inner-content-alignment-mobile: {{- content_alignment_mobile | replace: "left", "start" | replace: "right", "end" -}}; {{-  -}}
+	--banner-overlay-color: {{- overlay_color  -}}; {{-  -}}
+	--banner-image-border-width: {{ image_border_width }}px; {{- -}}
+	--banner-image-border-indent: {{ image_border_indent }}px; {{- -}}
+	{% if block.type == 'countdown_timer' or block.type == 'full_width' %}
+		--banner-block-alignment-horizontal: {{- block_alignment_horizontal -}}; {{-  -}}
+		--banner-block-alignment-vertical: {{- block_alignment_vertical -}}; {{-  -}}
+		--banner-block-heading-image-desktop: url({{- image_desktop | img_url: "2000x" -}}); {{- -}}
+		--banner-block-heading-image-mobile: url({{- image_mobile | img_url: "2000x" -}}); {{- -}}
+	{%- endif -%}
+	{% if block.type == 'countdown_timer' %}
+		--timer-content-alignment: {{- timer_content_alignment -}}; {{-  -}}
+		--timer-content-alignment-mobile: {{- timer_content_alignment_mobile -}}; {{-  -}}
+		--timer-cell-background-color: {{- timer_cell_background_color -}}; {{-  -}}
+		--timer-cell-color: {{- timer_cell_color -}};
+	{%- endif -%}
+{%- endcapture -%}
+
+{%- capture media_wrapper_classes -%}
+	general-banner__media-wrapper {{-  -}}
+	{% if media_type == 'html_video' or media_type == 'iframe_video' %} js-videos{%- endif -%} {{-  -}}
+	{% if is_animation_text %} js-general-banner-animation-media-wrapper{% endif %}
+{%- endcapture -%}
+
+{%- capture banner_full_size -%}
+	<div class="{{- banner_wrapper_classes | strip_newlines -}}" style="{{- banner_wrapper_styles | strip_newlines -}}">
+		{%- if heading != blank and is_animation_text -%}
+			<div class="general-banner__heading-animation{% if image_desktop != blank %} general-banner__heading-animation--background{% endif %}{% if request.visual_preview_mode %} animated{% endif %} js-general-banner-animation-heading js-animate">
+				{{- heading -}}
+			</div>
+		{%- endif -%}
+
+		{%- if general_banner_media != blank -%}
+			<div class="{{- media_wrapper_classes | strip_newlines -}}">
+				{{- general_banner_media -}}
+			</div>
+		{%- endif -%}
+
+		{%- if banner_content != blank -%}
+			<div class="general-banner__inner{% if is_animation_text %} is-hidden js-general-banner-animation-inner{% endif %}">
+				{{- banner_content -}}
+			</div>
+		{%- endif -%}
+	</div>
+{%- endcapture -%}
+
+{%- case block.type -%}
+	{%- when 'full_width' or 'countdown_timer' -%}
+		{{- banner_full_size -}}
+	{%- when 'two_columns' -%}
+		{%- assign media_content_position 	= block.settings.media_content_position -%}
+
+		{%- capture banner_two_cols -%}
+			{%- case media_content_position -%}
+				{%- when 'first' -%}
+					{%- if general_banner_media != blank -%}
+						<div class="general-banner__col general-banner__col--media {% if is_classic_banner %}need-animate{% endif %}">
+							<div class="{{ media_wrapper_classes | strip_newlines }}">
+								{{- general_banner_media -}}
+							</div>
+						</div>
+					{%- endif -%}
+
+					<div class="general-banner__col general-banner__col--text {% if is_classic_banner %}need-animate{% endif %}">
+						{{- banner_content -}}
+					</div>
+				{%- when 'last' -%}
+					<div class="general-banner__col general-banner__col--text {% if is_classic_banner %}need-animate{% endif %}">
+						{{- banner_content -}}
+					</div>
+
+					{%- if general_banner_media != blank -%}
+						<div class="general-banner__col general-banner__col--media {% if is_classic_banner %}need-animate{% endif %}">
+							<div class="{{ media_wrapper_classes | strip_newlines }}">
+								{{- general_banner_media -}}
+							</div>
+						</div>
+					{%- endif -%}
+			{%- endcase -%}
+		{%- endcapture -%}
+
+		<div class="{{- banner_wrapper_classes | strip_newlines -}}" style="{{- banner_wrapper_styles | strip_newlines -}}">
+			{{- banner_two_cols -}}
+		</div>
+{%- endcase -%}

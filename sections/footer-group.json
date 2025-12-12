@@ -1,0 +1,130 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "newsletter_H3Dxcc": {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "settings": {
+        "layout": "one_column_background_image",
+        "heading": "Newsletter",
+        "subheading": "Subscribe",
+        "text": "<p>Be the first to know about new collections and exclusive offers</p>",
+        "image_desktop": "shopify://shop_images/Artboard_1_copy_2_1_51ab2ba3-e4bb-40b3-8b20-96ce7b4c26aa.png",
+        "image_mobile": "shopify://shop_images/Artboard_1_copy_2_1.png",
+        "hide_image": false,
+        "image_position": "left",
+        "content_position": "center",
+        "email_placeholder": "Your email",
+        "button_label": "Subscribe",
+        "button_style": "primary",
+        "success_message": "Thanks for subscribing",
+        "heading_color": "#ffffff",
+        "text_color": "#ffffff",
+        "section_background": "#a36246",
+        "content_background": "rgba(0, 0, 0, 0.4)",
+        "enable_content_glass_effect": true,
+        "container_width": "100%",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 0,
+        "offset_top_mobile": 0,
+        "offset_bottom_mobile": 0
+      }
+    },
+    "store_perks_m6Nbtr": {
+      "type": "store-perks",
+      "name": "Store Perks",
+      "settings": {}
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "menu": {
+          "type": "menu",
+          "settings": {
+            "menu_heading": "Company legal",
+            "menu": "footer"
+          }
+        },
+        "menu_QkVw3M": {
+          "type": "menu",
+          "settings": {
+            "menu_heading": "Help & Information",
+            "menu": "help-and-information"
+          }
+        },
+        "payment_methods_mRdEbh": {
+          "type": "payment_methods",
+          "settings": {
+            "heading": "Payment",
+            "payment_methods": "visa,master,knet,tabby"
+          }
+        }
+      },
+      "block_order": [
+        "menu",
+        "menu_QkVw3M",
+        "payment_methods_mRdEbh"
+      ],
+      "custom_css": [
+        ".footer-block.grid__item .payment-types {display: flex; gap: 1rem; margin-top: 1rem;}",
+        ".footer__social-links {display: flex; justify-content: center; align-items: center; margin-bottom: 10px;}"
+      ],
+      "settings": {
+        "copyright_text": "Copyright © %date%.",
+        "show_back_to_top_button": false,
+        "enable_rounded_footer": false,
+        "show_social_links": true,
+        "is_show_country_selector": false,
+        "is_show_language_selector": false,
+        "is_show_payment_methods": false,
+        "enable_newsletter": false,
+        "newsletter_heading": "Newsletter heading",
+        "newsletter_text_content": "<p>Newsletter text</p>",
+        "newsletter_placeholder_text": "Enter email address...",
+        "newsletter_button_text": "Subscribe",
+        "newsletter_success_message": "Thanks for subscribing",
+        "section_background": "#91553d",
+        "menu_headings_color": "#ffffff",
+        "text_color": "#ffffff",
+        "copyright_text_color": "#e9e9e9",
+        "link_color": "#ffffff",
+        "link_hover_color": "#a77764",
+        "button_icon_color_social": "#ffffff",
+        "button_icon_color_social_hover": "#a77764",
+        "newsletter_background": "#a77764",
+        "newsletter_icon_background": "#404661",
+        "newsletter_heading_color": "#ffffff",
+        "newsletter_text_color": "#e9e9e9",
+        "newsletter_input_color": "#000000",
+        "newsletter_input_placeholder_color": "#a77764",
+        "newsletter_input_background": "#f8f6f5",
+        "newsletter_button_color": "#ffffff",
+        "newsletter_button_background": "#a77764",
+        "newsletter_button_color_hover": "#000000",
+        "newsletter_button_background_hover": "#91553d",
+        "bottom_footer_border_color": "#ffffff",
+        "button_top_color": "#000000",
+        "button_top_background": "#ffffff",
+        "button_top_border": "#e9e9e9",
+        "button_top_color_hover": "#ffffff",
+        "button_top_background_hover": "#a77764",
+        "button_top_border_hover": "#a77764"
+      }
+    }
+  },
+  "order": [
+    "newsletter_H3Dxcc",
+    "store_perks_m6Nbtr",
+    "footer"
+  ]
+}

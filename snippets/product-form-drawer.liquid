@@ -1,0 +1,59 @@
+{% comment %}
+  ------------------------------------------------------------------------------
+  Snippet: PDP drawer
+  ------------------------------
+  Require:
+   - content
+   - title
+   - toggle_id
+  Optional:
+   - footer_content
+   - class_container
+   - class_header
+   - class_body
+   - class_footer
+   - class_close
+  ------------------------------
+  Example:
+	{% render 'product-form-drawer',
+		title: page.title,
+		content: page.content,
+		toggle_id: 'pageDrawer'
+	%}
+  ------------------------------------------------------------------------------
+{% endcomment %}
+{% if title != blank and toggle_id != blank %}
+	{% assign a11y_title = title | camelcase | append: 'Drawer' %}
+
+	<div
+		id="{{- toggle_id -}}"
+		class="drawer product-form-drawer {{ class_container }}"
+		role="dialog"
+		aria-labelledby="{{- a11y_title -}}"
+	>
+		<div class="drawer__header {{ class_header }}">
+			<h2 class="drawer__title" id="{{- a11y_title -}}">
+				{{- title -}}
+			</h2>
+
+			<button
+				class="drawer__close {{ class_close }}"
+				data-target="{{- toggle_id -}}"
+				data-js-toggle="{{- toggle_id -}}"
+				aria-label="{{ 'general.accessibility.close' | t | escape }}"
+			>
+				{%- render 'icons', icon: 'menu-close' -%}
+			</button>
+		</div>
+
+		<div class="drawer__body rte {{ class_body }}">
+			{{- content -}}
+		</div>
+
+		{% if footer_content != blank %}
+			<div class="drawer__footer {{ class_footer }}">
+				{{- footer_content -}}
+			</div>
+		{% endif %}
+	</div>
+{% endif %}

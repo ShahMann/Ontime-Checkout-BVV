@@ -1,0 +1,271 @@
+{% assign heading = section.settings.heading %}
+{% assign text_position = section.settings.text_position %}
+{% assign image_text_color = section.settings.image_text_color %}
+{% assign overlay_color = section.settings.overlay_color %}
+{% assign container = section.settings.container_width %}
+
+{% if section.index == 1 %}
+	{%- render 'adastra' with '/src/styles/carousel.scss' -%}
+{% endif %}
+
+{%- render 'adastra' with '/src/styles/collection-list-3.scss' -%}
+
+{% if section.blocks.size > 0 %}
+	{%- style -%}
+		#shopify-section-{{- section.id -}} {
+			padding-top: {{- section.settings.offset_top_mobile -}}px;
+			padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 768px) {
+			#shopify-section-{{- section.id -}} {
+				padding-top: {{- section.settings.offset_top_desktop -}}px;
+				padding-bottom: {{- section.settings.offset_bottom_desktop -}}px;
+			}
+		}
+	{%- endstyle -%}
+
+	{% if container == 'inherit' %}
+		{% assign container_width = settings.container_width %}
+	{% else %}
+		{% assign container_width = container %}
+	{% endif %}
+
+	{% assign pagination_dynamic = false %}
+
+	{% if section.blocks.size > 5 %}
+		{% assign pagination_dynamic = true %}
+	{% endif %}
+
+	{% capture styles %}
+		--container-width: {{ container_width }};
+		--text-color: {{ image_text_color }};
+		--overlay-color: {{ overlay_color }};
+	{% endcapture %}
+
+	{%- capture swiper_section_centered -%}
+		{%- if section.blocks.size > 1 and section.blocks.size < 4 -%}
+			collection-list-3__swiper-wrapper--centered-after-extra-small
+		{%- elsif section.blocks.size < 6 -%}
+			collection-list-3__swiper-wrapper--centered-after-medium
+		{%- endif -%}
+	{%- endcapture -%}
+
+	<section class="collection-list-3 js-collection-list-3" style="{{ styles }}">
+		{% if heading != blank %}
+			<h2 class="collection-list-3__title h2">{{ heading }}</h2>
+		{% endif %}
+
+		<div class="collection-list-3__content-wrapper">
+			<div class="swiper {% if section.blocks.size > 1 %}js-collection-list-3-slider{% endif %}"
+				 data-dynamic-pagination="{{ pagination_dynamic }}"
+			>
+				<div class="swiper-wrapper {{ swiper_section_centered }}">
+					{% for block in section.blocks %}
+						<div class="swiper-slide collection-list-3__card">
+							{% assign collection = block.settings.collection %}
+							{% assign image = block.settings.image | default: collection.featured_image %}
+
+							{% if section.index > 1 %}
+								{% assign is_lazy = true %}
+							{% elsif section.index == 1 and forloop.index > 2 %}
+								{% assign is_lazy = true %}
+							{% endif %}
+
+							{% render "collection-card-extra",
+								collection: collection,
+								image: image,
+								is_lazy: is_lazy,
+								text_position: text_position
+							%}
+						</div>
+					{% endfor %}
+				</div>
+
+				{%- if section.blocks.size > 1 -%}
+					<div class="collection-list-3__pagination js-collection-list-3-pagination"></div>
+				{%- endif -%}
+			</div>
+
+			{% if section.blocks.size > 6 %}
+				<button class="swiper-button swiper-button--prev js-collection-list-slider-prev-btn">
+					{%- render "icons", icon: "arrow-left" -%}
+				</button>
+
+				<button class="swiper-button swiper-button--next js-collection-list-slider-next-btn">
+					{%- render "icons", icon: "arrow-right" -%}
+				</button>
+			{% endif %}
+		</div>
+	</section>
+{% endif %}
+
+{%- if section.blocks.size > 1 -%}
+	{%- render 'adastra' with '/src/scripts/section-collection-list-3.js' -%}
+{%- endif -%}
+
+{% schema %}
+{
+	"name": "Collections slider",
+	"disabled_on": {
+		"groups": ["header", "footer"]
+	},
+	"settings": [
+		{
+			"id": "heading",
+			"type": "text",
+			"label": "Heading",
+			"default": "Collections slider"
+		},
+		{
+			"id": "text_position",
+			"type": "select",
+			"options": [
+				{
+					"value": "under_image",
+					"label": "Under the image"
+				},
+				{
+					"value": "inside_image",
+					"label": "Inside the image"
+				}
+			],
+			"default": "under_image",
+			"label": "Text position"
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"id": "image_text_color",
+			"type": "color",
+			"label": "Inside the image text",
+			"default": "#fff",
+			"info": "The color of the text to be used with the 'Inside the image' text position"
+		},
+		{
+			"id": "overlay_color",
+			"type": "color",
+			"label": "Overlay color",
+			"default": "#000000"
+		},
+		{
+			"type": "header",
+			"content": "Layout"
+		},
+		{
+			"id": "container_width",
+			"type": "select",
+			"options": [
+				{
+					"value": "1432px",
+					"label": "Default - 1400px"
+				},
+				{
+					"value": "1952px",
+					"label": "Large - 1920px"
+				},
+				{
+					"value": "100%",
+					"label": "Full width"
+				},
+				{
+					"value": "inherit",
+					"label": "Inherit of general setting"
+				}
+			],
+			"default": "inherit",
+			"label": "Container width",
+			"info": "if you select \"Inherite of general setting\", then container width will be used from the Theme settings/Layout"
+		},
+		{
+			"type": "range",
+			"id": "offset_top_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset top",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_desktop",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Desktop offset bottom",
+			"default": 40
+		},
+		{
+			"type": "range",
+			"id": "offset_top_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset top",
+			"default": 25
+		},
+		{
+			"type": "range",
+			"id": "offset_bottom_mobile",
+			"min": 0,
+			"max": 100,
+			"step": 1,
+			"unit": "px",
+			"label": "Mobile offset bottom",
+			"default": 25
+		}
+	],
+	"blocks": [
+		{
+			"type": "collection",
+			"name": "Collection",
+			"settings": [
+				{
+					"type": "collection",
+					"id": "collection",
+					"label": "Collection"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image",
+					"info": "Choose another image instead of the Collection Image. 1262 x 1262px for text position under image and 1262 x 1490px for text position inside image recommended"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Collections slider",
+			"blocks": [
+				{
+					"type": "collection"
+				},
+				{
+					"type": "collection"
+				},
+				{
+					"type": "collection"
+				},
+				{
+					"type": "collection"
+				},
+				{
+					"type": "collection"
+				},
+				{
+					"type": "collection"
+				},
+				{
+					"type": "collection"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

@@ -1,0 +1,134 @@
+{% comment %}
+------------------------------------------------------------------------------
+  Snippet: Breadcrumb
+------------------------------------------------------------------------------
+{% endcomment %}
+
+{% capture breadcrumb_seperator %}
+	<span aria-hidden="true" class="breadcrumb__separator">{% render 'icons', icon: 'arrow-right' %}</span>
+{% endcapture %}
+
+{% unless template == 'index' %}
+	{%- render 'adastra' with '/src/styles/breadcrumbs.scss' -%}
+
+	{% style %}
+		.breadcrumb {
+			padding-top: {{- settings.breadcrumbs_offset_top_mobile -}}px;
+			padding-bottom: {{- settings.breadcrumbs_offset_bottom_mobile -}}px;
+		}
+
+		@media screen and (min-width: 992px) {
+			.breadcrumb {
+				padding-top: {{- settings.breadcrumbs_offset_top_desktop -}}px;
+				padding-bottom: {{- settings.breadcrumbs_offset_bottom_desktop -}}px;
+			}
+		}
+	{% endstyle %}
+
+	<nav
+		class="breadcrumb"
+		aria-label="{{ 'general.breadcrumbs.title' | t | escape }}"
+	>
+		<div class="breadcrumb__container">
+			<a
+				class="breadcrumb__link"
+				href="{{ routes.root_url }}"
+				title="{{ 'general.breadcrumbs.home' | t }}"
+			>
+				{{ 'general.breadcrumbs.home' | t }}
+			</a>
+
+			{% if template.name == 'page' %}
+				{{ breadcrumb_seperator }}
+				<span class="breadcrumb__item">{{ page.title }}</span>
+
+			{% elsif template.name == 'product' %}
+				{%- assign parent_colection = product.collections.first -%}
+
+				{% if settings.show_collection_on_pdp == true and parent_colection != blank %}
+					{{ breadcrumb_seperator }}
+
+					{{ parent_colection.title | link_to: parent_colection.url, class: 'breadcrumb__item breadcrumb__link' }}
+				{% endif %}
+
+				{{ breadcrumb_seperator }}
+				<span class="breadcrumb__item">{{ product.title }}</span>
+
+			{% elsif template.name == 'collection' and collection.handle %}
+				{{ breadcrumb_seperator }}
+
+				{% if current_tags %}
+					{% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+					{{ collection.title | link_to: url, class: 'breadcrumb__item breadcrumb__link' }}
+					{{ breadcrumb_seperator }}
+					<span>{{ current_tags | join: " + " }}</span>
+
+				{% else %}
+					<span class="breadcrumb__item">{{ collection.title }}</span>
+				{% endif %}
+
+			{% elsif template.name == 'blog' %}
+				{{ breadcrumb_seperator }}
+
+				{% if current_tags %}
+					{{ blog.title | link_to: blog.url, class: 'breadcrumb__item breadcrumb__link' }}
+					{{ breadcrumb_seperator }}
+					<span class="breadcrumb__item">{{ current_tags | join: " + " }}</span>
+
+				{% else %}
+					<span class="breadcrumb__item">{{ blog.title }}</span>
+				{% endif %}
+
+			{% elsif template.name == 'article' %}
+				{{ breadcrumb_seperator }}
+				{{ blog.title | link_to: blog.url, class: 'breadcrumb__item breadcrumb__link' }}
+				{{ breadcrumb_seperator }}
+				<span class="breadcrumb__item">{{ article.title }}</span>
+
+			{% elsif template.name == 'search' %}
+				{{ breadcrumb_seperator }}
+				<span class="breadcrumb__item">{{- 'general.search.breadcrumbs_name' | t -}}</span>
+
+			{%- elsif template contains 'customers/activate_account' -%}
+				{{ breadcrumb_seperator }}
+
+				<span class="breadcrumb__item">
+					{%- assign words = template | split: "/" | last | split: "_" -%}
+
+					{%- for word in words -%}
+						{{ word | capitalize }}
+					{%- endfor -%}
+				</span>
+			{% elsif template contains 'customers/login' %}
+				{{ breadcrumb_seperator }}
+
+				<span class="breadcrumb__item">
+					{{- template | split: "/" | last | capitalize -}}
+				</span>
+			{% elsif template contains 'customers/addresses' %}
+				{{ breadcrumb_seperator }}
+
+				<a
+					class="breadcrumb__link"
+					href="{{- routes.account_url -}}"
+					aria-label="{{- 'customer.account.title' | t | escape -}}"
+				>
+					{{- "customer.account.title" | t -}}
+				</a>
+
+				{{ breadcrumb_seperator }}
+
+				<span class="breadcrumb__item">
+					{{- "customer.addresses.title" | t -}}
+				</span>
+			{% elsif template.name == 'cart' %}
+				{{ breadcrumb_seperator }}
+				<span class="breadcrumb__item">{{- "cart.general.title" | t -}}</span>
+
+			{% else %}
+				{{ breadcrumb_seperator }}
+				<span class="breadcrumb__item">{{ page_title }}</span>
+			{% endif %}
+		</div>
+	</nav>
+{% endunless %}
