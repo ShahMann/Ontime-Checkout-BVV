@@ -342,7 +342,7 @@
 					{%- endunless -%}
 
 					<small class="product-card__error-message js-product-card-error">
-						{%- if hide_buttons and product.selected_or_first_available_variant.available == false -%}
+						{%- if hide_buttons and product.selected_or_first_available_variant.inventory_management and product.selected_or_first_available_variant.inventory_quantity <= 3 -%}
 							{{- "products.product.sold_out" | t -}}
 						{%- endif -%}
 					</small>

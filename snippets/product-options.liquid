@@ -34,7 +34,7 @@
 		</option>
 
 		{% for variant in product.variants  %}
-			{% if variant.available %}
+			{% if variant.available and variant.inventory_quantity > 3 %}
 				<option
 					{% if variant == product.selected_or_first_available_variant %}
 						selected
@@ -79,7 +79,7 @@
 								{%- assign is_disabled = true -%}
 
 								{%- for variant in product.variants -%}
-									{%- if variant.options contains value and variant.available -%}
+									{%- if variant.options contains value and variant.available and variant.inventory_quantity > 3 -%}
 										{%- assign is_disabled = false -%}
 										{%- break -%}
 									{%- endif -%}
@@ -145,7 +145,7 @@
 							{%- assign is_disabled = true -%}
 
 							{%- for variant in product.variants  -%}
-								{%- if variant.options contains value and variant.available -%}
+								{%- if variant.options contains value and variant.inventory_quantity > 3 -%}
 									{%- assign is_disabled = false -%}
 									{%- break -%}
 								{%- endif -%}

@@ -125,17 +125,27 @@
 
 				{% assign form_id = 'product_form_' | append: product.id | append: '_section_' | append: section.id %}
 
+				{%- assign selected_variant = product.selected_or_first_available_variant -%}
+				{%- assign is_low_or_unavailable = false -%}
+				{%- if selected_variant.inventory_management and selected_variant.inventory_quantity <= 3 -%}
+					{%- assign is_low_or_unavailable = true -%}
+				{%- elsif selected_variant.available == false -%}
+					{%- assign is_low_or_unavailable = true -%}
+					{% else %}
+					{%- assign is_low_or_unavailable = false -%}
+				{%- endif -%}
+
 				<button
 					form="{{- form_id -}}"
 					type="submit"
 					class="product-sticky-add-to-cart__button add-to-cart button button--small button--{{ button_type }} js-sticky-add-to-cart-button
-						{% unless product.first_available_variant.available %}
+						{% if is_low_or_unavailable %}
 							disabled
-						{% endunless %}
+						{% endif %}
 					"
-					{% unless product.first_available_variant.available %}
+					{% if is_low_or_unavailable %}
 						disabled
-					{% endunless %}
+					{% endif %}
 					{% if product.template_suffix == 'pre-order' %}
 						data-preorder
 					{% endif %}
@@ -143,14 +153,14 @@
 					{%- render 'icons', icon: 'cart' -%}
 
 					<span class="js-product-add-to-cart-button-text">
-						{% if product.first_available_variant.available %}
+						{% if is_low_or_unavailable %}
+							{{- 'products.product.sold_out' | t -}}
+						{% else %}
 							{% if product.template_suffix == 'pre-order' %}
 								{{- 'products.product.pre_order' | t -}}
 							{% else %}
 								{{- 'products.product.add_to_cart' | t -}}
 							{% endif %}
-						{% else %}
-							{{- 'products.product.sold_out' | t -}}
 						{% endif %}
 					</span>
 				</button>

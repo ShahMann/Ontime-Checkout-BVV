@@ -24,10 +24,11 @@
 	{% endif %}
 
 	{% capture low_stock_class %}
+		{% if current_variant.inventory_quantity <=3 %}
 		{% if low_stock_icon == blank %}product-inventory-status__text--low{% endif %}
+		{% endif %}
 	{% endcapture %}
-
-	<p class="product-inventory-status__text {% if show_background %}product-inventory-status__text--bg{% endif %} {{ low_stock_class }} js-product-low-stock-msg {% if current_variant.inventory_quantity > low_stock_threshold or current_variant.available == false or can_sell_after_zero %}is-hidden{% endif %}">
+	<p class="mann product-inventory-status__text {% if show_background %}product-inventory-status__text--bg{% endif %} {{ low_stock_class }} js-product-low-stock-msg {% if current_variant.inventory_quantity > low_stock_threshold or current_variant.available == false or can_sell_after_zero %}is-hidden{% endif %}">
 		{% if low_stock_icon != blank %}
 			<img class="product-inventory-status__icon"
 				 src="{{ low_stock_icon | image_url: width: 24, height: 24 }}"
@@ -86,3 +87,8 @@
 	</script>
 </div>
 
+<style>
+	.mann {
+		display: none !important;
+	}
+</style>

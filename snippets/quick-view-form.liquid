@@ -268,11 +268,11 @@
 				data-preorder
 			{% endif %}
 			type="submit"
-			{%- if product.selected_or_first_available_variant.available == false -%}
+			{%- if product.selected_or_first_available_variant.inventory_management and product.selected_or_first_available_variant.inventory_quantity <= 3 -%}
 				disabled
 			{%- endif -%}
 		>
-			{%- if product.selected_or_first_available_variant.available  -%}
+			{%- if  product.selected_or_first_available_variant.inventory_management and product.selected_or_first_available_variant.inventory_quantity > 3  -%}
 				{% if product.template_suffix == 'pre-order' %}
 					{{- 'products.product.pre_order' | t -}}
 				{% else %}

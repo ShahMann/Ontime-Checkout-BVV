@@ -188,17 +188,25 @@
   <input type="hidden" name="properties[__cart_type]" value="web" />
 {% endif %}
 
+{%- assign selected_variant = product.selected_or_first_available_variant -%}
+{%- assign is_low_or_unavailable = false -%}
+{%- if selected_variant.inventory_management and selected_variant.inventory_quantity <= 3 -%}
+	{%- assign is_low_or_unavailable = true -%}
+{%- elsif selected_variant.available == false -%}
+	{%- assign is_low_or_unavailable = true -%}
+{%- endif -%}
 <button
   type="submit"
   class="
     product-add-to-cart__button add-to-cart button button--block button--{{- button_type -}}
-    {% unless product.first_available_variant.available %}
-    	disabled
-    {% endunless %}
+    {% if is_low_or_unavailable == true %}
+      disabled
+    {% endif %}
   "
-  {% unless product.first_available_variant.available %}
+  {% if is_low_or_unavailable == true %}
+
     disabled
-  {% endunless %}
+  {% endif %}
   {% if product.template_suffix == 'pre-order' %}
     data-preorder
   {% endif %}
@@ -206,14 +214,14 @@
   {%- render 'icons', icon: 'cart' -%}
 
   <span class="js-product-add-to-cart-button-text">
-    {% if product.first_available_variant.available %}
+    {% if is_low_or_unavailable == true %}
+      {{- 'products.product.sold_out' | t -}}
+    {% else %}
       {% if product.template_suffix == 'pre-order' %}
         {{- 'products.product.pre_order' | t -}}
       {% else %}
         {{- 'products.product.add_to_cart' | t -}}
       {% endif %}
-    {% else %}
-      {{- 'products.product.sold_out' | t -}}
     {% endif %}
   </span>
 </button>
@@ -234,7 +242,7 @@
     data-size="{{ product.metafields.custom.size.value }}"
     data-color="{{ product.metafields.custom.color.value }}"
   >
-    {% if product.selected_or_first_available_variant.available == false and block.settings.show_back_in_stock %}
+    {% if block.settings.show_back_in_stock and is_low_or_unavailable %}
       <button
         id="backInStockBtn"
         class="button button--block button--primary alert-button"
