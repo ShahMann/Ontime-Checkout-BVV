@@ -12,6 +12,11 @@
 	- show_pay_installments: If true, then it will be displayed form method pay installments
 	- show_discount_percentage: If true, show percentage discount when compare price appear (optional, boolean)
 
+	VIP display (PLP + PDP): when shop enable_vip_sale, logged-in VIP tag, and variant
+	vip_sale_discount_percent metafield are all set, overrides price output only for that customer.
+	Uses selected/first available variant on PLP (use_variant false). PDP variant picker updates
+	via JS may replace prices until page reload — display-only, no cart/checkout changes.
+
 	{%- render 'price', product: product, show_unit_price: show_unit_price, currency_code_enabled: currency_code_enabled -%}
 	------------------------------------------------------------------------------
 {%- endcomment -%}
@@ -24,7 +29,26 @@
 	{%- assign compare_at_price	= target.compare_at_price -%}
 {%- endif -%}
 
+{%- assign vip_variant = product.selected_or_first_available_variant -%}
+{%- if use_variant -%}
+	{%- assign vip_variant = target -%}
+{%- endif -%}
+
 {%- assign price					= target.price | default: 1999 -%}
+{%- assign show_vip_price = false -%}
+{%- if shop.metafields.custom.enable_vip_sale.value == true -%}
+	{%- if customer and customer.tags contains 'VIP' -%}
+		{%- assign vip_discount_percent = vip_variant.metafields.custom.vip_sale_discount_percent.value -%}
+		{%- if vip_discount_percent != blank -%}
+			{%- assign vip_multiplier = 100 | minus: vip_discount_percent -%}
+			{%- assign vip_discounted_cents = vip_variant.price | times: vip_multiplier | divided_by: 100.0 -%}
+			{%- assign vip_price_cents = vip_discounted_cents | ceil -%}
+			{%- assign compare_at_price = vip_variant.price -%}
+			{%- assign price = vip_price_cents -%}
+			{%- assign show_vip_price = true -%}
+		{%- endif -%}
+	{%- endif -%}
+{%- endif -%}
 {%- assign available				= target.available | default: false -%}
 {%- assign money_price				= price | money -%}
 {%- assign money_price_min			= product.price_min | money -%}
@@ -44,7 +68,7 @@
 	{%- assign money_price_max		= product.price_max | money_with_currency -%}
 {%- endif -%}
 
-{%- if target == product and product.price_varies and hide_from_price != true -%}
+{%- if target == product and product.price_varies and hide_from_price != true and show_vip_price == false -%}
 	{%- assign money_price = 'products.product.price.from_price_html' | t: price: money_price -%}
 {%- endif -%}
 
@@ -58,7 +82,7 @@
 {%- endif -%}
 
 <div
-	class="price{% if price_class %} {{ price_class }}{% endif %}{% if compare_at_price > price %} price--on-sale{% endif %} js-price"
+	class="price{% if price_class %} {{ price_class }}{% endif %}{% if compare_at_price > price or show_vip_price %} price--on-sale{% endif %} js-price"
 	{% if styles %}
 		style="{{ styles }}"
 	{% endif %}
@@ -76,11 +100,13 @@
 				{{- money_price -}}
 			</span>
 
-			{% if show_discount_percentage %}
+			{%- if show_vip_price -%}
+				<span class="vip-price-badge">Early Access Price</span>
+			{%- elsif show_discount_percentage -%}
 				{% assign discount_value = price | times: 100 | divided_by: compare_at_price %}
 
 				<span class="price__discount" data-product-price-discount>-{{ 100 | minus: discount_value }}%</span>
-			{% endif %}
+			{%- endif -%}
 
 			{%- unless product.price_varies == false and product.compare_at_price_varies -%}
 				<span class="visually-hidden">
