@@ -1,0 +1,346 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner_animation_scale_zgFmpt": {
+      "type": "banner-animation-scale",
+      "blocks": {
+        "full_width_qC9YfV": {
+          "type": "full_width",
+          "settings": {
+            "desktop_image_height": "600px",
+            "mobile_image_height": "350px",
+            "media_type": "html_video",
+            "label": "Festive Season Collection",
+            "heading": "Celebrate in Style This Festive Season",
+            "text": "<p>Embrace the joy and sparkle of the festive season with our specially curated collection. Perfect for gifting or adding a touch of glamour to your own holiday look.</p>",
+            "button_text": "Let's Celebrate",
+            "button_url": "shopify://collections/festive-collection",
+            "button_aria": "",
+            "image_border_width": 0,
+            "image_border_indent": 10,
+            "html_video_desktop": "shopify://files/videos/FSL_HOL25_30v3_Desktop_video-med.mp4",
+            "html_video_mobile": "shopify://files/videos/FSL_HOL25_30v3_Desktop_video-med.mp4",
+            "external_video_url_desktop": "",
+            "external_video_url_mobile": "",
+            "content_alignment": "center",
+            "content_alignment_mobile": "center",
+            "block_alignment_horizontal": "center",
+            "block_alignment_vertical": "flex-end"
+          }
+        }
+      },
+      "block_order": [
+        "full_width_qC9YfV"
+      ],
+      "name": "Banner animation scale",
+      "settings": {
+        "enable_rounded_corners": true,
+        "section_background": "#222222",
+        "content_background": "",
+        "is_text_content_background_blur": false,
+        "text_color": "#ffffff",
+        "link_color": "#d33636",
+        "button_background": "#ffffff",
+        "button_color": "#000000",
+        "button_border": "#ffffff",
+        "button_background_hover": "#000000",
+        "button_color_hover": "#ffffff",
+        "button_border_hover": "#ffffff",
+        "overlay": "rgba(0,0,0, 0.3)",
+        "image_border_color": "#ffffff",
+        "container_width": "1952px",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_animations_zjp79m": {
+      "type": "image-with-text-animations",
+      "name": "Image with animated text",
+      "settings": {
+        "heading": "Gift Your Loved Ones This Holiday Season",
+        "heading_font_size_desktop": 104,
+        "heading_background_image": "shopify://shop_images/new-year-banner-christmas-gift-260nw-2201864569_9673fa36-c0f8-4369-9ca0-649c8f901289.webp",
+        "enable_heading_outline": true,
+        "subheading": "",
+        "text": "",
+        "button_label": "Shop all",
+        "button_aria_label": "",
+        "button_url": "",
+        "button_style": "secondary",
+        "top_layer": "image",
+        "enable_animation": false,
+        "heading_color": "#000000",
+        "heading_outline": "#ffffff",
+        "heading_background": "",
+        "subheading_color": "#000000",
+        "text_color": "#535353",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_slider_kMdEBC": {
+      "type": "image-slider",
+      "blocks": {
+        "slide_TcU4Nk": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/FS6085_0608a237-6729-4db5-aaa4-0354b5b2c55f.jpg",
+            "link": "https://ontime.com/products/fs6085"
+          }
+        },
+        "slide_3eeCf3": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/MK4851SET.webp",
+            "link": "https://ontime.com/products/MK4851SET"
+          }
+        },
+        "slide_4iYbXG": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/FS6121_9c869fb9-d45b-42f1-b45a-a8560475a39b.jpg",
+            "link": "https://ontime.com/products/fs6121"
+          }
+        },
+        "slide_HfYMef": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/MK7561SET_710_4.webp",
+            "link": "https://ontime.com/products/MK7561SET"
+          }
+        },
+        "slide_HKjfhp": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/BQ3979_9L.webp",
+            "link": "https://ontime.com/products/bq3979"
+          }
+        },
+        "slide_fXK8im": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/FS6086_onwrist.webp",
+            "link": "https://ontime.com/products/FS6086"
+          }
+        },
+        "slide_6eyVNg": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/MK7514SET_3d9cb950-9fab-41ca-be86-855e5270ae4d.jpg",
+            "link": "https://ontime.com/products/MK7514SET"
+          }
+        }
+      },
+      "block_order": [
+        "slide_TcU4Nk",
+        "slide_3eeCf3",
+        "slide_4iYbXG",
+        "slide_HfYMef",
+        "slide_HKjfhp",
+        "slide_fXK8im",
+        "slide_6eyVNg"
+      ],
+      "name": "Image slider",
+      "settings": {
+        "heading": "Find the Gift They’ll Love",
+        "enable_autoplay": true,
+        "autoplay_speed": 5,
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "banner_animation_scale_TJtVdb": {
+      "type": "banner-animation-scale",
+      "blocks": {
+        "full_width_hPGxMh": {
+          "type": "full_width",
+          "settings": {
+            "desktop_image_height": "600px",
+            "mobile_image_height": "350px",
+            "media_type": "html_video",
+            "label": "CUSTOMIZE YOUR GIFT",
+            "heading": "Make It Uniquely Theirs",
+            "text": "<p>Add a personal touch to every present with our customization options.</p>",
+            "button_text": "CUSTOMIZE",
+            "button_url": "shopify://collections/personalize",
+            "button_aria": "",
+            "image_border_width": 0,
+            "image_border_indent": 10,
+            "html_video_desktop": "shopify://files/videos/FSL_Harlow_Personalization_1080X1080_video-med.mp4",
+            "html_video_mobile": "shopify://files/videos/FSL_Harlow_Personalization_1080X1080_video-med.mp4",
+            "external_video_url_desktop": "",
+            "external_video_url_mobile": "",
+            "content_alignment": "center",
+            "content_alignment_mobile": "center",
+            "block_alignment_horizontal": "center",
+            "block_alignment_vertical": "center"
+          }
+        }
+      },
+      "block_order": [
+        "full_width_hPGxMh"
+      ],
+      "name": "Banner animation scale",
+      "settings": {
+        "enable_rounded_corners": true,
+        "section_background": "#222222",
+        "content_background": "",
+        "is_text_content_background_blur": false,
+        "text_color": "#ffffff",
+        "link_color": "#d33636",
+        "button_background": "#ffffff",
+        "button_color": "#000000",
+        "button_border": "#ffffff",
+        "button_background_hover": "#000000",
+        "button_color_hover": "#ffffff",
+        "button_border_hover": "#ffffff",
+        "overlay": "rgba(0,0,0, 0.3)",
+        "image_border_color": "#ffffff",
+        "container_width": "1952px",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "featured_products_ycH7A7": {
+      "type": "featured-products",
+      "name": "Featured products",
+      "settings": {
+        "heading": "The Perfect Gift, Every Time",
+        "product_list": [
+          "merry-christmas",
+          "new-year",
+          "safe-travels",
+          "congratulations"
+        ],
+        "products_in_row": "4",
+        "banner_image": "shopify://shop_images/keep-the-background-solid.png",
+        "banner_heading": "Gift Cards",
+        "banner_subheading": "Give the Gift of Choice",
+        "button_label": "Shop Now",
+        "button_url": "",
+        "text_color": "#ffffff",
+        "overlay_color": "rgba(0, 0, 0, 0.4)",
+        "button_color": "#ffffff",
+        "button_background_color": "rgba(0,0,0,0)",
+        "button_border_color": "#ffffff",
+        "button_hover_color": "#000000",
+        "button_hover_background": "#ffffff",
+        "button_hover_border": "#ffffff",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_jPJhKf": {
+      "type": "image-with-text",
+      "name": "Image with text",
+      "settings": {
+        "image_position": "right",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/MK1065SET.webp",
+        "image_background": "#ffffff",
+        "label": "Women’s Watches & Jewelry",
+        "heading": "Gifts That Shine With Elegance",
+        "text_content": "<p>Celebrate her with timeless gifts from our Women’s Watches & Jewelry collection. Discover beautifully crafted watches that blend style and sophistication, paired with delicate jewelry pieces that add a touch of sparkle to every moment. Whether it’s for a birthday, anniversary, or a meaningful surprise, find the perfect gift that reflects her grace, individuality, and effortless style.</p>",
+        "button_label": "Explore",
+        "button_aria_label": "Button label",
+        "button_url": "shopify://collections/sets-women",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "default-page": {
+      "type": "page-template",
+      "disabled": true,
+      "settings": {
+        "enable_heading": false,
+        "enable_content": true,
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_A7AQGp": {
+      "type": "image-with-text",
+      "name": "Image with text",
+      "settings": {
+        "image_position": "left",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/FS6102SET_onmodel.webp",
+        "image_background": "#ffffff",
+        "label": "Men’s Watches & Jewelry",
+        "heading": "Gifts That Define His Style",
+        "text_content": "<p>Find the perfect gift with our Men’s Watches & Jewelry collection, featuring standout timepieces designed to make every moment memorable. From classic analog styles to modern, statement-making designs, our watches offer precision, durability, and timeless appeal. Complemented by select jewelry pieces, this curated collection helps you choose gifts that elevate his everyday look and celebrate his unique style.</p>",
+        "button_label": "Explore",
+        "button_aria_label": "Button label",
+        "button_url": "shopify://collections/sets-men",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_YrNVXN": {
+      "type": "image-with-text",
+      "name": "Image with text",
+      "settings": {
+        "image_position": "left",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/gifting_d3737305-5746-4e74-85f5-7fb53e21d134.png",
+        "image_background": "#ffffff",
+        "label": "",
+        "heading": "Wrapped With Love",
+        "text_content": "<p>Make your present even more special with our premium gift-wrapping service. Beautifully packaged with care and attention to detail, your gift arrives ready to impress—perfect for celebrations, surprises, and every meaningful moment.</p><p>Select send as gift at checkout.</p>",
+        "button_label": "",
+        "button_aria_label": "",
+        "button_url": "/",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    }
+  },
+  "order": [
+    "banner_animation_scale_zgFmpt",
+    "image_with_text_animations_zjp79m",
+    "image_slider_kMdEBC",
+    "banner_animation_scale_TJtVdb",
+    "featured_products_ycH7A7",
+    "image_with_text_jPJhKf",
+    "default-page",
+    "image_with_text_A7AQGp",
+    "image_with_text_YrNVXN"
+  ]
+}

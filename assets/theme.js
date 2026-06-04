@@ -23,6 +23,9 @@ theme.store = {
             case "ontime-ae.myshopify.com":
                 shop = "ONTIME.AE"
                 break;
+            case "ontime-iraq.myshopify.com":
+                shop = "ONTIME.IQ"
+                break;
             
             default:
                 break;
@@ -79,7 +82,7 @@ theme.wishlist = {
             return req.json()
         })
         const productsResolved =  await Promise.allSettled(fetchHandles)
-        const products = productsResolved.map(product => product.value.product)
+        const products = productsResolved.map(product => product.value?.product).filter(product => product !== undefined)
         const productData = products.map(product => {
             return {
                 "Brand": product.vendor,
@@ -91,6 +94,7 @@ theme.wishlist = {
                 "Image": product.image?.src || "",
             }
         })
+
         const updateData = {
             "No. Of Products": productData.length,
             "Total Amount": productData.reduce(function(a,b) { 
@@ -100,5 +104,4 @@ theme.wishlist = {
         }
         webengage.track("Wishlist Updated", updateData);
     }
-
 }

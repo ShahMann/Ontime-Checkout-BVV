@@ -127,6 +127,8 @@
 					{%- render 'product-share-buttons', block: block, product: product, section_id: section.id -%}
 				{%- when 'benefits' -%}
 					{%- render 'product-benefits', block: block -%}
+				{%- when 'image_banner' -%}
+					{%- render 'product-image-banner', block: block -%}
 				{%- else -%}
 					{% if col == 'third_column' %}
 						{%- render block -%}

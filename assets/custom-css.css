@@ -248,11 +248,11 @@ body .product-card wishlist-element,
 body .product-card wishlist-remove {
     position: absolute;
     top: unset;
-    right: 54px;
+    right: unset;
     z-index: 2;
     cursor: pointer;
     bottom: 0;
-    left: unset;
+    left: 10px;
 }
 body .product-card wishlist-remove {
     width: unset;

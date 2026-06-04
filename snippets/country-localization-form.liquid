@@ -167,6 +167,29 @@
 						</a>
 					</li>
 				{% endif %}
+
+				{% if localization.country.name != 'Iraq' and localization.country.name != 'العراق' %}
+
+					{%- liquid 
+						assign url = 'https://iq.ontime.com?country=iq'
+
+						if request.locale.iso_code == "ar"
+							assign url = url | replace: "iq.ontime.com", "iq.ontime.com/ar" 
+						endif
+					-%}
+
+					<li class="disclosure__item {{ class -}}__country-item" tabindex="-1">
+						<a
+							class="disclosure__link"
+							href="{{ url }}"
+						>
+						<span class="disclosure__item-text {{ class -}}__country-item-text">
+							<img src="https://cdn.shopify.com/s/files/1/0755/0671/2868/files/Flag_of_Iraq.png?v=1763472561" alt="Iraq" height="25" width="25">
+							<span>{{ 'general.countries.iraq' | t }}</span>
+						</span>	
+						</a>
+					</li>
+				{% endif %}
 			</ul>
 
 			<input type="hidden" name="country_code" value="{{- localization.country.iso_code -}}">

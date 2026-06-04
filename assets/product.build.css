@@ -1934,6 +1934,30 @@ alert-modal-buttons message-wrapper p {
   color: var(--color-text-secondary);
 }
 
+.direction-svg {
+  line-height: 7px;
+}
+
+.direction-link {
+  text-decoration: none!important;
+}
+.pickup-availability-address .location .direction-svg svg {
+  width: 15px;
+  height: 15px;
+  fill: var(--link-color);
+}
+
+.pickup-availability-address .location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: .3s all ease;
+}
+
+.pickup-availability-address .location:hover{
+  gap: 8px;
+}
+
 .pickup-availability-address p+p {
   margin-top: 16px;
 }

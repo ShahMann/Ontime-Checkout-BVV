@@ -50,9 +50,24 @@
 {%- endcapture -%}
 
 {% assign is_preset = false %}
+{% assign free_product = null %}
 
 {% if product == blank %}
 	{% assign is_preset = true %}
+{% else %}
+	{% for collection in product.collections %}
+		{% if collection.metafields.custom.free_product.value %}
+			{% assign free_product_metafield = collection.metafields.custom.free_product.value %}
+			{% if free_product_metafield.id %}
+				{% assign free_product = free_product_metafield.id %}
+			{% elsif free_product_metafield.selected_or_first_available_variant %}
+				{% assign free_product = free_product_metafield.selected_or_first_available_variant.id %}
+			{% endif %}
+			{% if free_product %}
+				{% break %}
+			{% endif %}
+		{% endif %}
+	{% endfor %}
 {% endif %}
 
 {%- capture size_guide -%}
@@ -82,6 +97,11 @@
 	data-is-preset="{{- is_preset -}}"
 	data-section-id="{{- section.id -}}"
 	data-product-handle="{{- product.handle -}}"
+	{% if product != blank %}
+	data-free-collection-product-variant-id="{{ free_product | remove: 'gid://shopify/ProductVariant/' }}"
+	data-product-tags="{{ product.tags | join: ',' }}"
+	data-vendor="{{ product.vendor | escape }}"
+	{% endif %}
 	data-js-product-container
 >
 	{% include 'product-json' %}

@@ -989,6 +989,7 @@
   bottom: 0;
   z-index: 2;
   left: 0;
+  bottom: 55px;
 }
 
 /* wishlist-element css */
@@ -1012,4 +1013,18 @@ wishlist-element button.wishlist-button {
   color: #121212bf;
   font-size: 10px;
   letter-spacing: .13rem;
+}
+@media (max-width: 768px) {
+  .product-card__main img.image-badge {
+    max-width: 35px;
+    bottom: 35px;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  .product-card__main img.image-badge {
+    max-width: 30px;
+    bottom: 35px;
+  }
 }

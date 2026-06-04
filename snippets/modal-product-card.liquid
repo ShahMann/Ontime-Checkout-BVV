@@ -128,12 +128,12 @@
 				{%- endunless -%}
 
 					<small class="modal-product-card__error-message js-product-card-error">
-						{%- if product.selected_or_first_available_variant.inventory_management and product.selected_or_first_available_variant.inventory_quantity <= 3 -%}
+						{%- if product.selected_or_first_available_variant.available == false -%}
 							{{- "products.product.sold_out" | t -}}
 						{%- endif -%}
 					</small>
 
-					<input​
+					<input
 						type="hidden"
 						name="id"
 						class="is-hidden js-product-card-variant-input"

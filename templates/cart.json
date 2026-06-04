@@ -32,10 +32,10 @@
       "settings": {
         "heading": "Featured products",
         "product_list": [
-          "tor009",
+          "men-luciano-silver-watch",
           "tor124",
           "alu046",
-          "alu024"
+          "women-blue-watch"
         ],
         "products_in_row": "4",
         "banner_image": "shopify://shop_images/Jewelry_69669961-7ae4-4285-a4c6-42ea564a474f.jpg",
@@ -57,9 +57,29 @@
         "offset_top_mobile": 25,
         "offset_bottom_mobile": 30
       }
+    },
+    "1762417121c7675b6c": {
+      "type": "apps",
+      "blocks": {
+        "essential_upsell_frequently_bought_together_app_block_KRkNM6": {
+          "type": "shopify://apps/essential-upsell/blocks/frequently-bought-together-app-block/50627fd9-24fd-4250-8614-accc12826d80",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "essential_upsell_frequently_bought_together_app_block_KRkNM6"
+      ],
+      "settings": {
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
     }
   },
   "order": [
+    "1762417121c7675b6c",
     "cart-template",
     "featured-products"
   ]

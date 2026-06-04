@@ -15,8 +15,8 @@
       "settings": {
         "banner_overlay": "rgba(0, 0, 0, 0.3)",
         "banner_text_color": "#ffffff",
-        "paginate_by": 7,
-        "pagination_type": "lazy_load",
+        "paginate_by": 9,
+        "pagination_type": "pagination",
         "lazy_load_button_type": "primary",
         "show_filter_by_tag": true,
         "featured_post": "news/the-art-of-wrist-stacking-how-to-style-jewelry-with-watches-for-a-modern-luxury-look",

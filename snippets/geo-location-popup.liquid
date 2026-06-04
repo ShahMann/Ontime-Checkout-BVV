@@ -124,6 +124,19 @@
                             {{ 'general.popup.geo_location.countries.kuwait' | t }}
                         </a>
                     {% endif %}
+					
+					 {% if localization.country.name != 'Iraq' and localization.country.name != 'العراق' %}
+						{%- liquid 
+							assign url = 'https://iq.ontime.com?country=iq'
+
+							if request.locale.iso_code == "ar"
+								assign url = url | replace: "iq.ontime.com", "iq.ontime.com/ar" 
+							endif
+						-%}
+						<a class="button button--secondary button--full-width" type="button" href="{{ url }}">
+							{{ 'general.popup.geo_location.countries.iraq' | t }}
+						</a>
+					{% endif %}
 
                     <button class="button button--primary button--full-width js-geo-location-popup-confirm" type="button" style="border: 1px solid;" data-localization="{{ localization.country.iso_code }}">
                         {{ 'general.popup.geo_location.countries.stay' | t }}

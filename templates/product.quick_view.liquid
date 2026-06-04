@@ -108,6 +108,24 @@
 	{% endif %}
 {% endcapture %}
 
+{%- comment -%} Free product logic for collection metafields {%- endcomment -%}
+{% assign free_product = null %}
+
+{% for collection in product.collections %}
+  {% if collection.metafields.custom.free_product.value %}
+    {% assign free_product_metafield = collection.metafields.custom.free_product.value %}
+    {% comment %} Check if it's a ProductVariant (has .id directly) or Product (needs .selected_or_first_available_variant.id) {% endcomment %}
+    {% if free_product_metafield.id %}
+      {% assign free_product = free_product_metafield.id %}
+    {% elsif free_product_metafield.selected_or_first_available_variant %}
+      {% assign free_product = free_product_metafield.selected_or_first_available_variant.id %}
+    {% endif %}
+    {% if free_product %}
+      {% break %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
 <div
 	class="modal quick-view js-quick-view"
 	id="quick-view"
@@ -116,6 +134,10 @@
 	aria-modal="true"
 	role="dialog"
 	data-section-type="product"
+	data-free-collection-product-variant-id="{{ free_product | remove: 'gid://shopify/ProductVariant/' }}"
+	data-free-variant-price="{{ product.selected_or_first_available_variant.price | money_without_currency }}"
+	data-vendor="{{ product.vendor | escape }}"
+	data-product-tags="{{ product.tags | join: ',' }}"
 >
 	<header class="modal__header quick-view__header">
 		<div class="quick-view__heading--mobile">

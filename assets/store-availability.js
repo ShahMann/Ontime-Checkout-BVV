@@ -36,7 +36,6 @@ if (!customElements.get('store-availability')) {
             if (checkClickAndCollectReq.data.result[0][this.sku]) {
                 this.skeleton?.remove()
                 this.handleSyncStores(this.clickAndCollectContainer, 'showDrawer-click-and-collect-drawer', "click-and-collect-drawer")
-
             }
 
             this.handleSyncStores(this.storeListContainer, 'showDrawer-store-list', "store-list-drawer")
@@ -120,6 +119,12 @@ if (!customElements.get('store-availability')) {
                     ${store.store_address.area || ''}<br/>
                     ${store.store_address.city}, ${store.store_address.state}<br/>
                     ${store.store_address.country}
+                    </p>
+                    <p class="location">
+                        <a href="${store.store_address.geo_location}" target="_blank" class="direction-link">Store Direction</a>
+                        <span class="direction-svg">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" focusable="false" aria-hidden="true" class="a8x1wuy a8x1wux _1fragem32 _1fragemq0 _1fragemly _1fragemlo _1fragemp6"><path stroke-linejoin="round" d="m7.875 11.697 4.003-8.578c.296-.635-.362-1.293-.997-.997L2.303 6.125c-.453.212-.35.884.146.949l3.385.446a.75.75 0 0 1 .646.646l.446 3.385c.065.495.737.599.949.146"></path></svg>
+                        </span>
                     </p>
                 </address>`;
                 ul.appendChild(li);

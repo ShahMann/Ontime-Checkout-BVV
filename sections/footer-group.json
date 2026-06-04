@@ -19,8 +19,8 @@
         "heading": "Newsletter",
         "subheading": "Subscribe",
         "text": "<p>Be the first to know about new collections and exclusive offers</p>",
-        "image_desktop": "shopify://shop_images/Artboard_1_copy_2_1_51ab2ba3-e4bb-40b3-8b20-96ce7b4c26aa.png",
-        "image_mobile": "shopify://shop_images/Artboard_1_copy_2_1.png",
+        "image_desktop": "shopify://shop_images/Artboard_1_copy_2_2_bdfe31b6-2db9-4d6d-b5e3-14a5e30b5890_2.png",
+        "image_mobile": "shopify://shop_images/Artboard_1_copy_2_2_bdfe31b6-2db9-4d6d-b5e3-14a5e30b5890_2.png",
         "hide_image": false,
         "image_position": "left",
         "content_position": "center",
@@ -30,7 +30,7 @@
         "success_message": "Thanks for subscribing",
         "heading_color": "#ffffff",
         "text_color": "#ffffff",
-        "section_background": "#a36246",
+        "section_background": "",
         "content_background": "rgba(0, 0, 0, 0.4)",
         "enable_content_glass_effect": true,
         "container_width": "100%",
@@ -66,7 +66,7 @@
           "type": "payment_methods",
           "settings": {
             "heading": "Payment",
-            "payment_methods": "visa,master,knet,tabby"
+            "payment_methods": "visa,master,knet,tabby,taly"
           }
         }
       },

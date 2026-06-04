@@ -59,13 +59,33 @@
 		{%- endif -%}
 	{%- endif -%}
 {%- endcapture -%}
+{% assign free_product = null %}
 
+{% for collection in product.collections %}
+  {% if collection.metafields.custom.free_product.value %}
+    {% assign free_product_metafield = collection.metafields.custom.free_product.value %}
+    {% comment %} Check if it's a ProductVariant (has .id directly) or Product (needs .selected_or_first_available_variant.id) {% endcomment %}
+    {% if free_product_metafield.id %}
+      {% assign free_product = free_product_metafield.id %}
+    {% elsif free_product_metafield.selected_or_first_available_variant %}
+      {% assign free_product = free_product_metafield.selected_or_first_available_variant.id %}
+    {% endif %}
+    {% if free_product %}
+      {% break %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
 <section
 	class="product-section"
 	style="{{ section_styles }}"
 	data-section-type="product"
 	data-section-id="{{- section.id -}}"
 	data-product-handle="{{- product.handle -}}"
+	data-free-variant-id="{{ product.metafields.custom.free_product.value.id | remove: 'gid://shopify/ProductVariant/' }}"
+	data-free-collection-product-variant-id="{{ free_product | remove: 'gid://shopify/ProductVariant/' }}"
+	data-free-variant-price="{{ product.selected_or_first_available_variant.price | money_without_currency }}"
+	data-product-tags="{{ product.tags | join: ',' }}"
+	data-vendor="{{ product.vendor | escape }}"
 	data-js-product-container
 >
 	{% include 'product-json' %}
@@ -95,6 +115,30 @@
 		{%- endcase -%}
 	{%- endfor -%}
 </section>
+
+{% if product.metafields.custom.free_product.value %}
+  <script src="{{ 'free-product.js' | asset_url }}" defer></script>
+{% endif %}
+
+{% if free_product and product.vendor == 'DICI' %}
+  <script src="{{ 'free-collection-product.js' | asset_url }}" defer></script>
+{% endif %}
+
+{% if free_product and product.vendor == 'DKNY' %}
+  <script src="{{ 'free-dkny-collection-product.js' | asset_url }}" defer></script>
+{% endif %}
+
+{% if free_product and product.vendor == 'AIGNER' %}
+  <script src="{{ 'free-aigner-collection-product.js' | asset_url }}" defer></script>
+{% endif %}
+
+{% if free_product and product.vendor == 'D1 MILANO' %}
+	<script src="{{ 'd1-free-gift.js' | asset_url }}" defer></script>
+{% endif %}
+
+{% if free_product and product.vendor == 'TORRI' %}
+	<script src="{{ 'free-torri-collection-product.js' | asset_url }}" defer></script>
+{% endif %}
 
 {%- render 'adastra' with '/src/scripts/section-product.js' -%}
 {%- render 'adastra' with '/src/scripts/product-alert-models.js' -%}
@@ -2498,6 +2542,97 @@
 					"type": "url",
 					"id": "link_url_3",
 					"label": "Link url"
+				},
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "range",
+					"id": "offset_top_desktop",
+					"min": 0,
+					"max": 32,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset top",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_desktop",
+					"min": 0,
+					"max": 32,
+					"step": 1,
+					"unit": "px",
+					"label": "Desktop offset bottom",
+					"default": 16
+				},
+				{
+					"type": "range",
+					"id": "offset_top_mobile",
+					"min": 0,
+					"max": 32,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset top",
+					"default": 8
+				},
+				{
+					"type": "range",
+					"id": "offset_bottom_mobile",
+					"min": 0,
+					"max": 32,
+					"step": 1,
+					"unit": "px",
+					"label": "Mobile offset bottom",
+					"default": 8
+				}
+			]
+		},
+		{
+			"name": "Image banner",
+			"type": "image_banner",
+			"limit": 5,
+			"settings": [
+				{
+					"type": "select",
+					"id": "position",
+					"label": "Block column position",
+					"info": "This setting only works for 3 cols layout",
+					"default": "third_column",
+					"options": [
+						{
+							"value": "first_column",
+							"label": "First column"
+						},
+						{
+							"value": "third_column",
+							"label": "Third column"
+						}
+					]
+				},
+				{
+					"type": "image_picker",
+					"id": "banner_image",
+					"label": "Banner image"
+				},
+				{
+					"type": "image_picker",
+					"id": "banner_image_mobile",
+					"label": "Banner image (mobile)",
+					"info": "Optional: Use a different image for mobile devices"
+				},
+				{
+					"type": "text",
+					"id": "banner_alt",
+					"label": "Image alt text",
+					"info": "Leave blank to use image alt text"
+				},
+				{
+					"type": "url",
+					"id": "banner_link",
+					"label": "Banner link",
+					"info": "Optional: Make the banner clickable"
 				},
 				{
 					"type": "header",

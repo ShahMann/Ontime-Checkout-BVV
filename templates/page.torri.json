@@ -1,0 +1,175 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "default-page": {
+      "type": "page-template",
+      "settings": {
+        "enable_heading": false,
+        "enable_content": true,
+        "offset_top_desktop": 0,
+        "offset_bottom_desktop": 0,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "collection_products_3zPAWX": {
+      "type": "collection-products",
+      "name": "Collection products",
+      "settings": {
+        "heading": "New Arrivals",
+        "collection": "torri-new-in",
+        "max_product_fetch": 20,
+        "products_in_row": "5",
+        "banner_image": "shopify://shop_images/Watches_2e10da46-552a-4b2f-ae3d-0a7eb67f5d36.png",
+        "banner_heading": "",
+        "banner_subheading": "Discover our best sellers",
+        "button_label": "",
+        "button_url": "shopify://collections/torri",
+        "text_color": "#ffffff",
+        "overlay_color": "rgba(0, 0, 0, 0.4)",
+        "button_color": "#ffffff",
+        "button_background_color": "rgba(0,0,0,0)",
+        "button_border_color": "#ffffff",
+        "button_hover_color": "#000000",
+        "button_hover_background": "#ffffff",
+        "button_hover_border": "#ffffff",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "featured_collection_b9dkj4": {
+      "type": "featured-collection",
+      "name": "Featured collection",
+      "settings": {
+        "collection": "torri-trending",
+        "image": "shopify://shop_images/TORRMobile.jpg",
+        "image_size": "height",
+        "products_per_row": "3",
+        "products_to_show": 3,
+        "image_overlay": "linear-gradient(180deg, rgba(255, 140, 140, 0) 5%, rgba(255, 140, 140, 0) 52%, rgba(0, 0, 0, 1) 100%)",
+        "image_text": "#ffffff",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "products_carousel_WMAfjg": {
+      "type": "products-carousel",
+      "blocks": {
+        "product_rNgrWA": {
+          "type": "product",
+          "settings": {
+            "product": "tor057",
+            "show_variant": false,
+            "video_desktop": "shopify://files/videos/Torri Male_desktop.mp4",
+            "video_mobile": "shopify://files/videos/Torri Male_mob.mp4"
+          }
+        },
+        "product_gNdfpC": {
+          "type": "product",
+          "settings": {
+            "product": "men-angelo-silver-watch",
+            "show_variant": false,
+            "video_desktop": "shopify://files/videos/Torri Male_desktop.mp4"
+          }
+        }
+      },
+      "block_order": [
+        "product_rNgrWA",
+        "product_gNdfpC"
+      ],
+      "name": "Products carousel",
+      "settings": {
+        "button_style": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "collection_list_2_WXYPzK": {
+      "type": "collection-list-2",
+      "blocks": {
+        "collection_mf86Ka": {
+          "type": "collection",
+          "settings": {
+            "collection": "torri-men",
+            "menu": "",
+            "link_label": "View all"
+          }
+        },
+        "collection_zB4mxw": {
+          "type": "collection",
+          "settings": {
+            "collection": "torri-women",
+            "menu": "",
+            "link_label": "View all"
+          }
+        },
+        "collection_hiXqDw": {
+          "type": "collection",
+          "settings": {
+            "collection": "torri-watches",
+            "menu": "",
+            "link_label": "View all"
+          }
+        },
+        "collection_yHHVUc": {
+          "type": "collection",
+          "settings": {
+            "collection": "torri-wallets",
+            "menu": "",
+            "link_label": "View all"
+          }
+        },
+        "collection_eHrmem": {
+          "type": "collection",
+          "settings": {
+            "collection": "torri-jewelry",
+            "image": "shopify://shop_images/jewelry_2x_8ce4c88d-2356-4a3f-99dd-4680a1c71a38.png",
+            "menu": "",
+            "link_label": "View all"
+          }
+        }
+      },
+      "block_order": [
+        "collection_mf86Ka",
+        "collection_zB4mxw",
+        "collection_hiXqDw",
+        "collection_yHHVUc",
+        "collection_eHrmem"
+      ],
+      "name": "Promo collections",
+      "settings": {
+        "heading": "Torri Premium",
+        "text_alignment": "center",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    }
+  },
+  "order": [
+    "default-page",
+    "collection_products_3zPAWX",
+    "featured_collection_b9dkj4",
+    "products_carousel_WMAfjg",
+    "collection_list_2_WXYPzK"
+  ]
+}

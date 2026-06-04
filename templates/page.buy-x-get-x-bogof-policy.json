@@ -9,20 +9,11 @@
  */
 {
   "sections": {
-    "blog": {
-      "type": "blog-template",
-      "name": "Ontime Blog",
+    "default-page": {
+      "type": "page-template",
       "settings": {
-        "banner_overlay": "rgba(0, 0, 0, 0.3)",
-        "banner_text_color": "#ffffff",
-        "paginate_by": 7,
-        "pagination_type": "lazy_load",
-        "lazy_load_button_type": "primary",
-        "show_filter_by_tag": true,
-        "featured_post": "news/the-art-of-wrist-stacking-how-to-style-jewelry-with-watches-for-a-modern-luxury-look",
-        "featured_post_background_color": "#050d2f",
-        "featured_post_text_color": "#ffffff",
-        "container_width": "inherit",
+        "enable_heading": false,
+        "enable_content": true,
         "offset_top_desktop": 40,
         "offset_bottom_desktop": 40,
         "offset_top_mobile": 25,
@@ -31,6 +22,6 @@
     }
   },
   "order": [
-    "blog"
+    "default-page"
   ]
 }

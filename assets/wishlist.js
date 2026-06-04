@@ -111,26 +111,27 @@ if (!customElements.get('wishlist-element')) {
                 this.removeToWishlistState()
                 this.handleWishlistCount(+1)
                 target.parentElement.removeAttribute("disabled")
-
+                
+                // Track the event data
                 webengage.track("Added To Wishlist", this.eventData);
             }
 
-            // gtag("event", "add_to_wishlist", {
-            //     currency: this.currency,
-            //     value: this.value,
-            //     items: [
-            //       {
-            //         item_id: this.productId,
-            //         item_name: this.title,
-            //         index: 0,
-            //         item_brand: this.category,
-            //         item_variant: this.variantId,
-            //         price: this.value,
-            //         quantity: 1,
-            //         sku: this.sku
-            //       }
-            //     ],
-            // });
+            gtag("event", "add_to_wishlist", {
+                currency: this.currency,
+                value: this.value,
+                items: [
+                  {
+                    item_id: this.productId,
+                    item_name: this.title,
+                    index: 0,
+                    item_brand: this.category,
+                    item_variant: this.variantId,
+                    price: this.value,
+                    quantity: 1,
+                    sku: this.sku
+                  }
+                ],
+            });
         }
 
         async removeFromWishlist(target) {
@@ -141,6 +142,7 @@ if (!customElements.get('wishlist-element')) {
                 this.handleWishlistCount(-1)
                 target.parentElement.removeAttribute("disabled")
 
+                // Track the event data
                 webengage.track("Removed From Wishlist", this.eventData);
             }
         }
@@ -163,25 +165,4 @@ if (!customElements.get('wishlist-element')) {
     }
 
     customElements.define('wishlist-element', WishlistElement)
-
-
-    function webengageOnReady(cb) {
-        if (typeof webengage == "undefined") {
-            setTimeout(function() {
-                webengageOnReady(cb);
-            }, 100);
-        } else {
-            webengage.onReady(cb)
-        }
-    }
-
-    webengageOnReady(function(){
-
-        document.addEventListener('add-to-wishlist', function(e) {
-            // webengage.track("add_to_wishlist", e.detail);
-            console.log("Webengage add_to_wishlist event data:", e.detail);
-        });
-    })
-
-    
 }

@@ -161,6 +161,14 @@
   transition-duration: var(--timing-short);
   transition-timing-function: var(--easing-linear);
 }
+.shopify-policy__body td h3 {
+  word-break: unset !important
+}
+
+.shopify-policy__body td {
+    padding: 20px 15px !important;
+    width: auto !important;
+}
 @media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
   .responsive-table a:hover {
     text-decoration-color: transparent;

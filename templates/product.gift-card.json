@@ -101,6 +101,12 @@
             "show_price_drop": false
           }
         },
+        "tabby_pay_later_pdp_final_qMCE3n": {
+          "type": "shopify://apps/tabby-pay-later/blocks/pdp-final/b31c2495-41fc-4b20-9fc7-8cb2e9dd9a95",
+          "settings": {
+            "no_price_display": false
+          }
+        },
         "drawers": {
           "type": "drawers",
           "settings": {
@@ -143,6 +149,7 @@
         "price",
         "gift_wrap_product_qAVGDi",
         "add_to_cart",
+        "tabby_pay_later_pdp_final_qMCE3n",
         "drawers",
         "socials_63NVJP"
       ],
