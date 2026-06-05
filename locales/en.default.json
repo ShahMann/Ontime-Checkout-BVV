@@ -612,6 +612,7 @@
         "from_price_html": "From {{ price }}",
         "regular_price": "Regular price",
         "sale_price": "Sale price",
+        "vip_price_badge": "VIP EARLY ACCESS",
         "unit_price": "Unit price",
         "taxes_included": "Tax included.",
         "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout."

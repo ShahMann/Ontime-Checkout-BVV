@@ -101,7 +101,7 @@
 			</span>
 
 			{%- if show_vip_price -%}
-				<span class="vip-price-badge">Early Access Price</span>
+				<span class="vip-price-badge">{{- 'products.product.price.vip_price_badge' | t -}}</span>
 			{%- elsif show_discount_percentage -%}
 				{% assign discount_value = price | times: 100 | divided_by: compare_at_price %}
 
