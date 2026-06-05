@@ -9,272 +9,11 @@
  */
 {
   "sections": {
-    "mobile_app_download_qcyVxm": {
-      "type": "mobile-app-download",
-      "disabled": true,
-      "name": "Mobile Popup Banner",
-      "settings": {
-        "logo": "shopify://shop_images/logo-01.png",
-        "heading": "Get Our App",
-        "heading_color": "#191d2f",
-        "subheading": "Quicker access to your profile, orders, and more!",
-        "subheading_color": "#565c78",
-        "button_text": "Download App",
-        "button_bg": "#a36246",
-        "button_color": "#ffffff",
-        "ios_link": "https://apps.apple.com/in/app/ontime-online-shopping/id1496952000",
-        "android_link": "https://play.google.com/store/apps/details?id=com.ontime.app.prod",
-        "bg_color": "#ffffff",
-        "icon_color": "#565c78"
-      }
-    },
     "slideshow": {
       "type": "slideshow",
       "blocks": {
-        "image_C9MdEk": {
+        "image_d37yUW": {
           "type": "image",
-          "disabled": true,
-          "settings": {
-            "image_desktop": "shopify://shop_images/Desktop_ENG_019d7bef-dee7-4cda-bce7-b0674e3ca66a.png",
-            "image_mobile": "shopify://shop_images/Mobile_ENG_69441be1-e780-44ac-a2f9-7a9853432755.png",
-            "heading": "",
-            "description": "",
-            "button_text": "",
-            "button_aria_label": "",
-            "button_link": "shopify://collections/ramadan-collection",
-            "open_in_new_tab": false,
-            "make_link_full_slide": true,
-            "second_button_text": "",
-            "second_button_aria_label": "",
-            "second_button_link": "/",
-            "second_open_in_new_tab": false,
-            "text_alignment_inside_block": "left",
-            "content_alignment": "slideshow__slide-content--left",
-            "vertical_content_alignment": "slideshow__slide-content--middle",
-            "background_color": "#757575",
-            "background_content": "",
-            "heading_color": "#ffffff",
-            "description_color": "#ffffff",
-            "button_text_color": "#000000",
-            "button_background_color": "#ffffff",
-            "button_border_color": "#ffffff",
-            "button_text_color_hover": "#000000",
-            "button_background_color_hover": "#4d71f9",
-            "button_border_color_hover": "#4d71f9",
-            "second_button_text_color": "#ffffff",
-            "second_button_text_color_hover": "#000000",
-            "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
-          }
-        },
-        "image_VqezXj": {
-          "type": "image",
-          "disabled": true,
-          "settings": {
-            "image_desktop": "shopify://shop_images/Mothers_day_Desktop_ENG.png",
-            "image_mobile": "shopify://shop_images/Mothers_day_Mobile_ENG.png",
-            "heading": "",
-            "description": "",
-            "button_text": "",
-            "button_aria_label": "",
-            "button_link": "shopify://collections/watches_women",
-            "open_in_new_tab": false,
-            "make_link_full_slide": true,
-            "second_button_text": "",
-            "second_button_aria_label": "",
-            "second_button_link": "/",
-            "second_open_in_new_tab": false,
-            "text_alignment_inside_block": "left",
-            "content_alignment": "slideshow__slide-content--left",
-            "vertical_content_alignment": "slideshow__slide-content--middle",
-            "background_color": "#757575",
-            "background_content": "",
-            "heading_color": "#ffffff",
-            "description_color": "#ffffff",
-            "button_text_color": "#000000",
-            "button_background_color": "#ffffff",
-            "button_border_color": "#ffffff",
-            "button_text_color_hover": "#000000",
-            "button_background_color_hover": "#4d71f9",
-            "button_border_color_hover": "#4d71f9",
-            "second_button_text_color": "#ffffff",
-            "second_button_text_color_hover": "#000000",
-            "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
-          }
-        },
-        "image_LLMWMT": {
-          "type": "image",
-          "settings": {
-            "image_desktop": "shopify://shop_images/KWT_Under_40_3JUN_Desktop_ENG.png",
-            "image_mobile": "shopify://shop_images/KWT_Under_40_3JUN_Mobile_ENG.png",
-            "heading": "",
-            "description": "",
-            "button_text": "",
-            "button_aria_label": "",
-            "button_link": "shopify://collections/below-40",
-            "open_in_new_tab": false,
-            "make_link_full_slide": true,
-            "second_button_text": "",
-            "second_button_aria_label": "",
-            "second_button_link": "/",
-            "second_open_in_new_tab": false,
-            "text_alignment_inside_block": "left",
-            "content_alignment": "slideshow__slide-content--left",
-            "vertical_content_alignment": "slideshow__slide-content--middle",
-            "background_color": "#757575",
-            "background_content": "",
-            "heading_color": "#ffffff",
-            "description_color": "#ffffff",
-            "button_text_color": "#000000",
-            "button_background_color": "#ffffff",
-            "button_border_color": "#ffffff",
-            "button_text_color_hover": "#000000",
-            "button_background_color_hover": "#4d71f9",
-            "button_border_color_hover": "#4d71f9",
-            "second_button_text_color": "#ffffff",
-            "second_button_text_color_hover": "#000000",
-            "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
-          }
-        },
-        "image_QTnGfh": {
-          "type": "image",
-          "settings": {
-            "image_desktop": "shopify://shop_images/Summer_FP_1_JUN_Desktop_ENG.png",
-            "image_mobile": "shopify://shop_images/Summer_FP_1_JUN_Mobile_ENG.png",
-            "heading": "",
-            "description": "",
-            "button_text": "",
-            "button_aria_label": "",
-            "button_link": "shopify://collections/new-products-in",
-            "open_in_new_tab": false,
-            "make_link_full_slide": true,
-            "second_button_text": "",
-            "second_button_aria_label": "",
-            "second_button_link": "/",
-            "second_open_in_new_tab": false,
-            "text_alignment_inside_block": "left",
-            "content_alignment": "slideshow__slide-content--left",
-            "vertical_content_alignment": "slideshow__slide-content--bottom",
-            "background_color": "#757575",
-            "background_content": "",
-            "heading_color": "#ffffff",
-            "description_color": "#ffffff",
-            "button_text_color": "#ffffff",
-            "button_background_color": "#91553d",
-            "button_border_color": "#91553d",
-            "button_text_color_hover": "#91553d",
-            "button_background_color_hover": "#ffffff",
-            "button_border_color_hover": "#91553d",
-            "second_button_text_color": "#ffffff",
-            "second_button_text_color_hover": "#91553d",
-            "overlay_color": ""
-          }
-        },
-        "image_ctBp73": {
-          "type": "image",
-          "settings": {
-            "image_desktop": "shopify://shop_images/Special_Price_1_JUN_Desktop_ENG.png",
-            "image_mobile": "shopify://shop_images/Special_Price_1_JUN_Mobile_ENG.png",
-            "heading": "",
-            "description": "",
-            "button_text": "",
-            "button_aria_label": "",
-            "button_link": "shopify://collections/promotions",
-            "open_in_new_tab": false,
-            "make_link_full_slide": true,
-            "second_button_text": "",
-            "second_button_aria_label": "",
-            "second_button_link": "",
-            "second_open_in_new_tab": false,
-            "text_alignment_inside_block": "left",
-            "content_alignment": "slideshow__slide-content--left",
-            "vertical_content_alignment": "slideshow__slide-content--middle",
-            "background_color": "#757575",
-            "background_content": "",
-            "heading_color": "#ffffff",
-            "description_color": "#ffffff",
-            "button_text_color": "#000000",
-            "button_background_color": "#ffffff",
-            "button_border_color": "#ffffff",
-            "button_text_color_hover": "#000000",
-            "button_background_color_hover": "#4d71f9",
-            "button_border_color_hover": "#4d71f9",
-            "second_button_text_color": "#ffffff",
-            "second_button_text_color_hover": "#000000",
-            "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
-          }
-        },
-        "image-1": {
-          "type": "image",
-          "settings": {
-            "image_desktop": "shopify://shop_images/rawa-pd743423q8rcrt48fvv6czs8n584z12f.png",
-            "image_mobile": "shopify://shop_images/rawa-pd73c9axnh0nq2zkszgh1ys3qx84zexd.png",
-            "heading": "",
-            "description": "",
-            "button_text": "",
-            "button_aria_label": "",
-            "button_link": "shopify://collections/alula",
-            "open_in_new_tab": false,
-            "make_link_full_slide": true,
-            "second_button_text": "",
-            "second_button_aria_label": "",
-            "second_button_link": "/",
-            "second_open_in_new_tab": false,
-            "text_alignment_inside_block": "left",
-            "content_alignment": "slideshow__slide-content--left",
-            "vertical_content_alignment": "slideshow__slide-content--bottom",
-            "background_color": "#757575",
-            "background_content": "",
-            "heading_color": "#ffffff",
-            "description_color": "#ffffff",
-            "button_text_color": "#ffffff",
-            "button_background_color": "#91553d",
-            "button_border_color": "#91553d",
-            "button_text_color_hover": "#91553d",
-            "button_background_color_hover": "#ffffff",
-            "button_border_color_hover": "#91553d",
-            "second_button_text_color": "#91553d",
-            "second_button_text_color_hover": "#91553d",
-            "overlay_color": ""
-          }
-        },
-        "image_VCwyRc": {
-          "type": "image",
-          "disabled": true,
-          "settings": {
-            "image_desktop": "shopify://shop_images/B1G1_JEW_Desktop_ENG.png",
-            "image_mobile": "shopify://shop_images/B1G1_JEW_Mobile_ENG.png",
-            "heading": "",
-            "description": "",
-            "button_text": "",
-            "button_aria_label": "",
-            "button_link": "shopify://collections/buy-1-get-1-jewelry-free",
-            "open_in_new_tab": false,
-            "make_link_full_slide": true,
-            "second_button_text": "",
-            "second_button_aria_label": "",
-            "second_button_link": "/",
-            "second_open_in_new_tab": false,
-            "text_alignment_inside_block": "left",
-            "content_alignment": "slideshow__slide-content--left",
-            "vertical_content_alignment": "slideshow__slide-content--middle",
-            "background_color": "#757575",
-            "background_content": "",
-            "heading_color": "#ffffff",
-            "description_color": "#ffffff",
-            "button_text_color": "#000000",
-            "button_background_color": "#ffffff",
-            "button_border_color": "#ffffff",
-            "button_text_color_hover": "#000000",
-            "button_background_color_hover": "#4d71f9",
-            "button_border_color_hover": "#4d71f9",
-            "second_button_text_color": "#ffffff",
-            "second_button_text_color_hover": "#000000",
-            "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
-          }
-        },
-        "image_QbNxkq": {
-          "type": "image",
-          "disabled": true,
           "settings": {
             "image_desktop": "shopify://shop_images/Desktop_ENG_902737cd-a342-43b9-ae3e-8b144b8d6bc3.png",
             "image_mobile": "shopify://shop_images/Mobile_ENG_82e099ff-e576-4e52-a4c1-586a0f6642a9.png",
@@ -282,7 +21,7 @@
             "description": "",
             "button_text": "",
             "button_aria_label": "",
-            "button_link": "/",
+            "button_link": "shopify://collections/mens",
             "open_in_new_tab": false,
             "make_link_full_slide": true,
             "second_button_text": "",
@@ -307,9 +46,8 @@
             "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
           }
         },
-        "image_YGVK8q": {
+        "image_MywWD7": {
           "type": "image",
-          "disabled": true,
           "settings": {
             "image_desktop": "shopify://shop_images/Nick_Jonas_Desktop_ENG.png",
             "image_mobile": "shopify://shop_images/Nick_Jonas_Mobile_ENG.png",
@@ -342,22 +80,21 @@
             "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
           }
         },
-        "image_qrd6Uw": {
+        "image_TbiMU3": {
           "type": "image",
-          "disabled": true,
           "settings": {
-            "image_desktop": "shopify://shop_images/KWT_GV_Desktop_ENG.png",
-            "image_mobile": "shopify://shop_images/KWT_GV_Mobile_ENG.png",
+            "image_desktop": "shopify://shop_images/B1G1_KWT_ESP_Desktop_ENG.png",
+            "image_mobile": "shopify://shop_images/B1G1_KWT_ESP_Mobile_ENG.png",
             "heading": "",
             "description": "",
             "button_text": "",
             "button_aria_label": "",
-            "button_link": "shopify://collections/spend-to-save-purchase-list",
+            "button_link": "shopify://products/dc1l318m0024",
             "open_in_new_tab": false,
             "make_link_full_slide": true,
-            "second_button_text": "Terms & Conditions",
-            "second_button_aria_label": "Terms & Conditions",
-            "second_button_link": "shopify://pages/spend-to-save-promotion-terms",
+            "second_button_text": "",
+            "second_button_aria_label": "",
+            "second_button_link": "/",
             "second_open_in_new_tab": false,
             "text_alignment_inside_block": "left",
             "content_alignment": "slideshow__slide-content--left",
@@ -370,14 +107,82 @@
             "button_background_color": "#ffffff",
             "button_border_color": "#ffffff",
             "button_text_color_hover": "#000000",
-            "button_background_color_hover": "#000000",
-            "button_border_color_hover": "#000000",
+            "button_background_color_hover": "#4d71f9",
+            "button_border_color_hover": "#4d71f9",
             "second_button_text_color": "#ffffff",
             "second_button_text_color_hover": "#000000",
             "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
           }
         },
-        "image_kDGEjD": {
+        "image_jNgz8Q": {
+          "type": "image",
+          "settings": {
+            "image_desktop": "shopify://shop_images/KWT_GV_Desktop_ENG.png",
+            "image_mobile": "shopify://shop_images/KWT_GV_Mobile_ENG.png",
+            "heading": "",
+            "description": "",
+            "button_text": "",
+            "button_aria_label": "",
+            "button_link": "shopify://collections/gift-card",
+            "open_in_new_tab": false,
+            "make_link_full_slide": true,
+            "second_button_text": "Terms & Conditions",
+            "second_button_aria_label": "Terms & Conditions",
+            "second_button_link": "/pages/spend-to-save-promotion-terms",
+            "second_open_in_new_tab": false,
+            "text_alignment_inside_block": "left",
+            "content_alignment": "slideshow__slide-content--left",
+            "vertical_content_alignment": "slideshow__slide-content--bottom",
+            "background_color": "#757575",
+            "background_content": "",
+            "heading_color": "#ffffff",
+            "description_color": "#ffffff",
+            "button_text_color": "#ffffff",
+            "button_background_color": "#cb9279",
+            "button_border_color": "#a36246",
+            "button_text_color_hover": "#000000",
+            "button_background_color_hover": "#cb9279",
+            "button_border_color_hover": "#a36246",
+            "second_button_text_color": "#ffffff",
+            "second_button_text_color_hover": "#000000",
+            "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
+          }
+        },
+        "image_bPd6ii": {
+          "type": "image",
+          "settings": {
+            "image_desktop": "shopify://shop_images/B1G1_JEW_Desktop_ENG.png",
+            "image_mobile": "shopify://shop_images/B1G1_JEW_Mobile_ENG.png",
+            "heading": "",
+            "description": "",
+            "button_text": "",
+            "button_aria_label": "",
+            "button_link": "shopify://collections/bags",
+            "open_in_new_tab": false,
+            "make_link_full_slide": true,
+            "second_button_text": "",
+            "second_button_aria_label": "",
+            "second_button_link": "/",
+            "second_open_in_new_tab": false,
+            "text_alignment_inside_block": "left",
+            "content_alignment": "slideshow__slide-content--left",
+            "vertical_content_alignment": "slideshow__slide-content--middle",
+            "background_color": "#757575",
+            "background_content": "",
+            "heading_color": "#ffffff",
+            "description_color": "#ffffff",
+            "button_text_color": "#000000",
+            "button_background_color": "#ffffff",
+            "button_border_color": "#ffffff",
+            "button_text_color_hover": "#000000",
+            "button_background_color_hover": "#4d71f9",
+            "button_border_color_hover": "#4d71f9",
+            "second_button_text_color": "#ffffff",
+            "second_button_text_color_hover": "#000000",
+            "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
+          }
+        },
+        "image_Y3AnTR": {
           "type": "image",
           "disabled": true,
           "settings": {
@@ -387,7 +192,76 @@
             "description": "",
             "button_text": "",
             "button_aria_label": "",
-            "button_link": "shopify://collections/special-price",
+            "button_link": "/collections/special-price",
+            "open_in_new_tab": false,
+            "make_link_full_slide": false,
+            "second_button_text": "",
+            "second_button_aria_label": "",
+            "second_button_link": "/",
+            "second_open_in_new_tab": false,
+            "text_alignment_inside_block": "left",
+            "content_alignment": "slideshow__slide-content--left",
+            "vertical_content_alignment": "slideshow__slide-content--middle",
+            "background_color": "#757575",
+            "background_content": "",
+            "heading_color": "#ffffff",
+            "description_color": "#ffffff",
+            "button_text_color": "#000000",
+            "button_background_color": "#ffffff",
+            "button_border_color": "#ffffff",
+            "button_text_color_hover": "#000000",
+            "button_background_color_hover": "#4d71f9",
+            "button_border_color_hover": "#4d71f9",
+            "second_button_text_color": "#ffffff",
+            "second_button_text_color_hover": "#000000",
+            "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
+          }
+        },
+        "image_pPfRCQ": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "image_desktop": "shopify://shop_images/Artboard_1_copy_4_1_1.png",
+            "image_mobile": "shopify://shop_images/Artboard_1_copy_2_25cb061b-b42b-4946-b78c-e99ddf653a98_1.png",
+            "heading": "Your Watch, Your Story",
+            "description": "<p>A piece that speaks your name</p>",
+            "button_text": "Engrave Now",
+            "button_aria_label": "",
+            "button_link": "/PERSONALIZE",
+            "open_in_new_tab": false,
+            "make_link_full_slide": false,
+            "second_button_text": "",
+            "second_button_aria_label": "",
+            "second_button_link": "/",
+            "second_open_in_new_tab": false,
+            "text_alignment_inside_block": "left",
+            "content_alignment": "slideshow__slide-content--left",
+            "vertical_content_alignment": "slideshow__slide-content--middle",
+            "background_color": "#757575",
+            "background_content": "",
+            "heading_color": "#ffffff",
+            "description_color": "#ffffff",
+            "button_text_color": "#000000",
+            "button_background_color": "#ffffff",
+            "button_border_color": "#ffffff",
+            "button_text_color_hover": "#000000",
+            "button_background_color_hover": "#4d71f9",
+            "button_border_color_hover": "#4d71f9",
+            "second_button_text_color": "#ffffff",
+            "second_button_text_color_hover": "#000000",
+            "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
+          }
+        },
+        "image_kDGEjD": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "image_desktop": "shopify://shop_images/person-fishing-on-the-beach-is-silhouetted-at-sunset.jpg",
+            "heading": "",
+            "description": "",
+            "button_text": "",
+            "button_aria_label": "",
+            "button_link": "shopify://collections/back-to-school",
             "open_in_new_tab": false,
             "make_link_full_slide": true,
             "second_button_text": "",
@@ -397,27 +271,60 @@
             "text_alignment_inside_block": "left",
             "content_alignment": "slideshow__slide-content--left",
             "vertical_content_alignment": "slideshow__slide-content--bottom",
-            "background_color": "#91553d",
+            "background_color": "#a36246",
             "background_content": "",
             "heading_color": "#ffffff",
             "description_color": "#ffffff",
             "button_text_color": "#ffffff",
-            "button_background_color": "#a77764",
-            "button_border_color": "#91553d",
-            "button_text_color_hover": "#91553d",
-            "button_background_color_hover": "#a77764",
-            "button_border_color_hover": "#a77764",
+            "button_background_color": "#cb9279",
+            "button_border_color": "#a36246",
+            "button_text_color_hover": "#a36246",
+            "button_background_color_hover": "#cb9279",
+            "button_border_color_hover": "#cb9279",
             "second_button_text_color": "#ffffff",
             "second_button_text_color_hover": "#000000",
             "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
+          }
+        },
+        "image_QTnGfh": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "image_desktop": "shopify://shop_images/person-fishing-on-the-beach-is-silhouetted-at-sunset.jpg",
+            "heading": "Your Watch, Your Story",
+            "description": "<p>A piece that speaks your name</p>",
+            "button_text": "Engrave Now",
+            "button_aria_label": "",
+            "button_link": "shopify://collections/personalize",
+            "open_in_new_tab": false,
+            "make_link_full_slide": false,
+            "second_button_text": "",
+            "second_button_aria_label": "",
+            "second_button_link": "/",
+            "second_open_in_new_tab": false,
+            "text_alignment_inside_block": "left",
+            "content_alignment": "slideshow__slide-content--left",
+            "vertical_content_alignment": "slideshow__slide-content--bottom",
+            "background_color": "#757575",
+            "background_content": "",
+            "heading_color": "#ffffff",
+            "description_color": "#ffffff",
+            "button_text_color": "#ffffff",
+            "button_background_color": "#a36246",
+            "button_border_color": "#a36246",
+            "button_text_color_hover": "#000000",
+            "button_background_color_hover": "#cb9279",
+            "button_border_color_hover": "#000000",
+            "second_button_text_color": "#ffffff",
+            "second_button_text_color_hover": "#a36246",
+            "overlay_color": "linear-gradient(360deg, rgba(163, 98, 70, 1), rgba(48, 145, 211, 0) 49%)"
           }
         },
         "image-2": {
           "type": "image",
           "disabled": true,
           "settings": {
-            "image_desktop": "shopify://shop_images/Desktop_ENG.png",
-            "image_mobile": "shopify://shop_images/Mobile_ENG.png",
+            "image_desktop": "shopify://shop_images/rack-of-womens-clothing.jpg",
             "heading": "Timeless Jewelry",
             "description": "<p><strong>Let Your Elegance Bloom</strong></p>",
             "button_text": "Explore",
@@ -437,13 +344,13 @@
             "heading_color": "#ffffff",
             "description_color": "#ffffff",
             "button_text_color": "#ffffff",
-            "button_background_color": "#91553d",
-            "button_border_color": "#91553d",
-            "button_text_color_hover": "#91553d",
-            "button_background_color_hover": "#ffffff",
-            "button_border_color_hover": "#91553d",
+            "button_background_color": "#a36246",
+            "button_border_color": "#a36246",
+            "button_text_color_hover": "#000000",
+            "button_background_color_hover": "#cb9279",
+            "button_border_color_hover": "#000000",
             "second_button_text_color": "#ffffff",
-            "second_button_text_color_hover": "#91553d",
+            "second_button_text_color_hover": "#a36246",
             "overlay_color": "linear-gradient(180deg, rgba(163, 98, 70, 1), rgba(48, 145, 211, 0) 49%)"
           }
         },
@@ -472,29 +379,27 @@
             "heading_color": "#ffffff",
             "description_color": "#ffffff",
             "button_text_color": "#ffffff",
-            "button_background_color": "#91553d",
-            "button_border_color": "#91553d",
-            "button_text_color_hover": "#91553d",
+            "button_background_color": "#a36246",
+            "button_border_color": "#a36246",
+            "button_text_color_hover": "#cb9279",
             "button_background_color_hover": "#ffffff",
-            "button_border_color_hover": "#91553d",
-            "second_button_text_color": "#91553d",
-            "second_button_text_color_hover": "#91553d",
+            "button_border_color_hover": "#a36246",
+            "second_button_text_color": "#a36246",
+            "second_button_text_color_hover": "#a36246",
             "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.3) 100%)"
           }
         }
       },
       "block_order": [
-        "image_C9MdEk",
-        "image_VqezXj",
-        "image_LLMWMT",
-        "image_QTnGfh",
-        "image_ctBp73",
-        "image-1",
-        "image_VCwyRc",
-        "image_QbNxkq",
-        "image_YGVK8q",
-        "image_qrd6Uw",
+        "image_d37yUW",
+        "image_MywWD7",
+        "image_TbiMU3",
+        "image_jNgz8Q",
+        "image_bPd6ii",
+        "image_Y3AnTR",
+        "image_pPfRCQ",
         "image_kDGEjD",
+        "image_QTnGfh",
         "image-2",
         "image_wKMFjV"
       ],
@@ -526,293 +431,128 @@
         "offset_bottom_mobile": 0
       }
     },
-    "1762328896a019b12a": {
-      "type": "apps",
+    "banner_animation_scale_t6zU3p": {
+      "type": "banner-animation-scale",
       "blocks": {
-        "ontime_count_down_timer_3cW6VH": {
-          "type": "shopify://apps/ontime/blocks/count-down-timer/81efda6f-3d78-4fa3-869b-054d700b30ed",
-          "disabled": true,
-          "settings": {}
-        },
-        "gsc_countdown_timer_countdown_aPAbcB": {
-          "type": "shopify://apps/gsc-countdown-timer/blocks/countdown/58dc5b1b-43d2-4209-b1f3-52aff31643ed",
+        "full_width_PMn448": {
+          "type": "full_width",
           "settings": {
-            "widget_id": "GSC-LARGE-szwgOzrnjlep"
+            "desktop_image_height": "200px",
+            "mobile_image_height": "350px",
+            "media_type": "image",
+            "label": "",
+            "heading": "",
+            "text": "",
+            "button_text": "",
+            "button_url": "/",
+            "button_aria": "",
+            "image_desktop": "shopify://shop_images/1000348403.png",
+            "image_mobile": "shopify://shop_images/1000348402.png",
+            "image_border_width": 0,
+            "image_border_indent": 10,
+            "external_video_url_desktop": "",
+            "external_video_url_mobile": "",
+            "content_alignment": "center",
+            "content_alignment_mobile": "center",
+            "block_alignment_horizontal": "center",
+            "block_alignment_vertical": "center"
           }
         }
       },
       "block_order": [
-        "ontime_count_down_timer_3cW6VH",
-        "gsc_countdown_timer_countdown_aPAbcB"
+        "full_width_PMn448"
       ],
+      "name": "Banner animation scale",
       "settings": {
-        "container_width": "inherit",
-        "offset_top_desktop": 10,
-        "offset_bottom_desktop": 0,
-        "offset_top_mobile": 10,
-        "offset_bottom_mobile": 0
-      }
-    },
-    "richtext_ztKcQb": {
-      "type": "richtext",
-      "disabled": true,
-      "name": "Timeless Pieces - Unrepeatable Prices",
-      "settings": {
-        "heading": "FLASH SALE 11PM - 4AM",
-        "subheading": "",
-        "text_content": "",
-        "text_alignment": "left",
-        "enable_read_more": false,
-        "read_more_text": "Show more",
-        "show_less_text": "Show less",
-        "container_width": "inherit",
-        "offset_top_desktop": 40,
-        "offset_bottom_desktop": 0,
-        "offset_top_mobile": 25,
-        "offset_bottom_mobile": 25
-      }
-    },
-    "featured_collection_pf67ka": {
-      "type": "featured-collection",
-      "disabled": true,
-      "name": "Featured collection",
-      "settings": {
-        "collection": "flash-sale",
-        "image": "shopify://shop_images/Artboard_1_copy_2x_eecfdd08-d790-4dff-8487-d0e497d9070e.png",
-        "image_size": "natural",
-        "products_per_row": "2",
-        "products_to_show": 4,
-        "image_overlay": "",
-        "image_text": "#ffffff",
-        "container_width": "inherit",
-        "offset_top_desktop": 20,
-        "offset_bottom_desktop": 20,
-        "offset_top_mobile": 15,
-        "offset_bottom_mobile": 15
-      }
-    },
-    "collection_list_d4k7b9": {
-      "type": "collection-list",
-      "blocks": {
-        "collection_pWtg39": {
-          "type": "collection",
-          "settings": {
-            "collection": "watches",
-            "image": "shopify://shop_images/Artboard_1_2x_4f8493f4-ddae-4079-8863-8740c58c47e2.png"
-          }
-        },
-        "collection_DjBqQt": {
-          "type": "collection",
-          "settings": {
-            "collection": "jewelry",
-            "image": "shopify://shop_images/Artboard_1_copy_2x_de39977c-5da7-4ab0-bb33-0d2b17023a50.png"
-          }
-        },
-        "collection_RfYcgz": {
-          "type": "collection",
-          "settings": {
-            "collection": "accessories",
-            "image": "shopify://shop_images/Artboard_1_copy_3_2x_ff2c9073-f7dd-4373-a5af-89ddebbb5d42.png"
-          }
-        },
-        "collection_6t8KFC": {
-          "type": "collection",
-          "settings": {
-            "collection": "bags",
-            "image": "shopify://shop_images/Artboard_1_copy_2_2x_69b32004-db45-482e-91c3-379b84f18950.png"
-          }
-        }
-      },
-      "block_order": [
-        "collection_pWtg39",
-        "collection_DjBqQt",
-        "collection_RfYcgz",
-        "collection_6t8KFC"
-      ],
-      "name": "Collection list",
-      "settings": {
-        "heading": "",
-        "text_alignment": "left",
-        "aspect_ratio": "portrait",
-        "cards_per_row": "4",
-        "enable_rounded_cards": true,
-        "overlay_color": "",
-        "image_text": "#ffffff",
-        "container_width": "100%",
+        "enable_rounded_corners": true,
+        "section_background": "#222222",
+        "content_background": "",
+        "is_text_content_background_blur": false,
+        "text_color": "#ffffff",
+        "link_color": "#d33636",
+        "button_background": "#ffffff",
+        "button_color": "#000000",
+        "button_border": "#ffffff",
+        "button_background_hover": "#000000",
+        "button_color_hover": "#ffffff",
+        "button_border_hover": "#ffffff",
+        "overlay": "rgba(0,0,0, 0.3)",
+        "image_border_color": "#ffffff",
+        "container_width": "1952px",
         "offset_top_desktop": 40,
         "offset_bottom_desktop": 40,
         "offset_top_mobile": 25,
         "offset_bottom_mobile": 25
       }
     },
-    "featured_collection_HCLqnW": {
-      "type": "featured-collection",
-      "name": "Featured collection",
-      "settings": {
-        "collection": "below-40",
-        "image": "shopify://shop_images/rawa-pd7aq7qxxkr2whk2806bqmwye987zcnj.png",
-        "image_size": "natural",
-        "products_per_row": "2",
-        "products_to_show": 4,
-        "image_overlay": "",
-        "image_text": "#ffffff",
-        "container_width": "inherit",
-        "offset_top_desktop": 20,
-        "offset_bottom_desktop": 20,
-        "offset_top_mobile": 15,
-        "offset_bottom_mobile": 15
-      }
-    },
-    "richtext_XKNYHK": {
-      "type": "richtext",
-      "name": "Rich text",
-      "settings": {
-        "heading": "D1 MILANO - LIMITED EDITIONS",
-        "subheading": "",
-        "text_content": "",
-        "text_alignment": "left",
-        "enable_read_more": false,
-        "read_more_text": "Show more",
-        "show_less_text": "Show less",
-        "container_width": "inherit",
-        "offset_top_desktop": 0,
-        "offset_bottom_desktop": 0,
-        "offset_top_mobile": 0,
-        "offset_bottom_mobile": 0
-      }
-    },
-    "products_carousel_fWN98p": {
-      "type": "products-carousel",
-      "blocks": {
-        "product_BFHd6Q": {
-          "type": "product",
-          "settings": {
-            "product": "pcbjhg",
-            "show_variant": false,
-            "video_desktop": "shopify://files/videos/Harlem.mp4",
-            "video_mobile": "shopify://files/videos/Harlem.mp4",
-            "image_desktop": "shopify://shop_images/Harlem_1.png",
-            "image_mobile": "shopify://shop_images/Harlem_1.png"
-          }
-        },
-        "product_xXXBhR": {
-          "type": "product",
-          "settings": {
-            "product": "pcbutp3",
-            "show_variant": false,
-            "video_desktop": "shopify://files/videos/Video Project 2.mp4",
-            "video_mobile": "shopify://files/videos/Video Project 2.mp4",
-            "image_desktop": "shopify://shop_images/Tonester_5.jpg",
-            "image_mobile": "shopify://shop_images/Tonester_5.jpg"
-          }
-        },
-        "product_atckRd": {
-          "type": "product",
-          "settings": {
-            "product": "idbj01",
-            "show_variant": false,
-            "video_desktop": "shopify://files/videos/GIUGIARO.mp4",
-            "video_mobile": "shopify://files/videos/GIUGIARO.mp4",
-            "image_desktop": "shopify://shop_images/stillife_giugiaro.jpg",
-            "image_mobile": "shopify://shop_images/stillife_giugiaro.jpg"
-          }
-        }
-      },
-      "block_order": [
-        "product_BFHd6Q",
-        "product_xXXBhR",
-        "product_atckRd"
-      ],
-      "name": "Products carousel",
-      "settings": {
-        "button_style": "secondary-border",
-        "container_width": "1432px",
-        "offset_top_desktop": 40,
-        "offset_bottom_desktop": 40,
-        "offset_top_mobile": 25,
-        "offset_bottom_mobile": 25
-      }
-    },
-    "featured_collection_9hqB9W": {
-      "type": "featured-collection",
-      "name": "Featured collection",
-      "settings": {
-        "collection": "promotions",
-        "image": "shopify://shop_images/rawa-pd7agr2vdnngk5y3egt7v6dtvh87zgh1.png",
-        "image_size": "square",
-        "products_per_row": "2",
-        "products_to_show": 4,
-        "image_overlay": "",
-        "image_text": "#ffffff",
-        "container_width": "inherit",
-        "offset_top_desktop": 20,
-        "offset_bottom_desktop": 20,
-        "offset_top_mobile": 15,
-        "offset_bottom_mobile": 15
-      }
-    },
-    "featured_products_t9GKAH": {
+    "featured-products": {
       "type": "featured-products",
       "settings": {
-        "heading": "THE MINIMAL EDIT",
+        "heading": "New arrivals test By G",
         "product_list": [
-          "alu075",
-          "alu058",
-          "alu061",
-          "alu074",
-          "alu066"
+          "agj-231074-ger",
+          "agj-231073-gbl",
+          "agw-250003",
+          "agw-248002",
+          "dc1l318m0024",
+          "agj-231076-gbg",
+          "agj-231076-rbg",
+          "agj-231076-sbg",
+          "agj-231077-gbg",
+          "agj-231077-rbg",
+          "agj-231072-gbl",
+          "agj-231071-gnl"
         ],
         "products_in_row": "5",
-        "banner_image": "shopify://shop_images/image-pd78649ekjm9wm793t4pmjqvtx87snw8.png",
-        "banner_heading": "",
-        "banner_subheading": "",
-        "button_label": "SHOP NOW",
-        "button_url": "shopify://collections/alula",
+        "banner_image": "shopify://shop_images/Watches.png",
+        "banner_heading": "Fresh Gems Test",
+        "banner_subheading": "Discover our newest treasures just added",
+        "button_label": "Shop Now",
+        "button_url": "shopify://collections/new-products-in",
         "text_color": "#ffffff",
         "overlay_color": "rgba(0, 0, 0, 0)",
         "button_color": "#ffffff",
-        "button_background_color": "#91553d",
-        "button_border_color": "#91553d",
-        "button_hover_color": "#91553d",
-        "button_hover_background": "#ffffff",
-        "button_hover_border": "#91553d",
+        "button_background_color": "#a36246",
+        "button_border_color": "#a36246",
+        "button_hover_color": "#000000",
+        "button_hover_background": "#a36246",
+        "button_hover_border": "#ffffff",
         "container_width": "inherit",
-        "offset_top_desktop": 58,
+        "offset_top_desktop": 70,
         "offset_bottom_desktop": 50,
         "offset_top_mobile": 50,
         "offset_bottom_mobile": 50
       }
     },
-    "banner_animation_scale_DyCbpX": {
+    "banner_animation_scale_tL8gza": {
       "type": "banner-animation-scale",
       "blocks": {
-        "full_width_bje7Kg": {
+        "full_width_xtNHbz": {
           "type": "full_width",
           "settings": {
             "desktop_image_height": "600px",
             "mobile_image_height": "350px",
             "media_type": "html_video",
-            "label": "",
-            "heading": "",
-            "text": "",
-            "button_text": "EXPLORE",
+            "label": "NICK JONAS Test",
+            "heading": "FOSSIL Test",
+            "text": "<p>Test</p>",
+            "button_text": "Shop Now Test",
             "button_url": "shopify://collections/fossil",
             "button_aria": "",
             "image_border_width": 0,
             "image_border_indent": 10,
-            "html_video_desktop": "shopify://files/videos/SU26_FSL_BIG_TIC_WF_USA_EN_15s_1920x1080.mp4",
-            "html_video_mobile": "shopify://files/videos/SU26_FSL_BIG_TIC_WF_USA_EN_15s_1080x1920.mp4",
+            "html_video_desktop": "shopify://files/videos/FSL7006641_HERO_15_SECONDS_16x9_CLEAN_video-med.mp4",
             "external_video_url_desktop": "",
             "external_video_url_mobile": "",
-            "content_alignment": "right",
-            "content_alignment_mobile": "right",
-            "block_alignment_horizontal": "flex-end",
-            "block_alignment_vertical": "flex-end"
+            "content_alignment": "center",
+            "content_alignment_mobile": "center",
+            "block_alignment_horizontal": "center",
+            "block_alignment_vertical": "center"
           }
         }
       },
       "block_order": [
-        "full_width_bje7Kg"
+        "full_width_xtNHbz"
       ],
       "name": "Banner animation scale",
       "settings": {
@@ -839,15 +579,14 @@
     },
     "featured_collection_REknmA": {
       "type": "featured-collection",
-      "disabled": true,
-      "name": "Promotion",
+      "name": "Featured collection",
       "settings": {
-        "collection": "buy-two-get-one-free",
-        "image": "shopify://shop_images/image-pd72fhs0gt6r268aqneakma8jx85dqhr.png",
+        "collection": "fossil",
+        "image": "shopify://shop_images/Artboard_1_3d605aeb-8ef4-4dc2-bef6-f15c4e9cb118.png",
         "image_size": "natural",
         "products_per_row": "2",
-        "products_to_show": 4,
-        "image_overlay": "",
+        "products_to_show": 6,
+        "image_overlay": "linear-gradient(180deg, rgba(255, 140, 140, 0) 5%, rgba(255, 140, 140, 0) 52%, rgba(203, 146, 121, 1) 100%)",
         "image_text": "#ffffff",
         "container_width": "inherit",
         "offset_top_desktop": 0,
@@ -856,488 +595,28 @@
         "offset_bottom_mobile": 25
       }
     },
-    "banner_animation_scale_fmGWwb": {
-      "type": "banner-animation-scale",
-      "blocks": {
-        "full_width_pK7hqh": {
-          "type": "full_width",
-          "settings": {
-            "desktop_image_height": "700px",
-            "mobile_image_height": "350px",
-            "media_type": "html_video",
-            "label": "",
-            "heading": "",
-            "text": "",
-            "button_text": "EXPLORE",
-            "button_url": "shopify://collections/own-brands",
-            "button_aria": "",
-            "image_border_width": 0,
-            "image_border_indent": 10,
-            "html_video_desktop": "shopify://files/videos/FSL32031_SP26_BIGTIC_WHLS_META_CUT_10_1080x1080_EN_noURL.mp4",
-            "html_video_mobile": "shopify://files/videos/FSL32031_SP26_BIGTIC_WHLS_META_CUT_10_1080x1080_EN_noURL.mp4",
-            "external_video_url_desktop": "",
-            "external_video_url_mobile": "",
-            "content_alignment": "right",
-            "content_alignment_mobile": "right",
-            "block_alignment_horizontal": "flex-end",
-            "block_alignment_vertical": "center"
-          }
-        }
-      },
-      "block_order": [
-        "full_width_pK7hqh"
-      ],
-      "disabled": true,
-      "custom_css": [
-        ".general-banner .general-banner__media {object-fit: contain !important;}",
-        "@media (max-width: 767px) {.general-banner .general-banner__inner {padding: 0px !important; } .general-banner .general-banner__media {object-fit: contain !important; } .general-banner {padding: 0px; } .general-banner .general-banner__content {padding: 52px 24px; }}"
-      ],
-      "name": "Banner animation scale",
-      "settings": {
-        "enable_rounded_corners": true,
-        "section_background": "#000000",
-        "content_background": "",
-        "is_text_content_background_blur": false,
-        "text_color": "#ffffff",
-        "link_color": "#d33636",
-        "button_background": "#ffffff",
-        "button_color": "#000000",
-        "button_border": "#ffffff",
-        "button_background_hover": "#000000",
-        "button_color_hover": "#ffffff",
-        "button_border_hover": "#ffffff",
-        "overlay": "",
-        "image_border_color": "#ffffff",
-        "container_width": "1952px",
-        "offset_top_desktop": 40,
-        "offset_bottom_desktop": 40,
-        "offset_top_mobile": 25,
-        "offset_bottom_mobile": 25
-      }
-    },
-    "featured_collection_gMEBGd": {
-      "type": "featured-collection",
-      "disabled": true,
-      "name": "Featured collection",
-      "settings": {
-        "collection": "buy-one-get-one-free",
-        "image": "shopify://shop_images/image-pd70xxp0ac6vqaahpcfchd3765832g3v.png",
-        "image_size": "natural",
-        "products_per_row": "2",
-        "products_to_show": 4,
-        "image_overlay": "",
-        "image_text": "#ffffff",
-        "container_width": "inherit",
-        "offset_top_desktop": 20,
-        "offset_bottom_desktop": 20,
-        "offset_top_mobile": 15,
-        "offset_bottom_mobile": 15
-      }
-    },
-    "collection_list_RzCaP8": {
-      "type": "collection-list",
-      "blocks": {
-        "collection_hPKgiP": {
-          "type": "collection",
-          "settings": {
-            "collection": "under-20kd-jewelry",
-            "image": "shopify://shop_images/rawa-pd75dhhe9kejkcp4kveqk3weyd87zsq1.png"
-          }
-        },
-        "collection_dWtdky": {
-          "type": "collection",
-          "settings": {
-            "collection": "under-40-kd-watches",
-            "image": "shopify://shop_images/rawa-pd739gx7thjqdya35hx0wy2kjh87yv63.png"
-          }
-        }
-      },
-      "block_order": [
-        "collection_hPKgiP",
-        "collection_dWtdky"
-      ],
-      "name": "Collection list",
-      "settings": {
-        "heading": "",
-        "text_alignment": "left",
-        "aspect_ratio": "square",
-        "cards_per_row": "2",
-        "enable_rounded_cards": true,
-        "overlay_color": "",
-        "image_text": "#ffffff",
-        "container_width": "inherit",
-        "offset_top_desktop": 40,
-        "offset_bottom_desktop": 40,
-        "offset_top_mobile": 25,
-        "offset_bottom_mobile": 25
-      }
-    },
-    "featured-products": {
-      "type": "featured-products",
-      "custom_css": [],
-      "name": "Featured products",
-      "settings": {
-        "heading": "FERTÉ COLLECTION",
-        "product_list": [
-          "fer002",
-          "fer016",
-          "fer027",
-          "fer024",
-          "fer018",
-          "fer008",
-          "fer001"
-        ],
-        "products_in_row": "5",
-        "banner_image": "shopify://shop_images/image-pd741m025r6qamzw97nxznac0d83xntj.png",
-        "banner_heading": "",
-        "banner_subheading": "",
-        "button_label": "FERTÉ",
-        "button_url": "shopify://collections/ferte",
-        "text_color": "#f8f6f5",
-        "overlay_color": "",
-        "button_color": "#000000",
-        "button_background_color": "#dfbeb1",
-        "button_border_color": "#ffffff",
-        "button_hover_color": "#e6d197",
-        "button_hover_background": "#ffffff",
-        "button_hover_border": "#e6d197",
-        "container_width": "1952px",
-        "offset_top_desktop": 58,
-        "offset_bottom_desktop": 50,
-        "offset_top_mobile": 50,
-        "offset_bottom_mobile": 50
-      }
-    },
-    "featured_collection_E6rHBw": {
-      "type": "featured-collection",
-      "disabled": true,
-      "name": "Featured collection",
-      "settings": {
-        "collection": "d1-milano",
-        "image": "shopify://shop_images/image-pd7fpxtg1tf5ejttfwx1wecge583e0w9.png",
-        "image_size": "natural",
-        "products_per_row": "2",
-        "products_to_show": 4,
-        "image_overlay": "",
-        "image_text": "#ffffff",
-        "container_width": "inherit",
-        "offset_top_desktop": 20,
-        "offset_bottom_desktop": 20,
-        "offset_top_mobile": 15,
-        "offset_bottom_mobile": 15
-      }
-    },
-    "lookbook_zQqwP8": {
-      "type": "lookbook",
-      "blocks": {
-        "products_look_UgPPz9": {
-          "type": "products_look",
-          "settings": {
-            "products_set_image": "shopify://shop_images/image-pd76wshmks78efqah0a3ndf8d183e1qq.png",
-            "hotspot_color": "#d97042",
-            "products_set_heading": "",
-            "button_label": "SHOP THE LOOK",
-            "product_1": "women-hexora-necklace",
-            "point_position_top_1": 62,
-            "point_position_left_1": 39,
-            "product_2": "women-gold-hex-bracelet",
-            "point_position_top_2": 75,
-            "point_position_left_2": 52,
-            "product_3": "alu015er01sl",
-            "point_position_top_3": 16,
-            "point_position_left_3": 50,
-            "product_4": "women-hexora-ring",
-            "point_position_top_4": 60,
-            "point_position_left_4": 72,
-            "product_5": "",
-            "point_position_top_5": 70,
-            "point_position_left_5": 50
-          }
-        },
-        "products_look_iCqjxa": {
-          "type": "products_look",
-          "settings": {
-            "products_set_image": "shopify://shop_images/rawa-pd75srkvqx5x8jddkwx38cvdhd7wfq1x.jpg",
-            "hotspot_color": "#de7344",
-            "products_set_heading": "",
-            "button_label": "SHOP THE LOOK",
-            "product_1": "women-nua-necklace",
-            "point_position_top_1": 65,
-            "point_position_left_1": 66,
-            "product_2": "women-nua-ring",
-            "point_position_top_2": 65,
-            "point_position_left_2": 37,
-            "product_3": "women-nua-earring",
-            "point_position_top_3": 10,
-            "point_position_left_3": 58,
-            "product_4": "",
-            "point_position_top_4": 35,
-            "point_position_left_4": 60,
-            "product_5": "",
-            "point_position_top_5": 70,
-            "point_position_left_5": 50
-          }
-        },
-        "products_look_CYY7Hd": {
-          "type": "products_look",
-          "settings": {
-            "products_set_image": "shopify://shop_images/image-pd7fc4gwf6afdj3vp76wy6pg3d83eh3b_1.png",
-            "hotspot_color": "#c42026",
-            "products_set_heading": "",
-            "button_label": "SHOP THE LOOK",
-            "product_1": "tod019er02gl",
-            "point_position_top_1": 6,
-            "point_position_left_1": 62,
-            "product_2": "tod019rg02gl-6",
-            "point_position_top_2": 43,
-            "point_position_left_2": 39,
-            "product_3": "tod019br02gl",
-            "point_position_top_3": 77,
-            "point_position_left_3": 49,
-            "product_4": "",
-            "point_position_top_4": 0,
-            "point_position_left_4": 0,
-            "product_5": "",
-            "point_position_top_5": 0,
-            "point_position_left_5": 0
-          }
-        },
-        "products_look_MBTV4h": {
-          "type": "products_look",
-          "settings": {
-            "products_set_image": "shopify://shop_images/image-pd7b1bzh9w4z65drjb9h3eq39x83emga.png",
-            "hotspot_color": "#c42026",
-            "products_set_heading": "",
-            "button_label": "SHOP THE LOOK",
-            "product_1": "alu011er02gl",
-            "point_position_top_1": 17,
-            "point_position_left_1": 53,
-            "product_2": "alu011rg02gl6",
-            "point_position_top_2": 57,
-            "point_position_left_2": 73,
-            "product_3": "",
-            "point_position_top_3": 0,
-            "point_position_left_3": 0,
-            "product_4": "",
-            "point_position_top_4": 0,
-            "point_position_left_4": 0,
-            "product_5": "",
-            "point_position_top_5": 0,
-            "point_position_left_5": 0
-          }
-        }
-      },
-      "block_order": [
-        "products_look_UgPPz9",
-        "products_look_iCqjxa",
-        "products_look_CYY7Hd",
-        "products_look_MBTV4h"
-      ],
-      "name": "Lookbook",
-      "settings": {
-        "title": "SHOP THE LOOK",
-        "image_position": "left",
-        "is_point_animated": true,
-        "image_background": "#535353",
-        "color_slider_arrow_background": "#ffffff",
-        "color_slider_arrow_icon": "#000000",
-        "color_slider_arrow_background_hover": "#000000",
-        "color_slider_arrow_icon_hover": "#ffffff",
-        "container_width": "inherit",
-        "offset_top_desktop": 40,
-        "offset_bottom_desktop": 49,
-        "offset_top_mobile": 25,
-        "offset_bottom_mobile": 25
-      }
-    },
     "richtext_U6tK6C": {
-      "type": "richtext",
-      "name": "Timeless Pieces - Unrepeatable Prices",
-      "settings": {
-        "heading": "Buy Two & Get One Free",
-        "subheading": "",
-        "text_content": "",
-        "text_alignment": "left",
-        "enable_read_more": false,
-        "read_more_text": "Show more",
-        "show_less_text": "Show less",
-        "container_width": "inherit",
-        "offset_top_desktop": 40,
-        "offset_bottom_desktop": 0,
-        "offset_top_mobile": 25,
-        "offset_bottom_mobile": 25
-      }
-    },
-    "featured_collection_c8R3fJ": {
-      "type": "featured-collection",
-      "name": "Featured collection",
-      "settings": {
-        "collection": "buy-two-get-one-free",
-        "image": "shopify://shop_images/rawa-pd778dcp2efkjg8r569vjz2aw586jpbp.png",
-        "image_size": "natural",
-        "products_per_row": "2",
-        "products_to_show": 4,
-        "image_overlay": "",
-        "image_text": "#ffffff",
-        "container_width": "inherit",
-        "offset_top_desktop": 20,
-        "offset_bottom_desktop": 20,
-        "offset_top_mobile": 15,
-        "offset_bottom_mobile": 15
-      }
-    },
-    "image_slider_ejjHmd": {
-      "type": "image-slider",
-      "blocks": {
-        "slide_MNXH7q": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/FS6115_onmodel_jpg.jpg",
-            "link": "shopify://products/fs6115"
-          }
-        },
-        "slide_i3PpAz": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/MK4851SET_1e9c9fa2-b917-4f73-a6a9-89409e68997b.jpg",
-            "link": "shopify://products/women-lauryn-silver-watch-set"
-          }
-        },
-        "slide_j8WLNW": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/FS6078_onwrist.webp",
-            "link": "shopify://products/fs6078"
-          }
-        },
-        "slide_YPT9R8": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/MK7561SET_710_4.webp",
-            "link": "shopify://products/women-slim-runway-gold-watch"
-          }
-        },
-        "slide_FVAprJ": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/BQ3979_9L.webp",
-            "link": "shopify://products/bq3979"
-          }
-        },
-        "slide_fYLRfH": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/FS6008_onwrist_jpg.webp",
-            "link": "shopify://products/men-carraway-silver-watch"
-          }
-        },
-        "slide_QamJhj": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/MK7514SET_3d9cb950-9fab-41ca-be86-855e5270ae4d.jpg",
-            "link": "shopify://products/women-emery-watch-set"
-          }
-        }
-      },
-      "block_order": [
-        "slide_MNXH7q",
-        "slide_i3PpAz",
-        "slide_j8WLNW",
-        "slide_YPT9R8",
-        "slide_FVAprJ",
-        "slide_fYLRfH",
-        "slide_QamJhj"
-      ],
-      "disabled": true,
-      "name": "Image slider",
-      "settings": {
-        "heading": "Find the Gift They’ll Love",
-        "enable_autoplay": true,
-        "autoplay_speed": 5,
-        "offset_top_desktop": 40,
-        "offset_bottom_desktop": 40,
-        "offset_top_mobile": 25,
-        "offset_bottom_mobile": 25
-      }
-    },
-    "products_carousel_6rtqKR": {
-      "type": "products-carousel",
-      "blocks": {
-        "product_RLb4VC": {
-          "type": "product",
-          "settings": {
-            "product": "tod016rg02gl-7",
-            "show_variant": false,
-            "video_desktop": "shopify://files/videos/ontime1.mp4",
-            "video_mobile": "shopify://files/videos/ontime1.mp4"
-          }
-        },
-        "product_HmAxrL": {
-          "type": "product",
-          "settings": {
-            "product": "tod016er02gl-l",
-            "show_variant": false,
-            "video_desktop": "shopify://files/videos/ontime1.mp4",
-            "video_mobile": "shopify://files/videos/ontime1.mp4"
-          }
-        },
-        "product_GWTEHQ": {
-          "type": "product",
-          "settings": {
-            "product": "women-olivia-two-tone-bracelet",
-            "show_variant": false,
-            "video_desktop": "shopify://files/videos/ontime1.mp4",
-            "video_mobile": "shopify://files/videos/ontime1.mp4"
-          }
-        },
-        "product_xkXAnz": {
-          "type": "product",
-          "settings": {
-            "product": "tod016nk04sg-s",
-            "show_variant": false,
-            "video_desktop": "shopify://files/videos/ontime1.mp4",
-            "video_mobile": "shopify://files/videos/ontime1.mp4"
-          }
-        }
-      },
-      "block_order": [
-        "product_RLb4VC",
-        "product_HmAxrL",
-        "product_GWTEHQ",
-        "product_xkXAnz"
-      ],
-      "name": "Products carousel",
-      "settings": {
-        "button_style": "secondary-border",
-        "container_width": "inherit",
-        "offset_top_desktop": 40,
-        "offset_bottom_desktop": 40,
-        "offset_top_mobile": 25,
-        "offset_bottom_mobile": 25
-      }
-    },
-    "richtext_bHDMKm": {
       "type": "richtext",
       "name": "Rich text",
       "settings": {
         "heading": "Personalize Your Watch & Engrave Your Name",
-        "subheading": "",
-        "text_content": "",
-        "text_alignment": "center",
+        "subheading": "Engraving Subheading",
+        "text_content": "<p>Engraving Text </p>",
+        "text_alignment": "left",
         "enable_read_more": false,
         "read_more_text": "Show more",
         "show_less_text": "Show less",
         "container_width": "inherit",
-        "offset_top_desktop": 15,
+        "offset_top_desktop": 40,
         "offset_bottom_desktop": 0,
-        "offset_top_mobile": 9,
-        "offset_bottom_mobile": 9
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
       }
     },
-    "featured_product_nCDeWc": {
+    "featured_product_aHhm78": {
       "type": "featured-product",
       "blocks": {
-        "badges_kbU3PX": {
+        "badges_7KkC7p": {
           "type": "badges",
           "settings": {
             "position": "third_column",
@@ -1347,7 +626,7 @@
             "offset_bottom_mobile": 8
           }
         },
-        "title_ywLjgM": {
+        "title_caQkrt": {
           "type": "title",
           "settings": {
             "position": "first_column",
@@ -1357,7 +636,7 @@
             "offset_bottom_mobile": 8
           }
         },
-        "vendor_cGVyCJ": {
+        "vendor_PeKGac": {
           "type": "vendor",
           "settings": {
             "position": "first_column",
@@ -1371,7 +650,7 @@
             "offset_bottom_mobile": 8
           }
         },
-        "options_GAkyfr": {
+        "options_4pQfTW": {
           "type": "options",
           "settings": {
             "variant_picker": "radio",
@@ -1382,7 +661,7 @@
             "offset_bottom_mobile": 8
           }
         },
-        "price_CVLPRU": {
+        "price_D7MqBQ": {
           "type": "price",
           "settings": {
             "position": "third_column",
@@ -1392,7 +671,13 @@
             "offset_bottom_mobile": 8
           }
         },
-        "quantity_gW4wAi": {
+        "zepto_product_personalizer_product_personalizer_page_tbH4iC": {
+          "type": "shopify://apps/zepto-product-personalizer/blocks/product_personalizer_page/7411210d-7b32-4c09-9455-e129e3be4729",
+          "settings": {
+            "product": "{{section.settings.product}}"
+          }
+        },
+        "quantity_9twhfa": {
           "type": "quantity",
           "disabled": true,
           "settings": {
@@ -1403,13 +688,7 @@
             "offset_bottom_mobile": 8
           }
         },
-        "zepto_product_personalizer_product_personalizer_page_6Mn7DL": {
-          "type": "shopify://apps/zepto-product-personalizer/blocks/product_personalizer_page/7411210d-7b32-4c09-9455-e129e3be4729",
-          "settings": {
-            "product": "{{section.settings.product}}"
-          }
-        },
-        "add_to_cart_KL3rMD": {
+        "add_to_cart_fhR9tz": {
           "type": "add_to_cart",
           "disabled": true,
           "settings": {
@@ -1424,8 +703,9 @@
             "offset_bottom_mobile": 8
           }
         },
-        "badge_images_J7t3CM": {
+        "badge_images_iwrAJf": {
           "type": "badge_images",
+          "disabled": true,
           "settings": {
             "position": "third_column",
             "offset_top_desktop": 16,
@@ -1434,7 +714,7 @@
             "offset_bottom_mobile": 8
           }
         },
-        "drawers_UrUayh": {
+        "drawers_cKWjAG": {
           "type": "drawers",
           "disabled": true,
           "settings": {
@@ -1454,7 +734,7 @@
             "offset_bottom_mobile": 8
           }
         },
-        "complementary_ed8FQb": {
+        "complementary_xFNnci": {
           "type": "complementary",
           "disabled": true,
           "settings": {
@@ -1468,21 +748,21 @@
         }
       },
       "block_order": [
-        "badges_kbU3PX",
-        "title_ywLjgM",
-        "vendor_cGVyCJ",
-        "options_GAkyfr",
-        "price_CVLPRU",
-        "quantity_gW4wAi",
-        "zepto_product_personalizer_product_personalizer_page_6Mn7DL",
-        "add_to_cart_KL3rMD",
-        "badge_images_J7t3CM",
-        "drawers_UrUayh",
-        "complementary_ed8FQb"
+        "badges_7KkC7p",
+        "title_caQkrt",
+        "vendor_PeKGac",
+        "options_4pQfTW",
+        "price_D7MqBQ",
+        "zepto_product_personalizer_product_personalizer_page_tbH4iC",
+        "quantity_9twhfa",
+        "add_to_cart_fhR9tz",
+        "badge_images_iwrAJf",
+        "drawers_cKWjAG",
+        "complementary_xFNnci"
       ],
       "name": "Featured product",
       "settings": {
-        "product": "men-luciano-silver-watch",
+        "product": "dc1g323m0014",
         "is_zoom_enabled": true,
         "show_arrows_mobile": true,
         "media_layout": "carousel",
@@ -1501,39 +781,593 @@
         "ui_button_color": "#000000",
         "ui_button_background_color": "#ffffff",
         "ui_button_border_color": "#e9e9e9",
-        "container_width": "1432px",
+        "container_width": "100%",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_slider_6HaDj8": {
+      "type": "image-slider",
+      "blocks": {
+        "slide_jiWLk4": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/rawa-pd7fzrfgwgr857mav16qqkd6917wg087.png",
+            "link": "shopify://products/agj-231076-sbg"
+          }
+        },
+        "slide_r9RMDp": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/1792228.jpg",
+            "link": "shopify://products/gljlb0000101"
+          }
+        },
+        "slide_ntH797": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/1792227.jpg",
+            "link": "shopify://products/agj-231071-gnlx"
+          }
+        }
+      },
+      "block_order": [
+        "slide_jiWLk4",
+        "slide_r9RMDp",
+        "slide_ntH797"
+      ],
+      "name": "Image slider",
+      "settings": {
+        "heading": "Find the Gift They’ll Love",
+        "enable_autoplay": true,
+        "autoplay_speed": 5,
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "lookbook_zQqwP8": {
+      "type": "lookbook",
+      "blocks": {
+        "products_look_6ejbGa": {
+          "type": "products_look",
+          "settings": {
+            "products_set_image": "shopify://shop_images/Jewelry.jpg",
+            "hotspot_color": "#ffffff",
+            "products_set_heading": "Shop look product",
+            "button_label": "Select Look",
+            "product_1": "agj-231076-rbg",
+            "point_position_top_1": 0,
+            "point_position_left_1": 0,
+            "product_2": "",
+            "point_position_top_2": 0,
+            "point_position_left_2": 0,
+            "product_3": "",
+            "point_position_top_3": 50,
+            "point_position_left_3": 52,
+            "product_4": "",
+            "point_position_top_4": 0,
+            "point_position_left_4": 0,
+            "product_5": "",
+            "point_position_top_5": 0,
+            "point_position_left_5": 0
+          }
+        },
+        "products_look_GDzxVd": {
+          "type": "products_look",
+          "settings": {
+            "products_set_image": "shopify://shop_images/Accessories_34815aeb-c6dd-48d0-bc7a-64030a64dcc7.png",
+            "hotspot_color": "#ffffff",
+            "products_set_heading": "Heading for the Product",
+            "button_label": "Button",
+            "product_1": "glwga0000117",
+            "point_position_top_1": 24,
+            "point_position_left_1": 0,
+            "product_2": "glagc0001601",
+            "point_position_top_2": 0,
+            "point_position_left_2": 0,
+            "product_3": "gllgw0000405",
+            "point_position_top_3": 0,
+            "point_position_left_3": 0,
+            "product_4": "glrgb0000203",
+            "point_position_top_4": 0,
+            "point_position_left_4": 0,
+            "product_5": "dc1l318m0014",
+            "point_position_top_5": 0,
+            "point_position_left_5": 0
+          }
+        },
+        "products_look_UgPPz9": {
+          "type": "products_look",
+          "settings": {
+            "products_set_image": "shopify://shop_images/Watches.png",
+            "hotspot_color": "#d97042",
+            "products_set_heading": "Products set heading",
+            "button_label": "SHOP THE LOOK Button",
+            "product_1": "agw-248002",
+            "point_position_top_1": 82,
+            "point_position_left_1": 26,
+            "product_2": "abbey-women-quartz-analog-watch-1",
+            "point_position_top_2": 70,
+            "point_position_left_2": 38,
+            "product_3": "",
+            "point_position_top_3": 75,
+            "point_position_left_3": 78,
+            "product_4": "",
+            "point_position_top_4": 35,
+            "point_position_left_4": 60,
+            "product_5": "",
+            "point_position_top_5": 70,
+            "point_position_left_5": 50
+          }
+        }
+      },
+      "block_order": [
+        "products_look_6ejbGa",
+        "products_look_GDzxVd",
+        "products_look_UgPPz9"
+      ],
+      "name": "Lookbook",
+      "settings": {
+        "title": "SHOP THE LOOK ganesh",
+        "image_position": "left",
+        "is_point_animated": true,
+        "image_background": "#535353",
+        "color_slider_arrow_background": "#ffffff",
+        "color_slider_arrow_icon": "#000000",
+        "color_slider_arrow_background_hover": "#000000",
+        "color_slider_arrow_icon_hover": "#ffffff",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "richtext_WR7bdH": {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": {
+        "heading": "Timeless Pieces - Unrepeatable Prices",
+        "subheading": "Test Subheading",
+        "text_content": "<p>Test Ganesh</p>",
+        "text_alignment": "left",
+        "enable_read_more": false,
+        "read_more_text": "Show more",
+        "show_less_text": "Show less",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 0,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "featured_collection_9hqB9W": {
+      "type": "featured-collection",
+      "name": "Featured collection",
+      "settings": {
+        "collection": "buy-1-get-1-jewelry-free",
+        "image": "shopify://shop_images/Artboard_1_copy_3_5815754b-510e-4078-b033-1865c909d504.png",
+        "image_size": "natural",
+        "products_per_row": "2",
+        "products_to_show": 4,
+        "image_overlay": "",
+        "image_text": "#ffffff",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "banner_animation_scale_zyrw3f": {
+      "type": "banner-animation-scale",
+      "blocks": {
+        "full_width_mFYeBz": {
+          "type": "full_width",
+          "settings": {
+            "desktop_image_height": "700px",
+            "mobile_image_height": "350px",
+            "media_type": "html_video",
+            "label": "",
+            "heading": "SCHOOL READY, TIME READY",
+            "text": "",
+            "button_text": "",
+            "button_url": "/",
+            "button_aria": "",
+            "image_border_width": 0,
+            "image_border_indent": 10,
+            "external_video_url_desktop": "",
+            "external_video_url_mobile": "",
+            "content_alignment": "center",
+            "content_alignment_mobile": "center",
+            "block_alignment_horizontal": "center",
+            "block_alignment_vertical": "center"
+          }
+        }
+      },
+      "block_order": [
+        "full_width_mFYeBz"
+      ],
+      "disabled": true,
+      "name": "Banner animation scale",
+      "settings": {
+        "enable_rounded_corners": true,
+        "section_background": "#222222",
+        "content_background": "",
+        "is_text_content_background_blur": false,
+        "text_color": "#ffffff",
+        "link_color": "#d33636",
+        "button_background": "#ffffff",
+        "button_color": "#000000",
+        "button_border": "#ffffff",
+        "button_background_hover": "#000000",
+        "button_color_hover": "#ffffff",
+        "button_border_hover": "#ffffff",
+        "overlay": "",
+        "image_border_color": "#ffffff",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "benefits-grid": {
+      "type": "benefits-grid",
+      "blocks": {
+        "block-1": {
+          "type": "benefits_item",
+          "settings": {
+            "block_label": "Premium Quality test",
+            "block_heading": "EXCELLENCE Test"
+          }
+        },
+        "block-4": {
+          "type": "benefits_item",
+          "settings": {
+            "block_label": "Timeless Value",
+            "block_heading": "LEGACY"
+          }
+        },
+        "block-3": {
+          "type": "benefits_item",
+          "settings": {
+            "block_label": "Exclusive Collections",
+            "block_heading": "UNIQUENESS"
+          }
+        },
+        "benefits_item_cjM6mw": {
+          "type": "benefits_item",
+          "settings": {
+            "block_label": "Speaks Sophistication",
+            "block_heading": "DISTINCTION"
+          }
+        },
+        "benefits_item_qLL8GF": {
+          "type": "benefits_item",
+          "settings": {
+            "block_label": "Label test",
+            "block_heading": "Heading"
+          }
+        },
+        "benefits_item_8AGnYq": {
+          "type": "benefits_item",
+          "settings": {
+            "block_label": "Test",
+            "block_heading": "Heading"
+          }
+        },
+        "block-5": {
+          "type": "benefits_item",
+          "settings": {
+            "block_label": "Luxury Materials",
+            "block_heading": "ELEGANCE"
+          }
+        }
+      },
+      "block_order": [
+        "block-1",
+        "block-4",
+        "block-3",
+        "benefits_item_cjM6mw",
+        "benefits_item_qLL8GF",
+        "benefits_item_8AGnYq",
+        "block-5"
+      ],
+      "settings": {
+        "heading": "Highlights",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "collection_list_d4k7b9": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_L8dRtf": {
+          "type": "collection",
+          "settings": {
+            "collection": "boss",
+            "image": "shopify://shop_images/Accessories_34815aeb-c6dd-48d0-bc7a-64030a64dcc7.png"
+          }
+        },
+        "collection_6t8KFC": {
+          "type": "collection",
+          "settings": {
+            "collection": "bags",
+            "image": "shopify://shop_images/Bags_Wallets_01bfa263-61d1-4903-89f1-5039754e5597.png"
+          }
+        },
+        "collection_pWtg39": {
+          "type": "collection",
+          "settings": {
+            "collection": "dici",
+            "image": "shopify://shop_images/Watches_4a207acd-6e39-4db8-b052-54505e081127.png"
+          }
+        },
+        "collection_DjBqQt": {
+          "type": "collection",
+          "settings": {
+            "collection": "casio",
+            "image": "shopify://shop_images/Jewelry_69669961-7ae4-4285-a4c6-42ea564a474f.jpg"
+          }
+        },
+        "collection_RfYcgz": {
+          "type": "collection",
+          "disabled": true,
+          "settings": {
+            "collection": "diesel",
+            "image": "shopify://shop_images/Accessories_34815aeb-c6dd-48d0-bc7a-64030a64dcc7.png"
+          }
+        }
+      },
+      "block_order": [
+        "collection_L8dRtf",
+        "collection_6t8KFC",
+        "collection_pWtg39",
+        "collection_DjBqQt",
+        "collection_RfYcgz"
+      ],
+      "name": "Collection list",
+      "settings": {
+        "heading": "Collection list",
+        "text_alignment": "left",
+        "aspect_ratio": "square",
+        "cards_per_row": "4",
+        "enable_rounded_cards": true,
+        "overlay_color": "",
+        "image_text": "#f8f6f5",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "promotion-banners": {
+      "type": "promotion-banners",
+      "blocks": {
+        "block-1": {
+          "type": "promotion_banner",
+          "settings": {
+            "heading": "Beautiful Earrings",
+            "image": "shopify://shop_images/Artboard_1_copy_1_1.png",
+            "button_label": "Shop Now.",
+            "button_link": "https://ontime.com/products/alu001er02gl?_pos=5&_sid=9dd4a5bb5&_ss=r"
+          }
+        },
+        "promotion_banner_LjWnBM": {
+          "type": "promotion_banner",
+          "settings": {
+            "heading": "Promotion banner",
+            "image": "shopify://shop_images/Artboard_1_1_1.png",
+            "button_label": "Shop Now",
+            "button_link": "shopify://collections/all"
+          }
+        },
+        "block-2": {
+          "type": "promotion_banner",
+          "settings": {
+            "heading": "Shine Ring",
+            "image": "shopify://shop_images/Artboard_1_1_1.png",
+            "button_label": "Shop Now",
+            "button_link": "https://ontime.com/products/tod016rg02gl"
+          }
+        },
+        "block-3": {
+          "type": "promotion_banner",
+          "settings": {
+            "heading": "Promotion banner",
+            "button_label": "Shop Now",
+            "button_link": "/"
+          }
+        }
+      },
+      "block_order": [
+        "block-1",
+        "promotion_banner_LjWnBM",
+        "block-2",
+        "block-3"
+      ],
+      "settings": {
+        "heading": "Fine Jewelry Test",
+        "cards_per_row": "3",
+        "cards_layout": "vertical",
+        "button_style": "secondary",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_animations_xDDebD": {
+      "type": "image-with-text-animations",
+      "name": "Image with animated text",
+      "settings": {
+        "heading": "BRACELETS Test",
+        "heading_font_size_desktop": 160,
+        "heading_background_image": "shopify://shop_images/Artboard_1_copy-100_3_1.jpg",
+        "enable_heading_outline": false,
+        "subheading": "Test subheading",
+        "text": "Ganesh",
+        "button_label": "Shop All Test",
+        "button_aria_label": "",
+        "button_url": "https://ontime.com/collections/jewelry_women_bracelets",
+        "button_style": "secondary",
+        "top_layer": "heading",
+        "enable_animation": true,
+        "heading_color": "#000000",
+        "heading_outline": "#ffffff",
+        "heading_background": "",
+        "subheading_color": "#000000",
+        "text_color": "#535353",
+        "container_width": "inherit",
         "offset_top_desktop": 0,
         "offset_bottom_desktop": 0,
-        "offset_top_mobile": 9,
-        "offset_bottom_mobile": 9
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "featured-blog": {
+      "type": "featured-blog",
+      "disabled": true,
+      "settings": {
+        "blog": "",
+        "heading": "Latest articles",
+        "small_articles_heading": "Latest News",
+        "big_post_color": "#ffffff",
+        "big_post_color_secondary": "#cfcfcf",
+        "big_post_background": "rgba(0, 0, 0, 0.4)",
+        "big_post_tag_color": "#000000",
+        "big_post_tag_background": "#ffffff",
+        "enable_content_glass_effect": true,
+        "container_width": "inherit",
+        "offset_top_desktop": 60,
+        "offset_bottom_desktop": 60,
+        "offset_top_mobile": 30,
+        "offset_bottom_mobile": 30
+      }
+    },
+    "collection-list-3": {
+      "type": "collection-list-3",
+      "blocks": {
+        "block-1": {
+          "type": "collection",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "block-2": {
+          "type": "collection",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "block-3": {
+          "type": "collection",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "block-4": {
+          "type": "collection",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "block-5": {
+          "type": "collection",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "block-7": {
+          "type": "collection",
+          "settings": {
+            "collection": ""
+          }
+        }
+      },
+      "block_order": [
+        "block-1",
+        "block-2",
+        "block-3",
+        "block-4",
+        "block-5",
+        "block-7"
+      ],
+      "disabled": true,
+      "settings": {
+        "heading": "Collections slider",
+        "text_position": "under_image",
+        "image_text_color": "#ffffff",
+        "overlay_color": "#000000",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "products_carousel_jNBnN7": {
+      "type": "products-carousel",
+      "blocks": {
+        "product_fk8ekJ": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "show_variant": false
+          }
+        },
+        "product_UADUkp": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "show_variant": false
+          }
+        }
+      },
+      "block_order": [
+        "product_fk8ekJ",
+        "product_UADUkp"
+      ],
+      "name": "Products carousel",
+      "settings": {
+        "button_style": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
       }
     }
   },
   "order": [
-    "mobile_app_download_qcyVxm",
     "slideshow",
-    "1762328896a019b12a",
-    "richtext_ztKcQb",
-    "featured_collection_pf67ka",
-    "collection_list_d4k7b9",
-    "featured_collection_HCLqnW",
-    "richtext_XKNYHK",
-    "products_carousel_fWN98p",
-    "featured_collection_9hqB9W",
-    "featured_products_t9GKAH",
-    "banner_animation_scale_DyCbpX",
-    "featured_collection_REknmA",
-    "banner_animation_scale_fmGWwb",
-    "featured_collection_gMEBGd",
-    "collection_list_RzCaP8",
+    "banner_animation_scale_t6zU3p",
     "featured-products",
-    "featured_collection_E6rHBw",
-    "lookbook_zQqwP8",
+    "banner_animation_scale_tL8gza",
+    "featured_collection_REknmA",
     "richtext_U6tK6C",
-    "featured_collection_c8R3fJ",
-    "image_slider_ejjHmd",
-    "products_carousel_6rtqKR",
-    "richtext_bHDMKm",
-    "featured_product_nCDeWc"
+    "featured_product_aHhm78",
+    "image_slider_6HaDj8",
+    "lookbook_zQqwP8",
+    "richtext_WR7bdH",
+    "featured_collection_9hqB9W",
+    "banner_animation_scale_zyrw3f",
+    "benefits-grid",
+    "collection_list_d4k7b9",
+    "promotion-banners",
+    "image_with_text_animations_xDDebD",
+    "featured-blog",
+    "collection-list-3",
+    "products_carousel_jNBnN7"
   ]
 }

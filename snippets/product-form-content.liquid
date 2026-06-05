@@ -96,6 +96,39 @@
       </div>
 
       <div class="recipient-form__field">
+        <label class="label-input" for="Recipient-phone-{{ section.id }}">
+          {{- 'products.product.recipient.form.phone_label' | t -}}
+          <span aria-hidden="true"> *</span>
+        </label>
+
+        <div class="recipient-form__phone-input">
+          <span class="recipient-form__phone-prefix" aria-hidden="true">+965</span>
+
+          <input
+            class="input js-recipient-form-field js-recipient-form-phone"
+            type="tel"
+            id="Recipient-phone-{{ section.id }}"
+            name="properties[Receiver phone number]"
+            placeholder="{{ 'products.product.recipient.form.phone_placeholder' | t }}"
+            inputmode="numeric"
+            maxlength="8"
+            pattern="[0-9]{8}"
+            autocomplete="tel-national"
+            required
+            aria-describedby="RecipientForm-phone-error-{{ section.id }}"
+          >
+        </div>
+
+        <div
+          id="RecipientForm-phone-error-{{ section.id }}"
+          class="error js-recipient-form-phone-error is-hidden"
+          role="alert"
+        >
+          {{- 'products.product.recipient.form.phone_error' | t -}}
+        </div>
+      </div>
+
+      <div class="recipient-form__field">
         {%- assign max_chars_message = 200 -%}
         {%- assign max_chars_message_rendered = 'products.product.recipient.form.max_characters'
           | t: max_chars: max_chars_message
@@ -178,6 +211,8 @@
       class="js-recipient-form-timezone-offset"
     >
   </div>
+
+  <script src="{{ 'gift-card-recipient-phone.js' | asset_url }}" defer></script>
 {% endif %}
 
 {% if product.template_suffix == 'pre-order' %}
