@@ -619,7 +619,6 @@
         "from_price_html": "من {{ price }}",
         "regular_price": "السعر العادي",
         "sale_price": "سعر التخفيض",
-        "vip_price_badge": "وصول مبكر لكبار الشخصيات",
         "unit_price": "سعر الوحدة",
         "taxes_included": "الضريبة مشمولة.",
         "shipping_policy_html": "<a href=\"{{ link }}\">الشحن</a> يُحسب عند الدفع."

@@ -12,10 +12,11 @@
 	- show_pay_installments: If true, then it will be displayed form method pay installments
 	- show_discount_percentage: If true, show percentage discount when compare price appear (optional, boolean)
 
-	VIP display (PLP + PDP): when shop enable_vip_sale, logged-in VIP tag, and variant
-	vip_sale_discount_percent metafield are all set, overrides price output only for that customer.
-	Uses selected/first available variant on PLP (use_variant false). PDP variant picker updates
-	via JS may replace prices until page reload — display-only, no cart/checkout changes.
+	VIP display (PLP + PDP): when shop enable_vip_sale, customer has tag from
+	shop.metafields.custom.vip_customer_tag, and variant vip_sale_fixed_price +
+	vip_sale_discount_percent are set, shows fixed VIP price with discount badge and original
+	variant price struck through. Fixed price metafield is in currency units (e.g. 55 = 55.000 KD).
+	Display-only.
 
 	{%- render 'price', product: product, show_unit_price: show_unit_price, currency_code_enabled: currency_code_enabled -%}
 	------------------------------------------------------------------------------
@@ -36,15 +37,14 @@
 
 {%- assign price					= target.price | default: 1999 -%}
 {%- assign show_vip_price = false -%}
-{%- if shop.metafields.custom.enable_vip_sale.value == true -%}
-	{%- if customer and customer.tags contains 'VIP' -%}
+{%- assign vip_customer_tag = shop.metafields.custom.vip_customer_tag.value -%}
+{%- if shop.metafields.custom.enable_vip_sale.value == true and vip_customer_tag != blank -%}
+	{%- if customer and customer.tags contains vip_customer_tag -%}
+		{%- assign vip_fixed_price = vip_variant.metafields.custom.vip_sale_fixed_price.value -%}
 		{%- assign vip_discount_percent = vip_variant.metafields.custom.vip_sale_discount_percent.value -%}
-		{%- if vip_discount_percent != blank -%}
-			{%- assign vip_multiplier = 100 | minus: vip_discount_percent -%}
-			{%- assign vip_discounted_cents = vip_variant.price | times: vip_multiplier | divided_by: 100.0 -%}
-			{%- assign vip_price_cents = vip_discounted_cents | ceil -%}
+		{%- if vip_fixed_price != blank and vip_discount_percent != blank -%}
 			{%- assign compare_at_price = vip_variant.price -%}
-			{%- assign price = vip_price_cents -%}
+			{%- assign price = vip_fixed_price | times: 100 | round -%}
 			{%- assign show_vip_price = true -%}
 		{%- endif -%}
 	{%- endif -%}
@@ -101,7 +101,7 @@
 			</span>
 
 			{%- if show_vip_price -%}
-				<span class="vip-price-badge">{{- 'products.product.price.vip_price_badge' | t -}}</span>
+				<span class="price__discount" data-product-price-discount>-{{ vip_discount_percent | round }}%</span>
 			{%- elsif show_discount_percentage -%}
 				{% assign discount_value = price | times: 100 | divided_by: compare_at_price %}
 

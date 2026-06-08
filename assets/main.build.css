@@ -2668,18 +2668,6 @@ body.rtl .drawer.drawer--left {
   font-weight: 600;
   font-size: calc(var(--body-font-size) * 0.75);
 }
-.price .vip-price-badge {
-  display: inline-block;
-  padding: 2px 4px;
-  border-radius: 12px;
-  background-color: var(--color-text-attention);
-  color: var(--color-background);
-  font-weight: 600;
-  font-size: calc(var(--body-font-size) * 0.625);
-  line-height: 1.2;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
 .price .price__sale, .price.price--on-sale .price__regular {
   display: none;
 }
