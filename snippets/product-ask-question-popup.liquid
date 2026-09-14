@@ -42,7 +42,7 @@
 						class="ask-question-popup-form__message ask-question-popup-form__message--error"
 						tabindex="-1"
 					>
-						{% render 'icons' with icon: 'close' %}
+						{% render 'icons' with icon, icon: 'close' %}
 
 						{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
 					</small>
@@ -53,7 +53,7 @@
 						class="ask-question-popup-form__message ask-question-popup-form__message--success"
 						tabindex="-1"
 					>
-						{% render 'icons' with icon: 'check' %}
+						{% render 'icons' with icon, icon: 'check' %}
 
 						{{- success_message -}}
 					</p>
@@ -169,3 +169,16 @@
 		</button>
 	</div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'icons' with icon: 'close' %}"
+  to: "{% render 'icons' with icon, icon: 'close' %}"
+  position: 2027..2072
+- from: "{% render 'icons' with icon: 'check' %}"
+  to: "{% render 'icons' with icon, icon: 'check' %}"
+  position: 2385..2430
+{% endcomment %}
