@@ -1,0 +1,212 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "default-page": {
+      "type": "page-template",
+      "disabled": true,
+      "settings": {
+        "enable_heading": false,
+        "enable_content": true,
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "slideshow_K6jttx": {
+      "type": "slideshow",
+      "blocks": {
+        "image_X4Qj7N": {
+          "type": "image",
+          "settings": {
+            "image_desktop": "shopify://shop_images/6a05a4e0166a78bcce7c35e8.webp",
+            "image_mobile": "shopify://shop_images/6a05a4e0166a78bcce7c35e8.webp",
+            "heading": "STUART SEMPLE",
+            "description": "<p>D1 MILANO</p>",
+            "button_text": "SHOP NOW",
+            "button_aria_label": "",
+            "button_link": "shopify://products/cvruss",
+            "open_in_new_tab": false,
+            "make_link_full_slide": true,
+            "second_button_text": "",
+            "second_button_aria_label": "",
+            "second_button_link": "/",
+            "second_open_in_new_tab": false,
+            "text_alignment_inside_block": "left",
+            "content_alignment": "slideshow__slide-content--left",
+            "vertical_content_alignment": "slideshow__slide-content--middle",
+            "background_color": "#757575",
+            "background_content": "",
+            "heading_color": "#ffffff",
+            "description_color": "#ffffff",
+            "button_text_color": "#000000",
+            "button_background_color": "#ffffff",
+            "button_border_color": "#ffffff",
+            "button_text_color_hover": "#000000",
+            "button_background_color_hover": "#4d71f9",
+            "button_border_color_hover": "#4d71f9",
+            "second_button_text_color": "#ffffff",
+            "second_button_text_color_hover": "#000000",
+            "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
+          }
+        }
+      },
+      "block_order": [
+        "image_X4Qj7N"
+      ],
+      "name": "Slideshow",
+      "settings": {
+        "enable_rounded_corners": true,
+        "show_arrows": true,
+        "show_pagination": true,
+        "enable_loop": true,
+        "enable_autoplay": true,
+        "autoplay_speed": 5,
+        "animation_speed": 0.5,
+        "animation_type": "creative",
+        "background_color": "#ffffff",
+        "pagination_color": "#ffffff",
+        "arrows_background_color": "rgba(255, 255, 255, 0.3)",
+        "enable_arrows_glass_effect": true,
+        "arrows_color": "#fff",
+        "arrows_border_color": "",
+        "arrows_background_color_hover": "#4D71F9",
+        "arrows_color_hover": "#000000",
+        "arrows_border_color_hover": "#4d71f9",
+        "container_width": "inherit",
+        "height_desktop": 100,
+        "height_mobile": 100,
+        "subtract_header_height": true,
+        "offset_top_desktop": 20,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 20,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "richtext_VUbk3K": {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "text_content": "<p><strong>D1 Milano</strong> and <strong>Stuart Semple</strong> share a fundamental belief: that design should be accessible. This collaboration is built on that idea.</p><p>Combining the structure and clarity of D1 Milano’s approach to watchmaking with Semple’s use of color as something immediate, expressive and open, the result is a piece that sits somewhere between a watch and a piece of artwork.</p>",
+        "text_alignment": "center",
+        "enable_read_more": false,
+        "read_more_text": "Show more",
+        "show_less_text": "Show less",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "products_carousel_4wTKxm": {
+      "type": "products-carousel",
+      "blocks": {
+        "product_eGKmrD": {
+          "type": "product",
+          "settings": {
+            "product": "cvruss",
+            "show_variant": false,
+            "video_desktop": "shopify://files/videos/6a0c99b0eef0da7c86431a09.mp4",
+            "video_mobile": "shopify://files/videos/6a0c99b0eef0da7c86431a09.mp4"
+          }
+        }
+      },
+      "block_order": [
+        "product_eGKmrD"
+      ],
+      "name": "Products carousel",
+      "settings": {
+        "button_style": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "richtext_WGdhct": {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": {
+        "heading": "THE COLLABORATION",
+        "subheading": "",
+        "text_content": "<p>In most cases, color is applied once the form is defined. Here, it is considered from the beginning.<br/><br/></p><p>Stuart Semple’s work has consistently explored colour as something that should be shared rather than controlled. That thinking is carried into this collaboration, where color is used directly and without restraint.<br/><br/></p><p>D1 Milano translates that approach into a wearable format, keeping the design clear and resolved while allowing the color to take focus.<br/><br/>The smiley face is one of the best known motifs, having appeared in numerous artworks across time. It represents our ability to find inner happiness even when the world around us seems to put pressure on us from every side.</p>",
+        "text_alignment": "center",
+        "enable_read_more": false,
+        "read_more_text": "Show more",
+        "show_less_text": "Show less",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_YDU3Jg": {
+      "type": "image-with-text",
+      "name": "Image with text",
+      "settings": {
+        "image_position": "left",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/69fb062f166a78bcce7557c7.webp",
+        "image_background": "#ffffff",
+        "label": "",
+        "heading": "THE WATCH",
+        "text_content": "<p>The watch centres on the dial, where a yellow smiley drawn from Stuart Semple’s work slips out of the case and onto the strap, giving the design an expressive quality. The strap carries Semple’s penchant for pink.</p><p> </p><p>The case remains more controlled, providing structure and allowing the color to hold attention. The balance between these elements keeps the watch wearable, while maintaining a strong visual identity.</p>",
+        "button_label": "EXPLORE",
+        "button_aria_label": "",
+        "button_url": "shopify://products/cvruss",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_kM86cg": {
+      "type": "image-with-text",
+      "name": "Image with text",
+      "settings": {
+        "image_position": "left",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/69fb0686166a78bcce755865.gif",
+        "image_background": "#ffffff",
+        "label": "",
+        "heading": "THE FINISHING TOUCHES",
+        "text_content": "<p>The box is designed as a piece of art in its own right. Finished in Semple’s signature saturated pink, the colour becomes an artistic encounter before the watch is even seen.<br/><br/>Inside, the lid carries the statement “By wearing this watch you confirm that you are not Anish Kapoor”, printed alongside Semple’s signature. It turns the interior into a legal artwork, referencing his ongoing challenge to the ownership of color. Alongside the watch, a tin of Semple’s Pinkest Pink pigment and a co-branded certification extend the idea beyond the object itself.<br/><br/></p>",
+        "button_label": "EXPLORE",
+        "button_aria_label": "",
+        "button_url": "shopify://products/cvruss",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    }
+  },
+  "order": [
+    "default-page",
+    "slideshow_K6jttx",
+    "richtext_VUbk3K",
+    "products_carousel_4wTKxm",
+    "richtext_WGdhct",
+    "image_with_text_YDU3Jg",
+    "image_with_text_kM86cg"
+  ]
+}

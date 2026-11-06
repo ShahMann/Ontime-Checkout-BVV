@@ -3323,7 +3323,7 @@ body.rtl .drawer.drawer--left {
 }
 .header-menu .header-menu__item.header-menu__item--secondary.sale-menu-item span,
 .header-mobile__menu-item.header-mobile__menu-item-link.sale-menu-item span{
-  color: #c82127 !important;
+  color:rgb(255, 255, 255) !important;
   font-weight: bold;
 }
 @media (min-width: 1200px) {

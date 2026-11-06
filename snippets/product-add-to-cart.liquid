@@ -11,6 +11,10 @@
 
 {% assign button_type 			= block.settings.button_type %}
 {% assign button_buy_it_type 	= block.settings.button_buy_it_type %}
+{% assign is_free_gift = false %}
+{% if product.tags contains 'Free_Gift' %}
+	{% assign is_free_gift = true %}
+{% endif %}
 
 {%- capture button_buy_it_type_styles -%}
 	{%- case button_buy_it_type -%}
@@ -132,10 +136,16 @@
 						{% unless product.first_available_variant.available %}
 							disabled
 						{% endunless %}
+						{% if is_free_gift %}
+							disabled
+						{% endif %}
 					"
 					{% unless product.first_available_variant.available %}
 						disabled
 					{% endunless %}
+					{% if is_free_gift %}
+						disabled
+					{% endif %}
 					{% if product.template_suffix == 'pre-order' %}
 						data-preorder
 					{% endif %}
@@ -143,7 +153,9 @@
 					{%- render 'icons', icon: 'cart' -%}
 
 					<span class="js-product-add-to-cart-button-text">
-						{% if product.first_available_variant.available %}
+						{% if is_free_gift %}
+							{{- 'products.product.free_gift_unavailable' | t -}}
+						{% elsif product.first_available_variant.available %}
 							{% if product.template_suffix == 'pre-order' %}
 								{{- 'products.product.pre_order' | t -}}
 							{% else %}

@@ -23,11 +23,6 @@
 {%- endif -%}
 
 {%- style -%}
-@font-face {
-	font-family: "AmpOnly";
-	src: local("Arial"), local("Liberation Sans"), local("DejaVu Sans"), local("Roboto"), local("Noto Sans");
-	unicode-range: U+0026; /* Unicode for & */
-	}
 	#shopify-section-{{- section.id -}} {
 		padding-top: {{- section.settings.offset_top_mobile -}}px;
 		padding-bottom: {{- section.settings.offset_bottom_mobile -}}px;
@@ -50,11 +45,13 @@
 {%- endcapture -%}
 
 {% assign is_preset = false %}
-{% assign free_product = null %}
 
 {% if product == blank %}
 	{% assign is_preset = true %}
-{% else %}
+{% endif %}
+
+{% assign free_product = null %}
+{% if product != blank %}
 	{% for collection in product.collections %}
 		{% if collection.metafields.custom.free_product.value %}
 			{% assign free_product_metafield = collection.metafields.custom.free_product.value %}
@@ -98,15 +95,15 @@
 	data-section-id="{{- section.id -}}"
 	data-product-handle="{{- product.handle -}}"
 	{% if product != blank %}
-	data-free-collection-product-variant-id="{{ free_product | remove: 'gid://shopify/ProductVariant/' }}"
-	data-product-tags="{{ product.tags | join: ',' }}"
 	data-vendor="{{ product.vendor | escape }}"
+	data-product-tags="{{ product.tags | join: ',' }}"
+	data-free-collection-product-variant-id="{{ free_product | remove: 'gid://shopify/ProductVariant/' }}"
 	{% endif %}
 	data-js-product-container
 >
 	{% include 'product-json' %}
 
-	<div class="product product-featured product--{{ section.settings.product_layout }} js-animate product-featured-de">
+	<div class="product product-featured product--{{ section.settings.product_layout }} js-animate">
 		{%- case section.settings.product_layout -%}
 			{%- when 'two_columns' -%}
 				{%- include 'product-media', media_height: section.settings.media_height -%}

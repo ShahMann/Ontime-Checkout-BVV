@@ -1,0 +1,101 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Free gift option
+	Renders a single selectable free-gift product card, one of three states:
+	- Selected: this variant is the cart's current gift line (disabled, checkmark)
+	- Add gift: nothing selected yet anywhere in the pool
+	- Switch to this gift: a different gift is currently selected
+
+	- product: Product object (required)
+	- source_label: Caption shown on the card explaining why it's offered -
+	  the promotion block's configured vendor name, for both vendor and
+	  collection promotion types (required)
+	- is_selected: Boolean, true if this card's variant is the current gift line (required)
+	- has_any_selection: Boolean, true if any gift line currently exists (required)
+	- page_index: Zero-based pagination page this card belongs to (optional,
+	  default 0). Pages beyond the first render hidden - see the Prev/Next
+	  handlers in assets/free-gift-promotions.js.
+
+	Usage:
+	{%- render 'free-gift-option', product: product, source_label: source_label, is_selected: is_selected, has_any_selection: has_any_selection, page_index: page_index -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign page_index = page_index | default: 0 -%}
+
+{%- if product != blank -%}
+	{%- assign variant = product.selected_or_first_available_variant -%}
+
+	{%- if variant != blank and variant.available -%}
+		{%- assign image = product.featured_image | default: settings.product_default_image -%}
+
+		<div
+			class="free-gift-promotions__option{% if is_selected %} free-gift-promotions__option--selected{% endif %}{% if page_index != 0 %} is-hidden{% endif %}"
+			data-free-gift-page="{{- page_index -}}"
+		>
+			<div class="free-gift-promotions__option-media">
+				<a href="{{- product.url -}}" class="free-gift-promotions__option-image-wrapper focus-visible-outline {% if image == blank %}free-gift-promotions__option-image-wrapper--placeholder{% endif %}">
+					{%- if image != blank -%}
+						<img
+							class="free-gift-promotions__option-image"
+							alt="{{- image.alt | escape -}}"
+							src="{{- image | image_url: width: 88 -}}"
+							width="44"
+							height="{{- 44 | divided_by: image.aspect_ratio | ceil -}}"
+							loading="lazy"
+						>
+					{%- endif -%}
+				</a>
+			</div>
+
+			<div class="free-gift-promotions__option-content">
+				{%- if source_label != blank -%}
+					<div class="free-gift-promotions__option-vendor">
+						{{- source_label -}}
+					</div>
+				{%- endif -%}
+
+				<a class="free-gift-promotions__option-title focus-visible-outline" href="{{- product.url -}}">
+					{{- product.title -}}
+				</a>
+
+				<div class="free-gift-promotions__option-footer">
+					<div class="free-gift-promotions__option-price">
+						<span class="free-gift-promotions__option-price-original">
+							{{- product.compare_at_price | default: product.price | money -}}
+						</span>
+
+						<span class="free-gift-promotions__option-price-free">
+							{{- 'cart.free_gift.free_price' | t -}}
+						</span>
+					</div>
+
+					{%- if is_selected -%}
+						<button
+							class="free-gift-promotions__option-button button button--secondary button--small"
+							type="button"
+							disabled
+							aria-disabled="true"
+						>
+							{%- render 'icons', icon: 'check' -%}
+							{{- 'cart.free_gift.selected_label' | t -}}
+						</button>
+					{%- else -%}
+						<button
+							class="free-gift-promotions__option-button button button--secondary button--small focus-visible-outline js-free-gift-select"
+							type="button"
+							data-variant-id="{{- variant.id -}}"
+							data-product-handle="{{- product.handle -}}"
+						>
+							{%- if has_any_selection -%}
+								{{- 'cart.free_gift.switch_button' | t -}}
+							{%- else -%}
+								{{- 'cart.free_gift.select_button' | t -}}
+							{%- endif -%}
+						</button>
+					{%- endif -%}
+				</div>
+			</div>
+		</div>
+	{%- endif -%}
+{%- endif -%}

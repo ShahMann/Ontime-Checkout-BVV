@@ -81,7 +81,7 @@
           "type": "sales_point",
           "settings": {
             "position": "third_column",
-            "sales_point_text": "The limited-edition <strong>Pan Am x D1 Milano</strong> watch. Only available through pick up from our Al Kout Store.",
+            "sales_point_text": "Secure your spot and pre-order the new <strong>PAN AM x D1 Milano Watch</strong> today. Crafted with precision, built for elegance, and designed to elevate every moment. Limited quantities available—reserve yours before they’re gone.",
             "offset_top_desktop": 16,
             "offset_bottom_desktop": 16,
             "offset_top_mobile": 8,
@@ -94,7 +94,7 @@
             "position": "third_column",
             "button_type": "secondary",
             "button_buy_it_type": "secondary-border",
-            "show_additional_buttons": true,
+            "show_additional_buttons": false,
             "show_gift_card_recipient": true,
             "offset_top_desktop": 16,
             "offset_bottom_desktop": 16,
@@ -106,6 +106,7 @@
         },
         "pickup_availability": {
           "type": "pickup_availability",
+          "disabled": true,
           "settings": {
             "position": "third_column",
             "offset_top_desktop": 16,
@@ -159,7 +160,6 @@
         "drawers",
         "complementary"
       ],
-      "custom_css": [],
       "settings": {
         "is_zoom_enabled": true,
         "show_arrows_mobile": true,

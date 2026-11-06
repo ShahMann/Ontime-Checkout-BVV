@@ -247,7 +247,7 @@
 
 		<div class="cart-drawer__summary">
 			{%- render 'cart-discount' -%}
-			{%- render 'cart-notes', id: section.id -%}
+			{% comment %} {%- render 'cart-notes', id: section.id -%} {% endcomment %}
 			{%- render 'cart-shipping-calculator' -%}
 
 			{%- if cart_upsell_trigger != nil and cart_upsell_trigger != ''  -%}

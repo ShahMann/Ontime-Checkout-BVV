@@ -14,13 +14,13 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
-        "text_slide_93LEpj": {
+        "text_slide_6bAiie": {
           "type": "text_slide",
           "disabled": true,
           "settings": {
             "slider_layout": "simple_text",
-            "text_slider_desktop": "<p>Free delivery on all orders above 40 KWD! Limited time only</p>",
-            "text_slider_mobile": "<p>Free delivery on all orders above 40 KWD! Limited time only</p>",
+            "text_slider_desktop": "<p>Free delivery on all orders above 400 SAR! Limited time only.</p>",
+            "text_slider_mobile": "<p>Free delivery on all orders above 400 SAR! Limited time only.</p>",
             "text_slider_timer_desktop": "",
             "text_slider_timer_mobile": "",
             "slider_timer_year": 2025,
@@ -28,7 +28,7 @@
             "slider_timer_day": "12",
             "slider_timer_hour": "23",
             "slider_timer_timezone": "+0",
-            "slider_button_text": "",
+            "slider_button_text": "Shop now",
             "slider_button_link": ""
           }
         },
@@ -37,7 +37,7 @@
           "disabled": true,
           "settings": {
             "slider_layout": "simple_text",
-            "text_slider_desktop": "<p>🚚 Free Delivery On All Orders Above 25KD</p>",
+            "text_slider_desktop": "<p>🚚 Free Delivery On All Orders Above 250SAR</p>",
             "text_slider_mobile": "",
             "text_slider_timer_desktop": "",
             "text_slider_timer_mobile": "",
@@ -49,7 +49,7 @@
             "slider_button_link": ""
           }
         },
-        "text_slide_XBMkha": {
+        "text_slide_pKTgkP": {
           "type": "text_slide",
           "disabled": true,
           "settings": {
@@ -84,6 +84,7 @@
         },
         "text_slide_4tNxXL": {
           "type": "text_slide",
+          "disabled": true,
           "settings": {
             "slider_layout": "simple_text",
             "text_slider_desktop": "<p>Delivery in 48Hrs</p>",
@@ -100,9 +101,9 @@
         }
       },
       "block_order": [
-        "text_slide_93LEpj",
+        "text_slide_6bAiie",
         "text_slide_kbygzm",
-        "text_slide_XBMkha",
+        "text_slide_pKTgkP",
         "text_slide_E9xzpQ",
         "text_slide_4tNxXL"
       ],
@@ -128,7 +129,7 @@
         "ticker_text": "",
         "desktop_movement_speed": 20,
         "mobile_movement_speed": 35,
-        "background_color": "#91553d",
+        "background_color": "#a36246",
         "text_color": "#ffffff",
         "timer_text_color": "#000000",
         "arrow_color": "#FFFFFF4D",
@@ -223,20 +224,20 @@
         "burger_menu_heading": "Shop now",
         "burger_menu_subheading": "",
         "burger_menu_link": "/",
-        "header_bg": "#a77764",
+        "header_bg": "#cb9279",
         "mobile_menu_bg": "#ffffff",
-        "bottom_menu_bg": "#91553d",
+        "bottom_menu_bg": "#a36246",
         "menu_border_color": "#e9e9e9",
-        "bottom_menu_border": "#91553d",
+        "bottom_menu_border": "#a36246",
         "bottom_menu_border_transparent": "#ffffff",
         "text_color": "#000000",
-        "text_color_active": "#ffffff",
+        "text_color_active": "#757575",
         "text_background_color_selected": "#f1f1f3",
         "text_color_secondary": "#ffffff",
-        "text_color_active_secondary": "#a77764",
+        "text_color_active_secondary": "#cb9279",
         "text_color_transparent": "#ffffff",
         "text_color_transparent_active": "#b2b1af",
-        "menu_highlighted_link_color": "#91553d",
+        "menu_highlighted_link_color": "#ff0000",
         "icon_color": "#000000",
         "icon_color_transparent": "#ffffff",
         "count_text_color": "#ffffff",
@@ -245,9 +246,9 @@
         "count_text_bg_transparent": "#ffffff",
         "megamenu_image_text": "#ffffff",
         "megamenu_overlay_color": "",
-        "burger_button_color": "#91553d",
+        "burger_button_color": "#a36246",
         "burger_button_text_color": "#000000",
-        "burger_button_color_hover": "#91553d",
+        "burger_button_color_hover": "#a36246",
         "burger_button_text_color_hover": "#ffffff",
         "burger_button_color_transparent": "#ffffff",
         "burger_button_text_color_transparent": "#ffffff",
@@ -256,9 +257,9 @@
         "burger_button_color_hover_secondary": "#ffffff",
         "burger_button_text_color_hover_secondary": "#cdcdcd",
         "burger_button_close_color": "#e9e9e9",
-        "burger_button_close_text_color": "#91553d",
-        "burger_button_close_color_hover": "#91553d",
-        "burger_button_close_text_color_hover": "#91553d",
+        "burger_button_close_text_color": "#a36246",
+        "burger_button_close_color_hover": "#a36246",
+        "burger_button_close_text_color_hover": "#a36246",
         "search_input_color": "#ffffff",
         "search_input_text_color": "#9d9d9d",
         "search_input_color_transparent": "#ffffff",

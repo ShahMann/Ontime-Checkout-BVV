@@ -1,0 +1,120 @@
+.product-carousel-container {
+    display: grid;
+    position: relative;
+    max-width: 100%;
+}
+
+.product-carousel-container .carousel-container {
+    position: relative;
+    max-width: 100%;
+    display: grid;
+}
+
+.product-carousel-container .carousel-heading {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.product-carousel-container .carousel-heading .heading {
+    font-size: 40px;
+    line-height: 1;
+}
+
+.product-carousel-container > .carousel-container > .carousel-slides {
+    display: flex;
+    gap: 10px;
+    overflow: hidden;
+    max-width: 100%;
+    position: relative;
+    width: 100%;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    
+    /* This is to align the carousel with the header initially while maintaining the full-width styling of the carousel. */
+    /* padding-left: calc(((100vw - var(--page-width)) / 2) + var(--page-width-padding) - 10px); */
+}
+
+.product-carousel-container .carousel-slides {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE & Edge */
+}
+
+.product-carousel-container .carousel-slides::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+}
+
+.product-carousel-container .carousel-slide {
+    flex: 0 0 300px;
+    height: 100%;
+    scroll-snap-align: center;
+    position: relative;
+}
+
+.product-carousel-container .carousel-buttons {
+    display: flex;
+    gap: 10px;
+    width: max-content;
+    position: relative;
+}
+
+.product-carousel-container .carousel-buttons > * {
+    position: relative;
+    display: flex;
+    top: calc(50% - 20px);
+    background-color: white;
+    fill: black;
+    width: 42px;
+    height: 42px;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 3px #0000001f;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.product-carousel-container .carousel-buttons svg {
+    width: 18px;
+    height: 18px;
+}
+
+.product-carousel-container .carousel-buttons svg > * {
+    fill: black;
+}
+
+.product-carousel-container .carousel-buttons .prev {
+    transform: rotate(90deg);
+}
+
+.product-carousel-container .carousel-buttons .next {
+    transform: rotate(270deg);
+}
+
+/* ======================================================================= */
+/* ============================= MOBILE VIEW ============================= */
+/* ======================================================================= */
+
+@media (max-width: 749px) {
+    .product-carousel-container .carousel-slide {
+        flex: 0 0 200px;
+    }
+
+    .product-carousel-container {
+        margin: 20px 0;
+        padding: 0 15px;
+    }
+
+    .product-carousel-container > .carousel-container > .carousel-slides {
+        overflow-x: scroll;
+    }
+
+    .product-carousel-container .carousel-heading {
+        padding: 0;
+    }
+
+    .product-carousel-container .carousel-buttons {
+        display: none;
+    }
+
+}

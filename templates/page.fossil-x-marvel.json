@@ -1,0 +1,438 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "default-page": {
+      "type": "page-template",
+      "disabled": true,
+      "settings": {
+        "enable_heading": false,
+        "enable_content": true,
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "slideshow_xaPc6m": {
+      "type": "slideshow",
+      "blocks": {
+        "image_UN7g4b": {
+          "type": "image",
+          "settings": {
+            "image_desktop": "shopify://shop_images/su26_6-12_marvel_hero_d.webp",
+            "image_mobile": "shopify://shop_images/su26_6-15_marvel_hp_m.webp",
+            "heading": "Limited-Edition Collection SPIDER-MAN VS. THE HULK",
+            "description": "<p>It’s an epic battle of two Marvel legends in one collectible watch series.</p><p>The savage strength of The Hulk faces off against the web-slinging powers of Spider-Man in authentic designs inspired by original Marvel comics, bringing all the illustrated action to your wrist.Who will prevail? </p><p>Pick your side and let your watch tell the story.</p>",
+            "button_text": "MARVEL COLLECTION",
+            "button_aria_label": "Home page",
+            "button_link": "/",
+            "open_in_new_tab": false,
+            "make_link_full_slide": true,
+            "second_button_text": "",
+            "second_button_aria_label": "",
+            "second_button_link": "/",
+            "second_open_in_new_tab": false,
+            "text_alignment_inside_block": "center",
+            "content_alignment": "slideshow__slide-content--center",
+            "vertical_content_alignment": "slideshow__slide-content--middle",
+            "background_color": "#757575",
+            "background_content": "",
+            "heading_color": "#FFFFFF",
+            "description_color": "#FFFFFF",
+            "button_text_color": "#000000",
+            "button_background_color": "#FFFFFF",
+            "button_border_color": "#FFFFFF",
+            "button_text_color_hover": "#000000",
+            "button_background_color_hover": "#4D71F9",
+            "button_border_color_hover": "#4D71F9",
+            "second_button_text_color": "#FFFFFF",
+            "second_button_text_color_hover": "#000000",
+            "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
+          }
+        }
+      },
+      "block_order": [
+        "image_UN7g4b"
+      ],
+      "name": "Slideshow",
+      "settings": {
+        "enable_rounded_corners": true,
+        "show_arrows": true,
+        "show_pagination": true,
+        "enable_loop": true,
+        "enable_autoplay": true,
+        "autoplay_speed": 5,
+        "animation_speed": 0.5,
+        "animation_type": "creative",
+        "background_color": "#FFFFFF",
+        "pagination_color": "#FFFFFF",
+        "arrows_background_color": "rgba(255, 255, 255, 0.3)",
+        "enable_arrows_glass_effect": true,
+        "arrows_color": "#fff",
+        "arrows_border_color": "",
+        "arrows_background_color_hover": "#4D71F9",
+        "arrows_color_hover": "#000000",
+        "arrows_border_color_hover": "#4D71F9",
+        "container_width": "inherit",
+        "height_desktop": 100,
+        "height_mobile": 100,
+        "subtract_header_height": true,
+        "offset_top_desktop": 20,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 20,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_CN8Tw3": {
+      "type": "image-with-text",
+      "blocks": {
+        "logo_k9gLR4": {
+          "type": "logo",
+          "settings": {
+            "logo_image": "shopify://shop_images/su26_marvel_icon_spidey.png"
+          }
+        }
+      },
+      "block_order": [
+        "logo_k9gLR4"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image_position": "left",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/su26_marvel_sticker_spidey.png",
+        "image_background": "rgba(0,0,0,0)",
+        "label": "Automatic Watch",
+        "heading": "Spider-Man",
+        "text_content": "<p>Is your Spidey sense tingling? Cast your web for this collectible design</p>",
+        "button_label": "Shop Spider-Man",
+        "button_aria_label": "Button label",
+        "button_url": "shopify://products/le1247set",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 15,
+        "offset_bottom_desktop": 15,
+        "offset_top_mobile": 15,
+        "offset_bottom_mobile": 15
+      }
+    },
+    "gallery_grid_ECcW3j": {
+      "type": "gallery-grid",
+      "blocks": {
+        "block_BVdVxP": {
+          "type": "block",
+          "settings": {
+            "image": "shopify://shop_images/su26_marvel_pdp_spidey_1.webp",
+            "url": "shopify://products/le1247set",
+            "open_in_new_tab": false
+          }
+        },
+        "block_cmEUaB": {
+          "type": "block",
+          "settings": {
+            "image": "shopify://shop_images/su26_marvel_pdp_spidey_2.webp",
+            "url": "shopify://products/le1247set",
+            "open_in_new_tab": false
+          }
+        },
+        "block_JhT68e": {
+          "type": "block",
+          "settings": {
+            "image": "shopify://shop_images/su26_marvel_pdp_spidey_3.webp",
+            "url": "shopify://products/le1247set",
+            "open_in_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "block_BVdVxP",
+        "block_cmEUaB",
+        "block_JhT68e"
+      ],
+      "name": "Motivational images",
+      "settings": {
+        "title": "",
+        "card_per_row": "4",
+        "card_per_row_mobile": "2",
+        "aspect_ratio": "square",
+        "overlay_color": "rgba(0,0,0,.5)",
+        "container_width": "inherit",
+        "offset_top_desktop": 0,
+        "offset_bottom_desktop": 0,
+        "offset_top_mobile": 0,
+        "offset_bottom_mobile": 0
+      }
+    },
+    "richtext_acXfY7": {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "text_content": "<h6><em>Lurking in the shadows, the web slinger strikes his classic pose on a dark gradient that fades into the exposed automatic movement.</em></h6><h6><em>Tonal black webbing drapes across the crystal, adding a touch of dimension that extends onto the leather strap.</em></h6><h6><em>The dial and display caseback feature authentic Marvel comic art from spider-Mann's character-defining '90s era. Each watch is etched with limited-edition numbering</em></h6>",
+        "text_alignment": "center",
+        "enable_read_more": false,
+        "read_more_text": "Show more",
+        "show_less_text": "Show less",
+        "container_width": "inherit",
+        "offset_top_desktop": 8,
+        "offset_bottom_desktop": 0,
+        "offset_top_mobile": 10,
+        "offset_bottom_mobile": 0
+      }
+    },
+    "gallery_grid_mc7MRC": {
+      "type": "gallery-grid",
+      "blocks": {
+        "block_7PYaJj": {
+          "type": "block",
+          "settings": {
+            "image": "shopify://shop_images/su26_marvel_pdp_spidey_4_d_dfd5d557-3d29-4cab-8fc9-ade34c4416b6.jpg",
+            "url": "shopify://products/le1247set",
+            "open_in_new_tab": false
+          }
+        },
+        "block_dmDe8n": {
+          "type": "block",
+          "settings": {
+            "image": "shopify://shop_images/su26_marvel_pdp_spidey_5.webp",
+            "url": "shopify://products/le1247set",
+            "open_in_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "block_7PYaJj",
+        "block_dmDe8n"
+      ],
+      "name": "Motivational images",
+      "settings": {
+        "title": "",
+        "card_per_row": "2",
+        "card_per_row_mobile": "2",
+        "aspect_ratio": "square",
+        "overlay_color": "rgba(0,0,0,.5)",
+        "container_width": "inherit",
+        "offset_top_desktop": 0,
+        "offset_bottom_desktop": 0,
+        "offset_top_mobile": 0,
+        "offset_bottom_mobile": 0
+      }
+    },
+    "richtext_cp7rVF": {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "text_content": "<h6><em>The comic book-style packaging features </em>authentic<em> cover art from the marvel comics archive. Inside, find an extra piece of fan flair : A lapel pin of the Hulk facing off against Spider-Man.</em></h6><h6><em>The sleek silhouette is illuminated by lume details to light up the night, complemented by bright accents in Spider-Man's heroic shade of red.</em></h6><h6></h6>",
+        "text_alignment": "center",
+        "enable_read_more": false,
+        "read_more_text": "Show more",
+        "show_less_text": "Show less",
+        "container_width": "inherit",
+        "offset_top_desktop": 8,
+        "offset_bottom_desktop": 0,
+        "offset_top_mobile": 10,
+        "offset_bottom_mobile": 0
+      }
+    },
+    "image_with_text_iYcV8A": {
+      "type": "image-with-text",
+      "blocks": {
+        "logo_qafVeG": {
+          "type": "logo",
+          "settings": {
+            "logo_image": "shopify://shop_images/su26_marvel_icon_hulk.webp"
+          }
+        }
+      },
+      "block_order": [
+        "logo_qafVeG"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image_position": "left",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/su26_marvel_sticker_hulk.png",
+        "image_background": "rgba(0,0,0,0)",
+        "label": "Automatic Watch",
+        "heading": "The Incredible Hulk",
+        "text_content": "<p>HULK, SMASH! Unleash your inner radioactive monster in this larger-than-life automatic.</p>",
+        "button_label": "Shop Hulk",
+        "button_aria_label": "Button label",
+        "button_url": "shopify://products/le1247set",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 15,
+        "offset_bottom_desktop": 15,
+        "offset_top_mobile": 15,
+        "offset_bottom_mobile": 15
+      }
+    },
+    "gallery_grid_KTUNYN": {
+      "type": "gallery-grid",
+      "blocks": {
+        "block_9V6ki3": {
+          "type": "block",
+          "settings": {
+            "image": "shopify://shop_images/su26_marvel_pdp_hulk_1.webp",
+            "url": "shopify://products/le1246set",
+            "open_in_new_tab": false
+          }
+        },
+        "block_iaxWKz": {
+          "type": "block",
+          "settings": {
+            "image": "shopify://shop_images/su26_marvel_pdp_hulk_2.webp",
+            "url": "shopify://products/le1246set",
+            "open_in_new_tab": false
+          }
+        },
+        "block_aXgyz8": {
+          "type": "block",
+          "settings": {
+            "image": "shopify://shop_images/su26_marvel_pdp_hulk_3.webp",
+            "url": "shopify://products/le1246set",
+            "open_in_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "block_9V6ki3",
+        "block_iaxWKz",
+        "block_aXgyz8"
+      ],
+      "name": "Motivational images",
+      "settings": {
+        "title": "",
+        "card_per_row": "4",
+        "card_per_row_mobile": "2",
+        "aspect_ratio": "square",
+        "overlay_color": "rgba(0,0,0,.5)",
+        "container_width": "inherit",
+        "offset_top_desktop": 0,
+        "offset_bottom_desktop": 0,
+        "offset_top_mobile": 0,
+        "offset_bottom_mobile": 0
+      }
+    },
+    "richtext_XrrHxG": {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "text_content": "<h6><em>The comic book-style packaging features </em>authentic<em> cover art from the marvel comics archive. Inside, find an extra piece of fan flair : A lapel pin of the Hulk facing off against Spider-Man.</em></h6><h6><em>The sleek silhouette is illuminated by lume details to light up the night, complemented by bright accents in Spider-Man's heroic shade of red.</em></h6><h6></h6>",
+        "text_alignment": "center",
+        "enable_read_more": false,
+        "read_more_text": "Show more",
+        "show_less_text": "Show less",
+        "container_width": "inherit",
+        "offset_top_desktop": 8,
+        "offset_bottom_desktop": 0,
+        "offset_top_mobile": 10,
+        "offset_bottom_mobile": 0
+      }
+    },
+    "gallery_grid_aCGXYG": {
+      "type": "gallery-grid",
+      "blocks": {
+        "block_433fVw": {
+          "type": "block",
+          "settings": {
+            "image": "shopify://shop_images/su26_marvel_pdp_hulk_4_d_c00dd745-1727-4b59-8e1b-41c8d842a348.jpg",
+            "url": "shopify://products/le1246set",
+            "open_in_new_tab": false
+          }
+        },
+        "block_QYhJ6L": {
+          "type": "block",
+          "settings": {
+            "image": "shopify://shop_images/su26_marvel_pdp_hulk_5.webp",
+            "url": "shopify://products/le1246set",
+            "open_in_new_tab": false
+          }
+        }
+      },
+      "block_order": [
+        "block_433fVw",
+        "block_QYhJ6L"
+      ],
+      "name": "Motivational images",
+      "settings": {
+        "title": "",
+        "card_per_row": "2",
+        "card_per_row_mobile": "2",
+        "aspect_ratio": "square",
+        "overlay_color": "rgba(0,0,0,.5)",
+        "container_width": "inherit",
+        "offset_top_desktop": 0,
+        "offset_bottom_desktop": 0,
+        "offset_top_mobile": 0,
+        "offset_bottom_mobile": 0
+      }
+    },
+    "richtext_npNrWi": {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "text_content": "<h6>The comic book-style packaging features authentic cover art from the Marvel Comics archive. Inside, find an extra piece of fan flair: A lapel pin of The Hulk facing off against Spider-Man.</h6><h6>His bold shades of green and purple dominate the watch, from the radioactive-inspired finish and crown, to the silicone and nylon strap (durable for hulking around town).</h6>",
+        "text_alignment": "center",
+        "enable_read_more": false,
+        "read_more_text": "Show more",
+        "show_less_text": "Show less",
+        "container_width": "inherit",
+        "offset_top_desktop": 8,
+        "offset_bottom_desktop": 0,
+        "offset_top_mobile": 10,
+        "offset_bottom_mobile": 0
+      }
+    },
+    "richtext_zGaRgk": {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "text_content": "<h5><em>© 2026 MARVEL</em></h5>",
+        "text_alignment": "center",
+        "enable_read_more": false,
+        "read_more_text": "Show more",
+        "show_less_text": "Show less",
+        "container_width": "inherit",
+        "offset_top_desktop": 15,
+        "offset_bottom_desktop": 15,
+        "offset_top_mobile": 15,
+        "offset_bottom_mobile": 15
+      }
+    }
+  },
+  "order": [
+    "default-page",
+    "slideshow_xaPc6m",
+    "image_with_text_CN8Tw3",
+    "gallery_grid_ECcW3j",
+    "richtext_acXfY7",
+    "gallery_grid_mc7MRC",
+    "richtext_cp7rVF",
+    "image_with_text_iYcV8A",
+    "gallery_grid_KTUNYN",
+    "richtext_XrrHxG",
+    "gallery_grid_aCGXYG",
+    "richtext_npNrWi",
+    "richtext_zGaRgk"
+  ]
+}

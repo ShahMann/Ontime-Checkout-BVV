@@ -475,13 +475,13 @@
   <link rel="modulepreload" href="{{ 'wishlist-header.js' | asset_url }}" as="script" crossorigin="anonymous">
   <script src="{{ 'wishlist-header.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
 
-{% elsif path == "/src/scripts/wishlist-page.js" or path == "../scripts/wishlist-page.js" %}
-  <link rel="modulepreload" href="{{ 'wishlist-page.js' | asset_url }}" as="script" crossorigin="anonymous">
-  <script src="{{ 'wishlist-page.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
-
 {% elsif path == "/src/scripts/component-predictive-search.js" or path == "../scripts/component-predictive-search.js" %}
   <link rel="modulepreload" href="{{ 'component-predictive-search.build.js' | asset_url }}" as="script" crossorigin="anonymous">
   <script src="{{ 'component-predictive-search.build.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
+
+{% elsif path == "/src/scripts/wishlist-page.js" or path == "../scripts/wishlist-page.js" %}
+  <link rel="modulepreload" href="{{ 'wishlist-page.js' | asset_url }}" as="script" crossorigin="anonymous">
+  <script src="{{ 'wishlist-page.js' | asset_url }}" type="module" crossorigin="anonymous"></script>
 
 {% elsif path == "/src/scripts/product-card.js" or path == "../scripts/product-card.js" %}
   <link rel="modulepreload" href="{{ 'product-card.js' | asset_url }}" as="script" crossorigin="anonymous">

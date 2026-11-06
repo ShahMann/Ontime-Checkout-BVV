@@ -161,6 +161,10 @@
 									{%- render 'price', product: product, show_unit_price: show_unit_price, currency_code_enabled: currency_code_enabled -%}
 								</div>
 
+								{%- assign is_free_gift = false -%}
+							{%- if product.tags contains 'Free_Gift' -%}
+								{%- assign is_free_gift = true -%}
+							{%- endif -%}
 								<button
 									class="button button--secondary focus-visible-outline js-add-to-cart compare-slider-item__button"
 									type="button"
@@ -169,10 +173,10 @@
 									{% if product.has_only_default_variant or product.variants.size == 1 %}
 										data-variant-id="{{- product.variants[0].id -}}"
 									{% endif %}
-									{% unless product.available %}
+									{% if is_free_gift or product.available == false %}
 										disabled
-									{% endunless %}
-									aria-label="{%- if product.available -%}{{- 'products.product.add_to_cart' | t -}}{%- else -%}{{- 'products.product.sold_out' | t -}}{%- endif -%}"
+									{% endif %}
+									aria-label="{%- if is_free_gift -%}{{- 'products.product.free_gift_unavailable' | t -}}{%- elsif product.available -%}{{- 'products.product.add_to_cart' | t -}}{%- else -%}{{- 'products.product.sold_out' | t -}}{%- endif -%}"
 								>
 									{%- render 'icons', icon: 'cart' -%}
 								</button>

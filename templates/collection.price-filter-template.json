@@ -47,7 +47,7 @@
           "type": "column_image",
           "settings": {
             "image": "shopify://shop_images/price_points_40KD.webp",
-            "image_link": "shopify://collections/below-40"
+            "image_link": "shopify://collections/below-400"
           }
         },
         "column_image_hGfpnM": {

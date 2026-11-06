@@ -17,7 +17,6 @@
 	product
 	{%- if search_articles -%},article{%- endif -%}
 	{%- if search_pages -%},page{%- endif -%}
-	
 {%- endcapture -%}
 
 <div
@@ -34,7 +33,7 @@
 		role="search"
 	>
 		<div class="predictive-search__header modal__header">
-			<span class="visually-hidden h2" id="headerPopupSearchTitle">
+			<span class="visually-hidden" id="headerPopupSearchTitle">
 				{{- "general.predictive_search.title" | t -}}
 			</span>
 

@@ -201,8 +201,8 @@
 		{% endunless %}
 	{%- endfor -%}
 
-	{% assign colors_without_hover_image = colors_without_hover_image |  split: "||" %}
-	{% assign colors_without_image = colors_without_image |  split: "||" %}
+	{% assign colors_without_hover_image = colors_without_hover_image |  split: "||" |  shift  %}
+	{% assign colors_without_image = colors_without_image |  split: "||" |  shift  %}
 
 	<a
 		href="{{- product.url -}}"
@@ -467,8 +467,6 @@
               src="{{ badge_label | image_url: width: 48 }}"
               srcset="{{ badge_label | image_url: width: 48 }} 1x, {{ badge_label | image_url: width: 96 }} 2x"
               alt="{{ badge_label.alt | escape }}"
-              width="48"
-              height="48"
             >
           </li>
         {% endfor %}
@@ -642,10 +640,8 @@
             class="click-collect-badge is-hidden"
             data-collect-sku="{{ product.selected_or_first_available_variant.sku }}"
           >
-            {% comment %} Click & Collect {% endcomment %}
-            {{ 'products.product.click_and_collect' | t }}
-
-            </span>
+        {{ 'products.product.click_and_collect' | t }}
+          </span>
         {% endif %}
       </div>
     {% endif %}

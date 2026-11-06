@@ -1,0 +1,239 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "default-page": {
+      "type": "page-template",
+      "settings": {
+        "enable_heading": false,
+        "enable_content": true,
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "banner_animation_scale_TGHrYt": {
+      "type": "banner-animation-scale",
+      "blocks": {
+        "full_width_9wPbqA": {
+          "type": "full_width",
+          "settings": {
+            "desktop_image_height": "750px",
+            "mobile_image_height": "350px",
+            "media_type": "html_video",
+            "label": "",
+            "heading": "POLICE X BATMAN",
+            "text": "<p>Dark Knight Collection</p>",
+            "button_text": "Explore",
+            "button_url": "shopify://collections/batman-collection",
+            "button_aria": "",
+            "image_border_width": 0,
+            "image_border_indent": 10,
+            "html_video_desktop": "shopify://files/videos/Pol_26_61_Batwing Launch_ONTIME_KSA_1152x1280px.mp4",
+            "html_video_mobile": "shopify://files/videos/Pol_26_61_Batwing Launch_ONTIME_KSA_1152x1280px.mp4",
+            "external_video_url_desktop": "",
+            "external_video_url_mobile": "",
+            "content_alignment": "left",
+            "content_alignment_mobile": "left",
+            "block_alignment_horizontal": "flex-start",
+            "block_alignment_vertical": "flex-end"
+          }
+        }
+      },
+      "block_order": [
+        "full_width_9wPbqA"
+      ],
+      "name": "Banner animation scale",
+      "settings": {
+        "enable_rounded_corners": true,
+        "section_background": "#222222",
+        "content_background": "",
+        "is_text_content_background_blur": false,
+        "text_color": "#ffffff",
+        "link_color": "#d33636",
+        "button_background": "#ffffff",
+        "button_color": "#000000",
+        "button_border": "#ffffff",
+        "button_background_hover": "#000000",
+        "button_color_hover": "#ffffff",
+        "button_border_hover": "#ffffff",
+        "overlay": "rgba(0,0,0, 0.3)",
+        "image_border_color": "#ffffff",
+        "container_width": "1952px",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "richtext_VpAG8V": {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": {
+        "heading": "A SYMBOL OF PURE DOMINANCE​",
+        "subheading": "",
+        "text_content": "<h3>Step into the shadows with the Police BATWING - forged for those who refuse to blend in. A polished and brushed black ion-plated stainless-steel case delivers a strong presence. Beneath mineral glass, the satin-black dial carries gunmetal indexes and a free-rotating bat symbol at its center that doesn’t merely exist; it dominates. Finished with a textured black genuine leather strap and engineered with 5 ATM water resistance, it stands unyielding- ready for whatever comes.​</h3>",
+        "text_alignment": "center",
+        "enable_read_more": false,
+        "read_more_text": "Show more",
+        "show_less_text": "Show less",
+        "container_width": "inherit",
+        "offset_top_desktop": 10,
+        "offset_bottom_desktop": 10,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "column_image_nFq9ph": {
+      "type": "column-image",
+      "blocks": {
+        "column_image_9wHyJK": {
+          "type": "column_image",
+          "settings": {
+            "image": "shopify://shop_images/PEWGA0090005SetBox_02.jpg",
+            "image_link": "shopify://products/pewga0090005-set"
+          }
+        },
+        "column_image_YTiKRD": {
+          "type": "column_image",
+          "settings": {
+            "image": "shopify://shop_images/PEWGA0090005SetBox_03.jpg",
+            "image_link": "shopify://products/pewga0090005-set"
+          }
+        },
+        "column_image_wMzddj": {
+          "type": "column_image",
+          "settings": {
+            "image": "shopify://shop_images/PEWGA0090005SetBox_01.jpg",
+            "image_link": "shopify://products/pewga0090005-set"
+          }
+        }
+      },
+      "block_order": [
+        "column_image_9wHyJK",
+        "column_image_YTiKRD",
+        "column_image_wMzddj"
+      ],
+      "name": "Column image",
+      "settings": {
+        "title": "",
+        "aspect_ratio": "square",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "products_carousel_RVT9bg": {
+      "type": "products-carousel",
+      "blocks": {
+        "product_aeaEFm": {
+          "type": "product",
+          "settings": {
+            "product": "pewga0090005-set",
+            "show_variant": false,
+            "image_desktop": "shopify://shop_images/PEWGA0090005SetBox_03.jpg",
+            "image_mobile": "shopify://shop_images/PEWGA0090005SetBox_03.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "product_aeaEFm"
+      ],
+      "name": "Products carousel",
+      "settings": {
+        "button_style": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "column_image_b6mjj7": {
+      "type": "column-image",
+      "blocks": {
+        "column_image_jEdM8z": {
+          "type": "column_image",
+          "settings": {
+            "image": "shopify://shop_images/PEWGA0090006SetBox_02.jpg",
+            "image_link": "shopify://products/pewga0090006-set"
+          }
+        },
+        "column_image_zeD3CU": {
+          "type": "column_image",
+          "settings": {
+            "image": "shopify://shop_images/PEWGA0090006SetBox_03.jpg",
+            "image_link": "shopify://products/pewga0090006-set"
+          }
+        },
+        "column_image_gWm3Lh": {
+          "type": "column_image",
+          "settings": {
+            "image": "shopify://shop_images/PEWGA0090006SetBox_04.jpg",
+            "image_link": "shopify://products/pewga0090006-set"
+          }
+        }
+      },
+      "block_order": [
+        "column_image_jEdM8z",
+        "column_image_zeD3CU",
+        "column_image_gWm3Lh"
+      ],
+      "name": "Column image",
+      "settings": {
+        "title": "",
+        "aspect_ratio": "square",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "products_carousel_9nnmJQ": {
+      "type": "products-carousel",
+      "blocks": {
+        "product_ynydLR": {
+          "type": "product",
+          "settings": {
+            "product": "pewga0090006-set",
+            "show_variant": false,
+            "image_desktop": "shopify://shop_images/PEWGA0090006SetBox_03.jpg",
+            "image_mobile": "shopify://shop_images/PEWGA0090006SetBox_03.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "product_ynydLR"
+      ],
+      "name": "Products carousel",
+      "settings": {
+        "button_style": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    }
+  },
+  "order": [
+    "default-page",
+    "banner_animation_scale_TGHrYt",
+    "richtext_VpAG8V",
+    "column_image_nFq9ph",
+    "products_carousel_RVT9bg",
+    "column_image_b6mjj7",
+    "products_carousel_9nnmJQ"
+  ]
+}

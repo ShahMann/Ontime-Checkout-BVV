@@ -2,43 +2,26 @@
 <html class="no-js" lang="{{- request.locale.iso_code -}}">
 	<head>
 		 <!-- Google Tag Manager -->
-		<script>
-		(function (w, d, s, l, i) {
-			w[l] = w[l] || [];
-			w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-			var f = d.getElementsByTagName(s)[0],
-			j = d.createElement(s),
-			dl = l != 'dataLayer' ? '&l=' + l : '';
-			j.async = true;
-			j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-			f.parentNode.insertBefore(j, f);
-		})(window, document, 'script', 'dataLayer', 'GTM-KLMHBWL');
-		</script>
-		<!-- End Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WPMXHZP');</script>
+    <!-- End Google Tag Manager -->
 
-		<!-- Live Chat Code -->
-		<script>
-		(function (I, n, f, o, b, i, p) {
-			I[b] =
-			I[b] ||
-			function () {
-				(I[b].q = I[b].q || []).push(arguments);
-			};
-			I[b].t = 1 * new Date();
-			i = n.createElement(f);
-			i.async = 1;
-			i.src = o;
-			p = n.getElementsByTagName(f)[0];
-			p.parentNode.insertBefore(i, p);
-		})(window, document, 'script', 'https://livechat.infobip.com/widget.js', 'liveChat');
+ 
 
-		liveChat('init', 'b6d02022-271a-41d3-b374-b0f3d06159be');
-		</script>
+    <!-- Live Chat Code -->
+    <script>
+    (function(I,n,f,o,b,i,p){
+    I[b]=I[b]||function(){(I[b].q=I[b].q||[]).push(arguments)};
+    I[b].t=1*new Date();i=n.createElement(f);i.async=1;i.src=o;
+    p=n.getElementsByTagName(f)[0];p.parentNode.insertBefore(i,p)})
+    (window,document,'script','https://livechat.infobip.com/widget.js','liveChat');
+    
+    liveChat('init', 'c7e45240-95c3-44c3-a09a-7cfb1e8cbab7');
+    </script>
 		<style>
-
-		.lc-widget-button{
-			background-color: #a36246 !important;
-		}
 		.ib-close-mobile-button {
 			display: block !important;
 			top: unset !important;
@@ -49,10 +32,6 @@
 		.lc-widget-button{
 			visibility: visible !important;
 			z-index: 999;
-		}
-
-		.ib-widget-window .ib-header-container{
-			background-color:#a36246d4 !important;
 		}
 
 		html[lang='ar'] .lc-widget-button{
@@ -94,12 +73,11 @@
 		endif
 		%}
 		<link rel="alternate" hreflang="x-default" href="{{ canonical_url }}">
-		<link rel="alternate" hreflang="en-KW" href="{{ en_canonical_url }}">
-		<link rel="alternate" hreflang="ar-KW" href="{{ ar_canonical_url }}">
+		<link rel="alternate" hreflang="en-SA" href="{{ en_canonical_url }}">
+		<link rel="alternate" hreflang="ar-SA" href="{{ ar_canonical_url }}">
 		{% comment %} -- END HREFLANG BLOCK -- {% endcomment %}
 
-		<meta name="google-site-verification" content="A08nPckS--9t-WfcpkI1aJZtQdUTzf5VqT0Qt7QKYAQ">
-		{% if canonical_url contains 'ontime.com/ar' %}
+		{% if canonical_url contains 'sa.ontime.com/ar' %}
 		<meta
 			name="keywords"
 			content="تسوق ساعات يد أون لاين، ساعات يد أنيقة للرجال، ساعات يد أنيقة للنساء، مجوهرات أنيقة أون لاين، ساعات يد نسائية، مجوهرات ذات ماركات عالمية أون لاين، تسوق مجوهرات أون لاين، ساعات يد للرجال، ساعات يد رجالية، أون تايم، ساعة، ساعات ذات ماركات عالمية، ساعات ذات علامات تجارية للنساء، ساعات ذكية، ساعات أصلية ذات علامات تجارية، ساعات ذكية الكويت."
@@ -149,8 +127,6 @@
 
 		{%- render 'custom-variables.css' -%}
 
-		{{ 'custom-css.css' | asset_url | stylesheet_tag }}
-
 		{%- render 'adastra' with '/src/styles/main.scss' -%}
 
 		{%- if template.directory == 'customers' or settings.show_shipping_rates_calculator -%}
@@ -193,7 +169,12 @@
 		{%- render 'translations-methods' -%}
 		{%- render 'translations' -%}
 
-		{{ content_for_header }}
+		{% capture h_content %}
+			{{ content_for_header }}
+		{% endcapture %}
+    
+ 
+      {{ h_content | remove: "A08nPckS--9t-WfcpkI1aJZtQdUTzf5VqT0Qt7QKYAQ" | remove: "google-site-verification" }}
 
 		<script>
 			document.querySelector("html").classList.remove("no-js");
@@ -202,19 +183,13 @@
 
 	{%- assign rtl_langs = 'ar,arc,dv,fa,ha,he,khw,ks,ku,ps,ur,yi' | split: ',' -%}
 	{%- assign current_lang = localization.language.iso_code | split: '-' | first -%}
+		{{ 'custom.css' | asset_url | stylesheet_tag }}
 
 	<body class="template-{{ template | split: '.' | first }}{% if rtl_langs contains current_lang %} rtl{% endif %}" data-customer-id="{{ customer.id }}" data-customer-email="{{ customer.email }}">
-		<!-- Google Tag Manager (noscript) -->
-		<noscript>
-			<iframe
-				src="https://www.googletagmanager.com/ns.html?id=GTM-KLMHBWL"
-				height="0"
-				width="0"
-				style="display:none;visibility:hidden"
-			>
-			</iframe>
-		</noscript>
-		<!-- End Google Tag Manager (noscript) -->
+		  <!-- Google Tag Manager (noscript) -->
+			<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPMXHZP"
+			height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+			<!-- End Google Tag Manager (noscript) -->
 		
 		<a
 			href="#MainContent"
@@ -254,8 +229,8 @@
 
 			{{ content_for_layout }}
 		</main>
-		{%- section 'mobile-app-download' -%}
 
+		{% section 'mobile-download-link' %}
 		{%- sections 'footer-group' -%}
 
 		{%- render 'page-preloader' -%}
@@ -289,12 +264,10 @@
 
 		{%- render 'adastra' with '/src/scripts/main.js' -%}
 
-		{%- comment -%} Free product scripts for DICI and DKNY vendors - loads globally for quick view and product cards {%- endcomment -%}
-		<script src="{{ 'free-collection-product.js' | asset_url }}" defer></script>
+		<script src="{{ 'free-product.js' | asset_url }}" defer></script>
 		<script src="{{ 'free-dkny-collection-product.js' | asset_url }}" defer></script>
-		<script src="{{ 'free-aigner-collection-product.js' | asset_url }}" defer></script>
-		<script src="{{ 'd1-free-gift.js' | asset_url }}" defer></script>
 		<script src="{{ 'free-torri-collection-product.js' | asset_url }}" defer></script>
+		<script src="{{ 'free-gift-promotions.js' | asset_url }}" defer></script>
 
 		{% if settings.enable_compare_products %}
 			{%- render 'adastra' with '/src/styles/compare-products.scss' -%}
@@ -311,7 +284,7 @@
 		{% if settings.is_show_click_and_collect %}
 			{%- render 'adastra' with '/src/scripts/product-card.js' -%}
 		{% endif %}
-
+		
 		{% render 'seo-schema' %}
 
 		{% if request.design_mode %}

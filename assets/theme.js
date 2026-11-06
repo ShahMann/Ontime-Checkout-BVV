@@ -11,9 +11,6 @@ theme.store = {
     get: function(){
         let shop;
         switch (Shopify.shop) {
-            case "ontime-checkout-bvv.myshopify.com":
-                shop = "ONTIME-CHECKOUT.BVV.KW"
-                break;
             case "ontime-kw.myshopify.com":
                 shop = "ONTIME.KW"
                 break;
@@ -28,6 +25,7 @@ theme.store = {
                 break;
             
             default:
+                shop = "ONTIME-CHECKOUT.BVV.KW"
                 break;
         }
 

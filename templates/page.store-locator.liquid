@@ -3,21 +3,23 @@
 <div class="store-locator-container page-width">
     <h1 class="heading">{{ 'general.ontime_stores' | t }}</h1>
     <div class="country-selector">
-        <div id="iraq">
-            {{ 'general.countries.iraq' | t }}
-        </div>
-        <div id="kwt" class="active-button">
+        <div id="kwt">
             {{ 'general.countries.kuwait' | t }}
         </div>
-        <div id="ksa">
+        <div id="ksa" class="active-button">
             {{ 'general.countries.saudi_arabia' | t }}
         </div>
         <div id="uae">
             {{ 'general.countries.uae' | t }}
         </div>
+        <div id="iraq">
+            {{ 'general.countries.iraq' | t }}
+        </div>
     </div>
-    <img src="https://cdn.shopify.com/s/files/1/0755/0671/2868/files/ontime-store.jpg?v=1688455510" alt="Ontime" class="banner-image" />
+    {% comment %} <img src="https://cdn.shopify.com/s/files/1/0777/8195/8960/files/Saudi_national_day_Desktoop_Website_1750x500_en.webp?v=1726574077" alt="" class="banner-image"> {% endcomment %}
+    <img src="https://cdn.shopify.com/s/files/1/0755/0671/2868/files/ontime-store.jpg?v=1688455510" alt="" class="banner-image">
 </div>
+
 
 <div id="kwt-stores" class="page-width stores-container">
     <div class="store-item">
@@ -160,10 +162,9 @@
         <div class="name">Ontime 360 Expansion</div>
         <div class="location">375-Onitme New Expansion,Building Dkny 360 Expansion, ,0,Zahra</div>
         <div class="opening-time">10:00 AM - 10:00 PM</div>
-        <a class="phone-number" href="tel:+96522061508">+965-22061508</a>
+        <a class="phone-number" href="tel:+96525309619">+965-25309619</a>
         <a class="google-maps button button--secondary" target="_blank" href="https://maps.app.goo.gl/uwpExHSDQxnsXwfPA">Directions</a>
     </div>
-
     <div class="store-item">
         <div class="name">Ontime Jewels</div>
         <div class="location">ONTIME JEWELS 360 OLD PHASE,Next to Eye Boutique, below Cinescape & the Food Court, BLOCK-8,ZAHRA</div>
@@ -171,8 +172,7 @@
         <a class="phone-number" href="tel:+96522061507">+965-22061507</a>
         <a class="google-maps button button--secondary" target="_blank" href="https://maps.app.goo.gl/wwGsDnsWxdxCew5j7">Directions</a>
     </div>
-
-
+    
     <div class="store-item">
         <div class="name">Ontime New Concept - Avenues Ph2</div>
         <div class="location">377-Ontime Plus The Avenues Phase-Ii,Building Max And Co The Avenues Phase-Ii, ,Block - 5,Rai</div>
@@ -563,6 +563,13 @@
         <a class="phone-number" href="tel:+971067480441">+971-067480441</a>
         <a class="google-maps button button--secondary" target="_blank" href="https://www.google.com/maps/place/ON+TIME/@25.3987635,55.4756813,17z/data=!4m6!3m5!1s0x3e5f58126be2a5ef:0xc2da8db2b58a0502!8m2!3d25.3987587!4d55.4782562!16s%2Fg%2F11cn9dd7nr?entry=ttu">Directions</a>
     </div>
+    <div class="store-item">
+        <div class="name">ONTIME DUBAI OUTLET MALL</div>
+        <div class="location">3024-Ontime, Madinat Hind 1, Dubai Outlet Mall, Dubai</div>
+        <div class="opening-time">10:00 AM - 10:00 PM</div>
+        <a class="phone-number" href="tel:+971042147999">+971-042147999</a>
+        <a class="google-maps button button--secondary" target="_blank" href="https://www.google.com/maps?cid=2900643657694469463">Directions</a>
+    </div>
 </div>
 
 <div id="iraq-stores" class="page-width stores-container">
@@ -570,7 +577,7 @@
         <div class="name">ONTIME MAJIDI</div>
         <div class="location">Iraq-Erbil-Kaznazan Road</div>
         <div class="opening-time">10:00 AM -11:00 PM</div>
-        <a class="phone-number" href="tel:009647503915580">009647503915580</a>
+        <a class="phone-number" href="tel:009647508428784">009647508428784</a>
         <a class="google-maps button button--secondary" target="_blank" href="https://www.google.com/maps/place/53W7%2B8R3,+Erbil,+Erbil+Governorate,+Iraq/@36.1957668,44.061972,831m/data=!3m2!1e3!4b1!4m5!3m4!1s0x400722fe13443461:0xcff88ab0f68b5a7!8m2!3d36.1957625!4d44.0645469?entry=ttu&g_ep=EgoyMDI1MTEwOS4wIKXMDSoASAFQAw%3D%3D">Directions</a>
     </div>
     <div class="store-item">
@@ -596,7 +603,7 @@
     var ae_button = document.getElementById("uae");
     var iraq_button = document.getElementById("iraq");
     
-    function default_kuwait(){
+    function default_sa(){
         kw_stores_list = document.getElementById("kwt-stores");
         sa_stores_list = document.getElementById("ksa-stores");
         ae_stores_list = document.getElementById("uae-stores");
@@ -608,12 +615,12 @@
         iraq_stores_list.style.display = "none";
 
         iraq_button.classList.remove("active-button")
-        sa_button.classList.remove("active-button");
-        kw_button.classList.add("active-button");
+        sa_button.classList.add("active-button");
+        kw_button.classList.remove("active-button");
         ae_button.classList.remove("active-button");
     };
 
-    default_kuwait();
+    default_sa();
 
     kw_button.addEventListener("click", () => {
         kw_stores_list = document.getElementById("kwt-stores");

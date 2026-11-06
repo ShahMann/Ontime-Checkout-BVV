@@ -11,14 +11,7 @@
   "sections": {
     "default-page": {
       "type": "page-template",
-      "settings": {
-        "enable_heading": false,
-        "enable_content": true,
-        "offset_top_desktop": 40,
-        "offset_bottom_desktop": 40,
-        "offset_top_mobile": 25,
-        "offset_bottom_mobile": 25
-      }
+      "settings": {}
     }
   },
   "order": [

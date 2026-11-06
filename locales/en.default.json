@@ -8,32 +8,6 @@
  * ------------------------------------------------------------
  */
 {
-  "surveyform": {
-    "countrycode": "Country Code",
-    "errorcountrycode": "Please select a country code",
-    "phoneerror": "Please enter your phone number",
-    "emailerror": "Please enter a valid email address",
-    "next": "Next",
-    "back": "Back",
-    "firstnameerror": "Please enter your first name",
-    "lastnameerror": "Please enter your last name",
-    "birthdate": "Birth Date (dd/mm/yyyy)",
-    "birtherror": "Please select your birth date and ensure it's not a future date",
-    "gender": "Gender",
-    "male": "Male",
-    "female": "Female",
-    "gendererror": "Please select your gender",
-    "pref_lng": "Preferred Language",
-    "nation": "Nationality",
-    "nationerror": "Please select your nationality",
-    "sub_val": "Subscription Value",
-    "dis_eli": "Discount Eligibility",
-    "validation": "Validation",
-    "subscriptionerror": "Please select a subscription option",
-    "oneyear": "One Year",
-    "checerror": "Please click to agree",
-    "phone": "Phone number"
-  },
   "general": {
     "ontime_stores": "Ontime Stores",
     "popup": {
@@ -307,6 +281,12 @@
       "quantity": "Quantity",
       "total": "Total"
     },
+     "free_gift": {
+      "select_button": "Add gift",
+      "switch_button": "Switch to this gift",
+      "selected_label": "Selected",
+      "free_price": "Free"
+    },
     "shipping_bar": {
       "progress": "Free shipping progress {{ value }}%"
     },
@@ -554,18 +534,19 @@
       "sold_out": "Sold out",
       "sale": "Sale",
       "unavailable": "Unavailable",
+      "free_gift_unavailable": "This product cannot be purchased standalone",
       "highlights": "Highlights",
       "sale_price": "Sale price",
       "quantity": "Quantity",
-      "click_and_collect": "Click & Collect",
       "color_variants_title": "Color: ",
+      "click_and_collect": "Click & Collect",
       "quantity_in_cart": "(In cart: {{quantity}})",
       "increments_of": "Increments of {{number}}",
       "minimum_of": "Minimum of {{number}}",
       "maximum_of": "Maximum of {{number}}",
       "add_to_cart": "Add to cart",
       "notify": "Notify me when Back in stock",
-      "price_drop": "Alert me if price drop",
+      "price_drop": "Alert me when price drop",
       "pre_order": "Pre-order",
       "choose_an_option": "Choose an option",
       "pickup_availability": {
@@ -641,9 +622,6 @@
           "email": "Email",
           "name_label": "Recipient name (optional)",
           "name": "Name",
-          "phone_label": "Receiver phone number",
-          "phone_placeholder": "Phone number",
-          "phone_error": "Please enter a valid 8-digit phone number",
           "message_label": "Message (optional)",
           "message": "Message",
           "max_characters": "{{ max_chars }} characters max",
@@ -767,27 +745,13 @@
   },
   "shopify": {
     "checkout": {
+      "local_pickup": {
+        "location_information": {
+          "one": " "
+        }
+      },
       "contact": {
-        "address1_label": "Block",
-        "city_label": "Building / Floor / Flat"
-      },
-      "field_errors": {
-        "address_address1_blank": "Enter a valid block number",
-        "address_city_blank": "Enter a building"
-      },
-      "payment_gateway": {
-        "draft_order_payment_due_later_terms": "Amount will be deducted from the available credit.",
-        "generic_payment_terms": "Amount will be deducted from the available credit.",
-        "direct_payment_terms": "Amount will be deducted from the available credit."
-      },
-      "merchandise_unavailable_in_buyer_location": {
-        "banner_title": {
-          "some_products_one": "This product is not eligible for delivery and is available for pick-up only.",
-          "some_products_other": "This products are not eligible for delivery and is available for pick-up only.",
-          "all_products_one": "This product is not eligible for delivery and is available for pick-up only.",
-          "all_products_other": "This products are not eligible for delivery and is available for pick-up only."
-        },
-        "change_address_or_remove": " "
+        "optional_phone_label": "Phone"
       }
     }
   }

@@ -358,11 +358,17 @@
 							</div>
 
 							<div class="best-sellers__product-info-footer">
+								{%- assign is_free_gift = false -%}
+							{%- if product.tags contains 'Free_Gift' -%}
+								{%- assign is_free_gift = true -%}
+							{%- endif -%}
 								<button
 									class="button button--{{ product_button_style }} focus-visible-outline best-sellers__button-product js-add-to-cart"
 									data-product-handle="{{- product.handle -}}"
 									data-min-quantity="{{- product.selected_or_first_available_variant.quantity_rule.min -}}"
-									{%- if product.available == false -%}
+									{%- if is_free_gift -%}
+										aria-label="{{- 'products.product.free_gift_unavailable' | t -}}"
+									{%- elsif product.available == false -%}
 										aria-label="{{- 'products.product.sold_out' | t -}}"
 									{%- elsif product.has_only_default_variant == false -%}
 										aria-label="{{- 'products.best_sellers.open_quick_view' | t | escape -}}"
@@ -370,11 +376,13 @@
 										aria-label="{{- 'products.best_sellers.add_to_cart' | t | escape -}}"
 									{%- endif -%}
 									{%- if product.has_only_default_variant or product.variants.size == 1 -%} data-variant-id="{{- product.selected_or_first_available_variant.id -}}" {%- endif -%}
-									{%- if product.available == false %} disabled {% endif -%}
+									{%- if is_free_gift or product.available == false %} disabled {% endif -%}
 									type="button"
 								>
 									<span class="best-sellers__button-product-label">
-										{% if product.available %}
+										{% if is_free_gift %}
+											{{- 'products.product.free_gift_unavailable' | t -}}
+										{% elsif product.available %}
 											{{- 'products.product.add_to_cart' | t -}}
 										{% else %}
 											{{- 'products.product.sold_out' | t -}}

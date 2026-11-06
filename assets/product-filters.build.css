@@ -22,26 +22,21 @@
 }
 .product-filters .product-filters__open-menu-button svg {
   flex-shrink: 0;
-  width: 25px;
-  height: 25px;
+  width: 16px;
+  height: 16px;
   margin-inline-end: 10px;
   pointer-events: none;
-}
-
-body .collection .collection__header {
-  z-index: 10;
 }
 .product-filters .product-filters__open-menu-button.is-fixed {
   position: fixed;
   bottom: 16px;
   left: 16px;
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
   padding: 5px;
   background-color: var(--color-text-primary);
   color: var(--color-background);
 }
-
 .product-filters .product-filters__open-menu-button.is-fixed .icon {
   margin: 0;
 }
@@ -52,13 +47,6 @@ body .collection .collection__header {
   position: absolute;
   top: -5px;
   right: -5px;
-}
-[lang=ar] .product-filters .product-filters__open-menu-button.is-fixed {
-  left: unset;
-  right: 16px;
-}
-#filterMenuDrawer.is-active {
-  z-index: 9999;
 }
 .product-filters .product-filters__open-menu-button-text {
   line-height: 1.286;

@@ -52,21 +52,21 @@
           "type": "menu",
           "settings": {
             "menu_heading": "Company legal",
-            "menu": "footer"
+            "menu": "company-legal"
           }
         },
         "menu_QkVw3M": {
           "type": "menu",
           "settings": {
             "menu_heading": "Help & Information",
-            "menu": "help-and-information"
+            "menu": "footer"
           }
         },
         "payment_methods_mRdEbh": {
           "type": "payment_methods",
           "settings": {
             "heading": "Payment",
-            "payment_methods": "visa,master,knet,tabby,taly"
+            "payment_methods": "visa,master,knet,tabby"
           }
         }
       },
@@ -93,32 +93,32 @@
         "newsletter_placeholder_text": "Enter email address...",
         "newsletter_button_text": "Subscribe",
         "newsletter_success_message": "Thanks for subscribing",
-        "section_background": "#91553d",
+        "section_background": "#a36246",
         "menu_headings_color": "#ffffff",
         "text_color": "#ffffff",
         "copyright_text_color": "#e9e9e9",
         "link_color": "#ffffff",
-        "link_hover_color": "#a77764",
+        "link_hover_color": "#cb9279",
         "button_icon_color_social": "#ffffff",
-        "button_icon_color_social_hover": "#a77764",
-        "newsletter_background": "#a77764",
+        "button_icon_color_social_hover": "#cb9279",
+        "newsletter_background": "#cb9279",
         "newsletter_icon_background": "#404661",
         "newsletter_heading_color": "#ffffff",
         "newsletter_text_color": "#e9e9e9",
         "newsletter_input_color": "#000000",
-        "newsletter_input_placeholder_color": "#a77764",
+        "newsletter_input_placeholder_color": "#cb9279",
         "newsletter_input_background": "#f8f6f5",
         "newsletter_button_color": "#ffffff",
-        "newsletter_button_background": "#a77764",
+        "newsletter_button_background": "#cb9279",
         "newsletter_button_color_hover": "#000000",
-        "newsletter_button_background_hover": "#91553d",
+        "newsletter_button_background_hover": "#a36246",
         "bottom_footer_border_color": "#ffffff",
         "button_top_color": "#000000",
         "button_top_background": "#ffffff",
         "button_top_border": "#e9e9e9",
         "button_top_color_hover": "#ffffff",
-        "button_top_background_hover": "#a77764",
-        "button_top_border_hover": "#a77764"
+        "button_top_background_hover": "#cb9279",
+        "button_top_border_hover": "#cb9279"
       }
     }
   },

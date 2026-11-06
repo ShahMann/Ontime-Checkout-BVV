@@ -526,6 +526,10 @@
   .slideshow .slideshow__slide-content.slideshow__slide-content--left {
     max-width: 952px;
   }
+
+   .slideshow .box-align .slideshow__slide-content.slideshow__slide-content--left {
+    max-width: 500px;
+  }
   .slideshow .slideshow__slide-content.slideshow__slide-content--center {
     max-width: 1152px;
   }

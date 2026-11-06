@@ -473,8 +473,6 @@
       endif
 
     %}
-
-{%- comment -%} Free product logic for collection metafields {%- endcomment -%}
 {% assign free_product = null %}
 
 {% for collection in product.collections %}
@@ -497,20 +495,18 @@
   {%- if product != blank %}
     data-existing-product
   {% endif %}
-  data-free-collection-product-variant-id="{{ free_product | remove: 'gid://shopify/ProductVariant/' }}"
+   data-free-collection-product-variant-id="{{ free_product | remove: 'gid://shopify/ProductVariant/' }}"
   data-free-variant-price="{{ product.selected_or_first_available_variant.price | money_without_currency }}"
   data-vendor="{{ product.vendor | escape }}"
   data-product-tags="{{ product.tags | join: ',' }}"
 >
   <div class="product-card__main">
-    <div class="product-card__badges">
-      {% if promotional_tag %}
+    {% if promotional_tag %}
       <span class="promotional-badge" style="background-color: {{promotional_tag_color}};">{{ promotional_tag }}</span>
     {% endif %}
     {% if current_collection_promotional_tag %}
       <span class=" current-collection-promotional-badge " style="background-color: {{current_collection_promotional_tag_color}};">{{ current_collection_promotional_tag }}</span>
     {% endif %}
-    </div>
     {% assign badge_labels = product.metafields.custom.badge_images %}
     {% assign is_product_have_labels = false %}
 
@@ -724,7 +720,6 @@
             class="click-collect-badge is-hidden"
             data-collect-sku="{{ product.selected_or_first_available_variant.sku }}"
           >
-          {% comment %} Click & Collect {% endcomment %}
         {{ 'products.product.click_and_collect' | t }}
           </span>
         {% endif %}

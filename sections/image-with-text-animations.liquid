@@ -67,7 +67,7 @@
 {%- endcapture -%}
 
 <section
-	class="image-with-text-animations {% if section.index > 1 %}image-with-text-animations--delay{% endif %} {% if template == 'index' %}home-feature-shop-all{% endif %} {% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}{% if heading != blank and image != blank %} js-image-with-text-animations{% endif %} js-animate"
+	class="image-with-text-animations {% if section.index > 1 %}image-with-text-animations--delay{% endif %} {% if request.visual_preview_mode or section.index == 1 %} animated{% endif %}{% if heading != blank and image != blank %} js-image-with-text-animations{% endif %} js-animate"
 	style="{{- styles -}}"
 	{%- if enable_animation -%}
 		data-enable-animation="true"

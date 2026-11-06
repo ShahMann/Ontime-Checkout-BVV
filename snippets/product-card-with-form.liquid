@@ -24,6 +24,10 @@
 {%- assign quick_view_enabled		= settings.is_quick_view_enabled -%}
 {%- assign image_on_hover_enabled	= settings.is_image_on_hover_enabled -%}
 {%- assign swatch_option			= settings.color_swatches_option | default: 'Color' | downcase -%}
+{%- assign is_free_gift = false -%}
+{%- if product.tags contains 'Free_Gift' -%}
+	{%- assign is_free_gift = true -%}
+{%- endif -%}
 
 {%- if is_lazy == nil -%}
 	{%- assign is_lazy = true -%}
@@ -350,7 +354,10 @@
 					<button
 						class="button button--secondary product-card__button js-product-card-button {% if hide_buttons %} is-hidden {%- endif -%}"
 						type="submit"
-						{% unless hide_buttons %}
+						{% if is_free_gift %}
+							disabled
+						{% elsif hide_buttons %}
+						{% else %}
 							{% unless product.has_only_default_variant %}
 								disabled
 							{% else %}
@@ -358,9 +365,11 @@
 									disabled
 								{% endunless %}
 							{%- endunless -%}
-						{%- endunless -%}
+						{%- endif -%}
 					>
-						{%- if product.has_only_default_variant -%}
+						{%- if is_free_gift -%}
+							{{- 'products.product.free_gift_unavailable' | t -}}
+						{%- elsif product.has_only_default_variant -%}
 							{%- if product.selected_or_first_available_variant.available  -%}
 								{{- "products.product.add_to_cart" | t -}}
 							{%- else -%}

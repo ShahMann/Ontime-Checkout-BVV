@@ -126,8 +126,9 @@
 						</div>
 
 						<div class="cart-template__summary">
+							{%- render 'free-gift-promotions', section: section, heading: section.settings.free_gift_heading, visible_count: section.settings.free_gift_visible_count -%}
 							{%- render 'cart-discount' -%}
-							{%- render 'cart-notes', id: section.id -%}
+							{% comment %} {%- render 'cart-notes', id: section.id -%} {% endcomment %}
 							{%- render 'cart-shipping-calculator' -%}
 						</div>
 					</div>
@@ -236,6 +237,26 @@
 		},
 		{
 			"type": "header",
+			"content": "Free gift promotions"
+		},
+		{
+			"type": "text",
+			"id": "free_gift_heading",
+			"label": "Free gift heading",
+			"info": "Leave blank to hide when no gift is currently eligible. Add \"Vendor promotion\" blocks below to configure vendors (each can offer up to 3 spend tiers); block order controls display priority when several vendors are eligible at once."
+		},
+		{
+			"type": "range",
+			"id": "free_gift_visible_count",
+			"label": "Gift options per page",
+			"min": 1,
+			"max": 10,
+			"step": 1,
+			"default": 3,
+			"info": "When more eligible options exist than this, Prev/Next pagination is shown"
+		},
+		{
+			"type": "header",
 			"content": "Layout"
 		},
 		{
@@ -293,6 +314,98 @@
 				"label": "Custom liquid",
 				"info": "Simple custom liquid"
 			}
+			]
+		},
+		{
+			"name": "Vendor promotion",
+			"type": "vendor_promotion",
+			"settings": [
+				{
+					"type": "text",
+					"id": "vendor_name",
+					"label": "Vendor name",
+					"info": "Matched case-insensitively against each cart line item's vendor"
+				},
+				{
+					"type": "header",
+					"content": "Tier 1"
+				},
+				{
+					"type": "number",
+					"id": "tier1_threshold",
+					"label": "Tier 1 threshold (SAR)"
+				},
+				{
+					"type": "product_list",
+					"id": "tier1_products",
+					"label": "Tier 1 gift products",
+					"limit": 10,
+					"info": "Customer can pick one of these once tier 1 is unlocked (out-of-stock ones are hidden)"
+				},
+				{
+					"type": "header",
+					"content": "Tier 2 (optional)"
+				},
+				{
+					"type": "number",
+					"id": "tier2_threshold",
+					"label": "Tier 2 threshold (SAR)",
+					"info": "Leave blank to only offer tier 1"
+				},
+				{
+					"type": "product_list",
+					"id": "tier2_products",
+					"label": "Tier 2 gift products",
+					"limit": 10
+				},
+				{
+					"type": "header",
+					"content": "Tier 3 (optional)"
+				},
+				{
+					"type": "number",
+					"id": "tier3_threshold",
+					"label": "Tier 3 threshold (SAR)",
+					"info": "Leave blank to only offer up to tier 2"
+				},
+				{
+					"type": "product_list",
+					"id": "tier3_products",
+					"label": "Tier 3 gift products",
+					"limit": 10
+				}
+			]
+		},
+		{
+			"name": "Collection promotion",
+			"type": "collection_promotion",
+			"settings": [
+				{
+					"type": "collection",
+					"id": "collection",
+					"label": "Qualifying collection",
+					"info": "Products in this collection count toward the quantity below. Only the first 250 products in the collection are checked."
+				},
+				{
+					"type": "text",
+					"id": "vendor_name",
+					"label": "Vendor name",
+					"info": "Shown as the caption on each gift card, same as the Vendor promotion block"
+				},
+				{
+					"type": "number",
+					"id": "quantity_threshold",
+					"label": "Quantity required (full-price only)",
+					"default": 2,
+					"info": "e.g. \"Buy 2, Get 1 Free\" - total quantity of full-price items from the collection needed to unlock the gift"
+				},
+				{
+					"type": "product_list",
+					"id": "gift_products",
+					"label": "Free gift products",
+					"limit": 10,
+					"info": "Customer can pick one of these once the quantity above is reached (out-of-stock ones are hidden)"
+				}
 			]
 		}
 	]

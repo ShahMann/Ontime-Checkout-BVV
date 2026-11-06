@@ -213,6 +213,13 @@
 
   function bind(sectionEl) {
     if (!sectionEl) return;
+    
+    // Check vendor - only bind if vendor matches TORRI
+    var vendor = sectionEl && sectionEl.dataset && sectionEl.dataset.vendor;
+    if (vendor && vendor.toUpperCase() !== "TORRI") {
+      return;
+    }
+    
     var form = sectionEl.querySelector("[data-js-product-form]");
 
     if (!form) return;
@@ -238,7 +245,7 @@
               total = total + item.price / 100;
             }
           });
-          var shouldAddFree = total > 70;
+          var shouldAddFree = total > 800;
 
           // Check if any free product already exists in cart before adding
           return checkIfAnyFreeProductInCart().then(function(anyFreeProductExists) {
@@ -345,7 +352,7 @@
             total = total + item.price / 100;
           }
         });
-        var shouldAddFree = total > 70;
+        var shouldAddFree = total > 800;
 
         // Check if any free product already exists in cart before adding
         return checkIfAnyFreeProductInCart().then(function(anyFreeProductExists) {
@@ -439,7 +446,7 @@
             total = total + item.price / 100;
           }
         });
-        var shouldAddFree = total > 70 && freeId;
+        var shouldAddFree = total > 800 && freeId;
 
         // Check if any free product already exists in cart before adding
         return checkIfAnyFreeProductInCart().then(function(anyFreeProductExists) {

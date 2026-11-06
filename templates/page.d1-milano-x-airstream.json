@@ -1,0 +1,212 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "default-page": {
+      "type": "page-template",
+      "disabled": true,
+      "settings": {
+        "enable_heading": false,
+        "enable_content": true,
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "slideshow_PqefRt": {
+      "type": "slideshow",
+      "blocks": {
+        "image_CpYxCV": {
+          "type": "image",
+          "settings": {
+            "image_desktop": "shopify://shop_images/6a3112e8538dc4f07d8449b4_1.webp",
+            "image_mobile": "shopify://shop_images/Aistream_Hero.png",
+            "heading": "AIRSTREAM",
+            "description": "<p>D1 MILANO</p>",
+            "button_text": "",
+            "button_aria_label": "",
+            "button_link": "shopify://collections/d1-milano",
+            "open_in_new_tab": false,
+            "make_link_full_slide": true,
+            "second_button_text": "",
+            "second_button_aria_label": "",
+            "second_button_link": "",
+            "second_open_in_new_tab": false,
+            "text_alignment_inside_block": "left",
+            "content_alignment": "slideshow__slide-content--left",
+            "vertical_content_alignment": "slideshow__slide-content--middle",
+            "background_color": "#757575",
+            "background_content": "",
+            "heading_color": "#ffffff",
+            "description_color": "#ffffff",
+            "button_text_color": "#000000",
+            "button_background_color": "#ffffff",
+            "button_border_color": "#ffffff",
+            "button_text_color_hover": "#000000",
+            "button_background_color_hover": "#4d71f9",
+            "button_border_color_hover": "#4d71f9",
+            "second_button_text_color": "#ffffff",
+            "second_button_text_color_hover": "#000000",
+            "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
+          }
+        }
+      },
+      "block_order": [
+        "image_CpYxCV"
+      ],
+      "name": "Slideshow",
+      "settings": {
+        "enable_rounded_corners": true,
+        "show_arrows": true,
+        "show_pagination": true,
+        "enable_loop": true,
+        "enable_autoplay": true,
+        "autoplay_speed": 5,
+        "animation_speed": 0.5,
+        "animation_type": "creative",
+        "background_color": "#ffffff",
+        "pagination_color": "#ffffff",
+        "arrows_background_color": "rgba(255, 255, 255, 0.3)",
+        "enable_arrows_glass_effect": true,
+        "arrows_color": "#fff",
+        "arrows_border_color": "",
+        "arrows_background_color_hover": "#4D71F9",
+        "arrows_color_hover": "#000000",
+        "arrows_border_color_hover": "#4d71f9",
+        "container_width": "inherit",
+        "height_desktop": 100,
+        "height_mobile": 100,
+        "subtract_header_height": true,
+        "offset_top_desktop": 20,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 20,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "richtext_8AekdH": {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "text_content": "<h3>Inspired by nearly a century of exploration, D1 Milano x Airstream brings together two brands united by a belief in enduring design and the spirit of adventure.<br/><br/><br/>Limited to 300 pieces worldwide, the collaboration draws inspiration from the polished aluminium surfaces, streamlined forms and timeless appeal that have made Airstream an icon of the open road.</h3>",
+        "text_alignment": "center",
+        "enable_read_more": false,
+        "read_more_text": "Show more",
+        "show_less_text": "Show less",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "products_carousel_6zrxJB": {
+      "type": "products-carousel",
+      "blocks": {
+        "product_gUFRdT": {
+          "type": "product",
+          "settings": {
+            "product": "arbuas",
+            "show_variant": false,
+            "video_desktop": "shopify://files/videos/260624_Airstream_1x1_Animatic_v22.mp4",
+            "video_mobile": "shopify://files/videos/260624_Airstream_1x1_Animatic_v22.mp4"
+          }
+        }
+      },
+      "block_order": [
+        "product_gUFRdT"
+      ],
+      "name": "Products carousel",
+      "settings": {
+        "button_style": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "richtext_pPHDBH": {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": {
+        "heading": "THE COLLABORATION",
+        "subheading": "",
+        "text_content": "<p>Since 1931, Airstream has represented a spirit of adventure unlike any other. Its polished aluminium trailers have become some of the most recognizable design objects ever created, celebrated not only for where they go, but for how they are built. Defined by streamlined forms, enduring materials and a belief that the journey is as important as the destination, Airstream has inspired generations of explorers, designers, and travellers.<br/><br/>D1 Milano shares a similar approach to design. We believe that great objects should balance function and emotion, practicality and beauty. This collaboration brings those shared values together in a limited-edition watch that draws inspiration from nearly a century of movement, craftsmanship, and curiosity. Limited to 300 individually numbered pieces worldwide, D1 Milano x Airstream celebrates the enduring appeal of purposeful design and the freedom of the open road.</p>",
+        "text_alignment": "center",
+        "enable_read_more": false,
+        "read_more_text": "Show more",
+        "show_less_text": "Show less",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_WG4rRy": {
+      "type": "image-with-text",
+      "name": "Image with text",
+      "settings": {
+        "image_position": "left",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/6a46d5d1986d59540159c0da.webp",
+        "image_background": "#ffffff",
+        "label": "",
+        "heading": "THE WATCH",
+        "text_content": "<p>The watch translates key elements of Airstream's design language into a wearable form. The brushed stainless steel case and integrated bracelet take inspiration from the iconic aluminium shell that has defined every Airstream for generations, while warm champagne accents reference the way light moves across polished metal surfaces throughout a journey.At the centre sits a silver sunray dial, chosen to echo the reflective qualities of aluminium while introducing depth and movement beneath the surface. The result is a watch that captures the visual character of an American design icon while remaining unmistakably D1 Milano. A compact, wearable interpretation of the materials, forms, and spirit that have defined Airstream for generations.</p>",
+        "button_label": "EXPLORE",
+        "button_aria_label": "",
+        "button_url": "shopify://products/arbuas",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_dANCVN": {
+      "type": "image-with-text",
+      "name": "Image with text",
+      "settings": {
+        "image_position": "left",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/6a2a7ffc53a847af75483c3b_1.gif",
+        "image_background": "#ffffff",
+        "label": "",
+        "heading": "THE FINISHING TOUCHES",
+        "text_content": "<p>Every detail of the collaboration has been considered through the lens of Airstream's design heritage. The watch features a silver sunray dial inspired by the reflective aluminium surfaces that have defined the brand for generations. The case itself takes cues from the smooth, streamlined forms associated with life on the road, balancing clean geometry with softer curves throughout the silhouette.<br/><br/>Limited to 300 individually numbered pieces worldwide, each watch is presented in custom packaging inspired by Airstream's iconic design language, transforming the collaboration into a collectible object from the moment it is opened.</p>",
+        "button_label": "EXPLORE",
+        "button_aria_label": "",
+        "button_url": "shopify://products/arbuas",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    }
+  },
+  "order": [
+    "default-page",
+    "slideshow_PqefRt",
+    "richtext_8AekdH",
+    "products_carousel_6zrxJB",
+    "richtext_pPHDBH",
+    "image_with_text_WG4rRy",
+    "image_with_text_dANCVN"
+  ]
+}

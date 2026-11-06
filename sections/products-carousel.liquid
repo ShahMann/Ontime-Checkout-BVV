@@ -230,6 +230,10 @@
 										<div class="products-carousel__btns-box">
 											{% render 'price', product: product %}
 
+											{%- assign is_free_gift = false -%}
+										{%- if product.tags contains 'Free_Gift' -%}
+											{%- assign is_free_gift = true -%}
+										{%- endif -%}
 											<button
 												class="products-carousel__btn focus-visible-outline js-add-to-cart button button--{{- section.settings.button_style -}}"
 												type="button"
@@ -237,11 +241,13 @@
 												{% if product.has_only_default_variant or product.variants.size == 1 %}
 													data-variant-id="{{- product.variants[0].id -}}"
 												{% endif %}
-												{% unless product.available %}
+												{% if is_free_gift or product.available == false %}
 													disabled
-												{% endunless %}
+												{% endif %}
 											>
-												{%- if product.available -%}
+												{%- if is_free_gift -%}
+													{{- 'products.product.free_gift_unavailable' | t -}}
+												{%- elsif product.available -%}
 													{{- 'products.product.add_to_cart' | t -}}
 												{%- else -%}
 													{{- 'products.product.sold_out' | t -}}

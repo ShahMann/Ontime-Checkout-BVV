@@ -21,7 +21,7 @@
       <div class="popup-text-container">
         {% if section.settings.heading != blank %}
           <h2 class="popup-heading" style="color: {{ section.settings.heading_color }};">
-            {{ section.settings.heading }} 
+            {{ section.settings.heading }}
           </h2>
         {% endif %}
         {% if section.settings.subheading != blank %}
@@ -181,7 +181,6 @@
     }
   }
 
-  /* Bottom positioning adjustments */
   .has-mobile-popup-bottom #ib-button-messaging {
     bottom: 75px;
   }
@@ -219,15 +218,12 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function shouldShowPopup() {
-    // Use localStorage instead of sessionStorage so it persists across sessions
-    // but clear it on page load to reset for each page visit
     if (localStorage.getItem("popupDismissedThisSession")) return false;
     if (window.innerWidth > 768) return false;
     const deviceLink = getDeviceSpecificLink(actionBtn);
     return !!deviceLink;
   }
 
-  // Check if popup should be available (regardless of dismissed state)
   function isPopupAvailable() {
     if (window.innerWidth > 768) return false;
     const deviceLink = getDeviceSpecificLink(actionBtn);
@@ -242,7 +238,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function initializePopup() {
-    // Clear the dismissal flag on page load so popup can show again
     localStorage.removeItem("popupDismissedThisSession");
     
     if (!popup) return;
@@ -265,9 +260,7 @@ document.addEventListener("DOMContentLoaded", function() {
       dismissBtn.addEventListener("click", function(e) {
         e.preventDefault();
         popup.style.display = "none";
-        // Set flag to prevent showing again in this session
         localStorage.setItem("popupDismissedThisSession", "true");
-        // Remove the class when dismissed
         updateBodyClass(false);
       });
     }

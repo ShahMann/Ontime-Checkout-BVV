@@ -1,0 +1,89 @@
+{{ 'product-carousel.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-carousel.js' | asset_url }}" defer="defer"></script>
+
+<div class="product-carousel-container page-width">
+    <div class="carousel-container">
+        <div class="carousel-heading">
+            <span class="heading">{{section.settings.heading}}</span>
+            <div class="carousel-buttons">
+                <div class="prev">
+                    {% render 'icon-caret' %}
+                </div>
+                <div class="next">
+                    {% render 'icon-caret' %}
+                </div>
+            </div>
+        </div>
+        <div class="carousel-slides">
+            {% for product in section.settings.collection.products limit: section.settings.product_limit %}
+                <div class="carousel-slide">
+                    {% render 'product-card', product: product, width: 300, fixed_width: true , promotional_collection: section.settings.promotional_collection %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    #shopify-section-{{section.id}} .product-carousel-container {
+        padding-top: {{section.settings.padding_top}}px;
+        padding-bottom: {{section.settings.padding_bottom}}px;
+    }
+</style>
+
+{% schema %}
+    {
+      "name": "Product carousel",
+      "tag": "section",
+      "class": "section",
+      "settings": [
+        {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+        },
+        {
+            "type": "text",
+            "id": "heading",
+            "label": "Section heading"
+        },
+        {
+            "type": "range",
+            "id": "product_limit",
+            "label": "Number of products to show",
+            "default": 10,
+            "min": 10,
+            "max": 15,
+            "step": 1
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "label": "Top Padding",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 20
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "label": "Bottom Padding",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 20
+        },
+        {
+            "type": "collection",
+            "id": "promotional_collection",
+            "label": "Promotional Badge Collection"
+        }
+      ],
+      "presets": [
+        {
+          "name": "Product carousel"
+        }
+      ]
+    }
+  {% endschema %}

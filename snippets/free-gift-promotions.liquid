@@ -1,0 +1,512 @@
+{%- comment -%}
+	------------------------------------------------------------------------------
+	Snippet: Free gift promotions
+	Pools eligible free-gift products across every configured promotion block
+	on the Cart section, in block order (= merchant priority). The picker is
+	shown whenever the pool is non-empty, whether or not a gift is already in
+	the cart, so the customer can always switch to a different eligible
+	option (swap handled by assets/free-gift-promotions.js). Stale gift lines
+	that fall out of eligibility are removed passively by the same script.
+
+	Two promotion block types are supported (mixed freely, any order):
+	- "vendor_promotion": vendor's full-price cart subtotal (SAR) vs. up to 3
+	  tiers, each with its own gift product pool.
+	- "collection_promotion": total full-price QUANTITY of items from a
+	  chosen collection vs. a single threshold, unlocking a single gift
+	  product pool (e.g. "Buy 2 Watches, Get 1 Free").
+
+	Both promotion types only count FULL-PRICE line items - a line is
+	excluded if it's on sale (variant compare_at_price set) or has any
+	cart/discount-code reduction applied (original_line_price !=
+	final_line_price).
+
+	- section: Section object (required) - its blocks are scanned for
+	  "vendor_promotion"/"collection_promotion" types; other block types are
+	  ignored, so this can be rendered on a section that also has other
+	  block types (e.g. cart-template).
+	- heading: Heading text shown above the options when the pool is
+	  non-empty (optional)
+	- visible_count: How many options are shown per page before Prev/Next
+	  pagination kicks in (optional, default 3)
+
+	Usage:
+	{%- render 'free-gift-promotions', section: section, heading: heading, visible_count: visible_count -%}
+	------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign visible_count = visible_count | default: 3 -%}
+
+{%- assign all_gift_variant_ids = '' -%}
+
+{%- for block in section.blocks -%}
+	{%- case block.type -%}
+		{%- when 'vendor_promotion' -%}
+			{%- for product in block.settings.tier1_products -%}
+				{%- assign all_gift_variant_ids = all_gift_variant_ids | append: product.selected_or_first_available_variant.id | append: ',' -%}
+			{%- endfor -%}
+
+			{%- for product in block.settings.tier2_products -%}
+				{%- assign all_gift_variant_ids = all_gift_variant_ids | append: product.selected_or_first_available_variant.id | append: ',' -%}
+			{%- endfor -%}
+
+			{%- for product in block.settings.tier3_products -%}
+				{%- assign all_gift_variant_ids = all_gift_variant_ids | append: product.selected_or_first_available_variant.id | append: ',' -%}
+			{%- endfor -%}
+		{%- when 'collection_promotion' -%}
+			{%- for product in block.settings.gift_products -%}
+				{%- assign all_gift_variant_ids = all_gift_variant_ids | append: product.selected_or_first_available_variant.id | append: ',' -%}
+			{%- endfor -%}
+	{%- endcase -%}
+{%- endfor -%}
+
+{%- assign padded_all_gift_variant_ids = ',' | append: all_gift_variant_ids -%}
+
+{%- comment -%}
+	The container + embedded JSON config below always render whenever at
+	least one promotion is configured, REGARDLESS of whether anything is
+	currently eligible. This gives assets/free-gift-promotions.js a stable
+	place to read config from at all times - otherwise it could never detect
+	a customer newly crossing a threshold (e.g. via a quantity bump) on a
+	cart that started out with nothing eligible, since there'd be no widget
+	in the DOM yet to read config from. Only the visible heading/options
+	markup is conditional on the pool actually being non-empty.
+{%- endcomment -%}
+
+{%- if all_gift_variant_ids != '' -%}
+	{%- assign selected_gift_variant_id = '' -%}
+
+	{%- for line in cart.items -%}
+		{%- assign line_variant_id_str = line.variant_id | append: '' -%}
+		{%- assign padded_line_id = ',' | append: line_variant_id_str | append: ',' -%}
+
+		{%- if padded_all_gift_variant_ids contains padded_line_id -%}
+			{%- assign selected_gift_variant_id = line_variant_id_str -%}
+		{%- endif -%}
+	{%- endfor -%}
+
+	{%- assign has_any_selection = false -%}
+
+	{%- unless selected_gift_variant_id == '' -%}
+		{%- assign has_any_selection = true -%}
+	{%- endunless -%}
+
+	{%- assign option_index = 0 -%}
+
+	{%- capture pooled_options -%}
+		{%- for block in section.blocks -%}
+			{%- case block.type -%}
+				{%- when 'vendor_promotion' -%}
+					{%- assign vendor_name = block.settings.vendor_name -%}
+
+					{%- if vendor_name == blank -%}
+						{%- continue -%}
+					{%- endif -%}
+
+					{%- assign vendor_name_downcase = vendor_name | downcase -%}
+					{%- assign vendor_total_cents = 0 -%}
+
+					{%- for line in cart.items -%}
+						{%- assign line_variant_id_str = line.variant_id | append: '' -%}
+						{%- assign padded_line_id = ',' | append: line_variant_id_str | append: ',' -%}
+						{%- assign line_vendor_downcase = line.vendor | downcase -%}
+						{%- assign line_is_discounted = false -%}
+
+						{%- if line.variant.compare_at_price != blank and line.variant.compare_at_price > 0 -%}
+							{%- assign line_is_discounted = true -%}
+						{%- endif -%}
+
+						{%- if line.original_line_price != line.final_line_price -%}
+							{%- assign line_is_discounted = true -%}
+						{%- endif -%}
+
+						{%- unless padded_all_gift_variant_ids contains padded_line_id -%}
+							{%- if line_vendor_downcase == vendor_name_downcase and line_is_discounted == false -%}
+								{%- assign vendor_total_cents = vendor_total_cents | plus: line.final_line_price -%}
+							{%- endif -%}
+						{%- endunless -%}
+					{%- endfor -%}
+
+					{%- assign vendor_total_kd = vendor_total_cents | divided_by: 100.0 -%}
+					{%- assign qualifying_products = blank -%}
+
+					{%- comment -%}
+						Thresholds use "> 0" rather than "!= blank": the theme
+						editor saves an untouched number field as 0, not blank,
+						so a merchant leaving tier2/tier3 unset would otherwise
+						have those treated as "configured with an always-met
+						0 threshold", shadowing a legitimately qualifying tier1.
+					{%- endcomment -%}
+					{%- if block.settings.tier3_threshold > 0 and vendor_total_kd >= block.settings.tier3_threshold -%}
+						{%- assign qualifying_products = block.settings.tier3_products -%}
+					{%- elsif block.settings.tier2_threshold > 0 and vendor_total_kd >= block.settings.tier2_threshold -%}
+						{%- assign qualifying_products = block.settings.tier2_products -%}
+					{%- elsif block.settings.tier1_threshold > 0 and vendor_total_kd >= block.settings.tier1_threshold -%}
+						{%- assign qualifying_products = block.settings.tier1_products -%}
+					{%- endif -%}
+
+					{%- assign source_label = vendor_name -%}
+
+					{%- if qualifying_products != blank -%}
+						{%- for product in qualifying_products -%}
+							{%- assign gift_variant = product.selected_or_first_available_variant -%}
+
+							{%- if gift_variant == blank or gift_variant.available == false -%}
+								{%- continue -%}
+							{%- endif -%}
+
+							{%- assign product_variant_id_str = gift_variant.id | append: '' -%}
+							{%- assign is_selected = false -%}
+
+							{%- if product_variant_id_str == selected_gift_variant_id -%}
+								{%- assign is_selected = true -%}
+							{%- endif -%}
+
+							{%- assign page_index = option_index | divided_by: visible_count -%}
+
+							{%- render 'free-gift-option',
+								product: product,
+								source_label: source_label,
+								is_selected: is_selected,
+								has_any_selection: has_any_selection,
+								page_index: page_index
+							-%}
+
+							{%- assign option_index = option_index | plus: 1 -%}
+						{%- endfor -%}
+					{%- endif -%}
+				{%- when 'collection_promotion' -%}
+					{%- assign promo_collection = block.settings.collection -%}
+
+					{%- if promo_collection == blank -%}
+						{%- continue -%}
+					{%- endif -%}
+
+					{%- assign qualifying_product_ids = '' -%}
+
+					{%- paginate promo_collection.products by 250 -%}
+						{%- for collection_product in promo_collection.products -%}
+							{%- assign qualifying_product_ids = qualifying_product_ids | append: collection_product.id | append: ',' -%}
+						{%- endfor -%}
+					{%- endpaginate -%}
+
+					{%- assign padded_qualifying_product_ids = ',' | append: qualifying_product_ids -%}
+					{%- assign matched_quantity = 0 -%}
+
+					{%- for line in cart.items -%}
+						{%- assign line_variant_id_str = line.variant_id | append: '' -%}
+						{%- assign padded_line_id = ',' | append: line_variant_id_str | append: ',' -%}
+						{%- assign line_product_id_str = line.product_id | append: '' -%}
+						{%- assign padded_line_product_id = ',' | append: line_product_id_str | append: ',' -%}
+						{%- assign line_is_discounted = false -%}
+
+						{%- if line.variant.compare_at_price != blank and line.variant.compare_at_price > 0 -%}
+							{%- assign line_is_discounted = true -%}
+						{%- endif -%}
+
+						{%- if line.original_line_price != line.final_line_price -%}
+							{%- assign line_is_discounted = true -%}
+						{%- endif -%}
+
+						{%- unless padded_all_gift_variant_ids contains padded_line_id -%}
+							{%- if padded_qualifying_product_ids contains padded_line_product_id and line_is_discounted == false -%}
+								{%- assign matched_quantity = matched_quantity | plus: line.quantity -%}
+							{%- endif -%}
+						{%- endunless -%}
+					{%- endfor -%}
+
+					{%- assign qualifying_products = blank -%}
+
+					{%- if block.settings.quantity_threshold > 0 and matched_quantity >= block.settings.quantity_threshold -%}
+						{%- assign qualifying_products = block.settings.gift_products -%}
+					{%- endif -%}
+
+					{%- assign source_label = block.settings.vendor_name -%}
+
+					{%- if qualifying_products != blank -%}
+						{%- for product in qualifying_products -%}
+							{%- assign gift_variant = product.selected_or_first_available_variant -%}
+
+							{%- if gift_variant == blank or gift_variant.available == false -%}
+								{%- continue -%}
+							{%- endif -%}
+
+							{%- assign product_variant_id_str = gift_variant.id | append: '' -%}
+							{%- assign is_selected = false -%}
+
+							{%- if product_variant_id_str == selected_gift_variant_id -%}
+								{%- assign is_selected = true -%}
+							{%- endif -%}
+
+							{%- assign page_index = option_index | divided_by: visible_count -%}
+
+							{%- render 'free-gift-option',
+								product: product,
+								source_label: source_label,
+								is_selected: is_selected,
+								has_any_selection: has_any_selection,
+								page_index: page_index
+							-%}
+
+							{%- assign option_index = option_index | plus: 1 -%}
+						{%- endfor -%}
+					{%- endif -%}
+			{%- endcase -%}
+		{%- endfor -%}
+	{%- endcapture -%}
+
+	{%- assign total_options = option_index -%}
+	{%- assign total_pages = total_options | plus: visible_count | minus: 1 | divided_by: visible_count -%}
+
+	{%- assign promotions_json_raw = '' -%}
+
+	{%- for block in section.blocks -%}
+		{%- case block.type -%}
+			{%- when 'vendor_promotion' -%}
+				{%- if block.settings.vendor_name == blank -%}
+					{%- continue -%}
+				{%- endif -%}
+
+				{%- assign tiers_json = '' -%}
+
+				{%- if block.settings.tier1_threshold > 0 -%}
+					{%- capture tier1_variant_ids_json -%}
+						{%- for product in block.settings.tier1_products -%}
+							{{- product.selected_or_first_available_variant.id | json -}}{% unless forloop.last %},{% endunless %}
+						{%- endfor -%}
+					{%- endcapture -%}
+					{%- assign tiers_json = tiers_json | append: '{"threshold":' | append: block.settings.tier1_threshold | append: ',"variantIds":[' | append: tier1_variant_ids_json | append: ']},' -%}
+				{%- endif -%}
+
+				{%- if block.settings.tier2_threshold > 0 -%}
+					{%- capture tier2_variant_ids_json -%}
+						{%- for product in block.settings.tier2_products -%}
+							{{- product.selected_or_first_available_variant.id | json -}}{% unless forloop.last %},{% endunless %}
+						{%- endfor -%}
+					{%- endcapture -%}
+					{%- assign tiers_json = tiers_json | append: '{"threshold":' | append: block.settings.tier2_threshold | append: ',"variantIds":[' | append: tier2_variant_ids_json | append: ']},' -%}
+				{%- endif -%}
+
+				{%- if block.settings.tier3_threshold > 0 -%}
+					{%- capture tier3_variant_ids_json -%}
+						{%- for product in block.settings.tier3_products -%}
+							{{- product.selected_or_first_available_variant.id | json -}}{% unless forloop.last %},{% endunless %}
+						{%- endfor -%}
+					{%- endcapture -%}
+					{%- assign tiers_json = tiers_json | append: '{"threshold":' | append: block.settings.tier3_threshold | append: ',"variantIds":[' | append: tier3_variant_ids_json | append: ']},' -%}
+				{%- endif -%}
+
+				{%- assign tiers_json = tiers_json | remove_last: ',' -%}
+
+				{%- capture promotion_json_entry -%}{ "type": "vendor", "name": {{ block.settings.vendor_name | json }}, "tiers": [{{ tiers_json }}] },{%- endcapture -%}
+				{%- assign promotions_json_raw = promotions_json_raw | append: promotion_json_entry -%}
+			{%- when 'collection_promotion' -%}
+				{%- if block.settings.collection == blank or block.settings.quantity_threshold <= 0 -%}
+					{%- continue -%}
+				{%- endif -%}
+
+				{%- assign json_collection_product_ids = '' -%}
+
+				{%- paginate block.settings.collection.products by 250 -%}
+					{%- for collection_product in block.settings.collection.products -%}
+						{%- capture id_fragment -%}{{- collection_product.id | json -}}{% unless forloop.last %},{% endunless %}{%- endcapture -%}
+						{%- assign json_collection_product_ids = json_collection_product_ids | append: id_fragment -%}
+					{%- endfor -%}
+				{%- endpaginate -%}
+
+				{%- capture gift_variant_ids_json -%}
+					{%- for product in block.settings.gift_products -%}
+						{{- product.selected_or_first_available_variant.id | json -}}{% unless forloop.last %},{% endunless %}
+					{%- endfor -%}
+				{%- endcapture -%}
+
+				{%- capture promotion_json_entry -%}{ "type": "collection", "qualifyingProductIds": [{{ json_collection_product_ids }}], "quantityThreshold": {{ block.settings.quantity_threshold | default: 0 }}, "variantIds": [{{ gift_variant_ids_json }}] },{%- endcapture -%}
+				{%- assign promotions_json_raw = promotions_json_raw | append: promotion_json_entry -%}
+		{%- endcase -%}
+	{%- endfor -%}
+
+	{%- assign promotions_json_raw = promotions_json_raw | remove_last: ',' -%}
+	{%- assign promotions_json = '[' | append: promotions_json_raw | append: ']' -%}
+
+	<div class="free-gift-promotions js-free-gift-promotions">
+		<script type="application/json" class="js-free-gift-config">{{ promotions_json }}</script>
+
+		{%- if pooled_options != blank -%}
+			{%- if heading != blank -%}
+				<div class="free-gift-promotions__heading">
+					{{- heading -}}
+				</div>
+			{%- endif -%}
+
+			<div class="free-gift-promotions__options" data-current-page="0" data-total-pages="{{- total_pages -}}">
+				{{- pooled_options -}}
+			</div>
+
+			{%- if total_pages > 1 -%}
+				<div class="free-gift-promotions__pagination">
+					<button
+						type="button"
+						class="free-gift-promotions__pagination-button js-free-gift-prev"
+						aria-label="{{- 'general.pagination.previous' | t -}}"
+						disabled
+					>
+						{%- render 'icons', icon: 'arrow-left' -%}
+					</button>
+
+					<span class="free-gift-promotions__pagination-indicator js-free-gift-page-indicator">
+						1 / {{- total_pages -}}
+					</span>
+
+					<button
+						type="button"
+						class="free-gift-promotions__pagination-button js-free-gift-next"
+						aria-label="{{- 'general.pagination.next' | t -}}"
+					>
+						{%- render 'icons', icon: 'arrow-right' -%}
+					</button>
+				</div>
+			{%- endif -%}
+		{%- endif -%}
+	</div>
+
+		<style>
+			.free-gift-promotions__heading {
+				font-weight: 600;
+				font-size: 0.95em;
+				margin-bottom: 10px;
+			}
+
+			.free-gift-promotions__options {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+			}
+
+			.free-gift-promotions__option {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				padding: 8px;
+				border: 1px solid rgba(0, 0, 0, 0.1);
+				border-radius: 4px;
+			}
+
+			.free-gift-promotions__option--selected {
+				border-color: var(--button-background-color-primary, #4d71f9);
+				background: rgba(77, 113, 249, 0.06);
+			}
+
+			.free-gift-promotions__option-media {
+				flex-shrink: 0;
+			}
+
+			.free-gift-promotions__option-image {
+				display: block;
+				width: 44px;
+				height: auto;
+				border-radius: 4px;
+			}
+
+			.free-gift-promotions__option-content {
+				display: flex;
+				flex-direction: column;
+				gap: 4px;
+				flex-grow: 1;
+				min-width: 0;
+			}
+
+			.free-gift-promotions__option-vendor {
+				font-size: 0.72em;
+				text-transform: uppercase;
+				opacity: 0.6;
+				letter-spacing: 0.02em;
+			}
+
+			.free-gift-promotions__option-title {
+				font-size: 0.85em;
+				font-weight: 500;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			.free-gift-promotions__option-footer {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 8px;
+			}
+
+			.free-gift-promotions__option-price {
+				display: flex;
+				align-items: center;
+				gap: 6px;
+				font-size: 0.8em;
+				white-space: nowrap;
+			}
+
+			.free-gift-promotions__option-price-original {
+				text-decoration: line-through;
+				opacity: 0.6;
+			}
+
+			.free-gift-promotions__option-price-free {
+				font-weight: 600;
+				text-transform: uppercase;
+			}
+
+			.free-gift-promotions__option-button {
+				flex-shrink: 0;
+			}
+
+			.free-gift-promotions__option-button[disabled] {
+				display: inline-flex;
+				align-items: center;
+				gap: 4px;
+				opacity: 0.8;
+				cursor: default;
+			}
+
+			.free-gift-promotions__option-button[disabled] svg {
+				width: 12px;
+				height: 12px;
+			}
+
+			.free-gift-promotions__pagination {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 12px;
+				margin-top: 10px;
+			}
+
+			.free-gift-promotions__pagination-button {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				width: 28px;
+				height: 28px;
+				padding: 0;
+				border: 1px solid rgba(0, 0, 0, 0.15);
+				border-radius: 50%;
+				background: transparent;
+				cursor: pointer;
+			}
+
+			.free-gift-promotions__pagination-button svg {
+				width: 12px;
+				height: 12px;
+			}
+
+			.free-gift-promotions__pagination-button[disabled] {
+				opacity: 0.35;
+				cursor: default;
+			}
+
+			.free-gift-promotions__pagination-indicator {
+				font-size: 0.8em;
+				opacity: 0.7;
+				min-width: 3em;
+				text-align: center;
+			}
+		</style>
+{%- endif -%}

@@ -161,14 +161,6 @@
   transition-duration: var(--timing-short);
   transition-timing-function: var(--easing-linear);
 }
-.shopify-policy__body td h3 {
-  word-break: unset !important
-}
-
-.shopify-policy__body td {
-    padding: 20px 15px !important;
-    width: auto !important;
-}
 @media (-moz-touch-enabled: 0), (hover: hover), (pointer: fine) {
   .responsive-table a:hover {
     text-decoration-color: transparent;
@@ -1171,6 +1163,14 @@ html.no-js .product-variants {
   border-color: var(--button-border-color-secondary-hover);
   background-color: var(--button-background-color-secondary-hover);
   color: var(--button-text-color-secondary-hover);
+}
+.shopify-policy__body td h3 {
+  word-break: unset !important
+}
+
+.shopify-policy__body td {
+    padding: 20px 15px !important;
+    width: auto !important;
 }
 @media (min-width: 768px) {
   .content .shopify-challenge__container {

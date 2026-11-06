@@ -213,6 +213,13 @@
 
   function bind(sectionEl) {
     if (!sectionEl) return;
+    
+    // Check vendor - only bind if vendor matches DKNY
+    var vendor = sectionEl && sectionEl.dataset && sectionEl.dataset.vendor;
+    if (vendor && vendor.toUpperCase() !== "DKNY") {
+      return;
+    }
+    
     var form = sectionEl.querySelector("[data-js-product-form]");
 
     if (!form) return;

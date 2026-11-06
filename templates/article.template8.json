@@ -8,91 +8,14 @@
  * ------------------------------------------------------------
  */
 {
-  "sections": {
-    "article": {
-      "type": "article-template",
-      "settings": {
-        "show_author": false,
-        "show_date": true,
-        "show_comments_count": true,
-        "show_tags": true,
-        "latest_articles_heading": "Latest posts",
-        "banner_heading": "",
-        "banner_link": "shopify://collections/ferte",
-        "offset_top_desktop": 40,
-        "offset_bottom_desktop": 40,
-        "offset_top_mobile": 25,
-        "offset_bottom_mobile": 25
-      }
-    },
-    "products_thumbnails_87Vghq": {
-      "type": "products-thumbnails",
-      "blocks": {
-        "tab_Pk69pn": {
-          "type": "tab",
-          "settings": {
-            "heading": "Shop Now",
-            "product_list": [
-              "14504192",
-              "1514117",
-              "1514118",
-              "1514076"
-            ],
-            "button_label": "See all products",
-            "button_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "tab_Pk69pn"
-      ],
-      "disabled": true,
-      "name": "Products thumbnails",
-      "settings": {
-        "heading": "",
-        "container_width": "inherit",
-        "offset_top_desktop": 40,
-        "offset_bottom_desktop": 40,
-        "offset_top_mobile": 25,
-        "offset_bottom_mobile": 25
-      }
-    },
-    "featured_products_3Pbnjt": {
-      "type": "featured-products",
-      "name": "Featured products",
-      "settings": {
-        "heading": "SHOP THE PIECES",
-        "product_list": [
-          "women-picasso-black-watch",
-          "alu016",
-          "tor162",
-          "tor186"
-        ],
-        "products_in_row": "4",
-        "banner_image": "shopify://shop_images/image-pd78hb5v6adpc9rnd7b0vkvx3186nje6.png",
-        "banner_heading": "",
-        "banner_subheading": "",
-        "button_label": "Shop Now",
-        "button_url": "shopify://collections/torri",
-        "text_color": "#fff",
-        "overlay_color": "rgba(0, 0, 0, 0.4)",
-        "button_color": "#fff",
-        "button_background_color": "rgba(0,0,0,0)",
-        "button_border_color": "#fff",
-        "button_hover_color": "#000",
-        "button_hover_background": "#fff",
-        "button_hover_border": "#fff",
-        "container_width": "inherit",
-        "offset_top_desktop": 40,
-        "offset_bottom_desktop": 40,
-        "offset_top_mobile": 25,
-        "offset_bottom_mobile": 25
-      }
-    }
-  },
-  "order": [
-    "article",
-    "products_thumbnails_87Vghq",
-    "featured_products_3Pbnjt"
-  ]
+	"sections": {
+		"article": {
+			"type": "article-template",
+			"settings": {
+			}
+		}
+	},
+	"order": [
+		"article"
+	]
 }

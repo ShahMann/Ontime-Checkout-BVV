@@ -111,9 +111,9 @@ if (!customElements.get('wishlist-element')) {
                 this.removeToWishlistState()
                 this.handleWishlistCount(+1)
                 target.parentElement.removeAttribute("disabled")
-                
-                // Track the event data
-                webengage.track("Added To Wishlist", this.eventData);
+
+               // Track the event data
+               webengage.track("Added To Wishlist", this.eventData);
             }
 
             gtag("event", "add_to_wishlist", {

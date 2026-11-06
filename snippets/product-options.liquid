@@ -87,11 +87,10 @@
 
 								{%- capture swatch_styles -%}
 									{% assign image_name = value | handle | prepend: 'swatch-' | append: '.png' %}
-									{% comment %} {% assign swatch_color_fallback = value | split: ' ' | last | handle %} {% endcomment %}
+									{% assign swatch_color_fallback = value | split: ' ' | last | handle %}
 									{% assign swatch_image = value.swatch.image | default: images[image_name] %}
-									{% comment %} {% assign swatch_color = value.swatch.color | default: swatch_color_fallback %} {% endcomment %}
-									{% assign swatch_color_handle = value |  handleize %}
-									{% assign swatch_color =  metaobjects['color_mapping'][swatch_color_handle].hex_color %}
+									{% assign swatch_color = value.swatch.color | default: swatch_color_fallback %}
+
 									style="
 									{%- if swatch_image != blank -%}
 										--swatch-image: url({{- swatch_image | image_url: width: 60, height: 60 -}});

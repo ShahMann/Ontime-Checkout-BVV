@@ -1,0 +1,174 @@
+/* custom styles for mobile to handle filter and chat icon */
+@media (max-width: 480px) {
+    html[lang="ar"] .template-collection  #ib-button-messaging,
+    .has-mobile-popup .product-filters .product-filters__open-menu-button.is-fixed {
+        bottom: 75px !important;
+        }
+}
+
+@media only screen and (max-width: 768px) {
+.has-mobile-popup .product-filters .product-filters__open-menu-button.is-fixed {
+        position: fixed !important;
+        bottom: 75px !important;
+        transform: none;
+        margin: 0;
+    }
+}
+
+html[lang='ar'] .lc-widget-button {
+    right: unset;
+    left: 20px;
+}
+[lang=ar] .product-filters .product-filters__open-menu-button.is-fixed {
+    left: unset;
+    right: 16px;
+}
+.lc-widget-button{
+    background-color: #a36246 !important;
+}
+@media (max-width: 375px) {
+    .has-mobile-popup .product-filters .product-filters__open-menu-button.is-fixed {
+    bottom: 90px !important;
+    }
+html[lang=ar] .template-collection #ib-button-messaging, .has-mobile-popup .product-filters .product-filters__open-menu-button.is-fixed{
+    bottom: 90px !important;
+}
+}
+/* banner css change */
+.slideshow .slideshow__slide.swiper-slide-active .slideshow__slide-content {
+    z-index:5;
+    min-height: auto;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: auto;
+}
+.slideshow .slideshow__slide.swiper-slide-active .slideshow__slide-content .slideshow__slide-content-inner {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+a.button-link-chevron.slideshow__slide-button.slideshow__slide-button--second.js-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #a36246 !important;
+    border-radius: 30px !important;
+    width: 197px !important;
+    padding: 10px !important;
+}
+
+/* Produt card Color swatches UI changes */
+
+.product-card:hover {
+    border-radius: 8px;
+}
+
+.product-card .product-card__footer .product-card__hover-content {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    border: 0;
+    box-shadow: unset;
+    padding: 5px 0 10px;
+    inset: unset;
+}
+
+.product-card:hover  .product-card__footer .product-card__hover-content {
+    box-shadow: unset;
+}
+
+.product-card .product-card__footer .product-card__price {
+    margin-top: unset;
+}
+
+/* product card css */
+.product-card .product-card__vendor-sku {
+    align-items: start !important;
+    flex-direction: column;
+}
+
+alert-modal-buttons button.alert-button::before, 
+alert-modal-buttons button.alert-button::after {
+    background-color: var(--button-background-color-secondary) !important;
+}
+
+alert-modal-buttons button.alert-button {
+    border: 2px solid var(--button-border-color) !important;
+    padding: 10px 0 !important  ;
+    color: #fff !important
+}
+/* Wishlist CSS */
+.wishlist-container .product-card {
+    border: 1px solid #e9e9e9;
+}
+
+body .product-card wishlist-element, 
+body .product-card wishlist-remove {
+    position: absolute;
+    top: unset;
+    right: unset;
+    z-index: 2;
+    cursor: pointer;
+    bottom: 0;
+    left: 10px;
+}
+
+body .product-card wishlist-remove {
+    width: unset;
+    height: unset;
+    right: 0;
+    top: 0;
+    bottom: unset;
+}
+
+body .product-card wishlist-element .wishlist-button,
+body .product-card wishlist-remove {
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--color-border-quick-buttons, var(--color-light-gray));
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px;
+}
+
+body .product-card wishlist-element svg,
+body .product-card wishlist-remove svg {
+    width: 32px;
+    height: 30px;
+}
+
+body .product-card wishlist-element .wishlist-button_wrapper {
+    line-height: 0;
+}
+
+body .add-to-wishlist {
+    line-height: 0;
+    color: #000;
+}
+
+@media only screen and (max-width: 1199px) {
+    body .product-card wishlist-element {
+        right: 34px;
+    }
+    body .product-card wishlist-element .wishlist-button,
+    body .product-card wishlist-remove { 
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+    }
+    body .product-card wishlist-element svg {
+        width: 30px;
+        height: 28px;
+        padding: 4px;
+    }
+    body .product-card wishlist-remove svg { 
+        width: 20px;
+        height: 18px;
+        padding: 0;
+    }
+}

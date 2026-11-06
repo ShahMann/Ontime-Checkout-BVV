@@ -14,149 +14,205 @@
       "settings": {
         "enable_heading": false,
         "enable_content": true,
-        "offset_top_desktop": 0,
-        "offset_bottom_desktop": 0,
-        "offset_top_mobile": 25,
-        "offset_bottom_mobile": 25
-      }
-    },
-    "collection_products_3zPAWX": {
-      "type": "collection-products",
-      "name": "Collection products",
-      "settings": {
-        "heading": "New Arrivals",
-        "collection": "torri-new-in",
-        "max_product_fetch": 20,
-        "products_in_row": "5",
-        "banner_image": "shopify://shop_images/Watches_2e10da46-552a-4b2f-ae3d-0a7eb67f5d36.png",
-        "banner_heading": "",
-        "banner_subheading": "Discover our best sellers",
-        "button_label": "",
-        "button_url": "shopify://collections/torri",
-        "text_color": "#ffffff",
-        "overlay_color": "rgba(0, 0, 0, 0.4)",
-        "button_color": "#ffffff",
-        "button_background_color": "rgba(0,0,0,0)",
-        "button_border_color": "#ffffff",
-        "button_hover_color": "#000000",
-        "button_hover_background": "#ffffff",
-        "button_hover_border": "#ffffff",
-        "container_width": "inherit",
         "offset_top_desktop": 40,
         "offset_bottom_desktop": 40,
         "offset_top_mobile": 25,
         "offset_bottom_mobile": 25
       }
     },
-    "featured_collection_b9dkj4": {
-      "type": "featured-collection",
-      "name": "Featured collection",
-      "settings": {
-        "collection": "torri-trending",
-        "image": "shopify://shop_images/TORRMobile.jpg",
-        "image_size": "height",
-        "products_per_row": "3",
-        "products_to_show": 3,
-        "image_overlay": "linear-gradient(180deg, rgba(255, 140, 140, 0) 5%, rgba(255, 140, 140, 0) 52%, rgba(0, 0, 0, 1) 100%)",
-        "image_text": "#ffffff",
-        "container_width": "inherit",
-        "offset_top_desktop": 40,
-        "offset_bottom_desktop": 40,
-        "offset_top_mobile": 25,
-        "offset_bottom_mobile": 25
-      }
-    },
-    "products_carousel_WMAfjg": {
-      "type": "products-carousel",
+    "slideshow_eeeiqN": {
+      "type": "slideshow",
       "blocks": {
-        "product_rNgrWA": {
-          "type": "product",
+        "image_PXzp6c": {
+          "type": "image",
           "settings": {
-            "product": "tor057",
-            "show_variant": false,
-            "video_desktop": "shopify://files/videos/Torri Male_desktop.mp4",
-            "video_mobile": "shopify://files/videos/Torri Male_mob.mp4"
-          }
-        },
-        "product_gNdfpC": {
-          "type": "product",
-          "settings": {
-            "product": "men-angelo-silver-watch",
-            "show_variant": false,
-            "video_desktop": "shopify://files/videos/Torri Male_desktop.mp4"
+            "image_desktop": "shopify://shop_images/rawa-pd70w1g3vwxdxazreneg5z9tdd8ac7p2.png",
+            "image_mobile": "shopify://shop_images/rawa-pd73g8cjqfm3dqhjhe3wtq01658ace6e.png",
+            "heading": "",
+            "description": "",
+            "button_text": "",
+            "button_aria_label": "",
+            "button_link": "shopify://collections/torri",
+            "open_in_new_tab": false,
+            "make_link_full_slide": true,
+            "second_button_text": "",
+            "second_button_aria_label": "",
+            "second_button_link": "/",
+            "second_open_in_new_tab": false,
+            "text_alignment_inside_block": "left",
+            "content_alignment": "slideshow__slide-content--left",
+            "vertical_content_alignment": "slideshow__slide-content--middle",
+            "background_color": "#757575",
+            "background_content": "",
+            "heading_color": "#ffffff",
+            "description_color": "#ffffff",
+            "button_text_color": "#000000",
+            "button_background_color": "#ffffff",
+            "button_border_color": "#ffffff",
+            "button_text_color_hover": "#000000",
+            "button_background_color_hover": "#4d71f9",
+            "button_border_color_hover": "#4d71f9",
+            "second_button_text_color": "#ffffff",
+            "second_button_text_color_hover": "#000000",
+            "overlay_color": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) 100%)"
           }
         }
       },
       "block_order": [
-        "product_rNgrWA",
-        "product_gNdfpC"
+        "image_PXzp6c"
       ],
-      "name": "Products carousel",
+      "name": "Slideshow",
       "settings": {
-        "button_style": "secondary-border",
+        "enable_rounded_corners": true,
+        "show_arrows": true,
+        "show_pagination": true,
+        "enable_loop": true,
+        "enable_autoplay": true,
+        "autoplay_speed": 5,
+        "animation_speed": 0.5,
+        "animation_type": "creative",
+        "background_color": "#ffffff",
+        "pagination_color": "#ffffff",
+        "arrows_background_color": "rgba(255, 255, 255, 0.3)",
+        "enable_arrows_glass_effect": true,
+        "arrows_color": "#fff",
+        "arrows_border_color": "",
+        "arrows_background_color_hover": "#4D71F9",
+        "arrows_color_hover": "#000000",
+        "arrows_border_color_hover": "#4d71f9",
         "container_width": "inherit",
-        "offset_top_desktop": 40,
+        "height_desktop": 100,
+        "height_mobile": 100,
+        "subtract_header_height": true,
+        "offset_top_desktop": 20,
         "offset_bottom_desktop": 40,
-        "offset_top_mobile": 25,
+        "offset_top_mobile": 20,
         "offset_bottom_mobile": 25
       }
     },
-    "collection_list_2_WXYPzK": {
-      "type": "collection-list-2",
-      "blocks": {
-        "collection_mf86Ka": {
-          "type": "collection",
-          "settings": {
-            "collection": "torri-men",
-            "menu": "",
-            "link_label": "View all"
-          }
-        },
-        "collection_zB4mxw": {
-          "type": "collection",
-          "settings": {
-            "collection": "torri-women",
-            "menu": "",
-            "link_label": "View all"
-          }
-        },
-        "collection_hiXqDw": {
-          "type": "collection",
-          "settings": {
-            "collection": "torri-watches",
-            "menu": "",
-            "link_label": "View all"
-          }
-        },
-        "collection_yHHVUc": {
-          "type": "collection",
-          "settings": {
-            "collection": "torri-wallets",
-            "menu": "",
-            "link_label": "View all"
-          }
-        },
-        "collection_eHrmem": {
-          "type": "collection",
-          "settings": {
-            "collection": "torri-jewelry",
-            "image": "shopify://shop_images/jewelry_2x_8ce4c88d-2356-4a3f-99dd-4680a1c71a38.png",
-            "menu": "",
-            "link_label": "View all"
-          }
-        }
-      },
-      "block_order": [
-        "collection_mf86Ka",
-        "collection_zB4mxw",
-        "collection_hiXqDw",
-        "collection_yHHVUc",
-        "collection_eHrmem"
-      ],
-      "name": "Promo collections",
+    "richtext_8e3qFy": {
+      "type": "richtext",
+      "name": "Rich text",
       "settings": {
-        "heading": "Torri Premium",
+        "heading": "Time, Perfected.",
+        "subheading": "",
+        "text_content": "<h5>A watch is more than a way to tell time—it's a reflection of your style, ambition, and confidence.</h5><h5>At TORRI, we create timepieces that blend timeless elegance with modern design. Crafted for both men and women, every watch is designed with premium materials, refined details, and exceptional craftsmanship to complement every moment, from everyday achievements to life's most memorable occasions.</h5><h5>Whether your style is bold or understated, classic or contemporary, there's a TORRI watch that belongs on your wrist.</h5>",
         "text_alignment": "center",
+        "enable_read_more": false,
+        "read_more_text": "Show more",
+        "show_less_text": "Show less",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_ydMzMY": {
+      "type": "image-with-text",
+      "name": "Image with text",
+      "settings": {
+        "image_position": "left",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/rawa-pd75bw838crxyxtvwwja5k67218afdgd.png",
+        "image_background": "rgba(0,0,0,0)",
+        "label": "",
+        "heading": "Crafted to Shine, Designed to Inspire",
+        "text_content": "<p><br/>Discover jewelry designed to inspire confidence and elevate every look. Our collection blends contemporary elegance with timeless craftsmanship, offering pieces that effortlessly transition from everyday wear to life's most special occasions. Whether you're searching for subtle sparkle or bold sophistication, you'll find jewelry that reflects your unique style and personality.<br/><br/><br/><br/></p>",
+        "button_label": "JEWELRY",
+        "button_aria_label": "Button label",
+        "button_url": "shopify://collections/torri-jewelry",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_QcVEtj": {
+      "type": "image-with-text",
+      "name": "Image with text",
+      "settings": {
+        "image_position": "right",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/rawa-pd7c44w13tpcvqj5mcm41qa89h8af16s.png",
+        "image_background": "rgba(0,0,0,0)",
+        "label": "",
+        "heading": "Minimalism, Masterfully Crafted.",
+        "text_content": "<p>Discover a collection of minimalist men's watches where timeless design meets modern sophistication. Featuring refined dials that transition seamlessly from classic round to distinctive hexagonal shapes, each timepiece is crafted to make a subtle yet lasting impression. Finished in versatile, understated colors, these watches are designed to complement every wardrobe and every occasion with effortless elegance. Precision craftsmanship, clean aesthetics, and enduring quality come together in a collection created for the modern gentleman. Backed by a <strong>5-year warranty</strong>, each watch is a statement of confidence, reliability, and timeless style—made to be worn and admired for years to come.<br/><br/></p>",
+        "button_label": "SHOP THE COLLECTION",
+        "button_aria_label": "Button label",
+        "button_url": "shopify://collections/torri-2",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_q6egzt": {
+      "type": "image-with-text",
+      "name": "Image with text",
+      "settings": {
+        "image_position": "left",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/image-pd71sfc7dbrtgv02yjcxazq9bx8adw3k.png",
+        "image_background": "rgba(0,0,0,0)",
+        "label": "",
+        "heading": "Luxury in Every Second",
+        "text_content": "<p>A statement of refined luxury, this exquisitely crafted timepiece features a distinctive dial that perfectly balances the elegance of a square with the graceful proportions of a rectangle. Its minimalist design highlights clean lines, exceptional craftsmanship, and timeless sophistication, making it a versatile companion for both formal occasions and everyday refinement. Designed for those who appreciate understated prestige, every detail reflects precision, style, and enduring quality. Backed by a <strong>5-year warranty</strong>, this watch is more than a timepiece—it's an investment in lasting elegance and impeccable craftsmanship.<br/><br/></p>",
+        "button_label": "SHOP THE COLLECTION",
+        "button_aria_label": "Button label",
+        "button_url": "shopify://collections/torri-1",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "image_with_text_3PfeCB": {
+      "type": "image-with-text",
+      "name": "Image with text",
+      "settings": {
+        "image_position": "right",
+        "text_alignment": "center",
+        "enable_animation": false,
+        "image": "shopify://shop_images/rawa-pd74777ar3ndqt2krqp0b222e98aewr7.png",
+        "image_background": "rgba(0,0,0,0)",
+        "label": "",
+        "heading": "Complete Your Signature Look",
+        "text_content": "<p><br/>Elevate your look with cufflinks that embody timeless sophistication and exceptional craftsmanship. Our collection features beautifully designed pieces that blend classic elegance with modern style, making them the perfect finishing touch for formal occasions, business attire, and special celebrations. Thoughtfully crafted with premium materials and refined detailing, each pair is designed to express confidence, individuality, and impeccable taste. Whether you're dressing for an important event or searching for a meaningful gift, our cufflinks add a distinctive touch of luxury to every outfit.<br/><br/></p>",
+        "button_label": "SHOP THE COLLECTION",
+        "button_aria_label": "Button label",
+        "button_url": "shopify://collections/torri-cufflinks",
+        "button_type": "secondary-border",
+        "container_width": "inherit",
+        "offset_top_desktop": 40,
+        "offset_bottom_desktop": 40,
+        "offset_top_mobile": 25,
+        "offset_bottom_mobile": 25
+      }
+    },
+    "featured_blog_wpDDqp": {
+      "type": "featured-blog",
+      "name": "Featured blog",
+      "settings": {
+        "blog": "news",
+        "heading": "Featured blogs",
+        "small_articles_heading": "Latest News",
+        "big_post_color": "#fff",
+        "big_post_color_secondary": "#9d9d9d",
+        "big_post_background": "rgba(0, 0, 0, 0.4)",
+        "big_post_tag_color": "#000",
+        "big_post_tag_background": "#fff",
+        "enable_content_glass_effect": true,
         "container_width": "inherit",
         "offset_top_desktop": 40,
         "offset_bottom_desktop": 40,
@@ -167,9 +223,12 @@
   },
   "order": [
     "default-page",
-    "collection_products_3zPAWX",
-    "featured_collection_b9dkj4",
-    "products_carousel_WMAfjg",
-    "collection_list_2_WXYPzK"
+    "slideshow_eeeiqN",
+    "richtext_8e3qFy",
+    "image_with_text_ydMzMY",
+    "image_with_text_QcVEtj",
+    "image_with_text_q6egzt",
+    "image_with_text_3PfeCB",
+    "featured_blog_wpDDqp"
   ]
 }
